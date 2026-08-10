@@ -1,23 +1,69 @@
+const categories = [
+  { icon: "📱", name: "Phones" },
+  { icon: "💻", name: "Electronics" },
+  { icon: "👕", name: "Fashion" },
+  { icon: "💄", name: "Beauty & Cosmetics" },
+  { icon: "🛒", name: "Groceries" },
+  { icon: "🏠", name: "Home & Kitchen" },
+];
+
+const products = [
+  { icon: "📱", name: "Smartphones", text: "Latest phones & accessories" },
+  { icon: "💻", name: "Laptops", text: "Work, school & gaming" },
+  { icon: "⌚", name: "Watches", text: "Classic & smart watches" },
+  { icon: "🎧", name: "Audio", text: "Headphones & speakers" },
+];
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-white text-black">
-      {/* Header */}
-      <header className="border-b border-gray-200">
+      {/* NAVBAR */}
+      <nav className="sticky top-0 z-50 border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-          <div className="text-2xl font-black tracking-tight">
-            <span className="text-black">Gold</span>
-            <span className="text-[#D4AF37]">Mart</span>
+          <a href="/" className="text-2xl font-black">
+            Gold<span className="text-[#D4AF37]">Mart</span>
+          </a>
+
+          <div className="hidden items-center gap-8 md:flex">
+            <a href="#" className="font-medium hover:text-[#A67C00]">
+              Home
+            </a>
+            <a href="#" className="font-medium hover:text-[#A67C00]">
+              Shop
+            </a>
+            <a href="#" className="font-medium hover:text-[#A67C00]">
+              Categories
+            </a>
+            <a href="#" className="font-medium hover:text-[#A67C00]">
+              Deals
+            </a>
           </div>
 
-          <button className="rounded-full bg-black px-5 py-2 text-sm font-semibold text-white">
-            Shop Now
-          </button>
-        </div>
-      </header>
+          <div className="flex items-center gap-2">
+            <button
+              aria-label="Search"
+              className="rounded-full border border-gray-200 p-2"
+            >
+              🔍
+            </button>
 
-      {/* Hero */}
+            <button
+              aria-label="Shopping cart"
+              className="rounded-full border border-gray-200 p-2"
+            >
+              🛒
+            </button>
+
+            <button className="hidden rounded-full bg-black px-5 py-2 font-bold text-white sm:block">
+              Sign In
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* HERO */}
       <section className="bg-black">
-        <div className="mx-auto max-w-7xl px-5 py-20 text-center">
+        <div className="mx-auto max-w-7xl px-5 py-20 text-center sm:py-28">
           <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-[#D4AF37]">
             Welcome to GoldMart
           </p>
@@ -29,98 +75,135 @@ export default function Home() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-gray-300">
-            Shop phones, electronics, fashion, cosmetics, groceries and more
-            from one trusted marketplace.
+            Shop phones, electronics, fashion, cosmetics, groceries and
+            thousands of products from trusted sellers.
           </p>
 
-          <button className="mt-8 rounded-full bg-[#D4AF37] px-8 py-4 font-bold text-black transition hover:bg-[#F4D675]">
-            Start Shopping
+          {/* SEARCH */}
+          <div className="mx-auto mt-8 flex max-w-2xl overflow-hidden rounded-full bg-white p-1">
+            <input
+              type="search"
+              placeholder="What are you looking for?"
+              className="min-w-0 flex-1 px-5 py-3 text-black outline-none"
+            />
+
+            <button className="rounded-full bg-[#D4AF37] px-6 font-bold text-black">
+              Search
+            </button>
+          </div>
+
+          <button className="mt-6 rounded-full border border-[#D4AF37] px-8 py-3 font-bold text-[#D4AF37]">
+            Start Shopping →
           </button>
         </div>
       </section>
 
-      {/* Categories */}
+      {/* CATEGORIES */}
       <section className="mx-auto max-w-7xl px-4 py-14">
-        <div className="mb-8 flex items-end justify-between">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
-              Explore
-            </p>
-            <h2 className="mt-1 text-3xl font-black">Shop by Category</h2>
-          </div>
+        <div className="mb-8">
+          <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+            Explore
+          </p>
+          <h2 className="mt-1 text-3xl font-black">Shop by Category</h2>
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {[
-            "📱 Phones",
-            "💻 Electronics",
-            "👕 Fashion",
-            "💄 Beauty",
-            "🛒 Groceries",
-            "🏠 Home",
-          ].map((category) => (
+          {categories.map((category) => (
             <button
-              key={category}
-              className="rounded-2xl border border-gray-200 bg-white p-6 text-center font-bold shadow-sm transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-md"
+              key={category.name}
+              className="rounded-2xl border border-gray-200 p-5 text-center transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
             >
-              <span className="text-3xl">{category.split(" ")[0]}</span>
-              <span className="mt-3 block text-sm">
-                {category.substring(category.indexOf(" ") + 1)}
-              </span>
+              <div className="text-4xl">{category.icon}</div>
+              <p className="mt-3 text-sm font-bold">{category.name}</p>
             </button>
           ))}
         </div>
       </section>
 
-      {/* Featured */}
+      {/* FEATURED */}
       <section className="bg-gray-50 px-4 py-14">
         <div className="mx-auto max-w-7xl">
           <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
             GoldMart Picks
           </p>
 
-          <h2 className="mt-1 text-3xl font-black">Featured Products</h2>
+          <div className="mt-1 flex items-center justify-between">
+            <h2 className="text-3xl font-black">Featured Products</h2>
 
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {["Smartphones", "Laptops", "Fashion", "Beauty"].map((item) => (
-              <div
-                key={item}
-                className="overflow-hidden rounded-2xl border border-gray-200 bg-white"
+            <button className="text-sm font-bold text-[#A67C00]">
+              View all →
+            </button>
+          </div>
+
+          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {products.map((product) => (
+              <article
+                key={product.name}
+                className="overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg"
               >
-                <div className="flex h-40 items-center justify-center bg-gray-100 text-5xl">
-                  🛍️
+                <div className="flex h-40 items-center justify-center bg-gray-100 text-6xl">
+                  {product.icon}
                 </div>
 
                 <div className="p-4">
-                  <h3 className="font-bold">{item}</h3>
+                  <h3 className="font-bold">{product.name}</h3>
                   <p className="mt-1 text-sm text-gray-500">
-                    Discover amazing deals
+                    {product.text}
                   </p>
 
-                  <button className="mt-4 w-full rounded-xl bg-black py-2 text-sm font-bold text-white">
+                  <button className="mt-4 w-full rounded-xl bg-black py-2.5 text-sm font-bold text-white">
                     Explore
                   </button>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-black px-4 py-10 text-center text-white">
-        <div className="text-2xl font-black">
-          Gold<span className="text-[#D4AF37]">Mart</span>
+      {/* TRUST */}
+      <section className="mx-auto grid max-w-7xl gap-4 px-4 py-14 sm:grid-cols-3">
+        <div className="rounded-2xl border p-6">
+          <div className="text-3xl">🔒</div>
+          <h3 className="mt-3 font-bold">Secure Shopping</h3>
+          <p className="mt-2 text-sm text-gray-500">
+            Your account and transactions are protected.
+          </p>
         </div>
 
-        <p className="mt-3 text-sm text-gray-400">
-          Everything you need, all in one place.
-        </p>
+        <div className="rounded-2xl border p-6">
+          <div className="text-3xl">🚚</div>
+          <h3 className="mt-3 font-bold">Reliable Delivery</h3>
+          <p className="mt-2 text-sm text-gray-500">
+            Shop from sellers and receive your orders safely.
+          </p>
+        </div>
 
-        <p className="mt-8 text-xs text-gray-500">
-          © 2026 GoldMart. All rights reserved.
-        </p>
+        <div className="rounded-2xl border p-6">
+          <div className="text-3xl">⭐</div>
+          <h3 className="mt-3 font-bold">Trusted Marketplace</h3>
+          <p className="mt-2 text-sm text-gray-500">
+            Discover products from verified sellers.
+          </p>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="bg-black px-4 py-12 text-white">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-3xl font-black">
+            Gold<span className="text-[#D4AF37]">Mart</span>
+          </div>
+
+          <p className="mt-3 max-w-md text-sm text-gray-400">
+            Everything you need, all in one place.
+          </p>
+
+          <div className="mt-10 border-t border-gray-800 pt-6 text-sm text-gray-500">
+            © 2026 GoldMart. All rights reserved.
+          </div>
+        </div>
       </footer>
     </main>
   );
-                }
+                  }
