@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { products } from "../data/products";
+import AddToCartButton from "../components/AddToCartButton";
 
 const categories = [
   { icon: "📱", name: "Phones" },
@@ -23,24 +24,37 @@ export default function Home() {
           </a>
 
           <div className="hidden items-center gap-8 md:flex">
-            <a href="/" className="font-medium hover:text-[#A67C00]">
+            <a
+              href="/"
+              className="font-medium hover:text-[#A67C00]"
+            >
               Home
             </a>
 
-            <a href="#products" className="font-medium hover:text-[#A67C00]">
+            <a
+              href="#products"
+              className="font-medium hover:text-[#A67C00]"
+            >
               Shop
             </a>
 
-            <a href="#categories" className="font-medium hover:text-[#A67C00]">
+            <a
+              href="#categories"
+              className="font-medium hover:text-[#A67C00]"
+            >
               Categories
             </a>
 
-            <a href="#deals" className="font-medium hover:text-[#A67C00]">
+            <a
+              href="#deals"
+              className="font-medium hover:text-[#A67C00]"
+            >
               Deals
             </a>
           </div>
 
           <div className="flex items-center gap-2">
+
             <button
               aria-label="Search"
               className="rounded-full border border-gray-200 p-2"
@@ -48,16 +62,21 @@ export default function Home() {
               🔍
             </button>
 
-            <button
+            <a
+              href="/cart"
               aria-label="Shopping cart"
               className="rounded-full border border-gray-200 p-2"
             >
               🛒
-            </button>
+            </a>
 
-            <button className="hidden rounded-full bg-black px-5 py-2 font-bold text-white sm:block">
+            <a
+              href="/login"
+              className="hidden rounded-full bg-black px-5 py-2 font-bold text-white sm:block"
+            >
               Sign In
-            </button>
+            </a>
+
           </div>
         </div>
       </nav>
@@ -79,29 +98,35 @@ export default function Home() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-gray-300">
-            Shop phones, electronics, fashion, cosmetics, groceries
-            and thousands of products from trusted sellers.
+            Shop phones, electronics, fashion, cosmetics,
+            groceries and thousands of products from trusted sellers.
           </p>
 
           {/* SEARCH */}
           <div className="mx-auto mt-8 flex max-w-2xl overflow-hidden rounded-full bg-white p-1">
+
             <input
               type="search"
               placeholder="What are you looking for?"
               className="min-w-0 flex-1 px-5 py-3 text-black outline-none"
             />
 
-            <button className="rounded-full bg-[#D4AF37] px-6 font-bold text-black">
+            <button
+              type="button"
+              className="rounded-full bg-[#D4AF37] px-6 font-bold text-black"
+            >
               Search
             </button>
+
           </div>
 
           <a
             href="#products"
-            className="mt-6 inline-block rounded-full border border-[#D4AF37] px-8 py-3 font-bold text-[#D4AF37]"
+            className="mt-6 inline-block rounded-full border border-[#D4AF37] px-8 py-3 font-bold text-[#D4AF37] transition hover:bg-[#D4AF37] hover:text-black"
           >
             Start Shopping →
           </a>
+
         </div>
       </section>
 
@@ -110,6 +135,7 @@ export default function Home() {
         id="categories"
         className="mx-auto max-w-7xl px-4 py-14"
       >
+
         <div className="mb-8">
           <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
             Explore
@@ -121,11 +147,14 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+
           {categories.map((category) => (
             <button
               key={category.name}
+              type="button"
               className="rounded-2xl border border-gray-200 p-5 text-center transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
             >
+
               <div className="text-4xl">
                 {category.icon}
               </div>
@@ -133,8 +162,10 @@ export default function Home() {
               <p className="mt-3 text-sm font-bold">
                 {category.name}
               </p>
+
             </button>
           ))}
+
         </div>
       </section>
 
@@ -143,6 +174,7 @@ export default function Home() {
         id="products"
         className="bg-gray-50 px-4 py-14"
       >
+
         <div className="mx-auto max-w-7xl">
 
           <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
@@ -150,13 +182,18 @@ export default function Home() {
           </p>
 
           <div className="mt-1 flex items-center justify-between">
+
             <h2 className="text-3xl font-black">
               Featured Products
             </h2>
 
-            <button className="text-sm font-bold text-[#A67C00]">
+            <a
+              href="/shop"
+              className="text-sm font-bold text-[#A67C00]"
+            >
               View all →
-            </button>
+            </a>
+
           </div>
 
           {/* PRODUCT GRID */}
@@ -170,6 +207,7 @@ export default function Home() {
 
                 {/* PRODUCT IMAGE */}
                 <div className="relative h-40 bg-gray-100">
+
                   <Image
                     src={product.image}
                     alt={product.name}
@@ -177,20 +215,26 @@ export default function Home() {
                     className="object-cover"
                     sizes="(max-width: 640px) 50vw, 25vw"
                   />
+
                 </div>
 
                 {/* PRODUCT INFO */}
                 <div className="p-4">
 
-                  <h3 className="font-bold">
+                  <p className="text-xs font-semibold uppercase text-[#A67C00]">
+                    {product.category}
+                  </p>
+
+                  <h3 className="mt-1 font-bold">
                     {product.name}
                   </h3>
 
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="mt-1 line-clamp-2 text-sm text-gray-500">
                     {product.description}
                   </p>
 
                   <div className="mt-3 flex items-center justify-between">
+
                     <span className="font-black text-[#A67C00]">
                       {product.price}
                     </span>
@@ -198,13 +242,21 @@ export default function Home() {
                     <span className="text-sm">
                       ⭐ {product.rating}
                     </span>
+
                   </div>
 
-                  <button className="mt-4 w-full rounded-xl bg-black py-2.5 text-sm font-bold text-white">
-                    Add to Cart
-                  </button>
+                  {/* WORKING CART BUTTON */}
+                  <AddToCartButton
+                    product={{
+                      id: product.id,
+                      name: product.name,
+                      price: product.price,
+                      image: product.image,
+                    }}
+                  />
 
                 </div>
+
               </article>
             ))}
 
@@ -217,6 +269,7 @@ export default function Home() {
         id="deals"
         className="mx-auto max-w-7xl px-4 py-14"
       >
+
         <div className="rounded-3xl bg-black p-8 text-white sm:p-12">
 
           <p className="text-sm font-bold uppercase tracking-widest text-[#D4AF37]">
@@ -233,9 +286,12 @@ export default function Home() {
             Discover special offers and deals from trusted GoldMart sellers.
           </p>
 
-          <button className="mt-6 rounded-full bg-[#D4AF37] px-7 py-3 font-bold text-black">
+          <a
+            href="/shop"
+            className="mt-6 inline-block rounded-full bg-[#D4AF37] px-7 py-3 font-bold text-black"
+          >
             Explore Deals
-          </button>
+          </a>
 
         </div>
       </section>
@@ -275,7 +331,7 @@ export default function Home() {
           </h3>
 
           <p className="mt-2 text-sm text-gray-500">
-            Discover products from verified sellers.
+            Discover products from trusted sellers.
           </p>
         </div>
 
@@ -304,4 +360,4 @@ export default function Home() {
 
     </main>
   );
-                }
+          }
