@@ -1,10 +1,41 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useCart } from "../../components/CartProvider";
 
 export default function CheckoutPage() {
+  const { cart } = useCart();
   const [paymentMethod, setPaymentMethod] = useState("card");
+
+  const subtotal = useMemo(() => {
+    return cart.reduce((total, item) => {
+      const price =
+        typeof item.price === "number"
+          ? item.price
+          : Number(String(item.price).replace(/[^0-9.]/g, ""));
+
+      return total + price * item.quantity;
+    }, 0);
+  }, [cart]);
+
+  const delivery = subtotal > 0 ? 2500 : 0;
+  const total = subtotal + delivery;
+
+  function formatPrice(amount: number) {
+    return `₦${amount.toLocaleString("en-NG")}`;
+  }
+
+  function handlePlaceOrder() {
+    if (cart.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    alert(
+      "Order created successfully. Real payment processing will be connected to the GoldMart backend."
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gray-50 text-black">
@@ -12,6 +43,7 @@ export default function CheckoutPage() {
       {/* HEADER */}
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
+
           <Link href="/" className="text-2xl font-black">
             Gold<span className="text-[#D4AF37]">Mart</span>
           </Link>
@@ -22,31 +54,27 @@ export default function CheckoutPage() {
           >
             ← Cart
           </Link>
+
         </div>
       </header>
 
-      {/* CHECKOUT */}
+      {/* CONTENT */}
       <div className="mx-auto max-w-7xl px-4 py-10">
 
-        <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
-            GoldMart Checkout
-          </p>
+        <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+          GoldMart Checkout
+        </p>
 
-          <h1 className="mt-1 text-3xl font-black sm:text-4xl">
-            Complete Your Order
-          </h1>
-
-          <p className="mt-3 text-gray-500">
-            Enter your delivery details and choose a payment method.
-          </p>
-        </div>
+        <h1 className="mt-1 text-3xl font-black sm:text-4xl">
+          Complete Your Order
+        </h1>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-3">
 
-          {/* CUSTOMER DETAILS */}
-          <section className="lg:col-span-2">
+          {/* LEFT */}
+          <section className="space-y-6 lg:col-span-2">
 
+            {/* DELIVERY */}
             <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
               <h2 className="text-xl font-black">
@@ -55,161 +83,93 @@ export default function CheckoutPage() {
 
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
 
-                <div>
-                  <label className="mb-2 block text-sm font-bold">
-                    First Name
-                  </label>
+                <input
+                  placeholder="First Name"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                />
 
-                  <input
-                    type="text"
-                    placeholder="First name"
-                    className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-                  />
-                </div>
+                <input
+                  placeholder="Last Name"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                />
 
-                <div>
-                  <label className="mb-2 block text-sm font-bold">
-                    Last Name
-                  </label>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                />
 
-                  <input
-                    type="text"
-                    placeholder="Last name"
-                    className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-                  />
-                </div>
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                />
 
-                <div>
-                  <label className="mb-2 block text-sm font-bold">
-                    Email
-                  </label>
+                <textarea
+                  rows={3}
+                  placeholder="Full Delivery Address"
+                  className="resize-none rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37] sm:col-span-2"
+                />
 
-                  <input
-                    type="email"
-                    placeholder="you@example.com"
-                    className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-                  />
-                </div>
+                <input
+                  placeholder="City"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                />
 
-                <div>
-                  <label className="mb-2 block text-sm font-bold">
-                    Phone Number
-                  </label>
-
-                  <input
-                    type="tel"
-                    placeholder="08012345678"
-                    className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-                  />
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label className="mb-2 block text-sm font-bold">
-                    Delivery Address
-                  </label>
-
-                  <textarea
-                    rows={3}
-                    placeholder="Enter your full delivery address"
-                    className="w-full resize-none rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-sm font-bold">
-                    City
-                  </label>
-
-                  <input
-                    type="text"
-                    placeholder="City"
-                    className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-sm font-bold">
-                    State
-                  </label>
-
-                  <select className="w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]">
-                    <option>Rivers</option>
-                    <option>Lagos</option>
-                    <option>Abuja</option>
-                    <option>Oyo</option>
-                    <option>Delta</option>
-                    <option>Enugu</option>
-                    <option>Kano</option>
-                    <option>Other</option>
-                  </select>
-                </div>
+                <select className="rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]">
+                  <option>Rivers</option>
+                  <option>Lagos</option>
+                  <option>Abuja</option>
+                  <option>Oyo</option>
+                  <option>Delta</option>
+                  <option>Enugu</option>
+                  <option>Kano</option>
+                  <option>Other</option>
+                </select>
 
               </div>
 
             </div>
 
-            {/* DELIVERY */}
-            <div className="mt-6 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
+            {/* DELIVERY METHOD */}
+            <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
               <h2 className="text-xl font-black">
                 Delivery Method
               </h2>
 
-              <div className="mt-5 space-y-3">
+              <label className="mt-5 flex cursor-pointer items-center justify-between rounded-2xl border p-4">
 
-                <label className="flex cursor-pointer items-center justify-between rounded-2xl border p-4">
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="radio"
-                      name="delivery"
-                      defaultChecked
-                    />
+                <div className="flex items-center gap-3">
 
-                    <div>
-                      <p className="font-bold">
-                        Standard Delivery
-                      </p>
+                  <input
+                    type="radio"
+                    name="delivery"
+                    defaultChecked
+                  />
 
-                      <p className="text-sm text-gray-500">
-                        3–7 business days
-                      </p>
-                    </div>
+                  <div>
+                    <p className="font-bold">
+                      Standard Delivery
+                    </p>
+
+                    <p className="text-sm text-gray-500">
+                      3–7 business days
+                    </p>
                   </div>
 
-                  <span className="font-bold">
-                    ₦2,500
-                  </span>
-                </label>
+                </div>
 
-                <label className="flex cursor-pointer items-center justify-between rounded-2xl border p-4">
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="radio"
-                      name="delivery"
-                    />
+                <span className="font-bold">
+                  ₦2,500
+                </span>
 
-                    <div>
-                      <p className="font-bold">
-                        Express Delivery
-                      </p>
-
-                      <p className="text-sm text-gray-500">
-                        1–2 business days
-                      </p>
-                    </div>
-                  </div>
-
-                  <span className="font-bold">
-                    ₦5,000
-                  </span>
-                </label>
-
-              </div>
+              </label>
 
             </div>
 
             {/* PAYMENT */}
-            <div className="mt-6 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
+            <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
               <h2 className="text-xl font-black">
                 Payment Method
@@ -217,77 +177,35 @@ export default function CheckoutPage() {
 
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
 
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod("card")}
-                  className={`rounded-2xl border p-5 text-left ${
-                    paymentMethod === "card"
-                      ? "border-[#D4AF37] bg-yellow-50"
-                      : ""
-                  }`}
-                >
-                  <div className="text-2xl">💳</div>
+                {[
+                  ["card", "💳", "Card"],
+                  ["transfer", "🏦", "Bank Transfer"],
+                  ["wallet", "📱", "Wallet"],
+                ].map(([value, icon, name]) => (
 
-                  <p className="mt-2 font-bold">
-                    Card
-                  </p>
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setPaymentMethod(value)}
+                    className={`rounded-2xl border p-5 text-left ${
+                      paymentMethod === value
+                        ? "border-[#D4AF37] bg-yellow-50"
+                        : ""
+                    }`}
+                  >
 
-                  <p className="mt-1 text-xs text-gray-500">
-                    Debit or credit card
-                  </p>
-                </button>
+                    <div className="text-2xl">
+                      {icon}
+                    </div>
 
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod("transfer")}
-                  className={`rounded-2xl border p-5 text-left ${
-                    paymentMethod === "transfer"
-                      ? "border-[#D4AF37] bg-yellow-50"
-                      : ""
-                  }`}
-                >
-                  <div className="text-2xl">🏦</div>
+                    <p className="mt-2 font-bold">
+                      {name}
+                    </p>
 
-                  <p className="mt-2 font-bold">
-                    Bank Transfer
-                  </p>
+                  </button>
 
-                  <p className="mt-1 text-xs text-gray-500">
-                    Pay by bank transfer
-                  </p>
-                </button>
+                ))}
 
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod("wallet")}
-                  className={`rounded-2xl border p-5 text-left ${
-                    paymentMethod === "wallet"
-                      ? "border-[#D4AF37] bg-yellow-50"
-                      : ""
-                  }`}
-                >
-                  <div className="text-2xl">📱</div>
-
-                  <p className="mt-2 font-bold">
-                    Wallet
-                  </p>
-
-                  <p className="mt-1 text-xs text-gray-500">
-                    GoldMart wallet
-                  </p>
-                </button>
-
-              </div>
-
-              <div className="mt-5 rounded-xl bg-gray-50 p-4 text-sm text-gray-500">
-                Selected payment:{" "}
-                <span className="font-bold text-black">
-                  {paymentMethod === "card"
-                    ? "Card"
-                    : paymentMethod === "transfer"
-                    ? "Bank Transfer"
-                    : "GoldMart Wallet"}
-                </span>
               </div>
 
             </div>
@@ -301,70 +219,125 @@ export default function CheckoutPage() {
               Order Summary
             </h2>
 
-            <div className="mt-6 space-y-4 border-b pb-6">
+            {cart.length === 0 ? (
 
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">
-                  Products
-                </span>
+              <div className="py-10 text-center">
 
-                <span className="font-bold">
-                  ₦89,000
-                </span>
+                <div className="text-5xl">
+                  🛒
+                </div>
+
+                <p className="mt-4 font-bold">
+                  Your cart is empty
+                </p>
+
+                <Link
+                  href="/shop"
+                  className="mt-5 inline-block rounded-full bg-black px-6 py-3 text-sm font-bold text-white"
+                >
+                  Continue Shopping
+                </Link>
+
               </div>
 
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">
-                  Delivery
-                </span>
+            ) : (
 
-                <span className="font-bold">
-                  ₦2,500
-                </span>
-              </div>
+              <>
+                <div className="mt-6 space-y-4">
 
-            </div>
+                  {cart.map((item) => {
 
-            <div className="flex justify-between py-6">
+                    const price =
+                      typeof item.price === "number"
+                        ? item.price
+                        : Number(
+                            String(item.price).replace(
+                              /[^0-9.]/g,
+                              ""
+                            )
+                          );
 
-              <span className="text-lg font-black">
-                Total
-              </span>
+                    return (
+                      <div
+                        key={item.id}
+                        className="flex justify-between gap-4 border-b pb-4"
+                      >
 
-              <span className="text-xl font-black text-[#A67C00]">
-                ₦91,500
-              </span>
+                        <div>
+                          <p className="font-bold">
+                            {item.name}
+                          </p>
 
-            </div>
+                          <p className="text-sm text-gray-500">
+                            Quantity: {item.quantity}
+                          </p>
+                        </div>
 
-            <button
-              type="button"
-              onClick={() =>
-                alert(
-                  "Payment processing will be connected to the GoldMart backend."
-                )
-              }
-              className="w-full rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
-            >
-              Place Order
-            </button>
+                        <p className="font-bold">
+                          {formatPrice(price * item.quantity)}
+                        </p>
 
-            <div className="mt-5 flex gap-3 rounded-xl bg-gray-50 p-4">
+                      </div>
+                    );
 
-              <span className="text-xl">
-                🔒
-              </span>
+                  })}
 
-              <p className="text-xs text-gray-500">
-                Your order and payment information will be
-                securely processed.
-              </p>
+                </div>
 
-            </div>
+                <div className="mt-6 space-y-3 border-b pb-6">
+
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">
+                      Subtotal
+                    </span>
+
+                    <span className="font-bold">
+                      {formatPrice(subtotal)}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between">
+
+                    <span className="text-gray-500">
+                      Delivery
+                    </span>
+
+                    <span className="font-bold">
+                      {formatPrice(delivery)}
+                    </span>
+
+                  </div>
+
+                </div>
+
+                <div className="flex justify-between py-6">
+
+                  <span className="text-lg font-black">
+                    Total
+                  </span>
+
+                  <span className="text-xl font-black text-[#A67C00]">
+                    {formatPrice(total)}
+                  </span>
+
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handlePlaceOrder}
+                  className="w-full rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+                >
+                  Place Order
+                </button>
+
+              </>
+
+            )}
 
           </aside>
 
         </div>
+
       </div>
     </main>
   );
