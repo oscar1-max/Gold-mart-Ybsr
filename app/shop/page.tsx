@@ -278,4 +278,4 @@ export default function ShopPage() {
       </div>
     </main>
   );
-        }
+}
