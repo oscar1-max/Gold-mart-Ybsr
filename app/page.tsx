@@ -24,31 +24,19 @@ export default function Home() {
           </a>
 
           <div className="hidden items-center gap-8 md:flex">
-            <a
-              href="/"
-              className="font-medium hover:text-[#A67C00]"
-            >
+            <a href="/" className="font-medium hover:text-[#A67C00]">
               Home
             </a>
 
-            <a
-              href="#products"
-              className="font-medium hover:text-[#A67C00]"
-            >
+            <a href="#products" className="font-medium hover:text-[#A67C00]">
               Shop
             </a>
 
-            <a
-              href="#categories"
-              className="font-medium hover:text-[#A67C00]"
-            >
+            <a href="#categories" className="font-medium hover:text-[#A67C00]">
               Categories
             </a>
 
-            <a
-              href="#deals"
-              className="font-medium hover:text-[#A67C00]"
-            >
+            <a href="#deals" className="font-medium hover:text-[#A67C00]">
               Deals
             </a>
           </div>
@@ -245,7 +233,6 @@ export default function Home() {
 
                   </div>
 
-                  {/* WORKING CART BUTTON */}
                   <AddToCartButton
                     product={{
                       id: product.id,
