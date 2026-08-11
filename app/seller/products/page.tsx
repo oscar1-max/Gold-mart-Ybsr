@@ -1,37 +1,75 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const sellerProducts = [
-  {
-    id: 1,
-    name: "Wireless Headphones",
-    price: "₦89,000",
-    category: "Electronics",
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "Smart Watch",
-    price: "₦149,000",
-    category: "Electronics",
-    status: "Active",
-  },
-  {
-    id: 3,
-    name: "Leather Backpack",
-    price: "₦99,000",
-    category: "Fashion",
-    status: "Active",
-  },
-];
+const API_URL = "https://goldmart-backend-yoxc.onrender.com";
+
+type Product = {
+  id: number;
+  name: string;
+  description?: string;
+  price: string | number;
+  image_url?: string | null;
+  category_name?: string | null;
+  stock: number;
+};
 
 export default function SellerProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const token = localStorage.getItem("goldmart_token");
+
+        if (!token) {
+          setError("Please sign in to access your seller products.");
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(
+          `${API_URL}/api/seller/products`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.message || "Failed to load products."
+          );
+        }
+
+        setProducts(data.products || []);
+      } catch (error) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Unable to load products."
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProducts();
+  }, []);
+
   return (
     <main className="min-h-screen bg-gray-50 text-black">
 
+      {/* HEADER */}
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
+
           <Link href="/" className="text-2xl font-black">
             Gold<span className="text-[#D4AF37]">Mart</span>
           </Link>
@@ -42,9 +80,11 @@ export default function SellerProductsPage() {
           >
             Dashboard
           </Link>
+
         </div>
       </header>
 
+      {/* CONTENT */}
       <div className="mx-auto max-w-7xl px-4 py-10">
 
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
@@ -72,102 +112,166 @@ export default function SellerProductsPage() {
 
         </div>
 
-        <div className="mt-8 overflow-hidden rounded-2xl border bg-white">
+        {/* ERROR */}
+        {error && (
+          <div className="mt-8 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-700">
+            <p className="font-bold">
+              Something went wrong
+            </p>
 
-          <div className="hidden grid-cols-5 gap-4 border-b bg-gray-50 p-5 text-sm font-bold sm:grid">
-            <span>Product</span>
-            <span>Category</span>
-            <span>Price</span>
-            <span>Status</span>
-            <span>Action</span>
+            <p className="mt-1 text-sm">
+              {error}
+            </p>
           </div>
+        )}
 
-          {sellerProducts.map((product) => (
-            <div
-              key={product.id}
-              className="grid gap-4 border-b p-5 last:border-b-0 sm:grid-cols-5 sm:items-center"
-            >
+        {/* LOADING */}
+        {loading && (
+          <div className="mt-8 rounded-2xl border bg-white p-10 text-center">
+            <p className="font-bold">
+              Loading your products...
+            </p>
+          </div>
+        )}
 
-              <div>
-                <p className="text-xs font-bold uppercase text-gray-400 sm:hidden">
-                  Product
-                </p>
+        {/* EMPTY */}
+        {!loading && !error && products.length === 0 && (
+          <div className="mt-8 rounded-2xl border bg-white p-10 text-center">
 
-                <p className="font-bold">
-                  {product.name}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase text-gray-400 sm:hidden">
-                  Category
-                </p>
-
-                <p className="text-sm text-gray-600">
-                  {product.category}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase text-gray-400 sm:hidden">
-                  Price
-                </p>
-
-                <p className="font-bold text-[#A67C00]">
-                  {product.price}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase text-gray-400 sm:hidden">
-                  Status
-                </p>
-
-                <span className="inline-block rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700">
-                  {product.status}
-                </span>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase text-gray-400 sm:hidden">
-                  Action
-                </p>
-
-                <button
-                  type="button"
-                  className="rounded-lg border px-4 py-2 text-sm font-bold"
-                  onClick={() =>
-                    alert(
-                      "Product editing will be connected to the database later."
-                    )
-                  }
-                >
-                  Edit
-                </button>
-              </div>
-
+            <div className="text-5xl">
+              📦
             </div>
-          ))}
 
-        </div>
+            <h2 className="mt-4 text-2xl font-black">
+              No products yet
+            </h2>
 
-        <div className="mt-8 rounded-3xl bg-black p-8 text-white">
+            <p className="mt-2 text-gray-500">
+              Add your first product to start selling on GoldMart.
+            </p>
 
-          <p className="text-sm font-bold uppercase tracking-widest text-[#D4AF37]">
-            Seller Products
-          </p>
+            <Link
+              href="/seller/products/new"
+              className="mt-6 inline-block rounded-full bg-black px-6 py-3 font-bold text-white"
+            >
+              Add Your First Product
+            </Link>
 
-          <h2 className="mt-3 text-2xl font-black">
-            Manage everything from one place
-          </h2>
+          </div>
+        )}
 
-          <p className="mt-3 max-w-2xl text-gray-400">
-            Product information, inventory, images and editing
-            will be connected to the GoldMart database during
-            the backend stage.
-          </p>
+        {/* PRODUCTS */}
+        {!loading && !error && products.length > 0 && (
+          <div className="mt-8 overflow-hidden rounded-2xl border bg-white">
 
-        </div>
+            <div className="hidden grid-cols-6 gap-4 border-b bg-gray-50 p-5 text-sm font-bold lg:grid">
+              <span>Product</span>
+              <span>Category</span>
+              <span>Price</span>
+              <span>Stock</span>
+              <span>Status</span>
+              <span>Action</span>
+            </div>
+
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="grid gap-4 border-b p-5 last:border-b-0 lg:grid-cols-6 lg:items-center"
+              >
+
+                {/* PRODUCT */}
+                <div>
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Product
+                  </p>
+
+                  <p className="font-bold">
+                    {product.name}
+                  </p>
+
+                  {product.description && (
+                    <p className="mt-1 line-clamp-1 text-xs text-gray-500">
+                      {product.description}
+                    </p>
+                  )}
+                </div>
+
+                {/* CATEGORY */}
+                <div>
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Category
+                  </p>
+
+                  <p className="text-sm text-gray-600">
+                    {product.category_name || "Uncategorized"}
+                  </p>
+                </div>
+
+                {/* PRICE */}
+                <div>
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Price
+                  </p>
+
+                  <p className="font-black text-[#A67C00]">
+                    ₦{Number(product.price).toLocaleString()}
+                  </p>
+                </div>
+
+                {/* STOCK */}
+                <div>
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Stock
+                  </p>
+
+                  <p className="font-bold">
+                    {product.stock}
+                  </p>
+                </div>
+
+                {/* STATUS */}
+                <div>
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Status
+                  </p>
+
+                  <span
+                    className={`inline-block rounded-full px-3 py-1 text-xs font-bold ${
+                      product.stock > 0
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {product.stock > 0
+                      ? "Active"
+                      : "Out of Stock"}
+                  </span>
+                </div>
+
+                {/* ACTION */}
+                <div>
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Action
+                  </p>
+
+                  <button
+                    type="button"
+                    className="rounded-lg border px-4 py-2 text-sm font-bold"
+                    onClick={() =>
+                      alert(
+                        "Product editing will be connected next."
+                      )
+                    }
+                  >
+                    Edit
+                  </button>
+                </div>
+
+              </div>
+            ))}
+
+          </div>
+        )}
 
       </div>
     </main>
