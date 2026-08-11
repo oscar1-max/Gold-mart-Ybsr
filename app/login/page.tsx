@@ -35,16 +35,25 @@ export default function LoginPage() {
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok || !data.success) {
         throw new Error(data.message || "Login failed");
       }
 
-      // Save login information in the browser
+      // Save login information
       localStorage.setItem("goldmart_token", data.token);
-      localStorage.setItem("goldmart_user", JSON.stringify(data.user));
+      localStorage.setItem(
+        "goldmart_user",
+        JSON.stringify(data.user)
+      );
 
-      // Send the user to the homepage
-      router.push("/");
+      // Redirect according to account type
+      if (data.user.role === "seller") {
+        router.push("/seller");
+      } else if (data.user.role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/");
+      }
     } catch (err) {
       setError(
         err instanceof Error
@@ -97,7 +106,9 @@ export default function LoginPage() {
                 type="email"
                 required
                 value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) =>
+                  setEmail(event.target.value)
+                }
                 placeholder="you@example.com"
                 className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
@@ -112,7 +123,9 @@ export default function LoginPage() {
                 type="password"
                 required
                 value={password}
-                onChange={(event) => setPassword(event.target.value)}
+                onChange={(event) =>
+                  setPassword(event.target.value)
+                }
                 placeholder="Enter your password"
                 className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
