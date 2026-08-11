@@ -19,10 +19,12 @@ export default function Home() {
       <nav className="sticky top-0 z-50 border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
 
+          {/* LOGO */}
           <a href="/" className="text-2xl font-black">
             Gold<span className="text-[#D4AF37]">Mart</span>
           </a>
 
+          {/* DESKTOP NAVIGATION */}
           <div className="hidden items-center gap-8 md:flex">
             <a href="/" className="font-medium hover:text-[#A67C00]">
               Home
@@ -41,8 +43,10 @@ export default function Home() {
             </a>
           </div>
 
+          {/* ACTIONS */}
           <div className="flex items-center gap-2">
 
+            {/* SEARCH */}
             <button
               aria-label="Search"
               className="rounded-full border border-gray-200 p-2"
@@ -50,19 +54,29 @@ export default function Home() {
               🔍
             </button>
 
+            {/* LOGIN */}
+            <a
+              href="/login"
+              className="rounded-full border border-gray-200 px-3 py-2 text-sm font-bold hover:border-[#D4AF37]"
+            >
+              Sign In
+            </a>
+
+            {/* REGISTER */}
+            <a
+              href="/register"
+              className="hidden rounded-full bg-black px-4 py-2 text-sm font-bold text-white sm:block"
+            >
+              Create Account
+            </a>
+
+            {/* CART */}
             <a
               href="/cart"
               aria-label="Shopping cart"
               className="rounded-full border border-gray-200 p-2"
             >
               🛒
-            </a>
-
-            <a
-              href="/login"
-              className="hidden rounded-full bg-black px-5 py-2 font-bold text-white sm:block"
-            >
-              Sign In
             </a>
 
           </div>
@@ -109,7 +123,7 @@ export default function Home() {
           </div>
 
           <a
-            href="#products"
+            href="/shop"
             className="mt-6 inline-block rounded-full border border-[#D4AF37] px-8 py-3 font-bold text-[#D4AF37] transition hover:bg-[#D4AF37] hover:text-black"
           >
             Start Shopping →
@@ -142,7 +156,6 @@ export default function Home() {
               type="button"
               className="rounded-2xl border border-gray-200 p-5 text-center transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
             >
-
               <div className="text-4xl">
                 {category.icon}
               </div>
@@ -150,7 +163,6 @@ export default function Home() {
               <p className="mt-3 text-sm font-bold">
                 {category.name}
               </p>
-
             </button>
           ))}
 
@@ -193,7 +205,6 @@ export default function Home() {
                 className="overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg"
               >
 
-                {/* PRODUCT IMAGE */}
                 <div className="relative h-40 bg-gray-100">
 
                   <Image
@@ -206,7 +217,6 @@ export default function Home() {
 
                 </div>
 
-                {/* PRODUCT INFO */}
                 <div className="p-4">
 
                   <p className="text-xs font-semibold uppercase text-[#A67C00]">
@@ -243,7 +253,6 @@ export default function Home() {
                   />
 
                 </div>
-
               </article>
             ))}
 
