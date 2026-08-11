@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { products } from "../../data/products";
+import { useEffect, useState } from "react";
 import AddToCartButton from "../../components/AddToCartButton";
+
+const API_URL = "https://goldmart-backend-yoxc.onrender.com/api";
 
 const categories = [
   "All",
@@ -16,9 +17,65 @@ const categories = [
   "Groceries",
 ];
 
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  rating: number;
+  image: string;
+  description: string;
+  category: string;
+};
+
 export default function ShopPage() {
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(`${API_URL}/products`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.message || "Failed to fetch products");
+        }
+
+        const formattedProducts: Product[] = data.products.map(
+          (product: any) => ({
+            id: product.id,
+            name: product.name,
+            price: Number(product.price),
+            rating: Number(product.rating) || 4.5,
+            image: product.image_url || "/images/headphones.jpg",
+            description:
+              product.description || "Quality product from GoldMart.",
+            category: product.category_name || "Other",
+          })
+        );
+
+        setProducts(formattedProducts);
+      } catch (err) {
+        console.error("Products error:", err);
+        setError("Unable to load products. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, []);
 
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
@@ -99,96 +156,126 @@ export default function ShopPage() {
           ))}
         </div>
 
-        {/* RESULTS */}
-        <div className="mt-8 flex items-center justify-between">
-          <h2 className="text-xl font-black">
-            {filteredProducts.length} Products
-          </h2>
-        </div>
-
-        {/* PRODUCT GRID */}
-        {filteredProducts.length === 0 ? (
+        {/* LOADING */}
+        {loading && (
           <div className="mt-10 rounded-2xl bg-white p-10 text-center">
-            <div className="text-5xl">🔎</div>
+            <div className="text-4xl">⏳</div>
+            <p className="mt-3 font-bold">
+              Loading GoldMart products...
+            </p>
+          </div>
+        )}
+
+        {/* ERROR */}
+        {!loading && error && (
+          <div className="mt-10 rounded-2xl bg-white p-10 text-center">
+            <div className="text-4xl">⚠️</div>
 
             <h2 className="mt-4 text-xl font-black">
-              No products found
+              Products could not be loaded
             </h2>
 
             <p className="mt-2 text-gray-500">
-              Try another search or category.
+              {error}
             </p>
           </div>
-        ) : (
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        )}
 
-            {filteredProducts.map((product) => (
-              <article
-                key={product.id}
-                className="overflow-hidden rounded-2xl border bg-white transition hover:-translate-y-1 hover:shadow-lg"
-              >
+        {/* RESULTS */}
+        {!loading && !error && (
+          <>
+            <div className="mt-8 flex items-center justify-between">
+              <h2 className="text-xl font-black">
+                {filteredProducts.length} Products
+              </h2>
+            </div>
 
-                {/* IMAGE */}
-                <Link href={`/product/${product.id}`}>
-                  <div className="relative h-48 bg-gray-100">
+            {/* PRODUCT GRID */}
+            {filteredProducts.length === 0 ? (
+              <div className="mt-10 rounded-2xl bg-white p-10 text-center">
+                <div className="text-5xl">🔎</div>
 
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                    />
+                <h2 className="mt-4 text-xl font-black">
+                  No products found
+                </h2>
 
-                  </div>
-                </Link>
+                <p className="mt-2 text-gray-500">
+                  Your database doesn't contain products matching
+                  this search or category.
+                </p>
+              </div>
+            ) : (
+              <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
 
-                {/* INFO */}
-                <div className="p-4">
+                {filteredProducts.map((product) => (
+                  <article
+                    key={product.id}
+                    className="overflow-hidden rounded-2xl border bg-white transition hover:-translate-y-1 hover:shadow-lg"
+                  >
 
-                  <p className="text-xs font-bold uppercase text-[#A67C00]">
-                    {product.category}
-                  </p>
+                    {/* IMAGE */}
+                    <Link href={`/product/${product.id}`}>
+                      <div className="relative h-48 bg-gray-100">
 
-                  <Link href={`/product/${product.id}`}>
-                    <h3 className="mt-1 font-bold hover:text-[#A67C00]">
-                      {product.name}
-                    </h3>
-                  </Link>
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 50vw, 25vw"
+                        />
 
-                  <p className="mt-1 line-clamp-2 text-sm text-gray-500">
-                    {product.description}
-                  </p>
+                      </div>
+                    </Link>
 
-                  <div className="mt-3 flex items-center justify-between">
+                    {/* INFO */}
+                    <div className="p-4">
 
-                    <span className="font-black text-[#A67C00]">
-                      {product.price}
-                    </span>
+                      <p className="text-xs font-bold uppercase text-[#A67C00]">
+                        {product.category}
+                      </p>
 
-                    <span className="text-sm">
-                      ⭐ {product.rating}
-                    </span>
+                      <Link href={`/product/${product.id}`}>
+                        <h3 className="mt-1 font-bold hover:text-[#A67C00]">
+                          {product.name}
+                        </h3>
+                      </Link>
 
-                  </div>
+                      <p className="mt-1 line-clamp-2 text-sm text-gray-500">
+                        {product.description}
+                      </p>
 
-                  <AddToCartButton
-                    product={{
-                      id: product.id,
-                      name: product.name,
-                      price: product.price,
-                      image: product.image,
-                    }}
-                  />
+                      <div className="mt-3 flex items-center justify-between">
 
-                </div>
-              </article>
-            ))}
+                        <span className="font-black text-[#A67C00]">
+                          ${product.price.toFixed(2)}
+                        </span>
 
-          </div>
+                        <span className="text-sm">
+                          ⭐ {product.rating}
+                        </span>
+
+                      </div>
+
+                      <AddToCartButton
+                        product={{
+                          id: product.id,
+                          name: product.name,
+                          price: `$${product.price.toFixed(2)}`,
+                          image: product.image,
+                        }}
+                      />
+
+                    </div>
+                  </article>
+                ))}
+
+              </div>
+            )}
+          </>
         )}
 
       </div>
     </main>
   );
-}
+        }
