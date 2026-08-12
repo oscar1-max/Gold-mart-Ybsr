@@ -3,19 +3,38 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+type User = {
+  id?: number;
+  name?: string;
+  email?: string;
+  role?: string;
+};
+
 export default function Navbar() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("goldmart_user");
+    function loadUser() {
+      const savedUser = localStorage.getItem("goldmart_user");
 
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch {
+      if (savedUser) {
+        try {
+          setUser(JSON.parse(savedUser));
+        } catch {
+          setUser(null);
+        }
+      } else {
         setUser(null);
       }
     }
+
+    loadUser();
+
+    window.addEventListener("storage", loadUser);
+
+    return () => {
+      window.removeEventListener("storage", loadUser);
+    };
   }, []);
 
   return (
@@ -54,13 +73,23 @@ export default function Navbar() {
             Categories
           </Link>
 
+          {/* Seller / Buyer Switch */}
           {user?.role === "seller" ? (
-            <Link
-              href="/seller"
-              className="font-bold text-yellow-600 hover:text-black"
-            >
-              Seller Dashboard
-            </Link>
+            <>
+              <Link
+                href="/"
+                className="font-bold text-yellow-600 hover:text-black"
+              >
+                🛍️ Buyer Store
+              </Link>
+
+              <Link
+                href="/seller"
+                className="font-bold text-yellow-600 hover:text-black"
+              >
+                🏪 Seller Dashboard
+              </Link>
+            </>
           ) : (
             <Link
               href="/become-seller"
