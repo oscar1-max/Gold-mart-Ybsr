@@ -1,34 +1,68 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const API_URL = "https://goldmart-backend-yoxc.onrender.com";
 
-const categories = [
-  "Phones",
-  "Electronics",
-  "Gaming",
-  "Fashion",
-  "Beauty & Cosmetics",
-  "Groceries",
-  "Home & Kitchen",
-];
+type Category = {
+  id: number;
+  name: string;
+  slug: string;
+};
 
 export default function NewProductPage() {
   const router = useRouter();
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("Electronics");
+  const [categoryId, setCategoryId] = useState("");
   const [description, setDescription] = useState("");
   const [stock, setStock] = useState("1");
   const [imageUrl, setImageUrl] = useState("");
 
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  // Load real categories from GoldMart backend
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const response = await fetch(
+          `${API_URL}/api/categories`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.message || "Failed to load categories"
+          );
+        }
+
+        setCategories(data.categories);
+
+        if (data.categories.length > 0) {
+          setCategoryId(String(data.categories[0].id));
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Failed to load categories"
+        );
+      } finally {
+        setLoadingCategories(false);
+      }
+    }
+
+    loadCategories();
+  }, []);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -70,8 +104,17 @@ export default function NewProductPage() {
       return;
     }
 
-    if (!stock || !Number.isInteger(Number(stock)) || Number(stock) < 0) {
+    if (
+      !stock ||
+      !Number.isInteger(Number(stock)) ||
+      Number(stock) < 0
+    ) {
       setError("Stock must be a whole number.");
+      return;
+    }
+
+    if (!categoryId) {
+      setError("Please select a category.");
       return;
     }
 
@@ -91,7 +134,7 @@ export default function NewProductPage() {
             description: description.trim(),
             price: Number(price),
             image_url: imageUrl.trim() || null,
-            category_id: null,
+            category_id: Number(categoryId),
             stock: Number(stock),
           }),
         }
@@ -254,23 +297,32 @@ export default function NewProductPage() {
               </label>
 
               <select
-                value={category}
+                value={categoryId}
                 onChange={(event) =>
-                  setCategory(event.target.value)
+                  setCategoryId(event.target.value)
                 }
-                className="w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
+                disabled={loadingCategories}
+                className="w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37] disabled:bg-gray-100"
               >
-                {categories.map((item) => (
-                  <option key={item}>
-                    {item}
+                {loadingCategories ? (
+                  <option>
+                    Loading categories...
                   </option>
-                ))}
+                ) : categories.length === 0 ? (
+                  <option>
+                    No categories available
+                  </option>
+                ) : (
+                  categories.map((category) => (
+                    <option
+                      key={category.id}
+                      value={category.id}
+                    >
+                      {category.name}
+                    </option>
+                  ))
+                )}
               </select>
-
-              <p className="mt-2 text-xs text-gray-400">
-                Category linking will be connected to the
-                database categories next.
-              </p>
             </div>
 
             {/* DESCRIPTION */}
@@ -308,14 +360,14 @@ export default function NewProductPage() {
               />
 
               <p className="mt-2 text-xs text-gray-400">
-                We'll add proper image uploading later.
+                Real image uploading will be added next.
               </p>
             </div>
 
             {/* SUBMIT */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || loadingCategories}
               className="w-full rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading
