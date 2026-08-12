@@ -6,145 +6,73 @@ import { useRouter } from "next/navigation";
 
 const API_URL = "https://goldmart-backend-yoxc.onrender.com";
 
-export default function NewProductPage() {
+type Product = {
+  id: number;
+  name: string;
+  description: string | null;
+  price: string | number;
+  image_url: string | null;
+  category_name: string | null;
+  stock: number;
+  created_at: string;
+};
+
+export default function SellerProductsPage() {
   const router = useRouter();
 
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [stock, setStock] = useState("1");
-  const [imageUrl, setImageUrl] = useState("");
-
-  const [categories, setCategories] = useState<
-    { id: number; name: string }[]
-  >([]);
-
-  const [categoryId, setCategoryId] = useState("");
-
-  const [loading, setLoading] = useState(false);
-  const [loadingCategories, setLoadingCategories] =
-    useState(true);
-
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
-  // Load categories from backend
   useEffect(() => {
-    async function loadCategories() {
+    async function loadProducts() {
+      const token = localStorage.getItem("goldmart_token");
+      const savedUser = localStorage.getItem("goldmart_user");
+
+      if (!token || !savedUser) {
+        router.push("/login");
+        return;
+      }
+
       try {
+        const user = JSON.parse(savedUser);
+
+        if (user.role !== "seller" && user.role !== "admin") {
+          router.push("/");
+          return;
+        }
+
         const response = await fetch(
-          `${API_URL}/api/categories`
+          `${API_URL}/api/seller/products`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         const data = await response.json();
 
-        if (data.success) {
-          setCategories(data.categories);
-
-          if (data.categories.length > 0) {
-            setCategoryId(String(data.categories[0].id));
-          }
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.message || "Failed to load products."
+          );
         }
-      } catch {
-        setError("Could not load product categories.");
-      } finally {
-        setLoadingCategories(false);
-      }
-    }
 
-    loadCategories();
-  }, []);
-
-  async function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>
-  ) {
-    event.preventDefault();
-
-    setError("");
-    setSuccess("");
-
-    const token = localStorage.getItem("goldmart_token");
-    const savedUser = localStorage.getItem("goldmart_user");
-
-    if (!token || !savedUser) {
-      router.push("/login");
-      return;
-    }
-
-    let user;
-
-    try {
-      user = JSON.parse(savedUser);
-    } catch {
-      localStorage.removeItem("goldmart_token");
-      localStorage.removeItem("goldmart_user");
-      router.push("/login");
-      return;
-    }
-
-    if (user.role !== "seller" && user.role !== "admin") {
-      setError(
-        "You must have a seller account to add products."
-      );
-      return;
-    }
-
-    if (!categoryId) {
-      setError("Please select a category.");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const response = await fetch(
-        `${API_URL}/api/seller/products`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name: name.trim(),
-            description: description.trim(),
-            price: Number(price),
-            image_url: imageUrl.trim() || null,
-            category_id: Number(categoryId),
-            stock: Number(stock),
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(
-          data.message || "Failed to add product."
+        setProducts(data.products || []);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Failed to load products."
         );
+      } finally {
+        setLoading(false);
       }
-
-      setSuccess("✅ Product added successfully!");
-
-      setName("");
-      setPrice("");
-      setDescription("");
-      setStock("1");
-      setImageUrl("");
-
-      setTimeout(() => {
-        router.push("/seller/products");
-      }, 1000);
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to connect to GoldMart."
-      );
-    } finally {
-      setLoading(false);
     }
-  }
+
+    loadProducts();
+  }, [router]);
 
   return (
     <main className="min-h-screen bg-gray-50 text-black">
@@ -171,9 +99,9 @@ export default function NewProductPage() {
       </header>
 
       {/* CONTENT */}
-      <div className="mx-auto max-w-2xl px-4 py-10">
+      <div className="mx-auto max-w-7xl px-4 py-10">
 
-        {/* BACK BUTTON */}
+        {/* BACK */}
         <Link
           href="/seller"
           className="font-bold text-[#A67C00]"
@@ -181,179 +109,149 @@ export default function NewProductPage() {
           ← Back to Seller Dashboard
         </Link>
 
-        <div className="mt-6 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
+        {/* TITLE */}
+        <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-          <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
-            Seller Center
-          </p>
+          <div>
+            <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+              Seller Center
+            </p>
 
-          <h1 className="mt-2 text-3xl font-black">
-            Add New Product
-          </h1>
+            <h1 className="mt-1 text-3xl font-black sm:text-4xl">
+              My Products
+            </h1>
 
-          <p className="mt-2 text-gray-500">
-            Add a real product to your GoldMart store.
-          </p>
+            <p className="mt-2 text-gray-500">
+              Products you have added to GoldMart.
+            </p>
+          </div>
 
-          {/* ERROR */}
-          {error && (
-            <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
-              {error}
-            </div>
-          )}
-
-          {/* SUCCESS */}
-          {success && (
-            <div className="mt-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm font-medium text-green-700">
-              {success}
-            </div>
-          )}
-
-          <form
-            onSubmit={handleSubmit}
-            className="mt-8 space-y-6"
+          <Link
+            href="/seller/products/new"
+            className="rounded-xl bg-black px-5 py-3 text-center text-sm font-bold text-white hover:bg-[#D4AF37] hover:text-black"
           >
-
-            {/* NAME */}
-            <div>
-              <label className="mb-2 block text-sm font-bold">
-                Product Name
-              </label>
-
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Wireless Headphones"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-              />
-            </div>
-
-            {/* PRICE */}
-            <div>
-              <label className="mb-2 block text-sm font-bold">
-                Price (₦)
-              </label>
-
-              <input
-                type="number"
-                required
-                min="0"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                placeholder="50000"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-              />
-            </div>
-
-            {/* STOCK */}
-            <div>
-              <label className="mb-2 block text-sm font-bold">
-                Stock Quantity
-              </label>
-
-              <input
-                type="number"
-                required
-                min="0"
-                step="1"
-                value={stock}
-                onChange={(e) => setStock(e.target.value)}
-                placeholder="10"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-              />
-            </div>
-
-            {/* CATEGORY */}
-            <div>
-              <label className="mb-2 block text-sm font-bold">
-                Category
-              </label>
-
-              <select
-                required
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-                disabled={loadingCategories}
-                className="w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
-              >
-                {loadingCategories ? (
-                  <option>
-                    Loading categories...
-                  </option>
-                ) : (
-                  categories.map((category) => (
-                    <option
-                      key={category.id}
-                      value={category.id}
-                    >
-                      {category.name}
-                    </option>
-                  ))
-                )}
-              </select>
-            </div>
-
-            {/* DESCRIPTION */}
-            <div>
-              <label className="mb-2 block text-sm font-bold">
-                Description
-              </label>
-
-              <textarea
-                required
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe your product..."
-                rows={5}
-                className="w-full resize-none rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-              />
-            </div>
-
-            {/* IMAGE */}
-            <div>
-              <label className="mb-2 block text-sm font-bold">
-                Product Image
-              </label>
-
-              <input
-                type="url"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                placeholder="Paste product image URL"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-              />
-
-              <p className="mt-2 text-xs text-gray-400">
-                For now, paste a direct image URL. We will
-                add real image uploading after the product
-                system is working.
-              </p>
-
-              {imageUrl && (
-                <img
-                  src={imageUrl}
-                  alt="Product preview"
-                  className="mt-4 h-48 w-full rounded-xl object-cover"
-                />
-              )}
-            </div>
-
-            {/* SUBMIT */}
-            <button
-              type="submit"
-              disabled={loading || loadingCategories}
-              className="w-full rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {loading
-                ? "Adding Product..."
-                : "Add Product"}
-            </button>
-
-          </form>
+            + Add Product
+          </Link>
 
         </div>
+
+        {/* ERROR */}
+        {error && (
+          <div className="mt-8 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
+            {error}
+          </div>
+        )}
+
+        {/* LOADING */}
+        {loading && (
+          <div className="mt-8 rounded-2xl bg-white p-8 text-center shadow-sm">
+            <p className="font-bold">
+              Loading your products...
+            </p>
+          </div>
+        )}
+
+        {/* EMPTY */}
+        {!loading && !error && products.length === 0 && (
+          <div className="mt-8 rounded-3xl bg-white p-10 text-center shadow-sm">
+
+            <div className="text-5xl">
+              📦
+            </div>
+
+            <h2 className="mt-4 text-2xl font-black">
+              No products yet
+            </h2>
+
+            <p className="mt-2 text-gray-500">
+              You haven't added any products to your store.
+            </p>
+
+            <Link
+              href="/seller/products/new"
+              className="mt-6 inline-block rounded-xl bg-black px-6 py-3 font-bold text-white"
+            >
+              Add Your First Product
+            </Link>
+
+          </div>
+        )}
+
+        {/* PRODUCTS */}
+        {!loading && products.length > 0 && (
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="overflow-hidden rounded-3xl border bg-white shadow-sm"
+              >
+
+                {/* IMAGE */}
+                <div className="h-56 bg-gray-100">
+
+                  {product.image_url ? (
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-5xl">
+                      📦
+                    </div>
+                  )}
+
+                </div>
+
+                {/* DETAILS */}
+                <div className="p-5">
+
+                  <p className="text-xs font-bold uppercase tracking-wider text-[#A67C00]">
+                    {product.category_name || "Uncategorized"}
+                  </p>
+
+                  <h2 className="mt-2 text-xl font-black">
+                    {product.name}
+                  </h2>
+
+                  <p className="mt-2 line-clamp-2 text-sm text-gray-500">
+                    {product.description || "No description"}
+                  </p>
+
+                  <div className="mt-5 flex items-center justify-between">
+
+                    <div>
+                      <p className="text-xs font-bold uppercase text-gray-400">
+                        Price
+                      </p>
+
+                      <p className="font-black text-[#A67C00]">
+                        ₦
+                        {Number(product.price).toLocaleString()}
+                      </p>
+                    </div>
+
+                    <div className="text-right">
+                      <p className="text-xs font-bold uppercase text-gray-400">
+                        Stock
+                      </p>
+
+                      <p className="font-black">
+                        {product.stock}
+                      </p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+            ))}
+
+          </div>
+        )}
+
       </div>
     </main>
   );
