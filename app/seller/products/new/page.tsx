@@ -6,30 +6,29 @@ import { useRouter } from "next/navigation";
 
 const API_URL = "https://goldmart-backend-yoxc.onrender.com";
 
-type Category = {
-  id: number;
-  name: string;
-  slug: string;
-};
-
 export default function NewProductPage() {
   const router = useRouter();
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [categoryId, setCategoryId] = useState("");
   const [description, setDescription] = useState("");
   const [stock, setStock] = useState("1");
   const [imageUrl, setImageUrl] = useState("");
 
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [categories, setCategories] = useState<
+    { id: number; name: string }[]
+  >([]);
+
+  const [categoryId, setCategoryId] = useState("");
+
   const [loading, setLoading] = useState(false);
+  const [loadingCategories, setLoadingCategories] =
+    useState(true);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Load real categories from GoldMart backend
+  // Load categories from backend
   useEffect(() => {
     async function loadCategories() {
       try {
@@ -39,23 +38,15 @@ export default function NewProductPage() {
 
         const data = await response.json();
 
-        if (!response.ok || !data.success) {
-          throw new Error(
-            data.message || "Failed to load categories"
-          );
-        }
+        if (data.success) {
+          setCategories(data.categories);
 
-        setCategories(data.categories);
-
-        if (data.categories.length > 0) {
-          setCategoryId(String(data.categories[0].id));
+          if (data.categories.length > 0) {
+            setCategoryId(String(data.categories[0].id));
+          }
         }
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Failed to load categories"
-        );
+      } catch {
+        setError("Could not load product categories.");
       } finally {
         setLoadingCategories(false);
       }
@@ -64,7 +55,9 @@ export default function NewProductPage() {
     loadCategories();
   }, []);
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
     setError("");
@@ -90,26 +83,9 @@ export default function NewProductPage() {
     }
 
     if (user.role !== "seller" && user.role !== "admin") {
-      setError("You must be a seller to add products.");
-      return;
-    }
-
-    if (!name.trim()) {
-      setError("Please enter a product name.");
-      return;
-    }
-
-    if (!price || Number(price) < 0) {
-      setError("Please enter a valid price.");
-      return;
-    }
-
-    if (
-      !stock ||
-      !Number.isInteger(Number(stock)) ||
-      Number(stock) < 0
-    ) {
-      setError("Stock must be a whole number.");
+      setError(
+        "You must have a seller account to add products."
+      );
       return;
     }
 
@@ -144,11 +120,11 @@ export default function NewProductPage() {
 
       if (!response.ok || !data.success) {
         throw new Error(
-          data.message || "Failed to create product."
+          data.message || "Failed to add product."
         );
       }
 
-      setSuccess("Product added successfully!");
+      setSuccess("✅ Product added successfully!");
 
       setName("");
       setPrice("");
@@ -158,7 +134,7 @@ export default function NewProductPage() {
 
       setTimeout(() => {
         router.push("/seller/products");
-      }, 1200);
+      }, 1000);
     } catch (err) {
       setError(
         err instanceof Error
@@ -173,6 +149,7 @@ export default function NewProductPage() {
   return (
     <main className="min-h-screen bg-gray-50 text-black">
 
+      {/* HEADER */}
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
 
@@ -185,7 +162,7 @@ export default function NewProductPage() {
 
           <Link
             href="/seller"
-            className="rounded-full border px-5 py-2 text-sm font-bold"
+            className="rounded-full border px-5 py-2 text-sm font-bold hover:bg-gray-100"
           >
             Seller Dashboard
           </Link>
@@ -193,13 +170,15 @@ export default function NewProductPage() {
         </div>
       </header>
 
+      {/* CONTENT */}
       <div className="mx-auto max-w-2xl px-4 py-10">
 
+        {/* BACK BUTTON */}
         <Link
           href="/seller"
-          className="text-sm font-bold text-[#A67C00]"
+          className="font-bold text-[#A67C00]"
         >
-          ← Back to Dashboard
+          ← Back to Seller Dashboard
         </Link>
 
         <div className="mt-6 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
@@ -216,12 +195,14 @@ export default function NewProductPage() {
             Add a real product to your GoldMart store.
           </p>
 
+          {/* ERROR */}
           {error && (
             <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
               {error}
             </div>
           )}
 
+          {/* SUCCESS */}
           {success && (
             <div className="mt-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm font-medium text-green-700">
               {success}
@@ -233,7 +214,7 @@ export default function NewProductPage() {
             className="mt-8 space-y-6"
           >
 
-            {/* PRODUCT NAME */}
+            {/* NAME */}
             <div>
               <label className="mb-2 block text-sm font-bold">
                 Product Name
@@ -243,10 +224,8 @@ export default function NewProductPage() {
                 type="text"
                 required
                 value={name}
-                onChange={(event) =>
-                  setName(event.target.value)
-                }
-                placeholder="Example: Wireless Headphones"
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Wireless Headphones"
                 className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
             </div>
@@ -262,9 +241,7 @@ export default function NewProductPage() {
                 required
                 min="0"
                 value={price}
-                onChange={(event) =>
-                  setPrice(event.target.value)
-                }
+                onChange={(e) => setPrice(e.target.value)}
                 placeholder="50000"
                 className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
@@ -282,9 +259,7 @@ export default function NewProductPage() {
                 min="0"
                 step="1"
                 value={stock}
-                onChange={(event) =>
-                  setStock(event.target.value)
-                }
+                onChange={(e) => setStock(e.target.value)}
                 placeholder="10"
                 className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
@@ -297,20 +272,15 @@ export default function NewProductPage() {
               </label>
 
               <select
+                required
                 value={categoryId}
-                onChange={(event) =>
-                  setCategoryId(event.target.value)
-                }
+                onChange={(e) => setCategoryId(e.target.value)}
                 disabled={loadingCategories}
-                className="w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37] disabled:bg-gray-100"
+                className="w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
               >
                 {loadingCategories ? (
                   <option>
                     Loading categories...
-                  </option>
-                ) : categories.length === 0 ? (
-                  <option>
-                    No categories available
                   </option>
                 ) : (
                   categories.map((category) => (
@@ -334,34 +304,40 @@ export default function NewProductPage() {
               <textarea
                 required
                 value={description}
-                onChange={(event) =>
-                  setDescription(event.target.value)
-                }
+                onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe your product..."
                 rows={5}
                 className="w-full resize-none rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
             </div>
 
-            {/* IMAGE URL */}
+            {/* IMAGE */}
             <div>
               <label className="mb-2 block text-sm font-bold">
-                Product Image URL
+                Product Image
               </label>
 
               <input
                 type="url"
                 value={imageUrl}
-                onChange={(event) =>
-                  setImageUrl(event.target.value)
-                }
-                placeholder="https://example.com/product.jpg"
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="Paste product image URL"
                 className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
 
               <p className="mt-2 text-xs text-gray-400">
-                Real image uploading will be added next.
+                For now, paste a direct image URL. We will
+                add real image uploading after the product
+                system is working.
               </p>
+
+              {imageUrl && (
+                <img
+                  src={imageUrl}
+                  alt="Product preview"
+                  className="mt-4 h-48 w-full rounded-xl object-cover"
+                />
+              )}
             </div>
 
             {/* SUBMIT */}
