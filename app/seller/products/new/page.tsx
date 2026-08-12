@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const API_URL = "https://goldmart-backend-yoxc.onrender.com";
+
+const CLOUDINARY_CLOUD_NAME = "nahkdmgc";
+const CLOUDINARY_UPLOAD_PRESET = "goldmart_products";
 
 type Category = {
   id: number;
@@ -24,7 +27,9 @@ export default function NewProductPage() {
   const [stock, setStock] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -56,7 +61,76 @@ export default function NewProductPage() {
     loadCategories();
   }, []);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  // Upload image to Cloudinary
+  async function handleImageUpload(
+    event: ChangeEvent<HTMLInputElement>
+  ) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setError("");
+    setSuccess("");
+
+    // Basic validation
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file.");
+      event.target.value = "";
+      return;
+    }
+
+    // 10 MB maximum
+    if (file.size > 10 * 1024 * 1024) {
+      setError("Image must be smaller than 10MB.");
+      event.target.value = "";
+      return;
+    }
+
+    try {
+      setUploadingImage(true);
+
+      const formData = new FormData();
+
+      formData.append("file", file);
+      formData.append(
+        "upload_preset",
+        CLOUDINARY_UPLOAD_PRESET
+      );
+
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.secure_url) {
+        throw new Error(
+          data.error?.message ||
+            "Failed to upload image to Cloudinary."
+        );
+      }
+
+      setImageUrl(data.secure_url);
+      setSuccess("Image uploaded successfully!");
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to upload image."
+      );
+    } finally {
+      setUploadingImage(false);
+      event.target.value = "";
+    }
+  }
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
     setError("");
@@ -223,7 +297,9 @@ export default function NewProductPage() {
             <input
               type="text"
               value={name}
-              onChange={(event) => setName(event.target.value)}
+              onChange={(event) =>
+                setName(event.target.value)
+              }
               placeholder="e.g. Wireless Bluetooth Headphones"
               className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               required
@@ -324,40 +400,69 @@ export default function NewProductPage() {
 
           </div>
 
-          {/* IMAGE URL */}
+          {/* PRODUCT IMAGE */}
           <div className="mt-6">
 
             <label className="text-sm font-bold">
-              Product Image URL
+              Product Image
             </label>
 
-            <input
-              type="url"
-              value={imageUrl}
-              onChange={(event) =>
-                setImageUrl(event.target.value)
-              }
-              placeholder="https://example.com/product-image.jpg"
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-            />
+            <div className="mt-2 rounded-2xl border-2 border-dashed border-gray-300 p-6 text-center">
 
-            <p className="mt-2 text-xs text-gray-500">
-              Paste a public image URL for your product.
-            </p>
+              <input
+                id="product-image"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                disabled={uploadingImage || loading}
+                className="hidden"
+              />
+
+              <label
+                htmlFor="product-image"
+                className={`inline-flex cursor-pointer items-center justify-center rounded-xl px-6 py-3 font-bold transition ${
+                  uploadingImage
+                    ? "cursor-not-allowed bg-gray-200 text-gray-500"
+                    : "bg-black text-white hover:bg-[#D4AF37] hover:text-black"
+                }`}
+              >
+                {uploadingImage
+                  ? "Uploading Image..."
+                  : imageUrl
+                  ? "Choose Another Image"
+                  : "Upload Image"}
+              </label>
+
+              <p className="mt-3 text-sm text-gray-500">
+                Choose a product image from your gallery.
+              </p>
+
+              <p className="mt-1 text-xs text-gray-400">
+                JPG, PNG, WEBP • Maximum 10MB
+              </p>
+
+            </div>
 
           </div>
 
           {/* IMAGE PREVIEW */}
           {imageUrl && (
-            <div className="mt-6 overflow-hidden rounded-2xl border bg-gray-100">
-              <img
-                src={imageUrl}
-                alt="Product preview"
-                className="h-64 w-full object-cover"
-                onError={(event) => {
-                  event.currentTarget.style.display = "none";
-                }}
-              />
+            <div className="mt-6">
+
+              <p className="mb-2 text-sm font-bold">
+                Image Preview
+              </p>
+
+              <div className="relative overflow-hidden rounded-2xl border bg-gray-100">
+
+                <img
+                  src={imageUrl}
+                  alt="Product preview"
+                  className="h-64 w-full object-cover"
+                />
+
+              </div>
+
             </div>
           )}
 
@@ -373,7 +478,7 @@ export default function NewProductPage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || uploadingImage}
               className="flex-1 rounded-xl bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading
