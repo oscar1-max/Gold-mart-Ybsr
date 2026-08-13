@@ -2,32 +2,32 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 const API_URL = "https://goldmart-backend-yoxc.onrender.com";
 
 type Product = {
   id: number;
   name: string;
-  price: number;
-  stock: number;
+  description?: string;
+  price: string | number;
   image_url?: string | null;
+  category_name?: string | null;
+  stock: number;
 };
 
-export default function SellerDashboard() {
-  const router = useRouter();
-
+export default function SellerProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function loadSellerProducts() {
+    async function loadProducts() {
       try {
         const token = localStorage.getItem("goldmart_token");
 
         if (!token) {
-          router.push("/login");
+          setError("Please sign in to access your seller products.");
+          setLoading(false);
           return;
         }
 
@@ -44,7 +44,7 @@ export default function SellerDashboard() {
 
         if (!response.ok || !data.success) {
           throw new Error(
-            data.message || "Failed to load seller products."
+            data.message || "Failed to load products."
           );
         }
 
@@ -53,17 +53,15 @@ export default function SellerDashboard() {
         setError(
           err instanceof Error
             ? err.message
-            : "Failed to load seller products."
+            : "Unable to load products."
         );
       } finally {
         setLoading(false);
       }
     }
 
-    loadSellerProducts();
-  }, [router]);
-
-  const productCount = products.length;
+    loadProducts();
+  }, []);
 
   return (
     <main className="min-h-screen bg-gray-50 text-black">
@@ -81,10 +79,16 @@ export default function SellerDashboard() {
 
           <div className="flex items-center gap-3">
 
-            {/* BUYER STORE */}
+            <Link
+              href="/seller"
+              className="rounded-full border px-5 py-2 text-sm font-bold hover:bg-gray-100"
+            >
+              Dashboard
+            </Link>
+
             <Link
               href="/"
-              className="rounded-full border px-5 py-2 text-sm font-bold transition hover:bg-gray-100"
+              className="rounded-full bg-black px-5 py-2 text-sm font-bold text-white hover:bg-[#D4AF37] hover:text-black"
             >
               🛍️ Buyer Store
             </Link>
@@ -98,289 +102,254 @@ export default function SellerDashboard() {
       <div className="mx-auto max-w-7xl px-4 py-10">
 
         {/* TITLE */}
-        <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
-            Seller Center
-          </p>
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
 
-          <h1 className="mt-1 text-3xl font-black sm:text-4xl">
-            Seller Dashboard
-          </h1>
+          <div>
 
-          <p className="mt-3 text-gray-500">
-            Manage your GoldMart store, products and orders.
-          </p>
+            <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+              Seller Center
+            </p>
+
+            <h1 className="mt-1 text-3xl font-black sm:text-4xl">
+              My Products
+            </h1>
+
+            <p className="mt-2 text-gray-500">
+              Manage the products in your GoldMart store.
+            </p>
+
+          </div>
+
+          <Link
+            href="/seller/products/new"
+            className="rounded-full bg-black px-6 py-3 text-center font-bold text-white hover:bg-[#D4AF37] hover:text-black"
+          >
+            + Add Product
+          </Link>
+
         </div>
 
         {/* ERROR */}
         {error && (
-          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
-            {error}
+          <div className="mt-8 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-700">
+
+            <p className="font-bold">
+              Something went wrong
+            </p>
+
+            <p className="mt-1 text-sm">
+              {error}
+            </p>
+
           </div>
         )}
 
-        {/* STATS */}
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* LOADING */}
+        {loading && (
+          <div className="mt-8 rounded-2xl border bg-white p-10 text-center">
 
-          {/* PRODUCTS */}
-          <div className="rounded-2xl border bg-white p-6">
-
-            <div className="text-3xl">
+            <div className="text-4xl">
               📦
             </div>
 
-            <p className="mt-4 text-sm text-gray-500">
-              Products
+            <p className="mt-4 font-bold">
+              Loading your products...
             </p>
 
-            <h2 className="mt-1 text-3xl font-black">
-              {loading ? "..." : productCount}
-            </h2>
-
           </div>
+        )}
 
-          {/* ORDERS */}
-          <div className="rounded-2xl border bg-white p-6">
+        {/* EMPTY */}
+        {!loading && !error && products.length === 0 && (
+          <div className="mt-8 rounded-2xl border bg-white p-10 text-center">
 
-            <div className="text-3xl">
-              🛍️
+            <div className="text-5xl">
+              📦
             </div>
 
-            <p className="mt-4 text-sm text-gray-500">
-              Orders
-            </p>
-
-            <h2 className="mt-1 text-3xl font-black">
-              0
+            <h2 className="mt-4 text-2xl font-black">
+              No products yet
             </h2>
 
-          </div>
-
-          {/* SALES */}
-          <div className="rounded-2xl border bg-white p-6">
-
-            <div className="text-3xl">
-              💰
-            </div>
-
-            <p className="mt-4 text-sm text-gray-500">
-              Sales
+            <p className="mt-2 text-gray-500">
+              Add your first product to start selling on GoldMart.
             </p>
 
-            <h2 className="mt-1 text-3xl font-black">
-              ₦0
-            </h2>
-
-          </div>
-
-          {/* RATING */}
-          <div className="rounded-2xl border bg-white p-6">
-
-            <div className="text-3xl">
-              ⭐
-            </div>
-
-            <p className="mt-4 text-sm text-gray-500">
-              Rating
-            </p>
-
-            <h2 className="mt-1 text-3xl font-black">
-              —
-            </h2>
-
-          </div>
-
-        </div>
-
-        {/* ACTIONS */}
-        <section className="mt-8">
-
-          <h2 className="text-2xl font-black">
-            Store Management
-          </h2>
-
-          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-
-            {/* PRODUCTS */}
-            <Link
-              href="/seller/products"
-              className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
-            >
-
-              <div className="text-4xl">
-                📦
-              </div>
-
-              <h3 className="mt-4 text-lg font-black">
-                My Products
-              </h3>
-
-              <p className="mt-2 text-sm text-gray-500">
-                View and manage products in your store.
-              </p>
-
-            </Link>
-
-            {/* ADD PRODUCT */}
             <Link
               href="/seller/products/new"
-              className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
+              className="mt-6 inline-block rounded-full bg-black px-6 py-3 font-bold text-white hover:bg-[#D4AF37] hover:text-black"
             >
-
-              <div className="text-4xl">
-                ➕
-              </div>
-
-              <h3 className="mt-4 text-lg font-black">
-                Add Product
-              </h3>
-
-              <p className="mt-2 text-sm text-gray-500">
-                Add a new product to your GoldMart store.
-              </p>
-
-            </Link>
-
-            {/* ORDERS */}
-            <Link
-              href="/seller/orders"
-              className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
-            >
-
-              <div className="text-4xl">
-                🚚
-              </div>
-
-              <h3 className="mt-4 text-lg font-black">
-                Orders
-              </h3>
-
-              <p className="mt-2 text-sm text-gray-500">
-                View and manage customer orders.
-              </p>
-
+              Add Your First Product
             </Link>
 
           </div>
+        )}
 
-        </section>
+        {/* PRODUCTS */}
+        {!loading && !error && products.length > 0 && (
+          <div className="mt-8 overflow-hidden rounded-2xl border bg-white">
 
-        {/* CURRENT PRODUCTS */}
-        <section className="mt-8">
+            {/* TABLE HEADER */}
+            <div className="hidden grid-cols-6 gap-4 border-b bg-gray-50 p-5 text-sm font-bold lg:grid">
 
-          <div className="flex items-center justify-between">
+              <span>
+                Product
+              </span>
 
-            <h2 className="text-2xl font-black">
-              Your Products
-            </h2>
+              <span>
+                Category
+              </span>
 
-            <Link
-              href="/seller/products"
-              className="font-bold text-[#A67C00] hover:text-black"
-            >
-              View All →
-            </Link>
+              <span>
+                Price
+              </span>
 
-          </div>
+              <span>
+                Stock
+              </span>
 
-          {loading ? (
-            <div className="mt-5 rounded-2xl border bg-white p-8 text-center text-gray-500">
-              Loading your products...
+              <span>
+                Status
+              </span>
+
+              <span>
+                Action
+              </span>
+
             </div>
-          ) : products.length === 0 ? (
-            <div className="mt-5 rounded-2xl border bg-white p-8 text-center">
 
-              <div className="text-5xl">
-                📦
-              </div>
+            {/* PRODUCT ROWS */}
+            {products.map((product) => (
 
-              <h3 className="mt-4 text-xl font-black">
-                No products yet
-              </h3>
-
-              <p className="mt-2 text-gray-500">
-                Add your first product to start selling.
-              </p>
-
-              <Link
-                href="/seller/products/new"
-                className="mt-5 inline-block rounded-full bg-black px-6 py-3 font-bold text-white hover:bg-[#D4AF37] hover:text-black"
+              <div
+                key={product.id}
+                className="grid gap-5 border-b p-5 last:border-b-0 lg:grid-cols-6 lg:items-center"
               >
-                Add Product
-              </Link>
 
-            </div>
-          ) : (
-            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {/* PRODUCT */}
+                <div>
 
-              {products.slice(0, 4).map((product) => (
-                <div
-                  key={product.id}
-                  className="overflow-hidden rounded-2xl border bg-white"
-                >
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Product
+                  </p>
 
-                  {product.image_url ? (
-                    <img
-                      src={product.image_url}
-                      alt={product.name}
-                      className="h-48 w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-48 items-center justify-center bg-gray-100 text-5xl">
-                      📦
+                  <div className="flex items-center gap-3">
+
+                    {product.image_url ? (
+                      <img
+                        src={product.image_url}
+                        alt={product.name}
+                        className="h-16 w-16 rounded-xl object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gray-100 text-2xl">
+                        📦
+                      </div>
+                    )}
+
+                    <div className="min-w-0">
+
+                      <p className="font-bold">
+                        {product.name}
+                      </p>
+
+                      {product.description && (
+                        <p className="mt-1 line-clamp-1 text-xs text-gray-500">
+                          {product.description}
+                        </p>
+                      )}
+
                     </div>
-                  )}
-
-                  <div className="p-4">
-
-                    <h3 className="font-black">
-                      {product.name}
-                    </h3>
-
-                    <p className="mt-1 font-bold text-[#A67C00]">
-                      ₦{Number(product.price).toLocaleString()}
-                    </p>
-
-                    <p className="mt-1 text-sm text-gray-500">
-                      Stock: {product.stock}
-                    </p>
 
                   </div>
 
                 </div>
-              ))}
 
-            </div>
-          )}
+                {/* CATEGORY */}
+                <div>
 
-        </section>
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Category
+                  </p>
 
-        {/* SELLER NOTICE */}
-        <section className="mt-8 rounded-3xl bg-black p-8 text-white">
+                  <p className="text-sm text-gray-600">
+                    {product.category_name || "Uncategorized"}
+                  </p>
 
-          <p className="text-sm font-bold uppercase tracking-widest text-[#D4AF37]">
-            GoldMart Seller
-          </p>
+                </div>
 
-          <h2 className="mt-3 text-2xl font-black">
-            Build your store
-          </h2>
+                {/* PRICE */}
+                <div>
 
-          <p className="mt-3 max-w-2xl text-gray-400">
-            Add products, manage your inventory and prepare your
-            store for customers.
-          </p>
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Price
+                  </p>
 
-          <Link
-            href="/seller/products/new"
-            className="mt-6 inline-block rounded-full bg-[#D4AF37] px-7 py-3 font-bold text-black"
-          >
-            Add Product
-          </Link>
+                  <p className="font-black text-[#A67C00]">
+                    ${Number(product.price).toLocaleString()}
+                  </p>
 
-        </section>
+                </div>
+
+                {/* STOCK */}
+                <div>
+
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Stock
+                  </p>
+
+                  <p className="font-bold">
+                    {product.stock}
+                  </p>
+
+                </div>
+
+                {/* STATUS */}
+                <div>
+
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Status
+                  </p>
+
+                  <span
+                    className={`inline-block rounded-full px-3 py-1 text-xs font-bold ${
+                      product.stock > 0
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {product.stock > 0
+                      ? "Active"
+                      : "Out of Stock"}
+                  </span>
+
+                </div>
+
+                {/* ACTION */}
+                <div>
+
+                  <p className="text-xs font-bold uppercase text-gray-400 lg:hidden">
+                    Action
+                  </p>
+
+                  <Link
+                    href={`/seller/products/edit/${product.id}`}
+                    className="inline-block rounded-lg bg-black px-4 py-2 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+                  >
+                    Edit
+                  </Link>
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+        )}
 
       </div>
+
     </main>
   );
-      }
+}
