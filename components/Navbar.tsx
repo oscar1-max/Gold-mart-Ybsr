@@ -14,34 +14,37 @@ export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    function loadUser() {
+    const loadUser = () => {
       const savedUser = localStorage.getItem("goldmart_user");
 
-      if (savedUser) {
-        try {
-          setUser(JSON.parse(savedUser));
-        } catch {
-          setUser(null);
-        }
-      } else {
+      if (!savedUser) {
+        setUser(null);
+        return;
+      }
+
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
+      } catch {
         setUser(null);
       }
-    }
+    };
 
     loadUser();
 
-    window.addEventListener("storage", loadUser);
+    // Refresh user information when the page becomes active
+    window.addEventListener("focus", loadUser);
 
     return () => {
-      window.removeEventListener("storage", loadUser);
+      window.removeEventListener("focus", loadUser);
     };
   }, []);
 
   return (
     <nav className="sticky top-0 z-50 border-b bg-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
 
-        {/* Logo */}
+        {/* LOGO */}
         <Link
           href="/"
           className="text-3xl font-black text-yellow-600"
@@ -49,8 +52,8 @@ export default function Navbar() {
           GoldMart
         </Link>
 
-        {/* Navigation Links */}
-        <div className="hidden items-center gap-8 md:flex">
+        {/* NAVIGATION */}
+        <div className="hidden items-center gap-7 md:flex">
 
           <Link
             href="/"
@@ -73,23 +76,14 @@ export default function Navbar() {
             Categories
           </Link>
 
-          {/* Seller / Buyer Switch */}
+          {/* SELLER SWITCH */}
           {user?.role === "seller" ? (
-            <>
-              <Link
-                href="/"
-                className="font-bold text-yellow-600 hover:text-black"
-              >
-                🛍️ Buyer Store
-              </Link>
-
-              <Link
-                href="/seller"
-                className="font-bold text-yellow-600 hover:text-black"
-              >
-                🏪 Seller Dashboard
-              </Link>
-            </>
+            <Link
+              href="/seller"
+              className="rounded-full bg-black px-5 py-2 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+            >
+              🏪 Seller Dashboard
+            </Link>
           ) : (
             <Link
               href="/become-seller"
@@ -108,34 +102,73 @@ export default function Navbar() {
 
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-3">
+        {/* ACTIONS */}
+        <div className="flex items-center gap-2">
 
-          {/* Wishlist */}
           <Link
             href="/wishlist"
-            className="rounded-full border px-4 py-2 hover:bg-gray-100"
+            className="hidden rounded-full border px-4 py-2 hover:bg-gray-100 sm:block"
           >
             ❤️ Wishlist
           </Link>
 
-          {/* Cart */}
           <Link
             href="/cart"
-            className="rounded-full border px-4 py-2 hover:bg-gray-100"
+            className="hidden rounded-full border px-4 py-2 hover:bg-gray-100 sm:block"
           >
             🛒 Cart
           </Link>
 
-          {/* Account */}
           <Link
             href={user ? "/account" : "/login"}
-            className="rounded-full bg-black px-5 py-2 text-white hover:bg-yellow-600"
+            className="rounded-full bg-black px-5 py-2 font-bold text-white hover:bg-yellow-600"
           >
             👤 {user ? "Account" : "Login"}
           </Link>
 
         </div>
+
+      </div>
+
+      {/* MOBILE NAVIGATION */}
+      <div className="border-t px-4 py-3 md:hidden">
+
+        <div className="flex items-center gap-2 overflow-x-auto">
+
+          <Link
+            href="/"
+            className="whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium"
+          >
+            🏠 Home
+          </Link>
+
+          <Link
+            href="/shop"
+            className="whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium"
+          >
+            🛍️ Shop
+          </Link>
+
+          {user?.role === "seller" && (
+            <Link
+              href="/seller"
+              className="whitespace-nowrap rounded-full bg-black px-4 py-2 text-sm font-bold text-white"
+            >
+              🏪 Seller
+            </Link>
+          )}
+
+          {user?.role !== "seller" && (
+            <Link
+              href="/become-seller"
+              className="whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold text-yellow-600"
+            >
+              Sell on GoldMart
+            </Link>
+          )}
+
+        </div>
+
       </div>
     </nav>
   );
