@@ -29,6 +29,7 @@ export default function SellerProductsPage() {
 
       if (!token) {
         setError("Please sign in to access your seller products.");
+        setLoading(false);
         return;
       }
 
@@ -73,7 +74,13 @@ export default function SellerProductsPage() {
   }, []);
 
   function formatPrice(price: string | number) {
-    return Number(price).toLocaleString("en-US", {
+    const amount = Number(price);
+
+    if (!Number.isFinite(amount)) {
+      return "0.00";
+    }
+
+    return amount.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
@@ -110,19 +117,17 @@ export default function SellerProductsPage() {
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
 
           <div>
-
             <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
               Seller Center
             </p>
 
-            <h1 className="mt-1 text-3xl font-black">
+            <h1 className="mt-1 text-3xl font-black sm:text-4xl">
               My Products
             </h1>
 
             <p className="mt-2 text-gray-500">
               Manage the products in your GoldMart store.
             </p>
-
           </div>
 
           <Link
@@ -216,6 +221,7 @@ export default function SellerProductsPage() {
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
             {products.map((product) => (
+
               <article
                 key={product.id}
                 className="overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
@@ -243,14 +249,16 @@ export default function SellerProductsPage() {
 
                   <div className="flex items-start justify-between gap-3">
 
-                    <div>
+                    <div className="min-w-0">
+
                       <p className="text-xs font-bold uppercase tracking-wider text-[#A67C00]">
                         {product.category_name || "Uncategorized"}
                       </p>
 
-                      <h2 className="mt-1 text-lg font-black">
+                      <h2 className="mt-1 truncate text-lg font-black">
                         {product.name}
                       </h2>
+
                     </div>
 
                     <span
@@ -267,13 +275,14 @@ export default function SellerProductsPage() {
 
                   </div>
 
+                  {/* DESCRIPTION */}
                   {product.description && (
                     <p className="mt-3 line-clamp-2 text-sm text-gray-500">
                       {product.description}
                     </p>
                   )}
 
-                  {/* PRICE */}
+                  {/* PRICE + STOCK */}
                   <div className="mt-5 flex items-end justify-between">
 
                     <div>
@@ -282,11 +291,12 @@ export default function SellerProductsPage() {
                       </p>
 
                       <p className="text-xl font-black text-[#A67C00]">
-                        ₦{formatPrice(product.price)}
+                        ${formatPrice(product.price)}
                       </p>
                     </div>
 
                     <div className="text-right">
+
                       <p className="text-xs text-gray-400">
                         Stock
                       </p>
@@ -294,6 +304,7 @@ export default function SellerProductsPage() {
                       <p className="font-black">
                         {product.stock}
                       </p>
+
                     </div>
 
                   </div>
@@ -304,7 +315,7 @@ export default function SellerProductsPage() {
                     {/* EDIT */}
                     <Link
                       href={`/seller/products/${product.id}/edit`}
-                      className="flex-1 rounded-xl border px-4 py-3 text-center text-sm font-bold transition hover:bg-gray-100"
+                      className="flex-1 rounded-xl border px-4 py-3 text-center text-sm font-bold transition hover:border-[#D4AF37] hover:bg-gray-100"
                     >
                       Edit
                     </Link>
@@ -322,6 +333,7 @@ export default function SellerProductsPage() {
                 </div>
 
               </article>
+
             ))}
 
           </div>
@@ -330,4 +342,4 @@ export default function SellerProductsPage() {
       </div>
     </main>
   );
-}
+      }
