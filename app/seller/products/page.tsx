@@ -10,6 +10,7 @@ type Product = {
   name: string;
   description?: string | null;
   price: string | number;
+  currency?: string | null;
   image_url?: string | null;
   category_name?: string | null;
   stock: number;
@@ -73,17 +74,35 @@ export default function SellerProductsPage() {
     loadProducts();
   }, []);
 
-  function formatPrice(price: string | number) {
+  function formatPrice(
+    price: string | number,
+    currency?: string | null
+  ) {
     const amount = Number(price);
 
     if (!Number.isFinite(amount)) {
       return "0.00";
     }
 
-    return amount.toLocaleString("en-US", {
+    const formatted = amount.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
+
+    if (currency === "USD") {
+      return `$${formatted}`;
+    }
+
+    if (currency === "EUR") {
+      return `€${formatted}`;
+    }
+
+    if (currency === "GBP") {
+      return `£${formatted}`;
+    }
+
+    // Default to Nigerian Naira
+    return `₦${formatted}`;
   }
 
   return (
@@ -100,12 +119,25 @@ export default function SellerProductsPage() {
             Gold<span className="text-[#D4AF37]">Mart</span>
           </Link>
 
-          <Link
-            href="/seller"
-            className="rounded-full border px-5 py-2 text-sm font-bold transition hover:bg-gray-100"
-          >
-            Dashboard
-          </Link>
+          <div className="flex items-center gap-3">
+
+            {/* DASHBOARD */}
+            <Link
+              href="/seller"
+              className="rounded-full border px-5 py-2 text-sm font-bold transition hover:bg-gray-100"
+            >
+              Dashboard
+            </Link>
+
+            {/* BUYER STORE */}
+            <Link
+              href="/"
+              className="hidden rounded-full bg-black px-5 py-2 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black sm:block"
+            >
+              🛍️ Buyer Store
+            </Link>
+
+          </div>
 
         </div>
       </header>
@@ -117,6 +149,7 @@ export default function SellerProductsPage() {
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
 
           <div>
+
             <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
               Seller Center
             </p>
@@ -128,6 +161,7 @@ export default function SellerProductsPage() {
             <p className="mt-2 text-gray-500">
               Manage the products in your GoldMart store.
             </p>
+
           </div>
 
           <Link
@@ -142,6 +176,7 @@ export default function SellerProductsPage() {
         {/* PRODUCT COUNT */}
         {!loading && !error && (
           <div className="mt-6 rounded-2xl border bg-white p-5">
+
             <p className="text-sm text-gray-500">
               Your products
             </p>
@@ -149,6 +184,7 @@ export default function SellerProductsPage() {
             <p className="mt-1 text-3xl font-black">
               {products.length}
             </p>
+
           </div>
         )}
 
@@ -285,13 +321,18 @@ export default function SellerProductsPage() {
                   <div className="mt-5 flex items-end justify-between">
 
                     <div>
+
                       <p className="text-xs text-gray-400">
                         Price
                       </p>
 
                       <p className="text-xl font-black text-[#A67C00]">
-                        ${formatPrice(product.price)}
+                        {formatPrice(
+                          product.price,
+                          product.currency
+                        )}
                       </p>
+
                     </div>
 
                     <div className="text-right">
@@ -340,4 +381,4 @@ export default function SellerProductsPage() {
       </div>
     </main>
   );
-      }
+}
