@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { products } from "../data/products";
 import AddToCartButton from "../components/AddToCartButton";
+
+const API_URL = "https://goldmart-backend-yoxc.onrender.com";
 
 const categories = [
   { icon: "📱", name: "Phones" },
@@ -21,8 +22,22 @@ type User = {
   role?: string;
 };
 
+type Product = {
+  id: number;
+  name: string;
+  description?: string | null;
+  price: string | number;
+  currency?: string | null;
+  image_url?: string | null;
+  category_name?: string | null;
+  stock: number;
+  rating?: number;
+};
+
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("goldmart_user");
@@ -36,6 +51,80 @@ export default function Home() {
       }
     }
   }, []);
+
+  // LOAD PRODUCTS FROM GOLDMART BACKEND
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        setLoadingProducts(true);
+
+        const response = await fetch(
+          `${API_URL}/api/products`,
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+            },
+            cache: "no-store",
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.message || "Failed to load products"
+          );
+        }
+
+        setProducts(
+          Array.isArray(data.products)
+            ? data.products
+            : []
+        );
+      } catch (error) {
+        console.error("Failed to load products:", error);
+        setProducts([]);
+      } finally {
+        setLoadingProducts(false);
+      }
+    }
+
+    loadProducts();
+  }, []);
+
+  function formatPrice(
+    price: string | number,
+    currency?: string | null
+  ) {
+    const amount = Number(price);
+
+    if (!Number.isFinite(amount)) {
+      return "0.00";
+    }
+
+    const formatted = amount.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    switch (currency?.toUpperCase()) {
+      case "USD":
+        return `$${formatted}`;
+
+      case "EUR":
+        return `€${formatted}`;
+
+      case "GBP":
+        return `£${formatted}`;
+
+      case "NGN":
+        return `₦${formatted}`;
+
+      default:
+        return formatted;
+    }
+  }
 
   return (
     <main className="min-h-screen bg-white text-black">
@@ -278,67 +367,118 @@ export default function Home() {
 
           </div>
 
+          {/* LOADING */}
+          {loadingProducts && (
+            <div className="mt-8 rounded-2xl border bg-white p-10 text-center">
+              <div className="text-4xl">📦</div>
+
+              <p className="mt-3 font-bold">
+                Loading products...
+              </p>
+            </div>
+          )}
+
+          {/* NO PRODUCTS */}
+          {!loadingProducts && products.length === 0 && (
+            <div className="mt-8 rounded-2xl border bg-white p-10 text-center">
+
+              <div className="text-4xl">
+                📦
+              </div>
+
+              <p className="mt-3 font-bold">
+                No products available yet.
+              </p>
+
+            </div>
+          )}
+
           {/* PRODUCT GRID */}
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {!loadingProducts && products.length > 0 && (
+            <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
 
-            {products.map((product) => (
-              <article
-                key={product.id}
-                className="overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg"
-              >
+              {products.slice(0, 8).map((product) => (
+                <article
+                  key={product.id}
+                  className="overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg"
+                >
 
-                <div className="relative h-40 bg-gray-100">
+                  {/* IMAGE */}
+                  <div className="relative h-40 bg-gray-100">
 
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 50vw, 25vw"
-                  />
-
-                </div>
-
-                <div className="p-4">
-
-                  <p className="text-xs font-semibold uppercase text-[#A67C00]">
-                    {product.category}
-                  </p>
-
-                  <h3 className="mt-1 font-bold">
-                    {product.name}
-                  </h3>
-
-                  <p className="mt-1 line-clamp-2 text-sm text-gray-500">
-                    {product.description}
-                  </p>
-
-                  <div className="mt-3 flex items-center justify-between">
-
-                    <span className="font-black text-[#A67C00]">
-                      {product.price}
-                    </span>
-
-                    <span className="text-sm">
-                      ⭐ {product.rating}
-                    </span>
+                    {product.image_url ? (
+                      <Image
+                        src={product.image_url}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-5xl">
+                        📦
+                      </div>
+                    )}
 
                   </div>
 
-                  <AddToCartButton
-                    product={{
-                      id: product.id,
-                      name: product.name,
-                      price: product.price,
-                      image: product.image,
-                    }}
-                  />
+                  {/* DETAILS */}
+                  <div className="p-4">
 
-                </div>
-              </article>
-            ))}
+                    <p className="text-xs font-semibold uppercase text-[#A67C00]">
+                      {product.category_name || "Uncategorized"}
+                    </p>
 
-          </div>
+                    <h3 className="mt-1 font-bold">
+                      {product.name}
+                    </h3>
+
+                    {product.description && (
+                      <p className="mt-1 line-clamp-2 text-sm text-gray-500">
+                        {product.description}
+                      </p>
+                    )}
+
+                    {/* PRICE */}
+                    <div className="mt-3 flex items-center justify-between">
+
+                      <span className="font-black text-[#A67C00]">
+                        {formatPrice(
+                          product.price,
+                          product.currency
+                        )}
+                      </span>
+
+                      <span className="text-sm">
+                        ⭐{" "}
+                        {Number(product.rating || 0).toFixed(1)}
+                      </span>
+
+                    </div>
+
+                    {/* CART */}
+                    <AddToCartButton
+                      product={{
+                        id: product.id,
+                        name: product.name,
+                        price: formatPrice(
+                          product.price,
+                          product.currency
+                        ),
+                        image:
+                          product.image_url ||
+                          "/images/placeholder.png",
+                      }}
+                    />
+
+                  </div>
+
+                </article>
+              ))}
+
+            </div>
+          )}
+
         </div>
       </section>
 
@@ -378,10 +518,7 @@ export default function Home() {
       <section className="mx-auto grid max-w-7xl gap-4 px-4 py-14 sm:grid-cols-3">
 
         <div className="rounded-2xl border p-6">
-
-          <div className="text-3xl">
-            🔒
-          </div>
+          <div className="text-3xl">🔒</div>
 
           <h3 className="mt-3 font-bold">
             Secure Shopping
@@ -390,14 +527,10 @@ export default function Home() {
           <p className="mt-2 text-sm text-gray-500">
             Your account and transactions are protected.
           </p>
-
         </div>
 
         <div className="rounded-2xl border p-6">
-
-          <div className="text-3xl">
-            🚚
-          </div>
+          <div className="text-3xl">🚚</div>
 
           <h3 className="mt-3 font-bold">
             Reliable Delivery
@@ -406,14 +539,10 @@ export default function Home() {
           <p className="mt-2 text-sm text-gray-500">
             Shop from sellers and receive your orders safely.
           </p>
-
         </div>
 
         <div className="rounded-2xl border p-6">
-
-          <div className="text-3xl">
-            ⭐
-          </div>
+          <div className="text-3xl">⭐</div>
 
           <h3 className="mt-3 font-bold">
             Trusted Marketplace
@@ -422,7 +551,6 @@ export default function Home() {
           <p className="mt-2 text-sm text-gray-500">
             Discover products from trusted sellers.
           </p>
-
         </div>
 
       </section>
@@ -450,4 +578,4 @@ export default function Home() {
 
     </main>
   );
-}
+            }
