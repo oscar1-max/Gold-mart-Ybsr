@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -23,8 +24,7 @@ export default function Navbar() {
       }
 
       try {
-        const parsedUser = JSON.parse(savedUser);
-        setUser(parsedUser);
+        setUser(JSON.parse(savedUser));
       } catch {
         setUser(null);
       }
@@ -32,7 +32,6 @@ export default function Navbar() {
 
     loadUser();
 
-    // Refresh user information when the page becomes active
     window.addEventListener("focus", loadUser);
 
     return () => {
@@ -45,27 +44,25 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
 
         {/* LOGO */}
-        <Link
-          href="/"
-          className="text-3xl font-black text-yellow-600"
-        >
-          GoldMart
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/images/logo.png"
+            alt="GoldMart"
+            width={150}
+            height={50}
+            className="h-12 w-auto object-contain"
+            priority
+          />
         </Link>
 
         {/* NAVIGATION */}
         <div className="hidden items-center gap-7 md:flex">
 
-          <Link
-            href="/"
-            className="font-medium hover:text-yellow-600"
-          >
+          <Link href="/" className="font-medium hover:text-yellow-600">
             Home
           </Link>
 
-          <Link
-            href="/shop"
-            className="font-medium hover:text-yellow-600"
-          >
+          <Link href="/shop" className="font-medium hover:text-yellow-600">
             Shop
           </Link>
 
@@ -76,7 +73,6 @@ export default function Navbar() {
             Categories
           </Link>
 
-          {/* SELLER SWITCH */}
           {user?.role === "seller" ? (
             <Link
               href="/seller"
@@ -99,7 +95,6 @@ export default function Navbar() {
           >
             Contact
           </Link>
-
         </div>
 
         {/* ACTIONS */}
@@ -125,14 +120,11 @@ export default function Navbar() {
           >
             👤 {user ? "Account" : "Login"}
           </Link>
-
         </div>
-
       </div>
 
       {/* MOBILE NAVIGATION */}
       <div className="border-t px-4 py-3 md:hidden">
-
         <div className="flex items-center gap-2 overflow-x-auto">
 
           <Link
@@ -166,10 +158,8 @@ export default function Navbar() {
               Sell on GoldMart
             </Link>
           )}
-
         </div>
-
       </div>
     </nav>
   );
-}
+      }
