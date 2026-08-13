@@ -52,7 +52,11 @@ export default function SellerProductsPage() {
         );
       }
 
-      setProducts(Array.isArray(data.products) ? data.products : []);
+      setProducts(
+        Array.isArray(data.products)
+          ? data.products
+          : []
+      );
     } catch (err) {
       setError(
         err instanceof Error
@@ -297,18 +301,15 @@ export default function SellerProductsPage() {
                   {/* ACTIONS */}
                   <div className="mt-5 flex gap-3">
 
-                    <button
-                      type="button"
-                      className="flex-1 rounded-xl border px-4 py-3 text-sm font-bold transition hover:bg-gray-100"
-                      onClick={() =>
-                        alert(
-                          "Product editing will be connected next."
-                        )
-                      }
+                    {/* EDIT */}
+                    <Link
+                      href={`/seller/products/${product.id}/edit`}
+                      className="flex-1 rounded-xl border px-4 py-3 text-center text-sm font-bold transition hover:bg-gray-100"
                     >
                       Edit
-                    </button>
+                    </Link>
 
+                    {/* VIEW STORE */}
                     <Link
                       href="/shop"
                       className="flex-1 rounded-xl bg-black px-4 py-3 text-center text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
