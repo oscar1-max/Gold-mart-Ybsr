@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { products } from "../data/products";
 import AddToCartButton from "../components/AddToCartButton";
 
@@ -11,7 +14,29 @@ const categories = [
   { icon: "🏠", name: "Home & Kitchen" },
 ];
 
+type User = {
+  id?: number;
+  name?: string;
+  email?: string;
+  role?: string;
+};
+
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("goldmart_user");
+
+    if (savedUser) {
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
+      } catch {
+        setUser(null);
+      }
+    }
+  }, []);
+
   return (
     <main className="min-h-screen bg-white text-black">
 
@@ -20,27 +45,44 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
 
           {/* LOGO */}
-          <a href="/" className="text-2xl font-black">
+          <a
+            href="/"
+            className="text-2xl font-black"
+          >
             Gold<span className="text-[#D4AF37]">Mart</span>
           </a>
 
           {/* DESKTOP NAVIGATION */}
           <div className="hidden items-center gap-8 md:flex">
-            <a href="/" className="font-medium hover:text-[#A67C00]">
+
+            <a
+              href="/"
+              className="font-medium hover:text-[#A67C00]"
+            >
               Home
             </a>
 
-            <a href="#products" className="font-medium hover:text-[#A67C00]">
+            <a
+              href="/shop"
+              className="font-medium hover:text-[#A67C00]"
+            >
               Shop
             </a>
 
-            <a href="#categories" className="font-medium hover:text-[#A67C00]">
+            <a
+              href="#categories"
+              className="font-medium hover:text-[#A67C00]"
+            >
               Categories
             </a>
 
-            <a href="#deals" className="font-medium hover:text-[#A67C00]">
+            <a
+              href="#deals"
+              className="font-medium hover:text-[#A67C00]"
+            >
               Deals
             </a>
+
           </div>
 
           {/* ACTIONS */}
@@ -48,33 +90,69 @@ export default function Home() {
 
             {/* SEARCH */}
             <button
+              type="button"
               aria-label="Search"
-              className="rounded-full border border-gray-200 p-2"
+              className="rounded-full border border-gray-200 p-2 hover:border-[#D4AF37]"
             >
               🔍
             </button>
 
-            {/* LOGIN */}
-            <a
-              href="/login"
-              className="rounded-full border border-gray-200 px-3 py-2 text-sm font-bold hover:border-[#D4AF37]"
-            >
-              Sign In
-            </a>
+            {/* SELLER / LOGIN */}
+            {user?.role === "seller" ? (
+              <a
+                href="/seller"
+                className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+              >
+                🏪 Seller Dashboard
+              </a>
+            ) : user?.role === "admin" ? (
+              <a
+                href="/admin"
+                className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+              >
+                ⚙️ Admin
+              </a>
+            ) : user ? (
+              <a
+                href="/become-seller"
+                className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+              >
+                🏪 Sell on GoldMart
+              </a>
+            ) : (
+              <a
+                href="/login"
+                className="rounded-full border border-gray-200 px-3 py-2 text-sm font-bold hover:border-[#D4AF37]"
+              >
+                Sign In
+              </a>
+            )}
 
             {/* REGISTER */}
-            <a
-              href="/register"
-              className="hidden rounded-full bg-black px-4 py-2 text-sm font-bold text-white sm:block"
-            >
-              Create Account
-            </a>
+            {!user && (
+              <a
+                href="/register"
+                className="hidden rounded-full bg-black px-4 py-2 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black sm:block"
+              >
+                Create Account
+              </a>
+            )}
+
+            {/* ACCOUNT */}
+            {user && (
+              <a
+                href="/account"
+                className="hidden rounded-full border border-gray-200 px-4 py-2 text-sm font-bold hover:border-[#D4AF37] sm:block"
+              >
+                👤 Account
+              </a>
+            )}
 
             {/* CART */}
             <a
               href="/cart"
               aria-label="Shopping cart"
-              className="rounded-full border border-gray-200 p-2"
+              className="rounded-full border border-gray-200 p-2 hover:border-[#D4AF37]"
             >
               🛒
             </a>
@@ -139,6 +217,7 @@ export default function Home() {
       >
 
         <div className="mb-8">
+
           <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
             Explore
           </p>
@@ -146,6 +225,7 @@ export default function Home() {
           <h2 className="mt-1 text-3xl font-black">
             Shop by Category
           </h2>
+
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
@@ -156,6 +236,7 @@ export default function Home() {
               type="button"
               className="rounded-2xl border border-gray-200 p-5 text-center transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
             >
+
               <div className="text-4xl">
                 {category.icon}
               </div>
@@ -163,6 +244,7 @@ export default function Home() {
               <p className="mt-3 text-sm font-bold">
                 {category.name}
               </p>
+
             </button>
           ))}
 
@@ -296,7 +378,10 @@ export default function Home() {
       <section className="mx-auto grid max-w-7xl gap-4 px-4 py-14 sm:grid-cols-3">
 
         <div className="rounded-2xl border p-6">
-          <div className="text-3xl">🔒</div>
+
+          <div className="text-3xl">
+            🔒
+          </div>
 
           <h3 className="mt-3 font-bold">
             Secure Shopping
@@ -305,10 +390,14 @@ export default function Home() {
           <p className="mt-2 text-sm text-gray-500">
             Your account and transactions are protected.
           </p>
+
         </div>
 
         <div className="rounded-2xl border p-6">
-          <div className="text-3xl">🚚</div>
+
+          <div className="text-3xl">
+            🚚
+          </div>
 
           <h3 className="mt-3 font-bold">
             Reliable Delivery
@@ -317,10 +406,14 @@ export default function Home() {
           <p className="mt-2 text-sm text-gray-500">
             Shop from sellers and receive your orders safely.
           </p>
+
         </div>
 
         <div className="rounded-2xl border p-6">
-          <div className="text-3xl">⭐</div>
+
+          <div className="text-3xl">
+            ⭐
+          </div>
 
           <h3 className="mt-3 font-bold">
             Trusted Marketplace
@@ -329,6 +422,7 @@ export default function Home() {
           <p className="mt-2 text-sm text-gray-500">
             Discover products from trusted sellers.
           </p>
+
         </div>
 
       </section>
