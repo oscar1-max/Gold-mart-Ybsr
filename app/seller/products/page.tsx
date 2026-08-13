@@ -221,7 +221,6 @@ export default function SellerProductsPage() {
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
             {products.map((product) => (
-
               <article
                 key={product.id}
                 className="overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
@@ -333,7 +332,6 @@ export default function SellerProductsPage() {
                 </div>
 
               </article>
-
             ))}
 
           </div>
