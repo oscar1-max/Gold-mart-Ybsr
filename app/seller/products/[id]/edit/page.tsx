@@ -1,13 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 const API_URL = "https://goldmart-backend-yoxc.onrender.com";
-
-const CLOUDINARY_CLOUD_NAME = "nahkdmgc";
-const CLOUDINARY_UPLOAD_PRESET = "goldmart_products";
 
 type Category = {
   id: number;
@@ -17,11 +14,11 @@ type Category = {
 type Product = {
   id: number;
   name: string;
-  description?: string | null;
-  price: string | number;
-  image_url?: string | null;
-  category_id?: number | null;
+  description: string | null;
+  price: number | string;
   stock: number;
+  image_url: string | null;
+  category_id: number | null;
 };
 
 export default function EditProductPage() {
@@ -30,57 +27,22 @@ export default function EditProductPage() {
 
   const productId = params.id as string;
 
+  const [product, setProduct] = useState<Product | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingCategories, setLoadingCategories] = useState(true);
-
-  const [loadingProduct, setLoadingProduct] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [uploadingImage, setUploadingImage] = useState(false);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [categoryId, setCategoryId] = useState("");
   const [stock, setStock] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // =====================================================
-  // LOAD CATEGORIES
-  // =====================================================
-  useEffect(() => {
-    async function loadCategories() {
-      try {
-        const response = await fetch(`${API_URL}/api/categories`);
-
-        const data = await response.json();
-
-        if (!response.ok || !data.success) {
-          throw new Error(
-            data.message || "Failed to load categories."
-          );
-        }
-
-        setCategories(data.categories || []);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Failed to load categories."
-        );
-      } finally {
-        setLoadingCategories(false);
-      }
-    }
-
-    loadCategories();
-  }, []);
-
-  // =====================================================
-  // LOAD PRODUCT
-  // =====================================================
   useEffect(() => {
     async function loadProduct() {
       try {
@@ -92,7 +54,7 @@ export default function EditProductPage() {
         }
 
         const response = await fetch(
-          `${API_URL}/api/seller/products`,
+          `${API_URL}/api/seller/products/${productId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -108,26 +70,18 @@ export default function EditProductPage() {
           );
         }
 
-        const product: Product | undefined =
-          data.products?.find(
-            (item: Product) =>
-              String(item.id) === String(productId)
-          );
+        const item = data.product;
 
-        if (!product) {
-          throw new Error("Product not found.");
-        }
+        setProduct(item);
 
-        setName(product.name || "");
-        setDescription(product.description || "");
-        setPrice(String(product.price ?? ""));
+        setName(item.name || "");
+        setDescription(item.description || "");
+        setPrice(String(item.price ?? ""));
+        setStock(String(item.stock ?? ""));
         setCategoryId(
-          product.category_id
-            ? String(product.category_id)
-            : ""
+          item.category_id ? String(item.category_id) : ""
         );
-        setStock(String(product.stock ?? 0));
-        setImageUrl(product.image_url || "");
+        setImageUrl(item.image_url || "");
       } catch (err) {
         setError(
           err instanceof Error
@@ -135,87 +89,32 @@ export default function EditProductPage() {
             : "Failed to load product."
         );
       } finally {
-        setLoadingProduct(false);
+        setLoading(false);
       }
     }
 
-    if (productId) {
-      loadProduct();
+    async function loadCategories() {
+      try {
+        const response = await fetch(
+          `${API_URL}/api/categories`
+        );
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          setCategories(data.categories || []);
+        }
+      } catch {
+        // Product can still be edited if categories fail.
+      }
     }
+
+    loadProduct();
+    loadCategories();
   }, [productId, router]);
 
-  // =====================================================
-  // UPLOAD IMAGE
-  // =====================================================
-  async function handleImageUpload(
-    event: ChangeEvent<HTMLInputElement>
-  ) {
-    const file = event.target.files?.[0];
-
-    if (!file) return;
-
-    setError("");
-    setSuccess("");
-
-    if (!file.type.startsWith("image/")) {
-      setError("Please select a valid image file.");
-      event.target.value = "";
-      return;
-    }
-
-    if (file.size > 10 * 1024 * 1024) {
-      setError("Image must be smaller than 10MB.");
-      event.target.value = "";
-      return;
-    }
-
-    try {
-      setUploadingImage(true);
-
-      const formData = new FormData();
-
-      formData.append("file", file);
-      formData.append(
-        "upload_preset",
-        CLOUDINARY_UPLOAD_PRESET
-      );
-
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok || !data.secure_url) {
-        throw new Error(
-          data.error?.message ||
-            "Failed to upload image."
-        );
-      }
-
-      setImageUrl(data.secure_url);
-      setSuccess("New image uploaded successfully!");
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Failed to upload image."
-      );
-    } finally {
-      setUploadingImage(false);
-      event.target.value = "";
-    }
-  }
-
-  // =====================================================
-  // SAVE PRODUCT
-  // =====================================================
   async function handleSubmit(
-    event: FormEvent<HTMLFormElement>
+    event: React.FormEvent<HTMLFormElement>
   ) {
     event.preventDefault();
 
@@ -239,11 +138,6 @@ export default function EditProductPage() {
       return;
     }
 
-    if (!categoryId) {
-      setError("Please select a category.");
-      return;
-    }
-
     if (!stock || Number(stock) < 0) {
       setError("Please enter a valid stock quantity.");
       return;
@@ -264,8 +158,10 @@ export default function EditProductPage() {
             name: name.trim(),
             description: description.trim(),
             price: Number(price),
-            category_id: Number(categoryId),
             stock: Number(stock),
+            category_id: categoryId
+              ? Number(categoryId)
+              : null,
             image_url: imageUrl.trim() || null,
           }),
         }
@@ -279,6 +175,7 @@ export default function EditProductPage() {
         );
       }
 
+      setProduct(data.product);
       setSuccess("Product updated successfully!");
 
       setTimeout(() => {
@@ -295,18 +192,41 @@ export default function EditProductPage() {
     }
   }
 
-  // =====================================================
-  // LOADING SCREEN
-  // =====================================================
-  if (loadingProduct) {
+  if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gray-50 text-black">
-        <div className="rounded-2xl border bg-white p-8 text-center shadow-sm">
-          <div className="text-4xl">📦</div>
-
+      <main className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="text-5xl">📦</div>
           <p className="mt-4 font-bold">
             Loading product...
           </p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error && !product) {
+    return (
+      <main className="min-h-screen bg-gray-50 px-4 py-10">
+        <div className="mx-auto max-w-2xl">
+
+          <Link
+            href="/seller/products"
+            className="font-bold text-[#A67C00]"
+          >
+            ← Back to My Products
+          </Link>
+
+          <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
+            <h1 className="font-black">
+              Unable to load product
+            </h1>
+
+            <p className="mt-2">
+              {error}
+            </p>
+          </div>
+
         </div>
       </main>
     );
@@ -323,7 +243,9 @@ export default function EditProductPage() {
             href="/"
             className="text-2xl font-black"
           >
-            Gold<span className="text-[#D4AF37]">Mart</span>
+            Gold<span className="text-[#D4AF37]">
+              Mart
+            </span>
           </Link>
 
           <Link
@@ -339,7 +261,6 @@ export default function EditProductPage() {
       {/* CONTENT */}
       <div className="mx-auto max-w-3xl px-4 py-10">
 
-        {/* BACK */}
         <Link
           href="/seller/products"
           className="font-bold text-[#A67C00]"
@@ -347,7 +268,6 @@ export default function EditProductPage() {
           ← Back to My Products
         </Link>
 
-        {/* TITLE */}
         <div className="mt-6">
 
           <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
@@ -359,32 +279,29 @@ export default function EditProductPage() {
           </h1>
 
           <p className="mt-2 text-gray-500">
-            Update your product information.
+            Update your GoldMart product information.
           </p>
 
         </div>
 
-        {/* ERROR */}
         {error && (
           <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
             {error}
           </div>
         )}
 
-        {/* SUCCESS */}
         {success && (
           <div className="mt-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm font-medium text-green-700">
             {success}
           </div>
         )}
 
-        {/* FORM */}
         <form
           onSubmit={handleSubmit}
           className="mt-8 rounded-3xl border bg-white p-6 shadow-sm sm:p-8"
         >
 
-          {/* PRODUCT NAME */}
+          {/* NAME */}
           <div>
             <label className="text-sm font-bold">
               Product Name
@@ -403,7 +320,6 @@ export default function EditProductPage() {
 
           {/* DESCRIPTION */}
           <div className="mt-6">
-
             <label className="text-sm font-bold">
               Description
             </label>
@@ -416,7 +332,6 @@ export default function EditProductPage() {
               rows={5}
               className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
             />
-
           </div>
 
           {/* PRICE + STOCK */}
@@ -472,15 +387,11 @@ export default function EditProductPage() {
               onChange={(event) =>
                 setCategoryId(event.target.value)
               }
-              disabled={loadingCategories}
               className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
-              required
             >
 
               <option value="">
-                {loadingCategories
-                  ? "Loading categories..."
-                  : "Select a category"}
+                Select a category
               </option>
 
               {categories.map((category) => (
@@ -496,48 +407,22 @@ export default function EditProductPage() {
 
           </div>
 
-          {/* IMAGE */}
+          {/* IMAGE URL */}
           <div className="mt-6">
 
             <label className="text-sm font-bold">
-              Product Image
+              Product Image URL
             </label>
 
-            <div className="mt-2 rounded-2xl border-2 border-dashed border-gray-300 p-6 text-center">
-
-              <input
-                id="product-image"
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                disabled={uploadingImage || saving}
-                className="hidden"
-              />
-
-              <label
-                htmlFor="product-image"
-                className={`inline-flex items-center justify-center rounded-xl px-6 py-3 font-bold transition ${
-                  uploadingImage
-                    ? "cursor-not-allowed bg-gray-200 text-gray-500"
-                    : "cursor-pointer bg-black text-white hover:bg-[#D4AF37] hover:text-black"
-                }`}
-              >
-                {uploadingImage
-                  ? "Uploading Image..."
-                  : imageUrl
-                  ? "Choose Another Image"
-                  : "Upload Image"}
-              </label>
-
-              <p className="mt-3 text-sm text-gray-500">
-                Upload a new product image if you want to replace the current one.
-              </p>
-
-              <p className="mt-1 text-xs text-gray-400">
-                JPG, PNG, WEBP • Maximum 10MB
-              </p>
-
-            </div>
+            <input
+              type="url"
+              value={imageUrl}
+              onChange={(event) =>
+                setImageUrl(event.target.value)
+              }
+              placeholder="https://..."
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+            />
 
           </div>
 
@@ -549,15 +434,11 @@ export default function EditProductPage() {
                 Image Preview
               </p>
 
-              <div className="overflow-hidden rounded-2xl border bg-gray-100">
-
-                <img
-                  src={imageUrl}
-                  alt={name || "Product preview"}
-                  className="h-64 w-full object-cover"
-                />
-
-              </div>
+              <img
+                src={imageUrl}
+                alt={name}
+                className="h-64 w-full rounded-2xl border bg-gray-100 object-cover"
+              />
 
             </div>
           )}
@@ -574,7 +455,7 @@ export default function EditProductPage() {
 
             <button
               type="submit"
-              disabled={saving || uploadingImage}
+              disabled={saving}
               className="flex-1 rounded-xl bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving
@@ -589,4 +470,4 @@ export default function EditProductPage() {
       </div>
     </main>
   );
-}
+      }
