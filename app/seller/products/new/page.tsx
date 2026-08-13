@@ -23,6 +23,7 @@ export default function NewProductPage() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [currency, setCurrency] = useState("USD");
   const [categoryId, setCategoryId] = useState("");
   const [stock, setStock] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -33,7 +34,9 @@ export default function NewProductPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Load categories
+  // =====================================================
+  // LOAD CATEGORIES
+  // =====================================================
   useEffect(() => {
     async function loadCategories() {
       try {
@@ -61,7 +64,9 @@ export default function NewProductPage() {
     loadCategories();
   }, []);
 
-  // Upload image to Cloudinary
+  // =====================================================
+  // UPLOAD IMAGE TO CLOUDINARY
+  // =====================================================
   async function handleImageUpload(
     event: ChangeEvent<HTMLInputElement>
   ) {
@@ -72,14 +77,12 @@ export default function NewProductPage() {
     setError("");
     setSuccess("");
 
-    // Basic validation
     if (!file.type.startsWith("image/")) {
       setError("Please select a valid image file.");
       event.target.value = "";
       return;
     }
 
-    // 10 MB maximum
     if (file.size > 10 * 1024 * 1024) {
       setError("Image must be smaller than 10MB.");
       event.target.value = "";
@@ -128,6 +131,9 @@ export default function NewProductPage() {
     }
   }
 
+  // =====================================================
+  // CREATE PRODUCT
+  // =====================================================
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>
   ) {
@@ -158,7 +164,7 @@ export default function NewProductPage() {
       return;
     }
 
-    if (!stock || Number(stock) < 0) {
+    if (stock === "" || Number(stock) < 0) {
       setError("Please enter a valid stock quantity.");
       return;
     }
@@ -178,6 +184,11 @@ export default function NewProductPage() {
             name: name.trim(),
             description: description.trim(),
             price: Number(price),
+
+            // IMPORTANT:
+            // Save the seller's selected currency.
+            currency,
+
             category_id: Number(categoryId),
             stock: Number(stock),
             image_url: imageUrl.trim() || null,
@@ -198,6 +209,7 @@ export default function NewProductPage() {
       setName("");
       setDescription("");
       setPrice("");
+      setCurrency("USD");
       setCategoryId("");
       setStock("");
       setImageUrl("");
@@ -243,7 +255,6 @@ export default function NewProductPage() {
       {/* CONTENT */}
       <div className="mx-auto max-w-3xl px-4 py-10">
 
-        {/* BACK */}
         <Link
           href="/seller/products"
           className="font-bold text-[#A67C00]"
@@ -251,7 +262,6 @@ export default function NewProductPage() {
           ← Back to My Products
         </Link>
 
-        {/* TITLE */}
         <div className="mt-6">
 
           <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
@@ -323,12 +333,13 @@ export default function NewProductPage() {
             />
           </div>
 
-          {/* PRICE + STOCK */}
+          {/* PRICE + CURRENCY */}
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
 
+            {/* PRICE */}
             <div>
               <label className="text-sm font-bold">
-                Price (₦)
+                Price
               </label>
 
               <input
@@ -339,30 +350,85 @@ export default function NewProductPage() {
                 onChange={(event) =>
                   setPrice(event.target.value)
                 }
-                placeholder="25000"
+                placeholder="15000"
                 className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
                 required
               />
             </div>
 
+            {/* CURRENCY */}
             <div>
               <label className="text-sm font-bold">
-                Stock Quantity
+                Currency
               </label>
 
-              <input
-                type="number"
-                min="0"
-                step="1"
-                value={stock}
+              <select
+                value={currency}
                 onChange={(event) =>
-                  setStock(event.target.value)
+                  setCurrency(event.target.value)
                 }
-                placeholder="10"
-                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
-                required
-              />
+                className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
+              >
+                <option value="USD">
+                  USD ($) - US Dollar
+                </option>
+
+                <option value="NGN">
+                  NGN (₦) - Nigerian Naira
+                </option>
+
+                <option value="EUR">
+                  EUR (€) - Euro
+                </option>
+
+                <option value="GBP">
+                  GBP (£) - British Pound
+                </option>
+              </select>
             </div>
+
+          </div>
+
+          {/* PRICE PREVIEW */}
+          {price && Number(price) >= 0 && (
+            <div className="mt-4 rounded-xl bg-gray-50 p-4">
+              <p className="text-xs text-gray-500">
+                Price Preview
+              </p>
+
+              <p className="mt-1 text-xl font-black text-[#A67C00]">
+                {currency === "USD" && "$"}
+                {currency === "NGN" && "₦"}
+                {currency === "EUR" && "€"}
+                {currency === "GBP" && "£"}
+
+                {Number(price).toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+          )}
+
+          {/* STOCK */}
+          <div className="mt-6">
+
+            <label className="text-sm font-bold">
+              Stock Quantity
+            </label>
+
+            <input
+              type="number"
+              min="0"
+              step="1"
+              value={stock}
+              onChange={(event) =>
+                setStock(event.target.value)
+              }
+              placeholder="10"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+              required
+            />
 
           </div>
 
@@ -493,4 +559,4 @@ export default function NewProductPage() {
       </div>
     </main>
   );
-    }
+}
