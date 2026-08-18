@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 const API_URL = "https://goldmart-backend-yoxc.onrender.com";
 
@@ -18,12 +17,10 @@ type Product = {
 type SellerStats = {
   products: number;
   orders: number;
-  sales: number;
+  sales: string | number;
 };
 
 export default function SellerDashboard() {
-  const router = useRouter();
-
   const [products, setProducts] = useState<Product[]>([]);
   const [stats, setStats] = useState<SellerStats>({
     products: 0,
@@ -40,7 +37,7 @@ export default function SellerDashboard() {
         const token = localStorage.getItem("goldmart_token");
 
         if (!token) {
-          router.push("/login");
+          window.location.href = "/login";
           return;
         }
 
@@ -52,29 +49,36 @@ export default function SellerDashboard() {
         const [productsResponse, statsResponse] =
           await Promise.all([
             fetch(`${API_URL}/api/seller/products`, {
-              method: "GET",
               headers,
               cache: "no-store",
             }),
 
             fetch(`${API_URL}/api/seller/stats`, {
-              method: "GET",
               headers,
               cache: "no-store",
             }),
           ]);
 
-        const productsData = await productsResponse.json();
-        const statsData = await statsResponse.json();
+        const productsData =
+          await productsResponse.json();
 
-        if (!productsResponse.ok || !productsData.success) {
+        const statsData =
+          await statsResponse.json();
+
+        if (
+          !productsResponse.ok ||
+          !productsData.success
+        ) {
           throw new Error(
             productsData.message ||
               "Failed to load seller products."
           );
         }
 
-        if (!statsResponse.ok || !statsData.success) {
+        if (
+          !statsResponse.ok ||
+          !statsData.success
+        ) {
           throw new Error(
             statsData.message ||
               "Failed to load seller statistics."
@@ -88,9 +92,14 @@ export default function SellerDashboard() {
         );
 
         setStats({
-          products: Number(statsData.stats?.products || 0),
-          orders: Number(statsData.stats?.orders || 0),
-          sales: Number(statsData.stats?.sales || 0),
+          products:
+            Number(statsData.stats?.products) || 0,
+
+          orders:
+            Number(statsData.stats?.orders) || 0,
+
+          sales:
+            Number(statsData.stats?.sales) || 0,
         });
       } catch (err) {
         setError(
@@ -104,7 +113,7 @@ export default function SellerDashboard() {
     }
 
     loadDashboard();
-  }, [router]);
+  }, []);
 
   function formatPrice(
     price: string | number,
@@ -113,7 +122,7 @@ export default function SellerDashboard() {
     const amount = Number(price);
 
     if (!Number.isFinite(amount)) {
-      return "0.00";
+      return "$0.00";
     }
 
     const formatted = amount.toLocaleString("en-US", {
@@ -132,8 +141,10 @@ export default function SellerDashboard() {
         return `£${formatted}`;
 
       case "NGN":
-      default:
         return `₦${formatted}`;
+
+      default:
+        return `$${formatted}`;
     }
   }
 
@@ -148,7 +159,8 @@ export default function SellerDashboard() {
             href="/"
             className="text-2xl font-black"
           >
-            Gold<span className="text-[#D4AF37]">
+            Gold
+            <span className="text-[#D4AF37]">
               Mart
             </span>
           </Link>
@@ -199,6 +211,7 @@ export default function SellerDashboard() {
 
           {/* PRODUCTS */}
           <div className="rounded-2xl border bg-white p-6">
+
             <div className="text-3xl">
               📦
             </div>
@@ -210,6 +223,7 @@ export default function SellerDashboard() {
             <h2 className="mt-1 text-3xl font-black">
               {loading ? "..." : stats.products}
             </h2>
+
           </div>
 
           {/* ORDERS */}
@@ -217,6 +231,7 @@ export default function SellerDashboard() {
             href="/seller/orders"
             className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-md"
           >
+
             <div className="text-3xl">
               🛍️
             </div>
@@ -230,12 +245,14 @@ export default function SellerDashboard() {
             </h2>
 
             <p className="mt-2 text-xs font-bold text-[#A67C00]">
-              View orders →
+              View Orders →
             </p>
+
           </Link>
 
           {/* SALES */}
           <div className="rounded-2xl border bg-white p-6">
+
             <div className="text-3xl">
               💰
             </div>
@@ -247,15 +264,23 @@ export default function SellerDashboard() {
             <h2 className="mt-1 text-3xl font-black">
               {loading
                 ? "..."
-                : `₦${stats.sales.toLocaleString("en-US", {
+                : `₦${Number(
+                    stats.sales
+                  ).toLocaleString("en-US", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}`}
             </h2>
+
+            <p className="mt-2 text-xs text-gray-400">
+              Total completed/non-cancelled sales
+            </p>
+
           </div>
 
           {/* RATING */}
           <div className="rounded-2xl border bg-white p-6">
+
             <div className="text-3xl">
               ⭐
             </div>
@@ -269,8 +294,9 @@ export default function SellerDashboard() {
             </h2>
 
             <p className="mt-2 text-xs text-gray-400">
-              Ratings coming next
+              Reviews coming next
             </p>
+
           </div>
 
         </div>
@@ -284,11 +310,12 @@ export default function SellerDashboard() {
 
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
-            {/* MY PRODUCTS */}
+            {/* PRODUCTS */}
             <Link
               href="/seller/products"
               className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
             >
+
               <div className="text-4xl">
                 📦
               </div>
@@ -300,6 +327,7 @@ export default function SellerDashboard() {
               <p className="mt-2 text-sm text-gray-500">
                 View, edit and manage your products.
               </p>
+
             </Link>
 
             {/* ADD PRODUCT */}
@@ -307,6 +335,7 @@ export default function SellerDashboard() {
               href="/seller/products/new"
               className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
             >
+
               <div className="text-4xl">
                 ➕
               </div>
@@ -318,6 +347,7 @@ export default function SellerDashboard() {
               <p className="mt-2 text-sm text-gray-500">
                 Add a new product to your GoldMart store.
               </p>
+
             </Link>
 
             {/* ORDERS */}
@@ -325,6 +355,7 @@ export default function SellerDashboard() {
               href="/seller/orders"
               className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
             >
+
               <div className="text-4xl">
                 🚚
               </div>
@@ -336,9 +367,11 @@ export default function SellerDashboard() {
               <p className="mt-2 text-sm text-gray-500">
                 View and manage customer orders.
               </p>
+
             </Link>
 
           </div>
+
         </section>
 
         {/* PRODUCTS */}
@@ -362,6 +395,7 @@ export default function SellerDashboard() {
           {/* LOADING */}
           {loading && (
             <div className="mt-5 rounded-2xl border bg-white p-8 text-center">
+
               <div className="text-4xl">
                 📦
               </div>
@@ -369,6 +403,7 @@ export default function SellerDashboard() {
               <p className="mt-3 font-bold">
                 Loading your products...
               </p>
+
             </div>
           )}
 
@@ -406,53 +441,55 @@ export default function SellerDashboard() {
             products.length > 0 && (
               <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
-                {products.slice(0, 4).map((product) => (
-                  <article
-                    key={product.id}
-                    className="overflow-hidden rounded-2xl border bg-white"
-                  >
+                {products
+                  .slice(0, 4)
+                  .map((product) => (
+                    <article
+                      key={product.id}
+                      className="overflow-hidden rounded-2xl border bg-white"
+                    >
 
-                    {/* IMAGE */}
-                    {product.image_url ? (
-                      <img
-                        src={product.image_url}
-                        alt={product.name}
-                        className="h-48 w-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-48 items-center justify-center bg-gray-100 text-5xl">
-                        📦
+                      {/* IMAGE */}
+                      {product.image_url ? (
+                        <img
+                          src={product.image_url}
+                          alt={product.name}
+                          className="h-48 w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-48 items-center justify-center bg-gray-100 text-5xl">
+                          📦
+                        </div>
+                      )}
+
+                      <div className="p-4">
+
+                        <h3 className="truncate font-black">
+                          {product.name}
+                        </h3>
+
+                        <p className="mt-1 font-bold text-[#A67C00]">
+                          {formatPrice(
+                            product.price,
+                            product.currency
+                          )}
+                        </p>
+
+                        <p className="mt-1 text-sm text-gray-500">
+                          Stock: {product.stock}
+                        </p>
+
+                        <Link
+                          href={`/seller/products/${product.id}/edit`}
+                          className="mt-4 block rounded-xl border px-4 py-2 text-center text-sm font-bold transition hover:bg-gray-100"
+                        >
+                          Edit Product
+                        </Link>
+
                       </div>
-                    )}
 
-                    <div className="p-4">
-
-                      <h3 className="truncate font-black">
-                        {product.name}
-                      </h3>
-
-                      <p className="mt-1 font-bold text-[#A67C00]">
-                        {formatPrice(
-                          product.price,
-                          product.currency
-                        )}
-                      </p>
-
-                      <p className="mt-1 text-sm text-gray-500">
-                        Stock: {product.stock}
-                      </p>
-
-                      <Link
-                        href={`/seller/products/${product.id}/edit`}
-                        className="mt-4 block rounded-xl border px-4 py-2 text-center text-sm font-bold transition hover:bg-gray-100"
-                      >
-                        Edit Product
-                      </Link>
-
-                    </div>
-
-                  </article>
-                ))}
+                    </article>
+                  ))}
 
               </div>
             )}
@@ -498,4 +535,4 @@ export default function SellerDashboard() {
       </div>
     </main>
   );
-            }
+          }
