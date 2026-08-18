@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import AddToCartButton from "../../components/AddToCartButton";
 
-const API_URL = "https://goldmart-backend-yoxc.onrender.com/api";
+const API_URL =
+  "https://goldmart-backend-yoxc.onrender.com/api";
 
 const categories = [
   "All",
@@ -31,7 +32,7 @@ type Product = {
 };
 
 export default function ShopPage() {
-  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] =
@@ -40,28 +41,44 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  /*
-   * READ SEARCH/CATEGORY FROM URL
-   */
+  // Read search/category from the browser URL
   useEffect(() => {
-    const urlSearch =
-      searchParams.get("search") || "";
+    function readUrl() {
+      const params = new URLSearchParams(
+        window.location.search
+      );
 
-    const urlCategory =
-      searchParams.get("category") || "All";
+      const urlSearch =
+        params.get("search") || "";
 
-    setSearch(urlSearch);
+      const urlCategory =
+        params.get("category") || "All";
 
-    if (categories.includes(urlCategory)) {
-      setSelectedCategory(urlCategory);
-    } else {
-      setSelectedCategory("All");
+      setSearch(urlSearch);
+
+      if (categories.includes(urlCategory)) {
+        setSelectedCategory(urlCategory);
+      } else {
+        setSelectedCategory("All");
+      }
     }
-  }, [searchParams]);
 
-  /*
-   * LOAD PRODUCTS
-   */
+    readUrl();
+
+    window.addEventListener(
+      "popstate",
+      readUrl
+    );
+
+    return () => {
+      window.removeEventListener(
+        "popstate",
+        readUrl
+      );
+    };
+  }, []);
+
+  // Load products
   useEffect(() => {
     async function fetchProducts() {
       try {
@@ -91,26 +108,37 @@ export default function ShopPage() {
         }
 
         const formattedProducts: Product[] =
-          data.products.map((product: any) => ({
-            id: product.id,
-            name: product.name,
-            price: Number(product.price),
-            currency:
-              product.currency || "NGN",
-            rating:
-              Number(product.rating) || 4.5,
-            image:
-              product.image_url ||
-              "/images/headphones.jpg",
-            description:
-              product.description ||
-              "Quality product from GoldMart.",
-            category:
-              product.category_name ||
-              "Other",
-          }));
+          Array.isArray(data.products)
+            ? data.products.map(
+                (product: any) => ({
+                  id: product.id,
+                  name: product.name,
+                  price: Number(
+                    product.price
+                  ),
+                  currency:
+                    product.currency ||
+                    "NGN",
+                  rating:
+                    Number(
+                      product.rating
+                    ) || 4.5,
+                  image:
+                    product.image_url ||
+                    "/images/headphones.jpg",
+                  description:
+                    product.description ||
+                    "Quality product from GoldMart.",
+                  category:
+                    product.category_name ||
+                    "Other",
+                })
+              )
+            : [];
 
-        setProducts(formattedProducts);
+        setProducts(
+          formattedProducts
+        );
       } catch (err) {
         console.error(
           "Products error:",
@@ -128,29 +156,26 @@ export default function ShopPage() {
     fetchProducts();
   }, []);
 
-  /*
-   * SEARCH
-   */
+  // Search
   function handleSearch() {
     const query = search.trim();
 
-    const url = query
-      ? `/shop?search=${encodeURIComponent(
-          query
-        )}`
-      : "/shop";
+    if (!query) {
+      router.push("/shop");
+      return;
+    }
 
-    window.history.pushState({}, "", url);
-
-    window.dispatchEvent(
-      new PopStateEvent("popstate")
+    router.push(
+      `/shop?search=${encodeURIComponent(
+        query
+      )}`
     );
   }
 
-  /*
-   * CATEGORY
-   */
-  function handleCategory(category: string) {
+  // Category
+  function handleCategory(
+    category: string
+  ) {
     setSelectedCategory(category);
 
     const params = new URLSearchParams();
@@ -169,23 +194,16 @@ export default function ShopPage() {
       );
     }
 
-    const queryString =
-      params.toString();
+    const query = params.toString();
 
-    const url = queryString
-      ? `/shop?${queryString}`
-      : "/shop";
-
-    window.history.pushState({}, "", url);
-
-    window.dispatchEvent(
-      new PopStateEvent("popstate")
-    );
+    if (query) {
+      router.push(`/shop?${query}`);
+    } else {
+      router.push("/shop");
+    }
   }
 
-  /*
-   * FORMAT PRICE
-   */
+  // Format price
   function formatPrice(
     price: number,
     currency?: string | null
@@ -221,18 +239,16 @@ export default function ShopPage() {
     }
   }
 
-  /*
-   * FILTER PRODUCTS
-   */
+  // Filter products
   const filteredProducts =
     products.filter((product) => {
-      const productCategory =
-        product.category
+      const selected =
+        selectedCategory
           .toLowerCase()
           .trim();
 
-      const selected =
-        selectedCategory
+      const productCategory =
+        product.category
           .toLowerCase()
           .trim();
 
@@ -320,8 +336,7 @@ export default function ShopPage() {
             }
             onKeyDown={(event) => {
               if (
-                event.key ===
-                "Enter"
+                event.key === "Enter"
               ) {
                 handleSearch();
               }
@@ -451,7 +466,6 @@ export default function ShopPage() {
 
             </div>
 
-            {/* PRODUCT GRID */}
             {filteredProducts.length ===
             0 ? (
               <div className="mt-10 rounded-2xl bg-white p-10 text-center">
@@ -473,8 +487,11 @@ export default function ShopPage() {
                   type="button"
                   onClick={() => {
                     setSearch("");
-                    handleCategory(
+                    setSelectedCategory(
                       "All"
+                    );
+                    router.push(
+                      "/shop"
                     );
                   }}
                   className="mt-5 rounded-full bg-black px-6 py-3 font-bold text-white"
@@ -493,7 +510,6 @@ export default function ShopPage() {
                       className="overflow-hidden rounded-2xl border bg-white transition hover:-translate-y-1 hover:shadow-lg"
                     >
 
-                      {/* IMAGE */}
                       <Link
                         href={`/product/${product.id}`}
                       >
@@ -514,7 +530,6 @@ export default function ShopPage() {
                         </div>
                       </Link>
 
-                      {/* INFO */}
                       <div className="p-4">
 
                         <p className="text-xs font-bold uppercase text-[#A67C00]">
@@ -539,7 +554,6 @@ export default function ShopPage() {
                           }
                         </p>
 
-                        {/* PRICE */}
                         <div className="mt-3 flex items-center justify-between">
 
                           <span className="font-black text-[#A67C00]">
@@ -587,4 +601,4 @@ export default function ShopPage() {
       </div>
     </main>
   );
-}
+  }
