@@ -15,10 +15,32 @@ type Product = {
   image_url?: string | null;
 };
 
+type Stats = {
+  products: number;
+  orders: number;
+  sales: number;
+};
+
+type Rating = {
+  average: number;
+  count: number;
+};
+
 export default function SellerDashboard() {
   const router = useRouter();
 
   const [products, setProducts] = useState<Product[]>([]);
+  const [stats, setStats] = useState<Stats>({
+    products: 0,
+    orders: 0,
+    sales: 0,
+  });
+
+  const [rating, setRating] = useState<Rating>({
+    average: 0,
+    count: 0,
+  });
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -26,13 +48,24 @@ export default function SellerDashboard() {
     async function loadDashboard() {
       try {
         const token = localStorage.getItem("goldmart_token");
+        const savedUser = localStorage.getItem("goldmart_user");
 
-        if (!token) {
+        if (!token || !savedUser) {
           router.push("/login");
           return;
         }
 
-        const response = await fetch(
+        const user = JSON.parse(savedUser);
+
+        if (user.role !== "seller" && user.role !== "admin") {
+          router.push("/become-seller");
+          return;
+        }
+
+        // =====================================================
+        // LOAD PRODUCTS
+        // =====================================================
+        const productsResponse = await fetch(
           `${API_URL}/api/seller/products`,
           {
             method: "GET",
@@ -44,20 +77,70 @@ export default function SellerDashboard() {
           }
         );
 
-        const data = await response.json();
+        const productsData = await productsResponse.json();
 
-        if (!response.ok || !data.success) {
+        if (!productsResponse.ok || !productsData.success) {
           throw new Error(
-            data.message || "Failed to load seller products."
+            productsData.message || "Failed to load seller products."
           );
         }
 
         setProducts(
-          Array.isArray(data.products)
-            ? data.products
+          Array.isArray(productsData.products)
+            ? productsData.products
             : []
         );
+
+        // =====================================================
+        // LOAD SELLER STATS
+        // =====================================================
+        const statsResponse = await fetch(
+          `${API_URL}/api/seller/stats`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+            cache: "no-store",
+          }
+        );
+
+        const statsData = await statsResponse.json();
+
+        if (statsResponse.ok && statsData.success) {
+          setStats({
+            products: Number(statsData.stats?.products || 0),
+            orders: Number(statsData.stats?.orders || 0),
+            sales: Number(statsData.stats?.sales || 0),
+          });
+        }
+
+        // =====================================================
+        // LOAD SELLER RATING
+        // =====================================================
+        const ratingResponse = await fetch(
+          `${API_URL}/api/reviews/seller/${user.id}`,
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+            },
+            cache: "no-store",
+          }
+        );
+
+        const ratingData = await ratingResponse.json();
+
+        if (ratingResponse.ok && ratingData.success) {
+          setRating({
+            average: Number(ratingData.rating?.average || 0),
+            count: Number(ratingData.rating?.count || 0),
+          });
+        }
       } catch (err) {
+        console.error(err);
+
         setError(
           err instanceof Error
             ? err.message
@@ -71,6 +154,9 @@ export default function SellerDashboard() {
     loadDashboard();
   }, [router]);
 
+  // =====================================================
+  // PRICE FORMAT
+  // =====================================================
   function formatPrice(
     price: string | number,
     currency?: string | null
@@ -100,6 +186,27 @@ export default function SellerDashboard() {
       default:
         return `₦${formatted}`;
     }
+  }
+
+  // =====================================================
+  // SALES FORMAT
+  // =====================================================
+  function formatSales(amount: number) {
+    return `₦${Number(amount || 0).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  }
+
+  // =====================================================
+  // RATING DISPLAY
+  // =====================================================
+  function renderStars() {
+    if (rating.count === 0) {
+      return "—";
+    }
+
+    return `${rating.average.toFixed(1)} ⭐`;
   }
 
   return (
@@ -178,7 +285,7 @@ export default function SellerDashboard() {
             </p>
 
             <h2 className="mt-1 text-3xl font-black">
-              {loading ? "..." : products.length}
+              {loading ? "..." : stats.products}
             </h2>
 
           </div>
@@ -195,7 +302,7 @@ export default function SellerDashboard() {
             </p>
 
             <h2 className="mt-1 text-3xl font-black">
-              0
+              {loading ? "..." : stats.orders}
             </h2>
 
           </div>
@@ -212,7 +319,7 @@ export default function SellerDashboard() {
             </p>
 
             <h2 className="mt-1 text-3xl font-black">
-              ₦0.00
+              {loading ? "..." : formatSales(stats.sales)}
             </h2>
 
           </div>
@@ -229,8 +336,15 @@ export default function SellerDashboard() {
             </p>
 
             <h2 className="mt-1 text-3xl font-black">
-              —
+              {loading ? "..." : renderStars()}
             </h2>
+
+            {!loading && rating.count > 0 && (
+              <p className="mt-1 text-sm text-gray-500">
+                {rating.count}{" "}
+                {rating.count === 1 ? "review" : "reviews"}
+              </p>
+            )}
 
           </div>
 
@@ -378,7 +492,6 @@ export default function SellerDashboard() {
                   className="overflow-hidden rounded-2xl border bg-white"
                 >
 
-                  {/* IMAGE */}
                   {product.image_url ? (
                     <img
                       src={product.image_url}
@@ -464,4 +577,4 @@ export default function SellerDashboard() {
       </div>
     </main>
   );
-            }
+    }
