@@ -6,6 +6,12 @@ export const metadata: Metadata = {
   title: "GoldMart | Premium Marketplace",
   description:
     "GoldMart is a modern marketplace connecting buyers and sellers with secure shopping experiences.",
+
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
