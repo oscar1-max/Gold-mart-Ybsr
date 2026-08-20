@@ -15,7 +15,7 @@ export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const loadUser = () => {
+    function loadUser() {
       const savedUser = localStorage.getItem("goldmart_user");
 
       if (!savedUser) {
@@ -24,11 +24,13 @@ export default function Navbar() {
       }
 
       try {
-        setUser(JSON.parse(savedUser));
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
       } catch {
+        localStorage.removeItem("goldmart_user");
         setUser(null);
       }
-    };
+    }
 
     loadUser();
 
@@ -55,14 +57,20 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* NAVIGATION */}
+        {/* DESKTOP NAVIGATION */}
         <div className="hidden items-center gap-7 md:flex">
 
-          <Link href="/" className="font-medium hover:text-yellow-600">
+          <Link
+            href="/"
+            className="font-medium hover:text-yellow-600"
+          >
             Home
           </Link>
 
-          <Link href="/shop" className="font-medium hover:text-yellow-600">
+          <Link
+            href="/shop"
+            className="font-medium hover:text-yellow-600"
+          >
             Shop
           </Link>
 
@@ -114,12 +122,22 @@ export default function Navbar() {
             🛒 Cart
           </Link>
 
-          <Link
-            href={user ? "/account" : "/login"}
-            className="rounded-full bg-black px-5 py-2 font-bold text-white hover:bg-yellow-600"
-          >
-            👤 {user ? "Account" : "Login"}
-          </Link>
+          {user ? (
+            <Link
+              href="/account"
+              className="rounded-full bg-black px-5 py-2 font-bold text-white transition hover:bg-yellow-600"
+            >
+              👤 Account
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="rounded-full bg-black px-5 py-2 font-bold text-white transition hover:bg-yellow-600"
+            >
+              👤 Login
+            </Link>
+          )}
+
         </div>
       </div>
 
@@ -141,16 +159,21 @@ export default function Navbar() {
             🛍️ Shop
           </Link>
 
-          {user?.role === "seller" && (
+          <Link
+            href="/cart"
+            className="whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium"
+          >
+            🛒 Cart
+          </Link>
+
+          {user?.role === "seller" ? (
             <Link
               href="/seller"
               className="whitespace-nowrap rounded-full bg-black px-4 py-2 text-sm font-bold text-white"
             >
               🏪 Seller
             </Link>
-          )}
-
-          {user?.role !== "seller" && (
+          ) : (
             <Link
               href="/become-seller"
               className="whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold text-yellow-600"
@@ -158,8 +181,25 @@ export default function Navbar() {
               Sell on GoldMart
             </Link>
           )}
+
+          {user ? (
+            <Link
+              href="/account"
+              className="whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold"
+            >
+              👤 Account
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="whitespace-nowrap rounded-full bg-black px-4 py-2 text-sm font-bold text-white"
+            >
+              👤 Login
+            </Link>
+          )}
+
         </div>
       </div>
     </nav>
   );
-      }
+}
