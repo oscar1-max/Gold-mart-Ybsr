@@ -50,8 +50,9 @@ export default function CheckoutPage() {
     }, 0);
   }, [cart]);
 
-  const deliveryFee =
-    subtotal > 0 ? 0 : 0;
+  // GoldMart prices are displayed in USD.
+  // Delivery is currently free.
+  const deliveryFee = 0;
 
   const total =
     subtotal + deliveryFee;
@@ -76,7 +77,44 @@ export default function CheckoutPage() {
     }));
   }
 
-  async function handlePlaceOrder() {
+  async function syncCartWithBackend(
+    token: string
+  ) {
+    for (const item of cart) {
+      const response = await fetch(
+        `${API_URL}/api/cart`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+            Authorization:
+              `Bearer ${token}`,
+            Accept:
+              "application/json",
+          },
+          body: JSON.stringify({
+            productId: item.id,
+            quantity: item.quantity,
+          }),
+        }
+      );
+
+      const data =
+        await response.json();
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+        throw new Error(
+          data.message ||
+            `Failed to add ${item.name} to your account cart.`
+        );
+      }
+    }
+        }
+    async function handlePlaceOrder() {
     setError("");
 
     if (cart.length === 0) {
@@ -115,20 +153,39 @@ export default function CheckoutPage() {
         return;
       }
 
+      // =================================================
+      // SYNC FRONTEND CART WITH BACKEND CART
+      // =================================================
+
+      await syncCartWithBackend(token);
+
+      // =================================================
+      // INITIALIZE PAYSTACK PAYMENT
+      // =================================================
+
       const paymentResponse =
         await fetch(
           `${API_URL}/api/payments/initialize`,
           {
             method: "POST",
+
             headers: {
               "Content-Type":
                 "application/json",
+
               Authorization:
                 `Bearer ${token}`,
+
+              Accept:
+                "application/json",
             },
+
             body: JSON.stringify({
-              email: delivery.email,
+              email:
+                delivery.email,
+
               amount: total,
+
               currency: "USD",
 
               metadata: {
@@ -138,14 +195,19 @@ export default function CheckoutPage() {
                 delivery: {
                   firstName:
                     delivery.firstName,
+
                   lastName:
                     delivery.lastName,
+
                   phone:
                     delivery.phone,
+
                   address:
                     delivery.address,
+
                   city:
                     delivery.city,
+
                   state:
                     delivery.state,
                 },
@@ -184,6 +246,10 @@ export default function CheckoutPage() {
         );
       }
 
+      // =================================================
+      // SAVE PAYMENT INFORMATION
+      // =================================================
+
       sessionStorage.setItem(
         "goldmart-payment-reference",
         reference
@@ -195,6 +261,10 @@ export default function CheckoutPage() {
           delivery
         )
       );
+
+      // =================================================
+      // SEND CUSTOMER TO PAYSTACK
+      // =================================================
 
       window.location.href =
         authorizationUrl;
@@ -213,10 +283,11 @@ export default function CheckoutPage() {
       setLoading(false);
     }
   }
-    return (
-    <main className="min-h-screen bg-gray-50 text-black">
 
+  return (
+    <main className="min-h-screen bg-gray-50 text-black">
       {/* HEADER */}
+
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
 
@@ -232,7 +303,6 @@ export default function CheckoutPage() {
 
           <div className="flex items-center gap-2">
 
-            {/* BACK TO HOME */}
             <Link
               href="/"
               className="rounded-full bg-black px-5 py-2 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
@@ -240,7 +310,6 @@ export default function CheckoutPage() {
               🏠 Home
             </Link>
 
-            {/* BACK TO CART */}
             <Link
               href="/cart"
               className="rounded-full border px-5 py-2 text-sm font-bold transition hover:bg-gray-100"
@@ -254,6 +323,7 @@ export default function CheckoutPage() {
       </header>
 
       {/* CONTENT */}
+
       <div className="mx-auto max-w-7xl px-4 py-10">
 
         <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
@@ -264,7 +334,6 @@ export default function CheckoutPage() {
           Complete Your Order
         </h1>
 
-        {/* ERROR */}
         {error && (
           <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
             {error}
@@ -274,9 +343,11 @@ export default function CheckoutPage() {
         <div className="mt-8 grid gap-6 lg:grid-cols-3">
 
           {/* LEFT SIDE */}
+
           <section className="space-y-6 lg:col-span-2">
 
             {/* DELIVERY INFORMATION */}
+
             <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
               <h2 className="text-xl font-black">
@@ -286,7 +357,9 @@ export default function CheckoutPage() {
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
 
                 <input
-                  value={delivery.firstName}
+                  value={
+                    delivery.firstName
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "firstName",
@@ -298,7 +371,9 @@ export default function CheckoutPage() {
                 />
 
                 <input
-                  value={delivery.lastName}
+                  value={
+                    delivery.lastName
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "lastName",
@@ -311,7 +386,9 @@ export default function CheckoutPage() {
 
                 <input
                   type="email"
-                  value={delivery.email}
+                  value={
+                    delivery.email
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "email",
@@ -324,7 +401,9 @@ export default function CheckoutPage() {
 
                 <input
                   type="tel"
-                  value={delivery.phone}
+                  value={
+                    delivery.phone
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "phone",
@@ -337,7 +416,9 @@ export default function CheckoutPage() {
 
                 <textarea
                   rows={3}
-                  value={delivery.address}
+                  value={
+                    delivery.address
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "address",
@@ -349,7 +430,9 @@ export default function CheckoutPage() {
                 />
 
                 <input
-                  value={delivery.city}
+                  value={
+                    delivery.city
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "city",
@@ -361,7 +444,9 @@ export default function CheckoutPage() {
                 />
 
                 <select
-                  value={delivery.state}
+                  value={
+                    delivery.state
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "state",
@@ -370,15 +455,41 @@ export default function CheckoutPage() {
                   }
                   className="rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
                 >
-                  <option>Rivers</option>
-                  <option>Lagos</option>
-                  <option>Abuja</option>
-                  <option>Oyo</option>
-                  <option>Delta</option>
-                  <option>Enugu</option>
-                  <option>Kano</option>
-                  <option>Edo</option>
-                  <option>Other</option>
+                  <option>
+                    Rivers
+                  </option>
+
+                  <option>
+                    Lagos
+                  </option>
+
+                  <option>
+                    Abuja
+                  </option>
+
+                  <option>
+                    Oyo
+                  </option>
+
+                  <option>
+                    Delta
+                  </option>
+
+                  <option>
+                    Enugu
+                  </option>
+
+                  <option>
+                    Kano
+                  </option>
+
+                  <option>
+                    Edo
+                  </option>
+
+                  <option>
+                    Other
+                  </option>
                 </select>
 
               </div>
@@ -386,6 +497,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* DELIVERY METHOD */}
+
             <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
               <h2 className="text-xl font-black">
@@ -403,6 +515,7 @@ export default function CheckoutPage() {
                   />
 
                   <div>
+
                     <p className="font-bold">
                       Standard Delivery
                     </p>
@@ -410,6 +523,7 @@ export default function CheckoutPage() {
                     <p className="text-sm text-gray-500">
                       3–7 business days
                     </p>
+
                   </div>
 
                 </div>
@@ -421,8 +535,8 @@ export default function CheckoutPage() {
               </label>
 
             </div>
+                        {/* PAYMENT METHOD */}
 
-            {/* PAYMENT METHOD */}
             <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
               <h2 className="text-xl font-black">
@@ -436,7 +550,6 @@ export default function CheckoutPage() {
 
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
 
-                {/* CARD */}
                 <button
                   type="button"
                   onClick={() =>
@@ -461,7 +574,6 @@ export default function CheckoutPage() {
                   </p>
                 </button>
 
-                {/* BANK TRANSFER */}
                 <button
                   type="button"
                   onClick={() =>
@@ -486,7 +598,6 @@ export default function CheckoutPage() {
                   </p>
                 </button>
 
-                {/* WALLET */}
                 <button
                   type="button"
                   onClick={() =>
@@ -516,7 +627,9 @@ export default function CheckoutPage() {
             </div>
 
           </section>
-                    {/* ORDER SUMMARY */}
+
+          {/* ORDER SUMMARY */}
+
           <aside className="h-fit rounded-3xl bg-white p-6 shadow-sm lg:sticky lg:top-24">
 
             <h2 className="text-xl font-black">
@@ -589,7 +702,6 @@ export default function CheckoutPage() {
                 <div className="mt-6 space-y-3 border-b pb-6">
 
                   <div className="flex justify-between">
-
                     <span className="text-gray-500">
                       Subtotal
                     </span>
@@ -597,11 +709,9 @@ export default function CheckoutPage() {
                     <span className="font-bold">
                       {formatPrice(subtotal)}
                     </span>
-
                   </div>
 
                   <div className="flex justify-between">
-
                     <span className="text-gray-500">
                       Delivery
                     </span>
@@ -609,7 +719,6 @@ export default function CheckoutPage() {
                     <span className="font-bold">
                       {formatPrice(deliveryFee)}
                     </span>
-
                   </div>
 
                 </div>
