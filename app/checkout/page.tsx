@@ -1,32 +1,105 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useCart } from "../../components/CartProvider";
 
 const API_URL =
   "https://goldmart-backend-yoxc.onrender.com";
 
-type PaymentMethod = "card" | "transfer" | "wallet";
+type PaymentMethod =
+  | "card"
+  | "transfer"
+  | "wallet";
+
+type DeliveryInfo = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+};
 
 export default function CheckoutPage() {
-  const { cart, clearCart } = useCart();
+  const router = useRouter();
+
+  const { cart } = useCart();
 
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>("card");
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [loading, setLoading] =
+    useState(false);
 
-  const [delivery, setDelivery] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "Rivers",
-  });
+  const [error, setError] =
+    useState("");
+
+  const [loggedIn, setLoggedIn] =
+    useState(false);
+
+  const [delivery, setDelivery] =
+    useState<DeliveryInfo>({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
+      state: "Rivers",
+    });
+
+  // =====================================================
+  // CHECK LOGIN
+  // =====================================================
+
+  useEffect(() => {
+    const token =
+      localStorage.getItem("goldmart_token");
+
+    const savedUser =
+      localStorage.getItem("goldmart_user");
+
+    if (token && savedUser) {
+      setLoggedIn(true);
+
+      try {
+        const user = JSON.parse(savedUser);
+
+        const nameParts =
+          String(user.name || "").trim().split(" ");
+
+        setDelivery((current) => ({
+          ...current,
+
+          firstName:
+            current.firstName ||
+            nameParts[0] ||
+            "",
+
+          lastName:
+            current.lastName ||
+            nameParts.slice(1).join(" ") ||
+            "",
+
+          email:
+            current.email ||
+            user.email ||
+            "",
+        }));
+      } catch {
+        setLoggedIn(false);
+      }
+    } else {
+      setLoggedIn(false);
+    }
+  }, []);
+
+  // =====================================================
+  // CALCULATE USD SUBTOTAL
+  // =====================================================
 
   const subtotal = useMemo(() => {
     return cart.reduce((total, item) => {
@@ -34,22 +107,58 @@ export default function CheckoutPage() {
         typeof item.price === "number"
           ? item.price
           : Number(
-              String(item.price).replace(/[^0-9.]/g, "")
+              String(item.price).replace(
+                /[^0-9.]/g,
+                ""
+              )
             );
 
-      return total + price * item.quantity;
+      return (
+        total +
+        price * item.quantity
+      );
     }, 0);
   }, [cart]);
 
-  const deliveryFee = subtotal > 0 ? 2500 : 0;
-  const total = subtotal + deliveryFee;
+  // =====================================================
+  // DELIVERY
+  // =====================================================
+  //
+  // IMPORTANT:
+  // Products are currently USD.
+  //
+  // We must NOT add ₦2,500 directly to
+  // a USD order.
+  //
+  // For now delivery is $0.
+  // We can add proper USD delivery pricing later.
+  //
+
+  const deliveryFee = subtotal > 0 ? 0 : 0;
+
+  const total =
+    subtotal + deliveryFee;
+
+  // =====================================================
+  // FORMAT USD
+  // =====================================================
 
   function formatPrice(amount: number) {
-    return `₦${amount.toLocaleString("en-NG")}`;
+    return `$${amount.toLocaleString(
+      "en-US",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }
+    )}`;
   }
 
+  // =====================================================
+  // UPDATE DELIVERY
+  // =====================================================
+
   function updateDelivery(
-    field: keyof typeof delivery,
+    field: keyof DeliveryInfo,
     value: string
   ) {
     setDelivery((current) => ({
@@ -58,80 +167,129 @@ export default function CheckoutPage() {
     }));
   }
 
+  // =====================================================
+  // PLACE ORDER / START PAYMENT
+  // =====================================================
+
   async function handlePlaceOrder() {
     setError("");
 
-    if (cart.length === 0) {
-      setError("Your cart is empty.");
+    // ---------------------------------------------------
+    // CHECK LOGIN
+    // ---------------------------------------------------
+
+    const token =
+      localStorage.getItem("goldmart_token");
+
+    if (!token) {
+      setError(
+        "Please log in before making a payment."
+      );
+
       return;
     }
 
+    setLoggedIn(true);
+
+    // ---------------------------------------------------
+    // CHECK CART
+    // ---------------------------------------------------
+
+    if (cart.length === 0) {
+      setError(
+        "Your cart is empty."
+      );
+
+      return;
+    }
+
+    // ---------------------------------------------------
+    // CHECK DELIVERY INFORMATION
+    // ---------------------------------------------------
+
     if (
-      !delivery.firstName ||
-      !delivery.lastName ||
-      !delivery.email ||
-      !delivery.phone ||
-      !delivery.address ||
-      !delivery.city ||
-      !delivery.state
+      !delivery.firstName.trim() ||
+      !delivery.lastName.trim() ||
+      !delivery.email.trim() ||
+      !delivery.phone.trim() ||
+      !delivery.address.trim() ||
+      !delivery.city.trim() ||
+      !delivery.state.trim()
     ) {
       setError(
         "Please complete all delivery information."
       );
+
       return;
     }
+
+    // ---------------------------------------------------
+    // START PAYMENT
+    // ---------------------------------------------------
 
     try {
       setLoading(true);
 
-      const token =
-        localStorage.getItem("token") ||
-        localStorage.getItem("goldmart-token") ||
-        localStorage.getItem("authToken");
+      const paymentResponse =
+        await fetch(
+          `${API_URL}/api/payments/initialize`,
+          {
+            method: "POST",
 
-      if (!token) {
-        setError(
-          "Please log in before making a payment."
-        );
-        setLoading(false);
-        return;
-      }
+            headers: {
+              "Content-Type":
+                "application/json",
 
-      // ------------------------------------------------
-      // INITIALIZE REAL PAYSTACK PAYMENT
-      // ------------------------------------------------
-
-      const paymentResponse = await fetch(
-        `${API_URL}/api/payments/initialize`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            email: delivery.email,
-            amount: total,
-            currency: "NGN",
-            metadata: {
-              payment_method: paymentMethod,
-              delivery: {
-                firstName: delivery.firstName,
-                lastName: delivery.lastName,
-                phone: delivery.phone,
-                address: delivery.address,
-                city: delivery.city,
-                state: delivery.state,
-              },
+              Authorization:
+                `Bearer ${token}`,
             },
-          }),
-        }
-      );
+
+            body: JSON.stringify({
+              email:
+                delivery.email,
+
+              amount:
+                Number(
+                  total.toFixed(2)
+                ),
+
+              currency: "USD",
+
+              metadata: {
+                payment_method:
+                  paymentMethod,
+
+                delivery: {
+                  firstName:
+                    delivery.firstName,
+
+                  lastName:
+                    delivery.lastName,
+
+                  phone:
+                    delivery.phone,
+
+                  address:
+                    delivery.address,
+
+                  city:
+                    delivery.city,
+
+                  state:
+                    delivery.state,
+                },
+              },
+            }),
+          }
+        );
 
       const paymentData =
         await paymentResponse.json();
 
-      if (!paymentResponse.ok || !paymentData.success) {
+      if (
+        !paymentResponse.ok ||
+        !paymentData.success
+      ) {
         throw new Error(
           paymentData.message ||
             "Unable to initialize payment."
@@ -139,22 +297,25 @@ export default function CheckoutPage() {
       }
 
       const authorizationUrl =
-        paymentData.payment?.authorization_url;
+        paymentData.payment
+          ?.authorization_url;
 
       const reference =
-        paymentData.payment?.reference;
+        paymentData.payment
+          ?.reference;
 
-      if (!authorizationUrl || !reference) {
+      if (
+        !authorizationUrl ||
+        !reference
+      ) {
         throw new Error(
           "Payment provider did not return a payment URL."
         );
       }
 
-      /*
-       * Save the reference temporarily so the checkout
-       * page can verify the payment after Paystack sends
-       * the customer back.
-       */
+      // -------------------------------------------------
+      // SAVE PAYMENT REFERENCE
+      // -------------------------------------------------
 
       sessionStorage.setItem(
         "goldmart-payment-reference",
@@ -163,22 +324,22 @@ export default function CheckoutPage() {
 
       sessionStorage.setItem(
         "goldmart-delivery",
-        JSON.stringify(delivery)
+        JSON.stringify(
+          delivery
+        )
       );
 
-      /*
-       * Send the customer to Paystack.
-       *
-       * Paystack handles:
-       * - Card
-       * - Bank transfer
-       * - Other payment channels available
-       *   for the customer's currency/account.
-       */
+      // -------------------------------------------------
+      // REDIRECT TO PAYMENT
+      // -------------------------------------------------
 
-      window.location.href = authorizationUrl;
+      window.location.href =
+        authorizationUrl;
     } catch (err) {
-      console.error("Payment error:", err);
+      console.error(
+        "Payment initialization error:",
+        err
+      );
 
       setError(
         err instanceof Error
@@ -194,7 +355,9 @@ export default function CheckoutPage() {
     <main className="min-h-screen bg-gray-50 text-black">
 
       {/* HEADER */}
+
       <header className="border-b bg-white">
+
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
 
           <Link
@@ -215,9 +378,11 @@ export default function CheckoutPage() {
           </Link>
 
         </div>
+
       </header>
 
       {/* CONTENT */}
+
       <div className="mx-auto max-w-7xl px-4 py-10">
 
         <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
@@ -228,6 +393,27 @@ export default function CheckoutPage() {
           Complete Your Order
         </h1>
 
+        {/* LOGIN WARNING */}
+
+        {!loggedIn && (
+          <div className="mt-6 rounded-2xl border border-yellow-200 bg-yellow-50 p-4">
+
+            <p className="text-sm font-semibold text-yellow-800">
+              Please log in before making a payment.
+            </p>
+
+            <Link
+              href="/login"
+              className="mt-3 inline-block rounded-xl bg-black px-5 py-2 text-sm font-bold text-white"
+            >
+              Log In
+            </Link>
+
+          </div>
+        )}
+
+        {/* ERROR */}
+
         {error && (
           <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
             {error}
@@ -237,9 +423,11 @@ export default function CheckoutPage() {
         <div className="mt-8 grid gap-6 lg:grid-cols-3">
 
           {/* LEFT SIDE */}
+
           <section className="space-y-6 lg:col-span-2">
 
             {/* DELIVERY INFORMATION */}
+
             <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
               <h2 className="text-xl font-black">
@@ -249,7 +437,9 @@ export default function CheckoutPage() {
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
 
                 <input
-                  value={delivery.firstName}
+                  value={
+                    delivery.firstName
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "firstName",
@@ -261,7 +451,9 @@ export default function CheckoutPage() {
                 />
 
                 <input
-                  value={delivery.lastName}
+                  value={
+                    delivery.lastName
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "lastName",
@@ -274,7 +466,9 @@ export default function CheckoutPage() {
 
                 <input
                   type="email"
-                  value={delivery.email}
+                  value={
+                    delivery.email
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "email",
@@ -287,7 +481,9 @@ export default function CheckoutPage() {
 
                 <input
                   type="tel"
-                  value={delivery.phone}
+                  value={
+                    delivery.phone
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "phone",
@@ -300,7 +496,9 @@ export default function CheckoutPage() {
 
                 <textarea
                   rows={3}
-                  value={delivery.address}
+                  value={
+                    delivery.address
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "address",
@@ -312,7 +510,9 @@ export default function CheckoutPage() {
                 />
 
                 <input
-                  value={delivery.city}
+                  value={
+                    delivery.city
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "city",
@@ -324,7 +524,9 @@ export default function CheckoutPage() {
                 />
 
                 <select
-                  value={delivery.state}
+                  value={
+                    delivery.state
+                  }
                   onChange={(e) =>
                     updateDelivery(
                       "state",
@@ -345,9 +547,11 @@ export default function CheckoutPage() {
                 </select>
 
               </div>
+
             </div>
 
             {/* DELIVERY METHOD */}
+
             <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
               <h2 className="text-xl font-black">
@@ -365,6 +569,7 @@ export default function CheckoutPage() {
                   />
 
                   <div>
+
                     <p className="font-bold">
                       Standard Delivery
                     </p>
@@ -372,12 +577,15 @@ export default function CheckoutPage() {
                     <p className="text-sm text-gray-500">
                       3–7 business days
                     </p>
+
                   </div>
 
                 </div>
 
                 <span className="font-bold">
-                  {formatPrice(deliveryFee)}
+                  {formatPrice(
+                    deliveryFee
+                  )}
                 </span>
 
               </label>
@@ -385,6 +593,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* PAYMENT METHOD */}
+
             <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
               <h2 className="text-xl font-black">
@@ -392,23 +601,28 @@ export default function CheckoutPage() {
               </h2>
 
               <p className="mt-2 text-sm text-gray-500">
-                You will be securely redirected to
-                Paystack to complete your payment.
+                You will be securely redirected to Paystack to complete your payment.
               </p>
 
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
 
+                {/* CARD */}
+
                 <button
                   type="button"
                   onClick={() =>
-                    setPaymentMethod("card")
+                    setPaymentMethod(
+                      "card"
+                    )
                   }
                   className={`rounded-2xl border p-5 text-left transition ${
-                    paymentMethod === "card"
+                    paymentMethod ===
+                    "card"
                       ? "border-[#D4AF37] bg-yellow-50"
                       : "hover:border-gray-400"
                   }`}
                 >
+
                   <div className="text-2xl">
                     💳
                   </div>
@@ -420,19 +634,26 @@ export default function CheckoutPage() {
                   <p className="mt-1 text-xs text-gray-500">
                     Visa, Mastercard and more
                   </p>
+
                 </button>
+
+                {/* BANK TRANSFER */}
 
                 <button
                   type="button"
                   onClick={() =>
-                    setPaymentMethod("transfer")
+                    setPaymentMethod(
+                      "transfer"
+                    )
                   }
                   className={`rounded-2xl border p-5 text-left transition ${
-                    paymentMethod === "transfer"
+                    paymentMethod ===
+                    "transfer"
                       ? "border-[#D4AF37] bg-yellow-50"
                       : "hover:border-gray-400"
                   }`}
                 >
+
                   <div className="text-2xl">
                     🏦
                   </div>
@@ -444,19 +665,26 @@ export default function CheckoutPage() {
                   <p className="mt-1 text-xs text-gray-500">
                     Pay using bank transfer
                   </p>
+
                 </button>
+
+                {/* WALLET */}
 
                 <button
                   type="button"
                   onClick={() =>
-                    setPaymentMethod("wallet")
+                    setPaymentMethod(
+                      "wallet"
+                    )
                   }
                   className={`rounded-2xl border p-5 text-left transition ${
-                    paymentMethod === "wallet"
+                    paymentMethod ===
+                    "wallet"
                       ? "border-[#D4AF37] bg-yellow-50"
                       : "hover:border-gray-400"
                   }`}
                 >
+
                   <div className="text-2xl">
                     📱
                   </div>
@@ -468,6 +696,7 @@ export default function CheckoutPage() {
                   <p className="mt-1 text-xs text-gray-500">
                     Available payment wallets
                   </p>
+
                 </button>
 
               </div>
@@ -475,8 +704,10 @@ export default function CheckoutPage() {
             </div>
 
           </section>
+                   {/* =========================================
+              ORDER SUMMARY
+          ========================================== */}
 
-          {/* ORDER SUMMARY */}
           <aside className="h-fit rounded-3xl bg-white p-6 shadow-sm lg:sticky lg:top-24">
 
             <h2 className="text-xl font-black">
@@ -507,6 +738,8 @@ export default function CheckoutPage() {
             ) : (
 
               <>
+                {/* CART ITEMS */}
+
                 <div className="mt-6 space-y-4">
 
                   {cart.map((item) => {
@@ -527,18 +760,19 @@ export default function CheckoutPage() {
                         className="flex justify-between gap-4 border-b pb-4"
                       >
 
-                        <div>
+                        <div className="min-w-0">
+
                           <p className="font-bold">
                             {item.name}
                           </p>
 
                           <p className="text-sm text-gray-500">
-                            Quantity:{" "}
-                            {item.quantity}
+                            Quantity: {item.quantity}
                           </p>
+
                         </div>
 
-                        <p className="font-bold">
+                        <p className="whitespace-nowrap font-bold">
                           {formatPrice(
                             price *
                               item.quantity
@@ -547,23 +781,31 @@ export default function CheckoutPage() {
 
                       </div>
                     );
+
                   })}
 
                 </div>
 
+                {/* PRICE BREAKDOWN */}
+
                 <div className="mt-6 space-y-3 border-b pb-6">
 
                   <div className="flex justify-between">
+
                     <span className="text-gray-500">
                       Subtotal
                     </span>
 
                     <span className="font-bold">
-                      {formatPrice(subtotal)}
+                      {formatPrice(
+                        subtotal
+                      )}
                     </span>
+
                   </div>
 
                   <div className="flex justify-between">
+
                     <span className="text-gray-500">
                       Delivery
                     </span>
@@ -573,9 +815,12 @@ export default function CheckoutPage() {
                         deliveryFee
                       )}
                     </span>
+
                   </div>
 
                 </div>
+
+                {/* TOTAL */}
 
                 <div className="flex justify-between py-6">
 
@@ -584,34 +829,46 @@ export default function CheckoutPage() {
                   </span>
 
                   <span className="text-xl font-black text-[#A67C00]">
-                    {formatPrice(total)}
+                    {formatPrice(
+                      total
+                    )}
                   </span>
 
                 </div>
 
+                {/* PAY BUTTON */}
+
                 <button
                   type="button"
-                  onClick={handlePlaceOrder}
+                  onClick={
+                    handlePlaceOrder
+                  }
                   disabled={loading}
                   className="w-full rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loading
                     ? "Opening Secure Payment..."
-                    : `Pay ${formatPrice(total)}`}
+                    : `Pay ${formatPrice(
+                        total
+                      )}`}
                 </button>
 
+                {/* SECURITY MESSAGE */}
+
                 <p className="mt-4 text-center text-xs text-gray-500">
-                  🔒 Secure payment powered by
-                  Paystack
+                  🔒 Secure payment powered by Paystack
                 </p>
 
               </>
+
             )}
 
           </aside>
 
         </div>
+
       </div>
+
     </main>
   );
-}
+                   } 
