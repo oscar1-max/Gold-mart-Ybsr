@@ -12,6 +12,67 @@ type PaymentMethod =
   | "transfer"
   | "wallet";
 
+type Delivery = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+};
+
+function normalizeCurrency(currency?: string) {
+  return String(currency || "NGN").toUpperCase();
+}
+
+function getNumericPrice(
+  price: string | number
+) {
+  if (typeof price === "number") {
+    return price;
+  }
+
+  const cleaned = String(price)
+    .replace(/,/g, "")
+    .replace(/[^\d.-]/g, "");
+
+  const value = Number(cleaned);
+
+  return Number.isFinite(value) ? value : 0;
+}
+
+function getCurrencySymbol(currency: string) {
+  switch (normalizeCurrency(currency)) {
+    case "NGN":
+      return "₦";
+
+    case "USD":
+      return "$";
+
+    case "GBP":
+      return "£";
+
+    case "EUR":
+      return "€";
+
+    case "GHS":
+      return "GH₵";
+
+    case "ZAR":
+      return "R";
+
+    case "KES":
+      return "KSh";
+
+    case "XOF":
+      return "CFA";
+
+    default:
+      return currency;
+  }
+}
+
 export default function CheckoutPage() {
   const { cart } = useCart();
 
@@ -24,41 +85,80 @@ export default function CheckoutPage() {
   const [error, setError] =
     useState("");
 
-  const [delivery, setDelivery] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "Rivers",
-  });
+  const [delivery, setDelivery] =
+    useState<Delivery>({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
+      state: "Rivers",
+    });
 
-  const subtotal = useMemo(() => {
-    return cart.reduce((total, item) => {
-      const price =
-        typeof item.price === "number"
-          ? item.price
-          : Number(
-              String(item.price).replace(
-                /[^0-9.]/g,
-                ""
-              )
-            );
+  // =====================================================
+  // CART CURRENCIES
+  // =====================================================
 
-      return total + price * item.quantity;
-    }, 0);
+  const currencies = useMemo(() => {
+    return Array.from(
+      new Set(
+        cart.map((item) =>
+          normalizeCurrency(item.currency)
+        )
+      )
+    );
   }, [cart]);
 
-  // GoldMart prices are displayed in USD.
-  // Delivery is currently free.
+  const currency =
+    currencies.length === 1
+      ? currencies[0]
+      : null;
+
+  // =====================================================
+  // SUBTOTAL
+  // =====================================================
+
+  const subtotal = useMemo(() => {
+    return cart.reduce(
+      (total, item) => {
+        const price =
+          getNumericPrice(item.price);
+
+        return (
+          total +
+          price * Number(item.quantity)
+        );
+      },
+      0
+    );
+  }, [cart]);
+
+  // =====================================================
+  // DELIVERY FEE
+  // =====================================================
+
   const deliveryFee = 0;
 
   const total =
     subtotal + deliveryFee;
 
-  function formatPrice(amount: number) {
-    return `$${amount.toLocaleString(
+  // =====================================================
+  // FORMAT PRICE
+  // =====================================================
+
+  function formatPrice(
+    amount: number
+  ) {
+    const currentCurrency =
+      currency || "NGN";
+
+    const symbol =
+      getCurrencySymbol(
+        currentCurrency
+      );
+
+    return `${symbol}${amount.toLocaleString(
       "en-US",
       {
         minimumFractionDigits: 2,
@@ -67,8 +167,12 @@ export default function CheckoutPage() {
     )}`;
   }
 
+  // =====================================================
+  // UPDATE DELIVERY
+  // =====================================================
+
   function updateDelivery(
-    field: keyof typeof delivery,
+    field: keyof Delivery,
     value: string
   ) {
     setDelivery((current) => ({
@@ -77,48 +181,24 @@ export default function CheckoutPage() {
     }));
   }
 
-  async function syncCartWithBackend(
-    token: string
-  ) {
-    for (const item of cart) {
-      const response = await fetch(
-        `${API_URL}/api/cart`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-            Authorization:
-              `Bearer ${token}`,
-            Accept:
-              "application/json",
-          },
-          body: JSON.stringify({
-            productId: item.id,
-            quantity: item.quantity,
-          }),
-        }
-      );
+  // =====================================================
+  // PLACE ORDER / PAYMENT
+  // =====================================================
 
-      const data =
-        await response.json();
-
-      if (
-        !response.ok ||
-        !data.success
-      ) {
-        throw new Error(
-          data.message ||
-            `Failed to add ${item.name} to your account cart.`
-        );
-      }
-    }
-        }
-    async function handlePlaceOrder() {
+  async function handlePlaceOrder() {
     setError("");
 
     if (cart.length === 0) {
-      setError("Your cart is empty.");
+      setError(
+        "Your cart is empty."
+      );
+      return;
+    }
+
+    if (!currency) {
+      setError(
+        "Your cart contains products with different currencies. Please remove the products with different currencies and try again."
+      );
       return;
     }
 
@@ -149,18 +229,82 @@ export default function CheckoutPage() {
         setError(
           "Please log in before making a payment."
         );
+
         setLoading(false);
         return;
       }
 
       // =================================================
-      // SYNC FRONTEND CART WITH BACKEND CART
+      // STEP 1: SYNC CART WITH DATABASE
       // =================================================
 
-      await syncCartWithBackend(token);
+      const syncResponse =
+        await fetch(
+          `${API_URL}/api/cart/sync`,
+          {
+            method: "PUT",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              Authorization:
+                `Bearer ${token}`,
+
+              Accept:
+                "application/json",
+            },
+
+            body: JSON.stringify({
+              items: cart.map(
+                (item) => ({
+                  productId:
+                    item.id,
+
+                  quantity:
+                    Number(
+                      item.quantity
+                    ),
+                })
+              ),
+            }),
+          }
+        );
+
+      const syncData =
+        await syncResponse.json();
+
+      if (
+        !syncResponse.ok ||
+        !syncData.success
+      ) {
+        throw new Error(
+          syncData.message ||
+            "Unable to synchronize your cart."
+        );
+      }
 
       // =================================================
-      // INITIALIZE PAYSTACK PAYMENT
+      // STEP 2: SAVE DELIVERY
+      // =================================================
+
+      sessionStorage.setItem(
+        "goldmart-delivery",
+        JSON.stringify(
+          delivery
+        )
+      );
+
+      // =================================================
+      // STEP 3: INITIALIZE PAYMENT
+      //
+      // IMPORTANT:
+      //
+      // If product is NGN 10,000:
+      // payment amount = NGN 10,000
+      //
+      // It must NOT become:
+      // USD 10,000 × 1500
       // =================================================
 
       const paymentResponse =
@@ -184,33 +328,25 @@ export default function CheckoutPage() {
               email:
                 delivery.email,
 
-              amount: total,
+              amount:
+                total,
 
-              currency: "USD",
+              currency:
+                currency,
 
               metadata: {
                 payment_method:
                   paymentMethod,
 
-                delivery: {
-                  firstName:
-                    delivery.firstName,
+                delivery,
 
-                  lastName:
-                    delivery.lastName,
+                goldmart_currency:
+                  currency,
 
-                  phone:
-                    delivery.phone,
-
-                  address:
-                    delivery.address,
-
-                  city:
-                    delivery.city,
-
-                  state:
-                    delivery.state,
-                },
+                goldmart_total:
+                  Number(
+                    total.toFixed(2)
+                  ),
               },
             }),
           }
@@ -247,7 +383,7 @@ export default function CheckoutPage() {
       }
 
       // =================================================
-      // SAVE PAYMENT INFORMATION
+      // STEP 4: SAVE PAYMENT REFERENCE
       // =================================================
 
       sessionStorage.setItem(
@@ -255,22 +391,15 @@ export default function CheckoutPage() {
         reference
       );
 
-      sessionStorage.setItem(
-        "goldmart-delivery",
-        JSON.stringify(
-          delivery
-        )
-      );
-
       // =================================================
-      // SEND CUSTOMER TO PAYSTACK
+      // STEP 5: REDIRECT TO PAYSTACK
       // =================================================
 
       window.location.href =
         authorizationUrl;
     } catch (err) {
       console.error(
-        "Payment initialization error:",
+        "Checkout error:",
         err
       );
 
@@ -284,8 +413,13 @@ export default function CheckoutPage() {
     }
   }
 
+  // =====================================================
+  // PAGE
+  // =====================================================
+
   return (
     <main className="min-h-screen bg-gray-50 text-black">
+
       {/* HEADER */}
 
       <header className="border-b bg-white">
@@ -334,15 +468,29 @@ export default function CheckoutPage() {
           Complete Your Order
         </h1>
 
+        {/* ERROR */}
+
         {error && (
           <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
-            {error}
+            ⚠️ {error}
           </div>
         )}
 
+        {/* MIXED CURRENCY WARNING */}
+
+        {cart.length > 0 &&
+          currencies.length > 1 && (
+            <div className="mt-6 rounded-2xl border border-yellow-200 bg-yellow-50 p-4 text-sm font-semibold text-yellow-800">
+              Your cart contains products
+              with different currencies.
+              Please remove products with
+              different currencies.
+            </div>
+          )}
+
         <div className="mt-8 grid gap-6 lg:grid-cols-3">
 
-          {/* LEFT SIDE */}
+          {/* LEFT */}
 
           <section className="space-y-6 lg:col-span-2">
 
@@ -455,41 +603,15 @@ export default function CheckoutPage() {
                   }
                   className="rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
                 >
-                  <option>
-                    Rivers
-                  </option>
-
-                  <option>
-                    Lagos
-                  </option>
-
-                  <option>
-                    Abuja
-                  </option>
-
-                  <option>
-                    Oyo
-                  </option>
-
-                  <option>
-                    Delta
-                  </option>
-
-                  <option>
-                    Enugu
-                  </option>
-
-                  <option>
-                    Kano
-                  </option>
-
-                  <option>
-                    Edo
-                  </option>
-
-                  <option>
-                    Other
-                  </option>
+                  <option>Rivers</option>
+                  <option>Lagos</option>
+                  <option>Abuja</option>
+                  <option>Oyo</option>
+                  <option>Delta</option>
+                  <option>Enugu</option>
+                  <option>Kano</option>
+                  <option>Edo</option>
+                  <option>Other</option>
                 </select>
 
               </div>
@@ -535,7 +657,8 @@ export default function CheckoutPage() {
               </label>
 
             </div>
-                        {/* PAYMENT METHOD */}
+
+            {/* PAYMENT METHOD */}
 
             <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
@@ -544,8 +667,9 @@ export default function CheckoutPage() {
               </h2>
 
               <p className="mt-2 text-sm text-gray-500">
-                You will be securely redirected to
-                Paystack to complete your payment.
+                You will be securely
+                redirected to Paystack
+                to complete your payment.
               </p>
 
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
@@ -553,10 +677,13 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() =>
-                    setPaymentMethod("card")
+                    setPaymentMethod(
+                      "card"
+                    )
                   }
                   className={`rounded-2xl border p-5 text-left transition ${
-                    paymentMethod === "card"
+                    paymentMethod ===
+                    "card"
                       ? "border-[#D4AF37] bg-yellow-50"
                       : "hover:border-gray-400"
                   }`}
@@ -570,17 +697,21 @@ export default function CheckoutPage() {
                   </p>
 
                   <p className="mt-1 text-xs text-gray-500">
-                    Visa, Mastercard and more
+                    Visa, Mastercard
+                    and more
                   </p>
                 </button>
 
                 <button
                   type="button"
                   onClick={() =>
-                    setPaymentMethod("transfer")
+                    setPaymentMethod(
+                      "transfer"
+                    )
                   }
                   className={`rounded-2xl border p-5 text-left transition ${
-                    paymentMethod === "transfer"
+                    paymentMethod ===
+                    "transfer"
                       ? "border-[#D4AF37] bg-yellow-50"
                       : "hover:border-gray-400"
                   }`}
@@ -594,17 +725,21 @@ export default function CheckoutPage() {
                   </p>
 
                   <p className="mt-1 text-xs text-gray-500">
-                    Pay using bank transfer
+                    Pay using bank
+                    transfer
                   </p>
                 </button>
 
                 <button
                   type="button"
                   onClick={() =>
-                    setPaymentMethod("wallet")
+                    setPaymentMethod(
+                      "wallet"
+                    )
                   }
                   className={`rounded-2xl border p-5 text-left transition ${
-                    paymentMethod === "wallet"
+                    paymentMethod ===
+                    "wallet"
                       ? "border-[#D4AF37] bg-yellow-50"
                       : "hover:border-gray-400"
                   }`}
@@ -618,7 +753,8 @@ export default function CheckoutPage() {
                   </p>
 
                   <p className="mt-1 text-xs text-gray-500">
-                    Available payment wallets
+                    Available payment
+                    wallets
                   </p>
                 </button>
 
@@ -659,95 +795,152 @@ export default function CheckoutPage() {
               <>
                 <div className="mt-6 space-y-4">
 
-                  {cart.map((item) => {
+                  {cart.map(
+                    (item) => {
+                      const price =
+                        getNumericPrice(
+                          item.price
+                        );
 
-                    const price =
-                      typeof item.price === "number"
-                        ? item.price
-                        : Number(
-                            String(item.price).replace(
-                              /[^0-9.]/g,
-                              ""
-                            )
-                          );
+                      const itemCurrency =
+                        normalizeCurrency(
+                          item.currency
+                        );
+                                            return (
+                        <div
+                          key={item.id}
+                          className="flex justify-between gap-4 border-b pb-4"
+                        >
 
-                    return (
-                      <div
-                        key={item.id}
-                        className="flex justify-between gap-4 border-b pb-4"
-                      >
+                          <div className="min-w-0">
 
-                        <div>
-                          <p className="font-bold">
-                            {item.name}
+                            <p className="font-bold">
+                              {item.name}
+                            </p>
+
+                            <p className="mt-1 text-sm text-gray-500">
+                              Qty: {item.quantity}
+                            </p>
+
+                            <p className="mt-1 text-xs font-semibold text-gray-400">
+                              {itemCurrency}
+                            </p>
+
+                          </div>
+
+                          <p className="whitespace-nowrap font-bold">
+                            {getCurrencySymbol(
+                              itemCurrency
+                            )}
+
+                            {(
+                              price *
+                              Number(item.quantity)
+                            ).toLocaleString(
+                              "en-US",
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }
+                            )}
                           </p>
 
-                          <p className="text-sm text-gray-500">
-                            Quantity: {item.quantity}
-                          </p>
                         </div>
-
-                        <p className="font-bold">
-                          {formatPrice(
-                            price * item.quantity
-                          )}
-                        </p>
-
-                      </div>
-                    );
-                  })}
+                      );
+                    }
+                  )}
 
                 </div>
 
-                <div className="mt-6 space-y-3 border-b pb-6">
+                <div className="mt-6 space-y-3">
 
-                  <div className="flex justify-between">
+                  <div className="flex justify-between text-sm">
+
+                    <span className="text-gray-500">
+                      Items
+                    </span>
+
+                    <span className="font-bold">
+                      {cart.reduce(
+                        (sum, item) =>
+                          sum +
+                          Number(
+                            item.quantity
+                          ),
+                        0
+                      )}
+                    </span>
+
+                  </div>
+
+                  <div className="flex justify-between text-sm">
+
                     <span className="text-gray-500">
                       Subtotal
                     </span>
 
                     <span className="font-bold">
-                      {formatPrice(subtotal)}
+                      {formatPrice(
+                        subtotal
+                      )}
                     </span>
+
                   </div>
 
-                  <div className="flex justify-between">
+                  <div className="flex justify-between text-sm">
+
                     <span className="text-gray-500">
                       Delivery
                     </span>
 
                     <span className="font-bold">
-                      {formatPrice(deliveryFee)}
+                      Free
                     </span>
+
                   </div>
 
-                </div>
+                  <div className="border-t pt-4">
 
-                <div className="flex justify-between py-6">
+                    <div className="flex justify-between">
 
-                  <span className="text-lg font-black">
-                    Total
-                  </span>
+                      <span className="text-lg font-black">
+                        Total
+                      </span>
 
-                  <span className="text-xl font-black text-[#A67C00]">
-                    {formatPrice(total)}
-                  </span>
+                      <span className="text-2xl font-black text-[#A67C00]">
+                        {formatPrice(
+                          total
+                        )}
+                      </span>
+
+                    </div>
+
+                  </div>
 
                 </div>
 
                 <button
                   type="button"
-                  onClick={handlePlaceOrder}
-                  disabled={loading}
-                  className="w-full rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
+                  onClick={
+                    handlePlaceOrder
+                  }
+                  disabled={
+                    loading ||
+                    cart.length === 0 ||
+                    !currency
+                  }
+                  className="mt-6 w-full rounded-2xl bg-black py-4 font-black text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {loading
-                    ? "Opening Secure Payment..."
-                    : `Pay ${formatPrice(total)}`}
+                    ? "Processing Payment..."
+                    : `Pay ${formatPrice(
+                        total
+                      )}`}
                 </button>
 
-                <p className="mt-4 text-center text-xs text-gray-500">
-                  🔒 Secure payment powered by Paystack
+                <p className="mt-4 text-center text-xs text-gray-400">
+                  🔒 Secure payment powered
+                  by Paystack
                 </p>
 
               </>
@@ -762,3 +955,5 @@ export default function CheckoutPage() {
     </main>
   );
 }
+
+     
