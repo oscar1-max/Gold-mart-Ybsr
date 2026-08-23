@@ -16,93 +16,106 @@ type AddToCartButtonProps = {
   };
 };
 
-function normalizeCurrency(currency?: string) {
-  return String(currency || "USD").toUpperCase();
-}
-
 export default function AddToCartButton({
   product,
 }: AddToCartButtonProps) {
   const { addToCart } = useCart();
 
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [loading, setLoading] =
+    useState(false);
+
+  const [message, setMessage] =
+    useState("");
 
   async function handleAddToCart() {
-    setMessage("");
-
-    const token =
-      localStorage.getItem("goldmart_token");
-
-    if (!token) {
-      setMessage(
-        "Please log in before adding products to your cart."
-      );
-      return;
-    }
-
     try {
       setLoading(true);
+      setMessage("");
 
-      // Keep the REAL product currency.
-      // Do NOT force everything to USD.
-      const productCurrency =
-        normalizeCurrency(product.currency);
+      const token =
+        localStorage.getItem(
+          "goldmart_token"
+        );
+
+      if (!token) {
+        setMessage(
+          "Please log in before adding products to your cart."
+        );
+        return;
+      }
+
+      // =====================================================
+      // PREPARE PRODUCT FOR FRONTEND CART
+      // =====================================================
 
       const cartProduct = {
-        ...product,
-        currency: productCurrency,
+        id: product.id,
+        name: product.name,
+        price: String(product.price),
+        image: product.image,
+        currency:
+          String(
+            product.currency || "USD"
+          ).toUpperCase(),
       };
 
-      // Add to frontend cart
+      // =====================================================
+      // ADD TO FRONTEND CART
+      // =====================================================
+
       addToCart(cartProduct);
 
-      // Add to backend cart
+      // =====================================================
+      // ADD TO BACKEND CART
+      // =====================================================
+
       const response = await fetch(
         `${API_URL}/api/cart`,
         {
           method: "POST",
+
           headers: {
             "Content-Type":
               "application/json",
+
             Authorization:
               `Bearer ${token}`,
+
             Accept:
               "application/json",
           },
+
           body: JSON.stringify({
-            productId: product.id,
+            productId:
+              product.id,
+
             quantity: 1,
           }),
         }
       );
 
-      const text = await response.text();
+      const data =
+        await response.json();
 
-      let data: any = null;
-
-      try {
-        data = JSON.parse(text);
-      } catch {
+      if (
+        !response.ok ||
+        !data.success
+      ) {
         console.error(
-          "Backend returned non-JSON:",
-          text
+          "Backend cart error:",
+          data
         );
 
-        throw new Error(
-          "The GoldMart backend did not return a valid response."
-        );
-      }
-
-      if (!response.ok || !data.success) {
-        throw new Error(
+        setMessage(
           data.message ||
-            "Could not save product to your cart."
+            "Product was added locally but could not be saved to your account."
         );
+
+        return;
       }
 
       setMessage(
-        `Added to cart ✓ (${productCurrency})`
+        "Added to cart ✓"
       );
     } catch (error) {
       console.error(
@@ -111,9 +124,7 @@ export default function AddToCartButton({
       );
 
       setMessage(
-        error instanceof Error
-          ? error.message
-          : "Could not add product to cart."
+        "Could not add product to cart."
       );
     } finally {
       setLoading(false);
