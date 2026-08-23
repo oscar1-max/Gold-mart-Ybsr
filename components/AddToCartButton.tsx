@@ -45,19 +45,20 @@ export default function AddToCartButton({
       }
 
       // =====================================================
-      // GOLDMART USES USD
+      // KEEP THE PRODUCT'S REAL CURRENCY
       // =====================================================
 
-      const usdProduct = {
+      const cartProduct = {
         ...product,
-        currency: "USD",
+        currency:
+          product.currency || "USD",
       };
 
       // =====================================================
       // ADD TO FRONTEND CART
       // =====================================================
 
-      addToCart(usdProduct);
+      addToCart(cartProduct);
 
       // =====================================================
       // ADD TO BACKEND CART
@@ -77,7 +78,9 @@ export default function AddToCartButton({
           },
 
           body: JSON.stringify({
-            productId: product.id,
+            productId:
+              product.id,
+
             quantity: 1,
           }),
         }
@@ -86,7 +89,10 @@ export default function AddToCartButton({
       const data =
         await response.json();
 
-      if (!response.ok || !data.success) {
+      if (
+        !response.ok ||
+        !data.success
+      ) {
         console.error(
           "Backend cart error:",
           data
@@ -119,9 +125,12 @@ export default function AddToCartButton({
 
   return (
     <div className="mt-4">
+
       <button
         type="button"
-        onClick={handleAddToCart}
+        onClick={
+          handleAddToCart
+        }
         disabled={loading}
         className="w-full rounded-xl bg-black py-2.5 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
       >
@@ -141,6 +150,7 @@ export default function AddToCartButton({
           {message}
         </p>
       )}
+
     </div>
   );
-}
+    }
