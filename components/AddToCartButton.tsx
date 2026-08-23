@@ -44,26 +44,18 @@ export default function AddToCartButton({
         return;
       }
 
-      // =====================================================
-      // KEEP THE PRODUCT'S REAL CURRENCY
-      // =====================================================
-
+      // Keep the REAL product currency.
+      // Do NOT force everything to USD.
       const cartProduct = {
         ...product,
         currency:
           product.currency || "USD",
       };
 
-      // =====================================================
-      // ADD TO FRONTEND CART
-      // =====================================================
-
+      // Add to frontend cart
       addToCart(cartProduct);
 
-      // =====================================================
-      // ADD TO BACKEND CART
-      // =====================================================
-
+      // Save to backend cart
       const response = await fetch(
         `${API_URL}/api/cart`,
         {
@@ -75,12 +67,14 @@ export default function AddToCartButton({
 
             Authorization:
               `Bearer ${token}`,
+
+            Accept:
+              "application/json",
           },
 
           body: JSON.stringify({
             productId:
               product.id,
-
             quantity: 1,
           }),
         }
@@ -100,7 +94,7 @@ export default function AddToCartButton({
 
         setMessage(
           data.message ||
-            "Product was added locally but could not be saved to your account."
+            "Product could not be saved to your account."
         );
 
         return;
@@ -125,7 +119,6 @@ export default function AddToCartButton({
 
   return (
     <div className="mt-4">
-
       <button
         type="button"
         onClick={
@@ -150,7 +143,6 @@ export default function AddToCartButton({
           {message}
         </p>
       )}
-
     </div>
   );
-    }
+        }
