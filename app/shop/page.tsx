@@ -34,19 +34,31 @@ type Product = {
 export default function ShopPage() {
   const router = useRouter();
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] =
+    useState<Product[]>([]);
+
   const [selectedCategory, setSelectedCategory] =
     useState("All");
-  const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
-  // Read search/category from the browser URL
+  const [search, setSearch] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  // =====================================================
+  // READ SEARCH AND CATEGORY FROM URL
+  // =====================================================
+
   useEffect(() => {
     function readUrl() {
-      const params = new URLSearchParams(
-        window.location.search
-      );
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
 
       const urlSearch =
         params.get("search") || "";
@@ -56,8 +68,14 @@ export default function ShopPage() {
 
       setSearch(urlSearch);
 
-      if (categories.includes(urlCategory)) {
-        setSelectedCategory(urlCategory);
+      if (
+        categories.includes(
+          urlCategory
+        )
+      ) {
+        setSelectedCategory(
+          urlCategory
+        );
       } else {
         setSelectedCategory("All");
       }
@@ -78,19 +96,23 @@ export default function ShopPage() {
     };
   }, []);
 
-  // Load products
+  // =====================================================
+  // LOAD PRODUCTS
+  // =====================================================
+
   useEffect(() => {
     async function fetchProducts() {
       try {
         setLoading(true);
         setError("");
 
-        const response = await fetch(
-          `${API_URL}/products`,
-          {
-            cache: "no-store",
-          }
-        );
+        const response =
+          await fetch(
+            `${API_URL}/products`,
+            {
+              cache: "no-store",
+            }
+          );
 
         if (!response.ok) {
           throw new Error(
@@ -98,7 +120,8 @@ export default function ShopPage() {
           );
         }
 
-        const data = await response.json();
+        const data =
+          await response.json();
 
         if (!data.success) {
           throw new Error(
@@ -108,27 +131,39 @@ export default function ShopPage() {
         }
 
         const formattedProducts: Product[] =
-          Array.isArray(data.products)
+          Array.isArray(
+            data.products
+          )
             ? data.products.map(
                 (product: any) => ({
                   id: product.id,
-                  name: product.name,
+
+                  name:
+                    product.name,
+
                   price: Number(
                     product.price
                   ),
+
                   currency:
-                    product.currency ||
-                    "NGN",
+                    String(
+                      product.currency ||
+                        "USD"
+                    ).toUpperCase(),
+
                   rating:
                     Number(
                       product.rating
                     ) || 4.5,
+
                   image:
                     product.image_url ||
                     "/images/headphones.jpg",
+
                   description:
                     product.description ||
                     "Quality product from GoldMart.",
+
                   category:
                     product.category_name ||
                     "Other",
@@ -156,9 +191,13 @@ export default function ShopPage() {
     fetchProducts();
   }, []);
 
-  // Search
+  // =====================================================
+  // SEARCH
+  // =====================================================
+
   function handleSearch() {
-    const query = search.trim();
+    const query =
+      search.trim();
 
     if (!query) {
       router.push("/shop");
@@ -172,13 +211,19 @@ export default function ShopPage() {
     );
   }
 
-  // Category
+  // =====================================================
+  // CATEGORY
+  // =====================================================
+
   function handleCategory(
     category: string
   ) {
-    setSelectedCategory(category);
+    setSelectedCategory(
+      category
+    );
 
-    const params = new URLSearchParams();
+    const params =
+      new URLSearchParams();
 
     if (search.trim()) {
       params.set(
@@ -194,29 +239,37 @@ export default function ShopPage() {
       );
     }
 
-    const query = params.toString();
+    const query =
+      params.toString();
 
     if (query) {
-      router.push(`/shop?${query}`);
+      router.push(
+        `/shop?${query}`
+      );
     } else {
       router.push("/shop");
     }
   }
 
-  // Format price
+  // =====================================================
+  // FORMAT PRICE
+  // =====================================================
+
   function formatPrice(
     price: number,
     currency?: string | null
   ) {
-    const amount = Number(price);
+    const amount =
+      Number(price);
 
     if (!Number.isFinite(amount)) {
       return "0.00";
     }
 
-    const code = (
-      currency || "NGN"
-    ).toUpperCase();
+    const code =
+      String(
+        currency || "USD"
+      ).toUpperCase();
 
     try {
       return new Intl.NumberFormat(
@@ -239,48 +292,64 @@ export default function ShopPage() {
     }
   }
 
-  // Filter products
+  // =====================================================
+  // FILTER PRODUCTS
+  // =====================================================
+
   const filteredProducts =
-    products.filter((product) => {
-      const selected =
-        selectedCategory
-          .toLowerCase()
-          .trim();
+    products.filter(
+      (product) => {
+        const selected =
+          selectedCategory
+            .toLowerCase()
+            .trim();
 
-      const productCategory =
-        product.category
-          .toLowerCase()
-          .trim();
+        const productCategory =
+          product.category
+            .toLowerCase()
+            .trim();
 
-      const matchesCategory =
-        selectedCategory === "All" ||
-        productCategory === selected;
+        const matchesCategory =
+          selectedCategory ===
+            "All" ||
+          productCategory ===
+            selected;
 
-      const searchText =
-        search.toLowerCase().trim();
+        const searchText =
+          search
+            .toLowerCase()
+            .trim();
 
-      const matchesSearch =
-        !searchText ||
-        product.name
-          .toLowerCase()
-          .includes(searchText) ||
-        product.description
-          .toLowerCase()
-          .includes(searchText) ||
-        product.category
-          .toLowerCase()
-          .includes(searchText);
+        const matchesSearch =
+          !searchText ||
+          product.name
+            .toLowerCase()
+            .includes(
+              searchText
+            ) ||
+          product.description
+            .toLowerCase()
+            .includes(
+              searchText
+            ) ||
+          product.category
+            .toLowerCase()
+            .includes(
+              searchText
+            );
 
-      return (
-        matchesCategory &&
-        matchesSearch
-      );
-    });
+        return (
+          matchesCategory &&
+          matchesSearch
+        );
+      }
+    );
 
   return (
     <main className="min-h-screen bg-gray-50 text-black">
 
       {/* HEADER */}
+
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
 
@@ -305,6 +374,7 @@ export default function ShopPage() {
       </header>
 
       {/* SHOP */}
+
       <div className="mx-auto max-w-7xl px-4 py-10">
 
         <div>
@@ -324,6 +394,7 @@ export default function ShopPage() {
         </div>
 
         {/* SEARCH */}
+
         <div className="mt-8 flex overflow-hidden rounded-2xl border bg-white">
 
           <input
@@ -347,7 +418,9 @@ export default function ShopPage() {
 
           <button
             type="button"
-            onClick={handleSearch}
+            onClick={
+              handleSearch
+            }
             className="bg-black px-6 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
           >
             Search
@@ -356,6 +429,7 @@ export default function ShopPage() {
         </div>
 
         {/* CATEGORIES */}
+
         <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
 
           {categories.map(
@@ -383,6 +457,7 @@ export default function ShopPage() {
         </div>
 
         {/* ACTIVE FILTER */}
+
         {(search ||
           selectedCategory !==
             "All") && (
@@ -409,7 +484,9 @@ export default function ShopPage() {
                 "All" && (
                 <span>
                   📱{" "}
-                  {selectedCategory}
+                  {
+                    selectedCategory
+                  }
                 </span>
               )}
 
@@ -419,6 +496,7 @@ export default function ShopPage() {
         )}
 
         {/* LOADING */}
+
         {loading && (
           <div className="mt-10 rounded-2xl bg-white p-10 text-center">
 
@@ -435,170 +513,186 @@ export default function ShopPage() {
         )}
 
         {/* ERROR */}
-        {!loading && error && (
-          <div className="mt-10 rounded-2xl bg-white p-10 text-center">
 
-            <div className="text-4xl">
-              ⚠️
-            </div>
+        {!loading &&
+          error && (
+            <div className="mt-10 rounded-2xl bg-white p-10 text-center">
 
-            <h2 className="mt-4 text-xl font-black">
-              Products could not be
-              loaded
-            </h2>
+              <div className="text-4xl">
+                ⚠️
+              </div>
 
-            <p className="mt-2 text-gray-500">
-              {error}
-            </p>
-
-          </div>
-        )}
-
-        {/* RESULTS */}
-        {!loading && !error && (
-          <>
-            <div className="mt-8 flex items-center justify-between">
-
-              <h2 className="text-xl font-black">
-                {filteredProducts.length}{" "}
-                Products
+              <h2 className="mt-4 text-xl font-black">
+                Products could not
+                be loaded
               </h2>
 
+              <p className="mt-2 text-gray-500">
+                {error}
+              </p>
+
             </div>
+          )}
 
-            {filteredProducts.length ===
-            0 ? (
-              <div className="mt-10 rounded-2xl bg-white p-10 text-center">
+        {/* RESULTS */}
 
-                <div className="text-5xl">
-                  🔎
-                </div>
+        {!loading &&
+          !error && (
+            <>
+              <div className="mt-8 flex items-center justify-between">
 
-                <h2 className="mt-4 text-xl font-black">
-                  No products found
+                <h2 className="text-xl font-black">
+                  {
+                    filteredProducts.length
+                  }{" "}
+                  Products
                 </h2>
 
-                <p className="mt-2 text-gray-500">
-                  Try another search or
-                  category.
-                </p>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSearch("");
-                    setSelectedCategory(
-                      "All"
-                    );
-                    router.push(
-                      "/shop"
-                    );
-                  }}
-                  className="mt-5 rounded-full bg-black px-6 py-3 font-bold text-white"
-                >
-                  Clear Filters
-                </button>
-
               </div>
-            ) : (
-              <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
 
-                {filteredProducts.map(
-                  (product) => (
-                    <article
-                      key={product.id}
-                      className="overflow-hidden rounded-2xl border bg-white transition hover:-translate-y-1 hover:shadow-lg"
-                    >
+              {filteredProducts.length ===
+              0 ? (
+                <div className="mt-10 rounded-2xl bg-white p-10 text-center">
 
-                      <Link
-                        href={`/product/${product.id}`}
+                  <div className="text-5xl">
+                    🔎
+                  </div>
+
+                  <h2 className="mt-4 text-xl font-black">
+                    No products found
+                  </h2>
+
+                  <p className="mt-2 text-gray-500">
+                    Try another search
+                    or category.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearch("");
+                      setSelectedCategory(
+                        "All"
+                      );
+                      router.push(
+                        "/shop"
+                      );
+                    }}
+                    className="mt-5 rounded-full bg-black px-6 py-3 font-bold text-white"
+                  >
+                    Clear Filters
+                  </button>
+
+                </div>
+              ) : (
+                <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+
+                  {filteredProducts.map(
+                    (product) => (
+                      <article
+                        key={
+                          product.id
+                        }
+                        className="overflow-hidden rounded-2xl border bg-white transition hover:-translate-y-1 hover:shadow-lg"
                       >
-                        <div className="relative h-48 bg-gray-100">
-
-                          <Image
-                            src={
-                              product.image
-                            }
-                            alt={
-                              product.name
-                            }
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 640px) 50vw, 25vw"
-                          />
-
-                        </div>
-                      </Link>
-
-                      <div className="p-4">
-
-                        <p className="text-xs font-bold uppercase text-[#A67C00]">
-                          {
-                            product.category
-                          }
-                        </p>
 
                         <Link
                           href={`/product/${product.id}`}
                         >
-                          <h3 className="mt-1 font-bold hover:text-[#A67C00]">
-                            {
-                              product.name
-                            }
-                          </h3>
+                          <div className="relative h-48 bg-gray-100">
+
+                            <Image
+                              src={
+                                product.image
+                              }
+                              alt={
+                                product.name
+                              }
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 640px) 50vw, 25vw"
+                            />
+
+                          </div>
                         </Link>
 
-                        <p className="mt-1 line-clamp-2 text-sm text-gray-500">
-                          {
-                            product.description
-                          }
-                        </p>
+                        <div className="p-4">
 
-                        <div className="mt-3 flex items-center justify-between">
-
-                          <span className="font-black text-[#A67C00]">
-                            {formatPrice(
-                              product.price,
-                              product.currency
-                            )}
-                          </span>
-
-                          <span className="text-sm">
-                            ⭐{" "}
+                          <p className="text-xs font-bold uppercase text-[#A67C00]">
                             {
-                              product.rating
+                              product.category
                             }
-                          </span>
+                          </p>
+
+                          <Link
+                            href={`/product/${product.id}`}
+                          >
+                            <h3 className="mt-1 font-bold hover:text-[#A67C00]">
+                              {
+                                product.name
+                              }
+                            </h3>
+                          </Link>
+
+                          <p className="mt-1 line-clamp-2 text-sm text-gray-500">
+                            {
+                              product.description
+                            }
+                          </p>
+
+                          <div className="mt-3 flex items-center justify-between">
+
+                            <span className="font-black text-[#A67C00]">
+                              {formatPrice(
+                                product.price,
+                                product.currency
+                              )}
+                            </span>
+
+                            <span className="text-sm">
+                              ⭐{" "}
+                              {
+                                product.rating
+                              }
+                            </span>
+
+                          </div>
+
+                          {/* IMPORTANT:
+                              Send the RAW numeric price
+                              and the REAL currency.
+                          */}
+
+                          <AddToCartButton
+                            product={{
+                              id: product.id,
+                              name:
+                                product.name,
+                              price:
+                                String(
+                                  product.price
+                                ),
+                              image:
+                                product.image,
+                              currency:
+                                product.currency ||
+                                "USD",
+                            }}
+                          />
 
                         </div>
 
-                        <AddToCartButton
-                          product={{
-                            id: product.id,
-                            name: product.name,
-                            price:
-                              formatPrice(
-                                product.price,
-                                product.currency
-                              ),
-                            image:
-                              product.image,
-                          }}
-                        />
+                      </article>
+                    )
+                  )}
 
-                      </div>
+                </div>
+              )}
 
-                    </article>
-                  )
-                )}
-
-              </div>
-            )}
-
-          </>
-        )}
+            </>
+          )}
 
       </div>
     </main>
   );
-  }
+                  }
