@@ -6,12 +6,14 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCart } from "../../../components/CartProvider";
 
-const API_URL = "https://goldmart-backend-yoxc.onrender.com/api";
+const API_URL =
+  "https://goldmart-backend-yoxc.onrender.com/api";
 
 type Product = {
   id: number;
   name: string;
   price: number;
+  currency: string;
   rating: number;
   image: string;
   description: string;
@@ -19,11 +21,34 @@ type Product = {
   stock: number;
 };
 
+function formatPrice(
+  price: number,
+  currency: string
+) {
+  const code = (currency || "NGN").toUpperCase();
+
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: code,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(price);
+  } catch {
+    return `${code} ${price.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  }
+}
+
 export default function ProductDetailsPage() {
   const params = useParams();
   const { addToCart } = useCart();
 
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] =
+    useState<Product | null>(null);
+
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -38,7 +63,10 @@ export default function ProductDetailsPage() {
         setError("");
 
         const response = await fetch(
-          `${API_URL}/products/${productId}`
+          `${API_URL}/products/${productId}`,
+          {
+            cache: "no-store",
+          }
         );
 
         if (!response.ok) {
@@ -48,7 +76,9 @@ export default function ProductDetailsPage() {
         const data = await response.json();
 
         if (!data.success || !data.product) {
-          throw new Error(data.message || "Product not found");
+          throw new Error(
+            data.message || "Product not found"
+          );
         }
 
         const productData = data.product;
@@ -57,19 +87,41 @@ export default function ProductDetailsPage() {
           id: productData.id,
           name: productData.name,
           price: Number(productData.price),
-          rating: Number(productData.rating) || 4.5,
+
+          // IMPORTANT:
+          // Keep the real currency from the database.
+          currency:
+            String(
+              productData.currency || "NGN"
+            ).toUpperCase(),
+
+          rating:
+            Number(productData.rating) || 4.5,
+
           image:
-            productData.image_url || "/images/headphones.jpg",
+            productData.image_url ||
+            "/images/headphones.jpg",
+
           description:
             productData.description ||
             "Quality product from GoldMart.",
+
           category:
-            productData.category_name || "Other",
-          stock: Number(productData.stock) || 0,
+            productData.category_name ||
+            "Other",
+
+          stock:
+            Number(productData.stock) || 0,
         });
       } catch (err) {
-        console.error("Product error:", err);
-        setError("Unable to load this product.");
+        console.error(
+          "Product error:",
+          err
+        );
+
+        setError(
+          "Unable to load this product."
+        );
       } finally {
         setLoading(false);
       }
@@ -83,12 +135,22 @@ export default function ProductDetailsPage() {
   function handleAddToCart() {
     if (!product) return;
 
-    for (let i = 0; i < quantity; i++) {
+    for (
+      let i = 0;
+      i < quantity;
+      i++
+    ) {
       addToCart({
         id: product.id,
         name: product.name,
-        price: `$${product.price.toFixed(2)}`,
+
+        // Keep the actual numeric price.
+        price: String(product.price),
+
         image: product.image,
+
+        // Keep the real product currency.
+        currency: product.currency,
       });
     }
 
@@ -103,7 +165,10 @@ export default function ProductDetailsPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
         <div className="text-center">
-          <div className="text-5xl">⏳</div>
+          <div className="text-5xl">
+            ⏳
+          </div>
+
           <h1 className="mt-4 text-xl font-black">
             Loading product...
           </h1>
@@ -116,14 +181,17 @@ export default function ProductDetailsPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
         <div className="text-center">
-          <div className="text-6xl">🔎</div>
+          <div className="text-6xl">
+            🔎
+          </div>
 
           <h1 className="mt-4 text-3xl font-black">
             Product not found
           </h1>
 
           <p className="mt-2 text-gray-500">
-            {error || "The product you're looking for doesn't exist."}
+            {error ||
+              "The product you're looking for doesn't exist."}
           </p>
 
           <Link
@@ -144,8 +212,14 @@ export default function ProductDetailsPage() {
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
 
-          <Link href="/" className="text-2xl font-black">
-            Gold<span className="text-[#D4AF37]">Mart</span>
+          <Link
+            href="/"
+            className="text-2xl font-black"
+          >
+            Gold
+            <span className="text-[#D4AF37]">
+              Mart
+            </span>
           </Link>
 
           <Link
@@ -210,7 +284,10 @@ export default function ProductDetailsPage() {
 
             {/* PRICE */}
             <p className="mt-6 text-3xl font-black text-[#A67C00]">
-              ${product.price.toFixed(2)}
+              {formatPrice(
+                product.price,
+                product.currency
+              )}
             </p>
 
             {/* DESCRIPTION */}
@@ -243,8 +320,12 @@ export default function ProductDetailsPage() {
                 <button
                   type="button"
                   onClick={() =>
-                    setQuantity((current) =>
-                      Math.max(1, current - 1)
+                    setQuantity(
+                      (current) =>
+                        Math.max(
+                          1,
+                          current - 1
+                        )
                     )
                   }
                   className="h-11 w-11 font-bold"
@@ -259,11 +340,17 @@ export default function ProductDetailsPage() {
                 <button
                   type="button"
                   onClick={() =>
-                    setQuantity((current) =>
-                      Math.min(product.stock, current + 1)
+                    setQuantity(
+                      (current) =>
+                        Math.min(
+                          product.stock,
+                          current + 1
+                        )
                     )
                   }
-                  disabled={product.stock === 0}
+                  disabled={
+                    product.stock === 0
+                  }
                   className="h-11 w-11 font-bold disabled:opacity-40"
                 >
                   +
@@ -279,7 +366,9 @@ export default function ProductDetailsPage() {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                disabled={product.stock === 0}
+                disabled={
+                  product.stock === 0
+                }
                 className="rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {added
@@ -290,7 +379,9 @@ export default function ProductDetailsPage() {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                disabled={product.stock === 0}
+                disabled={
+                  product.stock === 0
+                }
                 className="rounded-xl bg-[#D4AF37] py-4 font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
               >
                 ⚡ Buy Now
@@ -302,14 +393,20 @@ export default function ProductDetailsPage() {
             <div className="mt-8 grid grid-cols-2 gap-3">
 
               <div className="rounded-xl border p-4">
-                <div className="text-xl">🔒</div>
+                <div className="text-xl">
+                  🔒
+                </div>
+
                 <p className="mt-2 text-sm font-bold">
                   Secure Payment
                 </p>
               </div>
 
               <div className="rounded-xl border p-4">
-                <div className="text-xl">🚚</div>
+                <div className="text-xl">
+                  🚚
+                </div>
+
                 <p className="mt-2 text-sm font-bold">
                   Reliable Delivery
                 </p>
@@ -322,4 +419,4 @@ export default function ProductDetailsPage() {
       </div>
     </main>
   );
-}
+      }
