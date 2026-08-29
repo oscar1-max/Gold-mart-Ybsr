@@ -2,21 +2,63 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import {
+  ChangeEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import AddToCartButton from "../components/AddToCartButton";
 
 const API_URL =
   "https://goldmart-backend-yoxc.onrender.com";
 
+const GOLD = "#D4AF37";
+const GOLD_BRIGHT = "#F5D76E";
+const GOLD_DEEP = "#9A7617";
+const GOLD_SOFT = "#F8E7A8";
+
 const categories = [
-  { icon: "✨", name: "All", value: "" },
-  { icon: "📱", name: "Phones", value: "Phones" },
-  { icon: "💻", name: "Electronics", value: "Electronics" },
-  { icon: "🎮", name: "Gaming", value: "Gaming" },
-  { icon: "👕", name: "Fashion", value: "Fashion" },
-  { icon: "💄", name: "Beauty", value: "Beauty & Cosmetics" },
-  { icon: "🛒", name: "Groceries", value: "Groceries" },
-  { icon: "🏠", name: "Home", value: "Home & Kitchen" },
+  {
+    icon: "✨",
+    name: "All",
+    value: "",
+  },
+  {
+    icon: "📱",
+    name: "Phones",
+    value: "Phones",
+  },
+  {
+    icon: "💻",
+    name: "Electronics",
+    value: "Electronics",
+  },
+  {
+    icon: "🎮",
+    name: "Gaming",
+    value: "Gaming",
+  },
+  {
+    icon: "👕",
+    name: "Fashion",
+    value: "Fashion",
+  },
+  {
+    icon: "💄",
+    name: "Beauty",
+    value: "Beauty & Cosmetics",
+  },
+  {
+    icon: "🛒",
+    name: "Groceries",
+    value: "Groceries",
+  },
+  {
+    icon: "🏠",
+    name: "Home",
+    value: "Home & Kitchen",
+  },
 ];
 
 const shoppingTabs = [
@@ -47,14 +89,17 @@ type Product = {
 };
 
 export default function Home() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] =
+    useState<User | null>(null);
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] =
+    useState<Product[]>([]);
 
   const [loadingProducts, setLoadingProducts] =
     useState(true);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] =
+    useState("");
 
   const [activeCategory, setActiveCategory] =
     useState("All");
@@ -62,19 +107,29 @@ export default function Home() {
   const [activeTab, setActiveTab] =
     useState("All");
 
+  const [showNotifications, setShowNotifications] =
+    useState(false);
+
+  const [showVisualSearch, setShowVisualSearch] =
+    useState(false);
+
+  const [selectedImage, setSelectedImage] =
+    useState<string | null>(null);
+
   /*
    * LOAD USER
-   *
-   * We keep the existing GoldMart authentication
-   * storage exactly as it was.
    */
   useEffect(() => {
     const savedUser =
-      localStorage.getItem("goldmart_user");
+      localStorage.getItem(
+        "goldmart_user"
+      );
 
     if (savedUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        setUser(
+          JSON.parse(savedUser)
+        );
       } catch {
         setUser(null);
       }
@@ -83,8 +138,6 @@ export default function Home() {
 
   /*
    * LOAD PRODUCTS
-   *
-   * Existing backend endpoint is preserved.
    */
   useEffect(() => {
     async function loadProducts() {
@@ -96,7 +149,8 @@ export default function Home() {
           {
             method: "GET",
             headers: {
-              Accept: "application/json",
+              Accept:
+                "application/json",
             },
             cache: "no-store",
           }
@@ -116,7 +170,9 @@ export default function Home() {
         }
 
         setProducts(
-          Array.isArray(data.products)
+          Array.isArray(
+            data.products
+          )
             ? data.products
             : []
         );
@@ -137,14 +193,15 @@ export default function Home() {
 
   /*
    * SEARCH
-   *
-   * Keeps the existing /shop search behaviour.
    */
   function handleSearch() {
-    const query = search.trim();
+    const query =
+      search.trim();
 
     if (!query) {
-      window.location.href = "/shop";
+      window.location.href =
+        "/shop";
+
       return;
     }
 
@@ -156,9 +213,6 @@ export default function Home() {
 
   /*
    * CATEGORY
-   *
-   * Keeps the existing /shop?category=...
-   * behaviour.
    */
   function handleCategory(
     category: string
@@ -187,7 +241,8 @@ export default function Home() {
     price: string | number,
     currency?: string | null
   ) {
-    const amount = Number(price);
+    const amount =
+      Number(price);
 
     if (!Number.isFinite(amount)) {
       return "0.00";
@@ -224,82 +279,92 @@ export default function Home() {
 
   /*
    * PRODUCT FILTERING
-   *
-   * This only changes what is displayed on the
-   * homepage. It does NOT change the backend.
    */
-  const visibleProducts = useMemo(() => {
-    let result = [...products];
+  const visibleProducts =
+    useMemo(() => {
+      let result = [...products];
 
-    if (
-      activeCategory !== "All"
-    ) {
-      result = result.filter(
-        (product) =>
-          product.category_name
-            ?.toLowerCase()
-            .includes(
-              activeCategory.toLowerCase()
-            )
-      );
-    }
+      if (
+        activeCategory !==
+        "All"
+      ) {
+        result =
+          result.filter(
+            (product) =>
+              product.category_name
+                ?.toLowerCase()
+                .includes(
+                  activeCategory.toLowerCase()
+                )
+          );
+      }
 
-    if (
-      activeTab === "5-Star Rated"
-    ) {
-      result = result.filter(
-        (product) =>
-          Number(product.rating || 0) >= 5
-      );
-    }
+      if (
+        activeTab ===
+        "5-Star Rated"
+      ) {
+        result =
+          result.filter(
+            (product) =>
+              Number(
+                product.rating ||
+                  0
+              ) >= 5
+          );
+      }
 
-    if (
-      activeTab === "Best Selling"
-    ) {
       /*
-       * Your current product API does not
-       * provide a sold-count field.
+       * The current backend product
+       * response does not provide
+       * sold-count, discount, or
+       * created-at fields.
        *
-       * Therefore we don't invent one.
-       * Products remain in their backend order.
+       * We therefore do not invent
+       * those values.
        */
-      result = result;
-    }
-
-    if (
-      activeTab === "Deals"
-    ) {
-      /*
-       * Your current API does not provide
-       * discount/old-price information.
-       *
-       * We leave the products intact until
-       * real discount data is available.
-       */
-      result = result;
-    }
-
-    if (
-      activeTab === "New Arrivals"
-    ) {
-      /*
-       * No created_at field is currently
-       * available in this Product type.
-       *
-       * We therefore preserve backend order.
-       */
-      result = result;
-    }
-
-    return result;
-  }, [
-    products,
-    activeCategory,
-    activeTab,
-  ]);
+      return result;
+    }, [
+      products,
+      activeCategory,
+      activeTab,
+    ]);
 
   const displayedProducts =
-    visibleProducts.slice(0, 8);
+    visibleProducts.slice(
+      0,
+      8
+    );
+
+  /*
+   * CAMERA / VISUAL SEARCH
+   *
+   * This safely opens the device
+   * image picker instead of linking
+   * to a non-existent route.
+   */
+  function handleVisualSearch(
+    event: ChangeEvent<HTMLInputElement>
+  ) {
+    const file =
+      event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const imageUrl =
+      URL.createObjectURL(
+        file
+      );
+
+    setSelectedImage(
+      imageUrl
+    );
+
+    setShowVisualSearch(
+      true
+    );
+  }
 
   return (
     <main className="min-h-screen bg-white pb-20 text-black md:pb-0">
@@ -308,7 +373,7 @@ export default function Home() {
           PREMIUM NAVBAR
           ===================================================== */}
 
-      <nav className="sticky top-0 z-50 border-b border-black/10 bg-white/95 backdrop-blur-xl">
+      <nav className="sticky top-0 z-50 border-b border-black/10 bg-white/95 shadow-sm backdrop-blur-xl">
 
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
 
@@ -318,13 +383,16 @@ export default function Home() {
             className="shrink-0"
           >
             <div className="text-2xl font-black tracking-tight sm:text-3xl">
+
               Gold
-              <span className="text-[#D4AF37]">
+
+              <span className="bg-gradient-to-r from-[#9A7617] via-[#F5D76E] to-[#D4AF37] bg-clip-text text-transparent">
                 Mart
               </span>
+
             </div>
 
-            <div className="hidden text-[9px] font-bold uppercase tracking-[0.28em] text-gray-400 sm:block">
+            <div className="hidden text-[9px] font-black uppercase tracking-[0.3em] text-gray-400 sm:block">
               Shop the world
             </div>
           </Link>
@@ -362,7 +430,7 @@ export default function Home() {
 
           </div>
 
-          {/* RIGHT ACTIONS */}
+          {/* ACTIONS */}
           <div className="flex items-center gap-2">
 
             {/* SEARCH */}
@@ -375,27 +443,35 @@ export default function Home() {
             </Link>
 
             {/* NOTIFICATIONS */}
-            <Link
-              href="/notifications"
+            <button
+              type="button"
               aria-label="Notifications"
+              onClick={() =>
+                setShowNotifications(
+                  (value) =>
+                    !value
+                )
+              }
               className="relative flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-lg transition hover:border-[#D4AF37] hover:bg-[#D4AF37]"
             >
               🔔
 
               {user && (
-                <span className="absolute right-0.5 top-0.5 h-2.5 w-2.5 rounded-full bg-[#D4AF37] ring-2 ring-white" />
+                <span className="absolute right-0.5 top-0.5 h-2.5 w-2.5 rounded-full bg-gradient-to-r from-[#9A7617] to-[#F5D76E] ring-2 ring-white" />
               )}
-            </Link>
+            </button>
 
-            {/* SELLER / ADMIN / SIGN IN */}
-            {user?.role === "seller" ? (
+            {/* SELLER / ADMIN / LOGIN */}
+            {user?.role ===
+            "seller" ? (
               <Link
                 href="/seller"
                 className="hidden rounded-full bg-black px-4 py-2.5 text-xs font-black text-white transition hover:bg-[#D4AF37] hover:text-black sm:block"
               >
                 🏪 Seller Dashboard
               </Link>
-            ) : user?.role === "admin" ? (
+            ) : user?.role ===
+              "admin" ? (
               <Link
                 href="/admin"
                 className="hidden rounded-full bg-black px-4 py-2.5 text-xs font-black text-white transition hover:bg-[#D4AF37] hover:text-black sm:block"
@@ -426,6 +502,7 @@ export default function Home() {
                 className="flex h-10 items-center rounded-full border border-black/10 px-3 text-sm font-bold transition hover:border-[#D4AF37] hover:bg-[#D4AF37]"
               >
                 👤
+
                 <span className="ml-1 hidden xl:inline">
                   Account
                 </span>
@@ -440,168 +517,20 @@ export default function Home() {
             >
               🛒
 
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#D4AF37] px-1 text-[9px] font-black text-black">
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-gradient-to-r from-[#9A7617] via-[#D4AF37] to-[#F5D76E] px-1 text-[9px] font-black text-black">
                 +
               </span>
             </Link>
 
           </div>
         </div>
-      </nav>
 
-      {/* =====================================================
-          HERO
-          ===================================================== */}
+        {/* NOTIFICATION PANEL */}
+        {showNotifications && (
+          <div className="absolute right-4 top-[72px] w-[calc(100vw-2rem)] max-w-sm overflow-hidden rounded-2xl border border-black/10 bg-white shadow-2xl sm:right-6">
 
-      <section className="relative overflow-hidden bg-black">
-
-        {/* GOLD DECORATION */}
-        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#D4AF37]/20 blur-3xl" />
-
-        <div className="pointer-events-none absolute -bottom-32 -left-24 h-80 w-80 rounded-full bg-[#D4AF37]/10 blur-3xl" />
-
-        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-
-          <div className="max-w-4xl">
-
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-[#D4AF37]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
-              The GoldMart Marketplace
-            </div>
-
-            <h1 className="text-4xl font-black leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
-
-              Everything you want.
-
-              <br />
-
-              <span className="text-[#D4AF37]">
-                One marketplace.
-              </span>
-
-            </h1>
-
-            <p className="mt-5 max-w-2xl text-sm leading-6 text-gray-300 sm:text-base sm:leading-7">
-              Discover products from
-              trusted sellers and shop
-              a growing marketplace
-              designed for the modern
-              world.
-            </p>
-
-            {/* HERO SEARCH */}
-            <div className="mt-7 flex max-w-3xl items-center rounded-2xl bg-white p-1.5 shadow-2xl shadow-black/30 sm:rounded-full">
-
-              <span className="pl-3 text-lg sm:pl-5">
-                🔍
-              </span>
-
-              <input
-                type="search"
-                value={search}
-                onChange={(event) =>
-                  setSearch(
-                    event.target.value
-                  )
-                }
-                onKeyDown={(event) => {
-                  if (
-                    event.key ===
-                    "Enter"
-                  ) {
-                    handleSearch();
-                  }
-                }}
-                placeholder="What are you looking for?"
-                aria-label="Search products"
-                className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm text-black outline-none sm:px-4 sm:text-base"
-              />
-
-              {/* CAMERA VISUAL SEARCH ENTRY */}
-              <Link
-                href="/shop"
-                aria-label="Visual search"
-                className="mr-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-lg transition hover:bg-gray-100"
-                title="Visual search"
-              >
-                📷
-              </Link>
-
-              <button
-                type="button"
-                onClick={handleSearch}
-                className="rounded-xl bg-[#D4AF37] px-5 py-3 text-sm font-black text-black transition hover:bg-white sm:rounded-full sm:px-7"
-              >
-                Search
-              </button>
-
-            </div>
-
-            {/* HERO BUTTONS */}
-            <div className="mt-6 flex flex-wrap gap-3">
-
-              <Link
-                href="/shop"
-                className="rounded-full bg-[#D4AF37] px-6 py-3 text-sm font-black text-black transition hover:bg-white"
-              >
-                Start Shopping →
-              </Link>
-
-              <a
-                href="#categories"
-                className="rounded-full border border-white/30 px-6 py-3 text-sm font-bold text-white transition hover:border-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
-              >
-                Explore Categories
-              </a>
-
-            </div>
-
-          </div>
-
-          {/* HERO TRUST STRIP */}
-          <div className="mt-10 grid grid-cols-2 gap-3 border-t border-white/10 pt-6 sm:mt-14 sm:grid-cols-4">
-
-            <div>
-              <p className="text-lg font-black text-white">
-                🌍
-              </p>
-              <p className="mt-1 text-[11px] font-bold text-gray-400">
-                Marketplace
-              </p>
-            </div>
-
-            <div>
-              <p className="text-lg font-black text-white">
-                🔒
-              </p>
-              <p className="mt-1 text-[11px] font-bold text-gray-400">
-                Secure shopping
-              </p>
-            </div>
-
-            <div>
-              <p className="text-lg font-black text-white">
-                🚚
-              </p>
-              <p className="mt-1 text-[11px] font-bold text-gray-400">
-                Reliable delivery
-              </p>
-            </div>
-
-            <div>
-              <p className="text-lg font-black text-white">
-                ⭐
-              </p>
-              <p className="mt-1 text-[11px] font-bold text-gray-400">
-                Trusted sellers
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-            {/* =====================================================
+            <div className="flex items-center justify-between border-b border-black/10
+                  {/* =====================================================
           CATEGORY STRIP
           ===================================================== */}
 
@@ -609,71 +538,95 @@ export default function Home() {
         id="categories"
         className="border-b border-black/5 bg-white"
       >
-        <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
 
-          <div className="mb-3 flex items-center justify-between">
+        <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 lg:px-8">
+
+          <div className="mb-5 flex items-end justify-between">
+
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#A67C00]">
+
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[#A67C00]">
                 Explore
               </p>
 
-              <h2 className="mt-0.5 text-lg font-black sm:text-xl">
+              <h2 className="mt-1 text-2xl font-black sm:text-3xl">
                 Shop by Category
               </h2>
+
             </div>
 
             <Link
               href="/shop"
-              className="text-xs font-black text-[#A67C00] transition hover:text-black"
+              className="text-xs font-black text-[#9A7617] transition hover:text-black sm:text-sm"
             >
               View all →
             </Link>
+
           </div>
 
           {/* HORIZONTAL CATEGORY SCROLLER */}
-          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          <div className="-mx-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
 
-            {categories.map(
-              (category) => {
-                const isActive =
-                  activeCategory ===
-                  (category.name ===
-                  "All"
-                    ? "All"
-                    : category.name);
+            <div className="flex min-w-max gap-3">
 
-                return (
-                  <button
-                    key={
-                      category.name
-                    }
-                    type="button"
-                    onClick={() =>
-                      handleCategory(
-                        category.value
-                      )
-                    }
-                    className={`flex shrink-0 items-center gap-2 rounded-full border px-4 py-2.5 text-xs font-bold transition ${
-                      isActive
-                        ? "border-black bg-black text-white shadow-md"
-                        : "border-black/10 bg-white text-black hover:border-[#D4AF37] hover:bg-[#D4AF37]"
-                    }`}
-                  >
-                    <span className="text-base">
-                      {
-                        category.icon
+              {categories.map(
+                (category) => {
+
+                  const active =
+                    activeCategory ===
+                    category.name;
+
+                  return (
+                    <button
+                      key={
+                        category.name
                       }
-                    </span>
+                      type="button"
+                      onClick={() =>
+                        handleCategory(
+                          category.value
+                        )
+                      }
+                      className={`group flex min-w-[92px] flex-col items-center justify-center rounded-2xl border px-4 py-4 transition duration-300 ${
+                        active
+                          ? "border-[#D4AF37] bg-black text-white shadow-lg shadow-[#D4AF37]/10"
+                          : "border-black/10 bg-white hover:-translate-y-0.5 hover:border-[#D4AF37] hover:shadow-md"
+                      }`}
+                    >
 
-                    {
-                      category.name
-                    }
-                  </button>
-                );
-              }
-            )}
+                      <span
+                        className={`flex h-11 w-11 items-center justify-center rounded-full text-xl transition ${
+                          active
+                            ? "bg-gradient-to-br from-[#9A7617] via-[#D4AF37] to-[#F5D76E]"
+                            : "bg-[#F8F7F3] group-hover:bg-[#F8E7A8]/50"
+                        }`}
+                      >
+                        {
+                          category.icon
+                        }
+                      </span>
+
+                      <span
+                        className={`mt-2 whitespace-nowrap text-[10px] font-black ${
+                          active
+                            ? "text-white"
+                            : "text-gray-700"
+                        }`}
+                      >
+                        {
+                          category.name
+                        }
+                      </span>
+
+                    </button>
+                  );
+                }
+              )}
+
+            </div>
 
           </div>
+
         </div>
       </section>
 
@@ -682,243 +635,230 @@ export default function Home() {
           ===================================================== */}
 
       <section className="bg-[#F8F7F3]">
+
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
 
-          <div className="flex gap-3 overflow-x-auto pb-1">
+          <div className="flex overflow-x-auto rounded-2xl border border-black/5 bg-white [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 
-            <div className="flex min-w-max items-center gap-2 rounded-full bg-white px-4 py-2.5 shadow-sm ring-1 ring-black/5">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D4AF37]/15 text-xs">
-                ✓
-              </span>
+            <div className="flex min-w-max items-center gap-5 px-5 py-4">
 
-              <span className="text-xs font-bold">
-                Free shipping
-              </span>
+              <div className="flex items-center gap-2">
+
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F8E7A8] text-xs">
+                  ✓
+                </span>
+
+                <span className="text-xs font-bold">
+                  Free shipping
+                </span>
+
+              </div>
+
+              <div className="h-5 w-px bg-gray-200" />
+
+              <div className="flex items-center gap-2">
+
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F8E7A8] text-xs">
+                  ✓
+                </span>
+
+                <span className="text-xs font-bold">
+                  Secure payment
+                </span>
+
+              </div>
+
+              <div className="h-5 w-px bg-gray-200" />
+
+              <div className="flex items-center gap-2">
+
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F8E7A8] text-xs">
+                  ✓
+                </span>
+
+                <span className="text-xs font-bold">
+                  Trusted sellers
+                </span>
+
+              </div>
+
+              <div className="h-5 w-px bg-gray-200" />
+
+              <div className="flex items-center gap-2">
+
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F8E7A8] text-xs">
+                  ✓
+                </span>
+
+                <span className="text-xs font-bold">
+                  Reliable delivery
+                </span>
+
+              </div>
+
+              <div className="h-5 w-px bg-gray-200" />
+
+              <Link
+                href="/shop"
+                className="text-xs font-black text-[#9A7617] hover:text-black"
+              >
+                More →
+              </Link>
+
             </div>
-
-            <div className="flex min-w-max items-center gap-2 rounded-full bg-white px-4 py-2.5 shadow-sm ring-1 ring-black/5">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D4AF37]/15 text-xs">
-                ✓
-              </span>
-
-              <span className="text-xs font-bold">
-                Secure payment
-              </span>
-            </div>
-
-            <div className="flex min-w-max items-center gap-2 rounded-full bg-white px-4 py-2.5 shadow-sm ring-1 ring-black/5">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D4AF37]/15 text-xs">
-                ✓
-              </span>
-
-              <span className="text-xs font-bold">
-                Trusted sellers
-              </span>
-            </div>
-
-            <div className="flex min-w-max items-center gap-2 rounded-full bg-white px-4 py-2.5 shadow-sm ring-1 ring-black/5">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D4AF37]/15 text-xs">
-                ✓
-              </span>
-
-              <span className="text-xs font-bold">
-                Reliable delivery
-              </span>
-            </div>
-
-            <Link
-              href="/shop"
-              className="flex min-w-max items-center rounded-full bg-black px-4 py-2.5 text-xs font-black text-white transition hover:bg-[#D4AF37] hover:text-black"
-            >
-              More →
-            </Link>
 
           </div>
+
         </div>
       </section>
 
       {/* =====================================================
-          SHOPPING TABS
+          DISCOVERY SECTION
           ===================================================== */}
 
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+      <section className="bg-[#F8F7F3] px-4 pb-5 pt-7 sm:px-6 lg:px-8">
 
-          <div className="flex items-end justify-between gap-4">
+        <div className="mx-auto max-w-7xl">
 
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#A67C00]">
-                Discover
-              </p>
+          <div className="mb-4">
 
-              <h2 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">
-                Find your next favorite
-              </h2>
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[#A67C00]">
+              Discover
+            </p>
+
+            <h2 className="mt-1 text-2xl font-black sm:text-3xl">
+              Find your next favorite
+            </h2>
+
+          </div>
+
+          {/* SHOPPING TABS */}
+          <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+
+            <div className="flex min-w-max gap-2">
+
+              {shoppingTabs.map(
+                (tab) => {
+
+                  const active =
+                    activeTab ===
+                    tab;
+
+                  return (
+                    <button
+                      key={tab}
+                      type="button"
+                      onClick={() =>
+                        setActiveTab(
+                          tab
+                        )
+                      }
+                      className={`rounded-full px-5 py-2.5 text-xs font-black transition ${
+                        active
+                          ? "bg-gradient-to-r from-[#9A7617] via-[#D4AF37] to-[#F5D76E] text-black shadow-md"
+                          : "border border-black/10 bg-white text-gray-600 hover:border-[#D4AF37] hover:text-black"
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  );
+                }
+              )}
+
             </div>
 
-            <Link
-              href="/shop"
-              className="hidden text-sm font-black text-[#A67C00] sm:block"
-            >
-              Browse marketplace →
-            </Link>
-
           </div>
 
-          {/* TABS */}
-          <div className="mt-5 flex gap-2 overflow-x-auto border-b border-black/10 pb-0 scrollbar-hide">
-
-            {shoppingTabs.map(
-              (tab) => {
-                const isActive =
-                  activeTab === tab;
-
-                return (
-                  <button
-                    key={tab}
-                    type="button"
-                    onClick={() =>
-                      setActiveTab(
-                        tab
-                      )
-                    }
-                    className={`relative shrink-0 px-3 pb-3 text-xs font-black transition sm:px-4 ${
-                      isActive
-                        ? "text-black"
-                        : "text-gray-400 hover:text-black"
-                    }`}
-                  >
-                    {tab}
-
-                    {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-[#D4AF37]" />
-                    )}
-                  </button>
-                );
-              }
-            )}
-
-          </div>
         </div>
       </section>
 
       {/* =====================================================
-          PRODUCT MARKETPLACE
+          FEATURED PRODUCTS
           ===================================================== */}
 
       <section
         id="products"
-        className="bg-white px-4 py-6 sm:px-6 sm:py-10 lg:px-8"
+        className="bg-[#F8F7F3] px-4 pb-12 pt-5 sm:px-6 sm:pb-16 lg:px-8"
       >
+
         <div className="mx-auto max-w-7xl">
 
           {/* SECTION HEADER */}
-          <div className="mb-5 flex items-center justify-between">
+          <div className="mb-6 flex items-end justify-between">
 
             <div>
-              <p className="text-xs font-bold text-gray-400">
-                {activeTab === "All"
-                  ? "Handpicked for you"
-                  : activeTab}
+
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[#A67C00]">
+                Handpicked for you
               </p>
 
-              <h3 className="mt-0.5 text-lg font-black sm:text-xl">
-                {activeTab ===
-                "Deals"
-                  ? "Today's deals"
-                  : activeTab ===
-                    "5-Star Rated"
-                  ? "Top rated"
-                  : activeTab ===
-                    "Best Selling"
-                  ? "Popular picks"
-                  : activeTab ===
-                    "New Arrivals"
-                  ? "Fresh arrivals"
-                  : "Featured products"}
-              </h3>
+              <h2 className="mt-1 text-2xl font-black sm:text-3xl">
+                Featured products
+              </h2>
+
             </div>
 
             <Link
               href="/shop"
-              className="rounded-full border border-black/10 px-4 py-2 text-xs font-black transition hover:border-[#D4AF37] hover:bg-[#D4AF37]"
+              className="text-xs font-black text-[#9A7617] transition hover:text-black sm:text-sm"
             >
-              See all
+              See all →
             </Link>
 
           </div>
 
-          {/* LOADING STATE */}
+          {/* LOADING */}
           {loadingProducts && (
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="rounded-3xl border border-black/5 bg-white p-10 text-center shadow-sm">
 
-              {Array.from({
-                length: 8,
-              }).map(
-                (_, index) => (
-                  <div
-                    key={index}
-                    className="overflow-hidden rounded-2xl border border-black/5 bg-white"
-                  >
-                    <div className="h-44 animate-pulse bg-gray-100 sm:h-52" />
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#F8E7A8]/50 text-2xl">
+                📦
+              </div>
 
-                    <div className="space-y-3 p-3">
+              <p className="mt-4 text-sm font-black">
+                Loading products...
+              </p>
 
-                      <div className="h-3 w-1/3 animate-pulse rounded bg-gray-100" />
-
-                      <div className="h-4 w-full animate-pulse rounded bg-gray-100" />
-
-                      <div className="h-4 w-2/3 animate-pulse rounded bg-gray-100" />
-
-                      <div className="h-7 w-1/2 animate-pulse rounded bg-gray-100" />
-
-                    </div>
-                  </div>
-                )
-              )}
+              <p className="mt-1 text-xs text-gray-500">
+                Finding something great for you.
+              </p>
 
             </div>
           )}
 
-          {/* EMPTY STATE */}
+          {/* EMPTY */}
           {!loadingProducts &&
             displayedProducts.length ===
               0 && (
-              <div className="rounded-3xl border border-black/10 bg-[#F8F7F3] px-6 py-14 text-center">
+              <div className="rounded-3xl border border-black/5 bg-white p-10 text-center shadow-sm">
 
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-black text-2xl">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#F8E7A8]/50 text-2xl">
                   📦
                 </div>
 
-                <h3 className="mt-5 text-lg font-black">
-                  No products found
-                </h3>
+                <p className="mt-4 text-sm font-black">
+                  No products available yet.
+                </p>
 
-                <p className="mx-auto mt-2 max-w-sm text-sm text-gray-500">
-                  We couldn't find products
-                  for this selection yet.
-                  Explore the full GoldMart
-                  marketplace instead.
+                <p className="mt-1 text-xs text-gray-500">
+                  Check back soon for new products.
                 </p>
 
                 <Link
                   href="/shop"
-                  className="mt-6 inline-flex rounded-full bg-black px-6 py-3 text-sm font-black text-white transition hover:bg-[#D4AF37] hover:text-black"
+                  className="mt-5 inline-flex rounded-full bg-black px-6 py-3 text-xs font-black text-white transition hover:bg-[#D4AF37] hover:text-black"
                 >
-                  Browse all products →
+                  Browse Marketplace
                 </Link>
 
               </div>
             )}
 
-          {/* =================================================
-              PRODUCT GRID
-              ================================================= */}
-
+          {/* PRODUCT GRID */}
           {!loadingProducts &&
             displayedProducts.length >
               0 && (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
 
                 {displayedProducts.map(
                   (product) => {
@@ -929,21 +869,17 @@ export default function Home() {
                           0
                       );
 
-                    const stock =
+                    const inStock =
                       Number(
-                        product.stock || 0
-                      );
-
-                    const isLowStock =
-                      stock > 0 &&
-                      stock <= 5;
+                        product.stock
+                      ) > 0;
 
                     return (
                       <article
                         key={
                           product.id
                         }
-                        className="group relative overflow-hidden rounded-2xl border border-black/8 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/50 hover:shadow-xl"
+                        className="group overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/50 hover:shadow-xl sm:rounded-3xl"
                       >
 
                         {/* PRODUCT IMAGE */}
@@ -951,7 +887,8 @@ export default function Home() {
                           href={`/product/${product.id}`}
                           className="block"
                         >
-                          <div className="relative h-44 overflow-hidden bg-[#F5F5F3] sm:h-56">
+
+                          <div className="relative aspect-square overflow-hidden bg-[#F5F4F0]">
 
                             {product.image_url ? (
                               <Image
@@ -972,34 +909,41 @@ export default function Home() {
                             )}
 
                             {/* GOLDMART BADGE */}
-                            <div className="absolute left-2 top-2 rounded-full bg-black px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-[#D4AF37] shadow-lg">
+                            <div className="absolute left-2 top-2 rounded-full bg-black/90 px-2 py-1 text-[8px] font-black text-[#F5D76E] backdrop-blur sm:left-3 sm:top-3 sm:px-2.5">
                               GoldMart
                             </div>
 
-                            {/* STOCK BADGE */}
-                            {isLowStock && (
-                              <div className="absolute bottom-2 left-2 rounded-full bg-white/95 px-2.5 py-1 text-[9px] font-black text-black shadow">
-                                Only {stock} left
-                              </div>
-                            )}
+                            {/* STOCK */}
+                            <div
+                              className={`absolute bottom-2 left-2 rounded-full px-2 py-1 text-[8px] font-black backdrop-blur sm:bottom-3 sm:left-3 ${
+                                inStock
+                                  ? "bg-white/90 text-black"
+                                  : "bg-red-500 text-white"
+                              }`}
+                            >
+                              {inStock
+                                ? "In stock"
+                                : "Out of stock"}
+                            </div>
 
                           </div>
+
                         </Link>
 
-                        {/* PRODUCT DETAILS */}
+                        {/* PRODUCT INFO */}
                         <div className="p-3 sm:p-4">
 
                           {/* CATEGORY */}
-                          <p className="truncate text-[9px] font-black uppercase tracking-wider text-[#A67C00]">
+                          <p className="truncate text-[9px] font-black uppercase tracking-wider text-[#9A7617]">
                             {product.category_name ||
                               "Marketplace"}
                           </p>
 
-                          {/* PRODUCT NAME */}
+                          {/* NAME */}
                           <Link
                             href={`/product/${product.id}`}
                           >
-                            <h3 className="mt-1 line-clamp-2 min-h-[36px] text-sm font-bold leading-5 transition hover:text-[#A67C00] sm:text-[15px]">
+                            <h3 className="mt-1 line-clamp-2 min-h-[2.5rem] text-sm font-black leading-5 transition hover:text-[#9A7617] sm:text-base">
                               {
                                 product.name
                               }
@@ -1008,7 +952,7 @@ export default function Home() {
 
                           {/* DESCRIPTION */}
                           {product.description && (
-                            <p className="mt-1 line-clamp-1 text-[11px] text-gray-400">
+                            <p className="mt-1 hidden line-clamp-2 text-xs leading-5 text-gray-500 sm:block">
                               {
                                 product.description
                               }
@@ -1022,46 +966,39 @@ export default function Home() {
                               ⭐
                             </span>
 
-                            <span className="text-[11px] font-black">
+                            <span className="text-[10px] font-black text-gray-700 sm:text-xs">
                               {rating.toFixed(
                                 1
                               )}
                             </span>
 
-                            <span className="text-[10px] text-gray-400">
+                            <span className="text-[9px] text-gray-400">
                               / 5
                             </span>
 
                           </div>
 
                           {/* PRICE */}
-                          <div className="mt-2 flex items-end justify-between gap-2">
+                          <div className="mt-2">
 
-                            <span className="text-base font-black text-[#A67C00] sm:text-lg">
+                            <span className="bg-gradient-to-r from-[#8A6510] via-[#D4AF37] to-[#9A7617] bg-clip-text text-base font-black text-transparent sm:text-lg">
                               {formatPrice(
                                 product.price,
                                 product.currency
                               )}
                             </span>
 
-                            {stock > 0 ? (
-                              <span className="text-[9px] font-bold text-gray-400">
-                                In stock
-                              </span>
-                            ) : (
-                              <span className="text-[9px] font-black text-red-500">
-                                Out of stock
-                              </span>
-                            )}
-
                           </div>
 
-                          {/* ADD TO CART */}
+                          {/* CART */}
                           <div className="mt-3">
+
                             <AddToCartButton
                               product={{
-                                id: product.id,
-                                name: product.name,
+                                id:
+                                  product.id,
+                                name:
+                                  product.name,
                                 price:
                                   formatPrice(
                                     product.price,
@@ -1072,6 +1009,7 @@ export default function Home() {
                                   "/images/placeholder.png",
                               }}
                             />
+
                           </div>
 
                         </div>
@@ -1084,116 +1022,96 @@ export default function Home() {
               </div>
             )}
 
-          {/* MOBILE VIEW ALL */}
-          <div className="mt-6 text-center sm:hidden">
+          {/* VIEW ALL */}
+          {!loadingProducts &&
+            products.length >
+              8 && (
+              <div className="mt-8 text-center">
 
-            <Link
-              href="/shop"
-              className="inline-flex rounded-full border border-black px-6 py-3 text-xs font-black transition hover:bg-black hover:text-white"
-            >
-              View all products →
-            </Link>
+                <Link
+                  href="/shop"
+                  className="inline-flex rounded-full border border-black/10 bg-white px-7 py-3 text-xs font-black transition hover:border-[#D4AF37] hover:bg-[#D4AF37]"
+                >
+                  View all products →
+                </Link>
 
-          </div>
+              </div>
+            )}
 
         </div>
       </section>
 
       {/* =====================================================
-          FEATURED MARKETPLACE BANNER
+          GOLDMART DEALS
           ===================================================== */}
 
       <section
         id="deals"
-        className="px-4 py-8 sm:px-6 lg:px-8"
+        className="px-4 py-8 sm:px-6 sm:py-12 lg:px-8"
       >
-        <div className="mx-auto max-w-7xl">
 
-          <div className="relative overflow-hidden rounded-[2rem] bg-black px-6 py-10 text-white shadow-2xl sm:px-10 sm:py-14">
+               <div className="mx-auto max-w-7xl">
 
-            {/* DECORATIVE GOLD CIRCLES */}
-            <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full border border-[#D4AF37]/20" />
+          <div className="relative overflow-hidden rounded-[2rem] bg-black p-7 shadow-2xl sm:p-10 lg:p-14">
 
-            <div className="pointer-events-none absolute -right-6 -top-10 h-44 w-44 rounded-full border border-[#D4AF37]/10" />
+            {/* GOLD GLOW */}
+            <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#D4AF37]/20 blur-3xl" />
 
-            <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 left-1/3 h-64 w-64 rounded-full bg-[#D4AF37]/10 blur-3xl" />
 
-            <div className="relative grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+            {/* GOLD RING */}
+            <div className="pointer-events-none absolute right-8 top-8 hidden h-32 w-32 rounded-full border border-[#D4AF37]/20 sm:block" />
 
-              <div>
+            <div className="relative max-w-2xl">
 
-                <div className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-[#D4AF37]">
-                  <span>✦</span>
-                  GoldMart Exclusive
-                </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-[#F5D76E]">
 
-                <h2 className="mt-4 max-w-xl text-3xl font-black leading-tight sm:text-4xl">
-                  Great products.
-                  <br />
-                  <span className="text-[#D4AF37]">
-                    Better shopping.
-                  </span>
-                </h2>
-
-                <p className="mt-4 max-w-xl text-sm leading-6 text-gray-400">
-                  Explore the GoldMart
-                  marketplace and discover
-                  products from sellers
-                  around the world.
-                </p>
-
-                <div className="mt-6 flex flex-wrap gap-3">
-
-                  <Link
-                    href="/shop"
-                    className="rounded-full bg-[#D4AF37] px-6 py-3 text-sm font-black text-black transition hover:bg-white"
-                  >
-                    Explore Marketplace →
-                  </Link>
-
-                  {!user && (
-                    <Link
-                      href="/register"
-                      className="rounded-full border border-white/20 px-6 py-3 text-sm font-bold text-white transition hover:border-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
-                    >
-                      Join GoldMart
-                    </Link>
-                  )}
-
-                </div>
+                ✦ GoldMart Exclusive
 
               </div>
 
-              {/* GOLDMARK */}
-              <div className="hidden h-36 w-36 items-center justify-center rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/5 md:flex">
+              <h2 className="mt-4 text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
 
-                <div className="text-center">
+                Great products.
 
-                  <div className="text-4xl font-black text-[#D4AF37]">
-                    G
-                  </div>
+                <br />
 
-                  <div className="mt-1 text-[8px] font-black uppercase tracking-[0.25em] text-gray-400">
-                    GoldMart
-                  </div>
+                <span className="bg-gradient-to-r from-[#9A7617] via-[#F5D76E] to-[#D4AF37] bg-clip-text text-transparent">
+                  Better shopping.
+                </span>
 
-                </div>
+              </h2>
 
-              </div>
+              <p className="mt-4 max-w-xl text-sm leading-6 text-gray-400 sm:text-base">
+                Explore the GoldMart
+                marketplace and discover
+                products from sellers
+                around the world.
+              </p>
+
+              <Link
+                href="/shop"
+                className="mt-6 inline-flex rounded-full bg-gradient-to-r from-[#9A7617] via-[#D4AF37] to-[#F5D76E] px-7 py-3.5 text-sm font-black text-black shadow-lg shadow-[#D4AF37]/20 transition hover:scale-[1.02]"
+              >
+                Explore Marketplace →
+              </Link>
 
             </div>
 
           </div>
 
         </div>
+
       </section>
-            {/* =====================================================
+             {/* =====================================================
           TRUST & SERVICE
           ===================================================== */}
 
       <section className="bg-[#F8F7F3] px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+
         <div className="mx-auto max-w-7xl">
 
+          {/* HEADER */}
           <div className="mb-7 text-center">
 
             <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[#A67C00]">
@@ -1204,21 +1122,25 @@ export default function Home() {
               Shop with confidence
             </h2>
 
-            <p className="mx-auto mt-2 max-w-xl text-sm text-gray-500">
-              A modern marketplace built around
-              convenient shopping, trusted sellers
-              and a better customer experience.
+            <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-gray-500">
+              A modern marketplace built
+              around convenient shopping,
+              trusted sellers and a better
+              customer experience.
             </p>
 
           </div>
 
+          {/* TRUST CARDS */}
           <div className="grid gap-3 sm:grid-cols-3 sm:gap-5">
 
             {/* SECURE */}
-            <div className="group rounded-3xl border border-black/5 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/40 hover:shadow-lg sm:p-7">
+            <div className="group rounded-3xl border border-black/5 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/50 hover:shadow-xl sm:p-7">
 
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-xl transition group-hover:bg-[#D4AF37]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-xl shadow-md transition duration-300 group-hover:bg-gradient-to-br group-hover:from-[#9A7617] group-hover:via-[#D4AF37] group-hover:to-[#F5D76E]">
+
                 🔒
+
               </div>
 
               <h3 className="mt-4 font-black">
@@ -1226,18 +1148,21 @@ export default function Home() {
               </h3>
 
               <p className="mt-2 text-xs leading-5 text-gray-500 sm:text-sm">
-                Your GoldMart account and
-                shopping experience are designed
-                with security in mind.
+                Your GoldMart account
+                and shopping experience
+                are designed with security
+                in mind.
               </p>
 
             </div>
 
             {/* DELIVERY */}
-            <div className="group rounded-3xl border border-black/5 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/40 hover:shadow-lg sm:p-7">
+            <div className="group rounded-3xl border border-black/5 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/50 hover:shadow-xl sm:p-7">
 
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-xl transition group-hover:bg-[#D4AF37]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-xl shadow-md transition duration-300 group-hover:bg-gradient-to-br group-hover:from-[#9A7617] group-hover:via-[#D4AF37] group-hover:to-[#F5D76E]">
+
                 🚚
+
               </div>
 
               <h3 className="mt-4 font-black">
@@ -1245,28 +1170,31 @@ export default function Home() {
               </h3>
 
               <p className="mt-2 text-xs leading-5 text-gray-500 sm:text-sm">
-                Shop products from marketplace
-                sellers and manage your orders
-                through GoldMart.
+                Shop products from
+                marketplace sellers and
+                manage your orders through
+                GoldMart.
               </p>
 
             </div>
 
-            {/* TRUST */}
-            <div className="group rounded-3xl border border-black/5 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/40 hover:shadow-lg sm:p-7">
+            {/* TRUSTED SELLERS */}
+            <div className="group rounded-3xl border border-black/5 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/50 hover:shadow-xl sm:p-7">
 
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-xl transition group-hover:bg-[#D4AF37]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-xl shadow-md transition duration-300 group-hover:bg-gradient-to-br group-hover:from-[#9A7617] group-hover:via-[#D4AF37] group-hover:to-[#F5D76E]">
+
                 ⭐
+
               </div>
 
               <h3 className="mt-4 font-black">
-                Trusted Marketplace
+                Trusted Sellers
               </h3>
 
               <p className="mt-2 text-xs leading-5 text-gray-500 sm:text-sm">
-                Discover products from sellers
-                and explore ratings as your
-                marketplace grows.
+                Discover products from
+                sellers and explore ratings
+                as the marketplace grows.
               </p>
 
             </div>
@@ -1274,6 +1202,7 @@ export default function Home() {
           </div>
 
         </div>
+
       </section>
 
       {/* =====================================================
@@ -1287,18 +1216,22 @@ export default function Home() {
 
             <div className="relative overflow-hidden rounded-[2rem] border border-black/10 bg-white p-7 shadow-sm sm:p-10">
 
-              {/* GOLD DECORATION */}
-              <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+              {/* GOLD GLOW */}
+              <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#D4AF37]/15 blur-3xl" />
+
+              <div className="pointer-events-none absolute -bottom-20 left-1/3 h-40 w-40 rounded-full bg-[#D4AF37]/10 blur-3xl" />
 
               <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
 
                 <div className="max-w-2xl">
 
-                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[#A67C00]">
-                    Grow with GoldMart
-                  </p>
+                  <div className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-[#9A7617]">
 
-                  <h2 className="mt-2 text-2xl font-black sm:text-3xl">
+                    ✦ Grow with GoldMart
+
+                  </div>
+
+                  <h2 className="mt-4 text-2xl font-black sm:text-3xl">
                     Have something to sell?
                   </h2>
 
@@ -1311,7 +1244,7 @@ export default function Home() {
 
                 <Link
                   href="/register"
-                  className="inline-flex shrink-0 items-center justify-center rounded-full bg-black px-7 py-3.5 text-sm font-black text-white transition hover:bg-[#D4AF37] hover:text-black"
+                  className="inline-flex shrink-0 items-center justify-center rounded-full bg-black px-7 py-3.5 text-sm font-black text-white shadow-lg transition hover:bg-gradient-to-r hover:from-[#9A7617] hover:via-[#D4AF37] hover:to-[#F5D76E] hover:text-black"
                 >
                   Create your account →
                 </Link>
@@ -1342,12 +1275,17 @@ export default function Home() {
                 href="/"
                 className="inline-block"
               >
+
                 <div className="text-3xl font-black tracking-tight">
+
                   Gold
-                  <span className="text-[#D4AF37]">
+
+                  <span className="bg-gradient-to-r from-[#9A7617] via-[#F5D76E] to-[#D4AF37] bg-clip-text text-transparent">
                     Mart
                   </span>
+
                 </div>
+
               </Link>
 
               <p className="mt-3 max-w-xs text-sm leading-6 text-gray-400">
@@ -1356,8 +1294,10 @@ export default function Home() {
                 trusted sellers.
               </p>
 
-              <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-[#D4AF37]">
+              <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-[#F5D76E]">
+
                 ✦ Shop the world
+
               </div>
 
             </div>
@@ -1365,7 +1305,7 @@ export default function Home() {
             {/* SHOP */}
             <div>
 
-              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#D4AF37]">
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#F5D76E]">
                 Shop
               </h3>
 
@@ -1406,7 +1346,7 @@ export default function Home() {
             {/* ACCOUNT */}
             <div>
 
-              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#D4AF37]">
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#F5D76E]">
                 Account
               </h3>
 
@@ -1414,6 +1354,7 @@ export default function Home() {
 
                 {user ? (
                   <>
+
                     <Link
                       href="/account"
                       className="block text-sm text-gray-400 transition hover:text-white"
@@ -1428,15 +1369,10 @@ export default function Home() {
                       My Orders
                     </Link>
 
-                    <Link
-                      href="/notifications"
-                      className="block text-sm text-gray-400 transition hover:text-white"
-                    >
-                      Notifications
-                    </Link>
                   </>
                 ) : (
                   <>
+
                     <Link
                       href="/login"
                       className="block text-sm text-gray-400 transition hover:text-white"
@@ -1450,6 +1386,7 @@ export default function Home() {
                     >
                       Create Account
                     </Link>
+
                   </>
                 )}
 
@@ -1457,10 +1394,10 @@ export default function Home() {
 
             </div>
 
-            {/* SELL */}
+            {/* GOLDMART */}
             <div>
 
-              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#D4AF37]">
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#F5D76E]">
                 GoldMart
               </h3>
 
@@ -1508,26 +1445,40 @@ export default function Home() {
           <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
 
             <p className="text-xs text-gray-500">
-              © 2026 GoldMart. All rights reserved.
+              © 2026 GoldMart.
+              All rights reserved.
             </p>
 
             <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500">
-              <span>BLACK</span>
-              <span>•</span>
+
+              <span>
+                BLACK
+              </span>
+
+              <span>
+                •
+              </span>
+
               <span className="text-[#D4AF37]">
                 GOLD
               </span>
-              <span>•</span>
-              <span>WHITE</span>
+
+              <span>
+                •
+              </span>
+
+              <span>
+                WHITE
+              </span>
+
             </div>
 
           </div>
 
         </div>
 
-      </footer>
-
-      {/* =====================================================
+      </footer> 
+              {/* =====================================================
           MOBILE BOTTOM NAVIGATION
           ===================================================== */}
 
@@ -1538,8 +1489,11 @@ export default function Home() {
           {/* HOME */}
           <Link
             href="/"
-            className="flex flex-col items-center justify-center gap-1 px-2 py-3 text-[10px] font-black text-black"
+            className="relative flex flex-col items-center justify-center gap-1 px-2 py-3 text-[10px] font-black text-black"
           >
+
+            <span className="absolute top-0 h-0.5 w-10 rounded-full bg-gradient-to-r from-[#9A7617] via-[#D4AF37] to-[#F5D76E]" />
+
             <span className="text-lg">
               🏠
             </span>
@@ -1547,6 +1501,7 @@ export default function Home() {
             <span>
               Home
             </span>
+
           </Link>
 
           {/* CATEGORIES */}
@@ -1554,6 +1509,7 @@ export default function Home() {
             href="#categories"
             className="flex flex-col items-center justify-center gap-1 px-2 py-3 text-[10px] font-bold text-gray-500 transition hover:text-black"
           >
+
             <span className="text-lg">
               ☷
             </span>
@@ -1561,6 +1517,7 @@ export default function Home() {
             <span>
               Categories
             </span>
+
           </a>
 
           {/* YOU */}
@@ -1572,6 +1529,7 @@ export default function Home() {
             }
             className="flex flex-col items-center justify-center gap-1 px-2 py-3 text-[10px] font-bold text-gray-500 transition hover:text-black"
           >
+
             <span className="text-lg">
               👤
             </span>
@@ -1579,6 +1537,7 @@ export default function Home() {
             <span>
               You
             </span>
+
           </Link>
 
           {/* CART */}
@@ -1586,11 +1545,12 @@ export default function Home() {
             href="/cart"
             className="relative flex flex-col items-center justify-center gap-1 px-2 py-3 text-[10px] font-bold text-gray-500 transition hover:text-black"
           >
+
             <span className="relative text-lg">
 
               🛒
 
-              <span className="absolute -right-2 -top-1 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-[#D4AF37] px-1 text-[7px] font-black text-black">
+              <span className="absolute -right-2 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-gradient-to-r from-[#9A7617] via-[#D4AF37] to-[#F5D76E] px-1 text-[8px] font-black text-black shadow-sm">
                 +
               </span>
 
@@ -1599,6 +1559,7 @@ export default function Home() {
             <span>
               Cart
             </span>
+
           </Link>
 
         </div>
@@ -1607,4 +1568,4 @@ export default function Home() {
 
     </main>
   );
-          }
+      }
