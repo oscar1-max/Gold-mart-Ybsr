@@ -1,122 +1,94 @@
 "use client";
 
 import { useState } from "react";
-import { useCart } from "./CartProvider";
+
+type Product = {
+  id: number;
+  name: string;
+  price: string | number;
+  image_url?: string | null;
+  stock?: number;
+};
+
+export type AddToCartButtonProps = {
+  product: Product;
+  disabled?: boolean;
+};
 
 const API_URL =
   "https://goldmart-backend-yoxc.onrender.com";
 
-type AddToCartButtonProps = {
-  product: {
-    id: number;
-    name: string;
-    price: string | number;
-    image: string;
-    currency?: string;
-  };
-};
-
 export default function AddToCartButton({
   product,
+  disabled = false,
 }: AddToCartButtonProps) {
-  const { addToCart } = useCart();
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const [message, setMessage] =
-    useState("");
+  const [adding, setAdding] = useState(false);
+  const [message, setMessage] = useState("");
 
   async function handleAddToCart() {
+    if (adding || disabled || product.stock === 0) {
+      return;
+    }
+
+    const savedUser =
+      localStorage.getItem("goldmart_user");
+
+    if (!savedUser) {
+      window.location.href = "/login";
+      return;
+    }
+
+    let user;
+
     try {
-      setLoading(true);
+      user = JSON.parse(savedUser);
+    } catch {
+      window.location.href = "/login";
+      return;
+    }
+
+    if (!user?.id) {
+      window.location.href = "/login";
+      return;
+    }
+
+    try {
+      setAdding(true);
       setMessage("");
-
-      const token =
-        localStorage.getItem(
-          "goldmart_token"
-        );
-
-      if (!token) {
-        setMessage(
-          "Please log in before adding products to your cart."
-        );
-        return;
-      }
-
-      // =====================================================
-      // PREPARE PRODUCT FOR FRONTEND CART
-      // =====================================================
-
-      const cartProduct = {
-        id: product.id,
-        name: product.name,
-        price: String(product.price),
-        image: product.image,
-        currency:
-          String(
-            product.currency || "USD"
-          ).toUpperCase(),
-      };
-
-      // =====================================================
-      // ADD TO FRONTEND CART
-      // =====================================================
-
-      addToCart(cartProduct);
-
-      // =====================================================
-      // ADD TO BACKEND CART
-      // =====================================================
 
       const response = await fetch(
         `${API_URL}/api/cart`,
         {
           method: "POST",
-
           headers: {
-            "Content-Type":
-              "application/json",
-
-            Authorization:
-              `Bearer ${token}`,
-
-            Accept:
-              "application/json",
+            "Content-Type": "application/json",
           },
-
           body: JSON.stringify({
-            productId:
-              product.id,
-
+            user_id: user.id,
+            product_id: product.id,
             quantity: 1,
           }),
         }
       );
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
-      if (
-        !response.ok ||
-        !data.success
-      ) {
-        console.error(
-          "Backend cart error:",
-          data
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+            "Unable to add product to cart"
         );
-
-        setMessage(
-          data.message ||
-            "Product was added locally but could not be saved to your account."
-        );
-
-        return;
       }
 
-      setMessage(
-        "Added to cart ✓"
+      setMessage("Added ✓");
+
+      window.dispatchEvent(
+        new Event("goldmart-cart-updated")
       );
+
+      setTimeout(() => {
+        setMessage("");
+      }, 1800);
     } catch (error) {
       console.error(
         "Add to cart error:",
@@ -124,37 +96,45 @@ export default function AddToCartButton({
       );
 
       setMessage(
-        "Could not add product to cart."
+        error instanceof Error
+          ? error.message
+          : "Unable to add to cart"
       );
+
+      setTimeout(() => {
+        setMessage("");
+      }, 2500);
     } finally {
-      setLoading(false);
+      setAdding(false);
     }
   }
 
-  return (
-    <div className="mt-4">
-      <button
-        type="button"
-        onClick={handleAddToCart}
-        disabled={loading}
-        className="w-full rounded-xl bg-black py-2.5 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {loading
-          ? "Adding..."
-          : "Add to Cart"}
-      </button>
+  const unavailable =
+    disabled ||
+    product.stock === 0;
 
-      {message && (
-        <p
-          className={`mt-2 text-center text-xs font-semibold ${
-            message.includes("✓")
-              ? "text-green-600"
-              : "text-red-500"
-          }`}
-        >
-          {message}
-        </p>
-      )}
-    </div>
+  return (
+    <button
+      type="button"
+      onClick={handleAddToCart}
+      disabled={adding || unavailable}
+      className={`w-full rounded-full px-3 py-2.5 text-xs font-bold transition ${
+        unavailable
+          ? "cursor-not-allowed bg-gray-200 text-gray-500"
+          : adding
+          ? "bg-gray-800 text-white"
+          : message === "Added ✓"
+          ? "bg-green-600 text-white"
+          : "bg-black text-white active:scale-95"
+      }`}
+    >
+      {adding
+        ? "Adding..."
+        : message
+        ? message
+        : unavailable
+        ? "Sold out"
+        : "Add to cart"}
+    </button>
   );
-}
+      }
