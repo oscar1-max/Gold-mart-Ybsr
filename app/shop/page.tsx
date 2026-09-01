@@ -1,4 +1,4 @@
-"use client";
+p"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -664,21 +664,14 @@ export default function ShopPage() {
                           */}
 
                           <AddToCartButton
-                            product={{
-                              id: product.id,
-                              name:
-                                product.name,
-                              price:
-                                String(
-                                  product.price
-                                ),
-                              image_url:
-  product.image_url,
-                              currency:
-                                product.currency ||
-                                "USD",
-                            }}
-                          />
+  product={{
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image_url: product.image,
+    stock: 1,
+  }}
+/>
 
                         </div>
 
@@ -695,4 +688,4 @@ export default function ShopPage() {
       </div>
     </main>
   );
-                  }
+}
