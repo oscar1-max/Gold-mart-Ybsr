@@ -672,8 +672,8 @@ export default function ShopPage() {
                                 String(
                                   product.price
                                 ),
-                              image:
-                                product.image,
+                              image_url:
+  product.image_url,
                               currency:
                                 product.currency ||
                                 "USD",
