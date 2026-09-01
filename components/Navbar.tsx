@@ -74,13 +74,6 @@ export default function Navbar() {
             Shop
           </Link>
 
-          <Link
-            href="/categories"
-            className="font-medium hover:text-yellow-600"
-          >
-            Categories
-          </Link>
-
           {user?.role === "seller" ? (
             <Link
               href="/seller"
