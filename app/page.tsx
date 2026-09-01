@@ -793,11 +793,17 @@ export default function Home() {
                     <div className="mt-3">
 
                       <AddToCartButton
-                        productId={product.id}
-                        disabled={
-                          product.stock <= 0
-                        }
-                      />
+  product={{
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image_url: product.image_url,
+    stock: product.stock,
+  }}
+  disabled={
+    product.stock <= 0
+  }
+/>
 
                     </div>
 
