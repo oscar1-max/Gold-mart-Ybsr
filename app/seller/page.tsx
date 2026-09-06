@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const API_URL = "https://goldmart-backend-yoxc.onrender.com";
+const API_URL =
+  "https://goldmart-backend-yoxc.onrender.com";
 
 type Product = {
   id: number;
@@ -21,23 +22,99 @@ type SellerStats = {
 };
 
 export default function SellerDashboard() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [stats, setStats] = useState<SellerStats>({
-    products: 0,
-    orders: 0,
-    sales: 0,
-  });
+  const [products, setProducts] =
+    useState<Product[]>([]);
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [stats, setStats] =
+    useState<SellerStats>({
+      products: 0,
+      orders: 0,
+      sales: 0,
+    });
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  const [switching, setSwitching] =
+    useState(false);
+
+  const handleSwitchToBuyer =
+    async () => {
+      try {
+        setSwitching(true);
+        setError("");
+
+        const token =
+          localStorage.getItem(
+            "goldmart_token"
+          );
+
+        if (!token) {
+          window.location.href =
+            "/login";
+          return;
+        }
+
+        const response = await fetch(
+          `${API_URL}/api/auth/switch-role`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+          }
+        );
+
+        const data =
+          await response.json();
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+          throw new Error(
+            data.message ||
+              "Failed to switch to buyer mode."
+          );
+        }
+
+        localStorage.setItem(
+          "goldmart_user",
+          JSON.stringify(data.user)
+        );
+
+        localStorage.setItem(
+          "goldmart_token",
+          data.token
+        );
+
+        window.location.href = "/";
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Failed to switch to buyer mode."
+        );
+
+        setSwitching(false);
+      }
+    };
 
   useEffect(() => {
     async function loadDashboard() {
       try {
-        const token = localStorage.getItem("goldmart_token");
+        const token =
+          localStorage.getItem(
+            "goldmart_token"
+          );
 
         if (!token) {
-          window.location.href = "/login";
+          window.location.href =
+            "/login";
           return;
         }
 
@@ -46,18 +123,26 @@ export default function SellerDashboard() {
           Accept: "application/json",
         };
 
-        const [productsResponse, statsResponse] =
-          await Promise.all([
-            fetch(`${API_URL}/api/seller/products`, {
+        const [
+          productsResponse,
+          statsResponse,
+        ] = await Promise.all([
+          fetch(
+            `${API_URL}/api/seller/products`,
+            {
               headers,
               cache: "no-store",
-            }),
+            }
+          ),
 
-            fetch(`${API_URL}/api/seller/stats`, {
+          fetch(
+            `${API_URL}/api/seller/stats`,
+            {
               headers,
               cache: "no-store",
-            }),
-          ]);
+            }
+          ),
+        ]);
 
         const productsData =
           await productsResponse.json();
@@ -86,20 +171,28 @@ export default function SellerDashboard() {
         }
 
         setProducts(
-          Array.isArray(productsData.products)
+          Array.isArray(
+            productsData.products
+          )
             ? productsData.products
             : []
         );
 
         setStats({
           products:
-            Number(statsData.stats?.products) || 0,
+            Number(
+              statsData.stats?.products
+            ) || 0,
 
           orders:
-            Number(statsData.stats?.orders) || 0,
+            Number(
+              statsData.stats?.orders
+            ) || 0,
 
           sales:
-            Number(statsData.stats?.sales) || 0,
+            Number(
+              statsData.stats?.sales
+            ) || 0,
         });
       } catch (err) {
         setError(
@@ -125,10 +218,11 @@ export default function SellerDashboard() {
       return "$0.00";
     }
 
-    const formatted = amount.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+    const formatted =
+      amount.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
 
     switch (currency) {
       case "USD":
@@ -153,6 +247,7 @@ export default function SellerDashboard() {
 
       {/* HEADER */}
       <header className="border-b bg-white">
+
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
 
           <Link
@@ -165,14 +260,19 @@ export default function SellerDashboard() {
             </span>
           </Link>
 
-          <Link
-            href="/"
-            className="rounded-full border px-5 py-2 text-sm font-bold transition hover:bg-gray-100"
+          <button
+            type="button"
+            onClick={handleSwitchToBuyer}
+            disabled={switching}
+            className="rounded-full border px-5 py-2 text-sm font-bold transition hover:border-[#D4AF37] hover:bg-[#FFFDF5] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            🛍️ Buyer Store
-          </Link>
+            {switching
+              ? "Switching..."
+              : "🛍️ Switch to Buyer"}
+          </button>
 
         </div>
+
       </header>
 
       {/* CONTENT */}
@@ -180,6 +280,7 @@ export default function SellerDashboard() {
 
         {/* TITLE */}
         <div>
+
           <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
             Seller Center
           </p>
@@ -189,13 +290,16 @@ export default function SellerDashboard() {
           </h1>
 
           <p className="mt-3 text-gray-500">
-            Manage your GoldMart store, products and orders.
+            Manage your GoldMart store,
+            products and orders.
           </p>
+
         </div>
 
         {/* ERROR */}
         {error && (
           <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-700">
+
             <p className="font-bold">
               Something went wrong
             </p>
@@ -203,13 +307,13 @@ export default function SellerDashboard() {
             <p className="mt-1 text-sm">
               {error}
             </p>
+
           </div>
         )}
 
         {/* STATS */}
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
-          {/* PRODUCTS */}
           <div className="rounded-2xl border bg-white p-6">
 
             <div className="text-3xl">
@@ -221,12 +325,13 @@ export default function SellerDashboard() {
             </p>
 
             <h2 className="mt-1 text-3xl font-black">
-              {loading ? "..." : stats.products}
+              {loading
+                ? "..."
+                : stats.products}
             </h2>
 
           </div>
 
-          {/* ORDERS */}
           <Link
             href="/seller/orders"
             className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-md"
@@ -241,7 +346,9 @@ export default function SellerDashboard() {
             </p>
 
             <h2 className="mt-1 text-3xl font-black">
-              {loading ? "..." : stats.orders}
+              {loading
+                ? "..."
+                : stats.orders}
             </h2>
 
             <p className="mt-2 text-xs font-bold text-[#A67C00]">
@@ -250,7 +357,6 @@ export default function SellerDashboard() {
 
           </Link>
 
-          {/* SALES */}
           <div className="rounded-2xl border bg-white p-6">
 
             <div className="text-3xl">
@@ -266,10 +372,13 @@ export default function SellerDashboard() {
                 ? "..."
                 : `₦${Number(
                     stats.sales
-                  ).toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}`}
+                  ).toLocaleString(
+                    "en-US",
+                    {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }
+                  )}`}
             </h2>
 
             <p className="mt-2 text-xs text-gray-400">
@@ -278,7 +387,6 @@ export default function SellerDashboard() {
 
           </div>
 
-          {/* RATING */}
           <div className="rounded-2xl border bg-white p-6">
 
             <div className="text-3xl">
@@ -310,7 +418,6 @@ export default function SellerDashboard() {
 
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
-            {/* PRODUCTS */}
             <Link
               href="/seller/products"
               className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
@@ -330,7 +437,6 @@ export default function SellerDashboard() {
 
             </Link>
 
-            {/* ADD PRODUCT */}
             <Link
               href="/seller/products/new"
               className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
@@ -350,7 +456,6 @@ export default function SellerDashboard() {
 
             </Link>
 
-            {/* ORDERS */}
             <Link
               href="/seller/orders"
               className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
@@ -392,7 +497,6 @@ export default function SellerDashboard() {
 
           </div>
 
-          {/* LOADING */}
           {loading && (
             <div className="mt-5 rounded-2xl border bg-white p-8 text-center">
 
@@ -407,7 +511,6 @@ export default function SellerDashboard() {
             </div>
           )}
 
-          {/* EMPTY */}
           {!loading &&
             !error &&
             products.length === 0 && (
@@ -435,7 +538,6 @@ export default function SellerDashboard() {
               </div>
             )}
 
-          {/* PRODUCT LIST */}
           {!loading &&
             !error &&
             products.length > 0 && (
@@ -449,7 +551,6 @@ export default function SellerDashboard() {
                       className="overflow-hidden rounded-2xl border bg-white"
                     >
 
-                      {/* IMAGE */}
                       {product.image_url ? (
                         <img
                           src={product.image_url}
@@ -508,8 +609,8 @@ export default function SellerDashboard() {
           </h2>
 
           <p className="mt-3 max-w-2xl text-gray-400">
-            Add products, manage your inventory and prepare
-            your store for customers.
+            Add products, manage your inventory
+            and prepare your store for customers.
           </p>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
