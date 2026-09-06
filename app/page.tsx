@@ -229,7 +229,7 @@ export default function Home() {
             className="text-xl font-black tracking-tight"
           >
             Gold
-            <span className="text-[#c99b25]">
+            <span className="text-[#d4af37]">
               Mart
             </span>
           </Link>
@@ -402,7 +402,7 @@ export default function Home() {
 
           <Link
             href="/categories"
-            className="text-sm font-semibold text-[#c99b25]"
+            className="text-sm font-semibold text-[#d4af37]"
           >
             See all →
           </Link>
@@ -420,7 +420,7 @@ export default function Home() {
               }
               className={`flex min-w-[76px] flex-col items-center gap-2 ${
                 activeCategory === category.value
-                  ? "text-[#c99b25]"
+                  ? "text-[#d4af37]"
                   : "text-gray-800"
               }`}
             >
@@ -428,7 +428,7 @@ export default function Home() {
               <span
                 className={`flex h-16 w-16 items-center justify-center rounded-full text-2xl ${
                   activeCategory === category.value
-                    ? "border-2 border-[#c99b25] bg-[#fff8e8]"
+                    ? "border-2 border-[#d4af37] bg-[#fff8e8]"
                     : "bg-[#f5f5f5]"
                 }`}
               >
@@ -563,7 +563,7 @@ export default function Home() {
 
           <Link
             href="/shop"
-            className="text-sm font-semibold text-[#c99b25]"
+            className="text-sm font-semibold text-[#d4af37]"
           >
             See all →
           </Link>
@@ -624,7 +624,7 @@ export default function Home() {
 
           <Link
             href="/shop?sort=deals"
-            className="text-sm font-semibold text-[#c99b25]"
+            className="text-sm font-semibold text-[#d4af37]"
           >
             More →
           </Link>
@@ -857,7 +857,7 @@ export default function Home() {
                 >
 
                   <Link
-                    href={`/shop/${product.id}`}
+                    href={`/product/${product.id}`}
                     className="block"
                   >
 
@@ -888,7 +888,7 @@ export default function Home() {
                   <div className="p-3">
 
                     <Link
-                      href={`/shop/${product.id}`}
+                      href={`/product/${product.id}`}
                     >
 
                       <h3 className="line-clamp-2 text-sm font-semibold">
@@ -926,7 +926,7 @@ export default function Home() {
           ================================ */}
       <section className="mt-3 bg-white px-4 py-6">
 
-        <div className="rounded-2xl bg-[#fff8e8] p-5">
+        <div className="rounded-2xl bg-[#d4af37] p-5">
 
           <div className="flex items-start gap-3">
 
@@ -1047,7 +1047,7 @@ export default function Home() {
 
           <Link
             href="/seller"
-            className="mt-4 inline-flex rounded-full bg-[#c99b25] px-5 py-3 text-sm font-black text-black"
+            className="mt-4 inline-flex rounded-full bg-[#d4af37] px-5 py-3 text-sm font-black text-black"
           >
             Become a seller →
           </Link>
@@ -1068,7 +1068,7 @@ export default function Home() {
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#c99b25]">
+            <span className="text-[#d4af37]">
               Mart
             </span>
           </Link>
@@ -1136,7 +1136,7 @@ export default function Home() {
               🏠
             </span>
 
-            <span className="text-[10px] font-bold text-[#c99b25]">
+            <span className="text-[10px] font-bold text-[#d4af37]">
               Home
             </span>
 
