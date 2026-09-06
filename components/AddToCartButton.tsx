@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useCart } from "./CartProvider";
 
 type Product = {
   id: number;
@@ -8,6 +9,7 @@ type Product = {
   price: string | number;
   image_url?: string | null;
   stock?: number;
+  currency?: string;
 };
 
 export type AddToCartButtonProps = {
@@ -15,40 +17,35 @@ export type AddToCartButtonProps = {
   disabled?: boolean;
 };
 
-const API_URL =
-  "https://goldmart-backend-yoxc.onrender.com";
-
 export default function AddToCartButton({
   product,
   disabled = false,
 }: AddToCartButtonProps) {
-  const [adding, setAdding] = useState(false);
-  const [message, setMessage] = useState("");
+  const { addToCart } = useCart();
 
-  async function handleAddToCart() {
-    if (adding || disabled || product.stock === 0) {
+  const [adding, setAdding] =
+    useState(false);
+
+  const [message, setMessage] =
+    useState("");
+
+  function handleAddToCart() {
+    if (
+      adding ||
+      disabled ||
+      product.stock === 0
+    ) {
       return;
     }
 
-    const savedUser =
-      localStorage.getItem("goldmart_user");
+    const token =
+      localStorage.getItem(
+        "goldmart_token"
+      );
 
-    if (!savedUser) {
-      window.location.href = "/login";
-      return;
-    }
-
-    let user;
-
-    try {
-      user = JSON.parse(savedUser);
-    } catch {
-      window.location.href = "/login";
-      return;
-    }
-
-    if (!user?.id) {
-      window.location.href = "/login";
+    if (!token) {
+      window.location.href =
+        "/login";
       return;
     }
 
@@ -56,35 +53,22 @@ export default function AddToCartButton({
       setAdding(true);
       setMessage("");
 
-      const response = await fetch(
-        `${API_URL}/api/cart`,
+      addToCart(
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: user.id,
-            product_id: product.id,
-            quantity: 1,
-          }),
-        }
+          id: product.id,
+          name: product.name,
+          price: String(product.price),
+          image:
+            product.image_url ||
+            "/images/headphones.jpg",
+          currency:
+            product.currency ||
+            "USD",
+        },
+        1
       );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data?.message ||
-            "Unable to add product to cart"
-        );
-      }
 
       setMessage("Added ✓");
-
-      window.dispatchEvent(
-        new Event("goldmart-cart-updated")
-      );
 
       setTimeout(() => {
         setMessage("");
@@ -96,9 +80,7 @@ export default function AddToCartButton({
       );
 
       setMessage(
-        error instanceof Error
-          ? error.message
-          : "Unable to add to cart"
+        "Unable to add to cart"
       );
 
       setTimeout(() => {
@@ -117,7 +99,9 @@ export default function AddToCartButton({
     <button
       type="button"
       onClick={handleAddToCart}
-      disabled={adding || unavailable}
+      disabled={
+        adding || unavailable
+      }
       className={`w-full rounded-full px-3 py-2.5 text-xs font-bold transition ${
         unavailable
           ? "cursor-not-allowed bg-gray-200 text-gray-500"
@@ -137,4 +121,4 @@ export default function AddToCartButton({
         : "Add to cart"}
     </button>
   );
-      }
+}
