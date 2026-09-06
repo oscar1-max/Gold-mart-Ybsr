@@ -23,10 +23,7 @@ type Product = {
   seller_name: string;
 };
 
-function formatPrice(
-  price: number,
-  currency: string
-) {
+function formatPrice(price: number, currency: string) {
   const code = (currency || "NGN").toUpperCase();
 
   try {
@@ -48,33 +45,23 @@ export default function ProductDetailsPage() {
   const params = useParams();
   const { addToCart } = useCart();
 
-  const [product, setProduct] =
-    useState<Product | null>(null);
-
+  const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Report state
-  const [showReport, setShowReport] =
-    useState(false);
+  const [wishlisted, setWishlisted] = useState(false);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
 
-  const [reportReason, setReportReason] =
-    useState("");
-
-  const [reportMessage, setReportMessage] =
-    useState("");
-
-  const [reporting, setReporting] =
-    useState(false);
-
-  const [reportResult, setReportResult] =
-    useState("");
+  const [showReport, setShowReport] = useState(false);
+  const [reportReason, setReportReason] = useState("");
+  const [reportMessage, setReportMessage] = useState("");
+  const [reporting, setReporting] = useState(false);
+  const [reportResult, setReportResult] = useState("");
 
   const productId = Number(params.id);
-
-  useEffect(() => {
+    useEffect(() => {
     async function fetchProduct() {
       try {
         setLoading(true);
@@ -82,9 +69,7 @@ export default function ProductDetailsPage() {
 
         const response = await fetch(
           `${API_URL}/products/${productId}`,
-          {
-            cache: "no-store",
-          }
+          { cache: "no-store" }
         );
 
         if (!response.ok) {
@@ -94,78 +79,70 @@ export default function ProductDetailsPage() {
         const data = await response.json();
 
         if (!data.success || !data.product) {
-          throw new Error(
-            data.message || "Product not found"
-          );
+          throw new Error(data.message || "Product not found");
         }
 
-        const productData = data.product;
+        const p = data.product;
 
         setProduct({
-          id: productData.id,
-          name: productData.name,
-          price: Number(productData.price),
-
-          currency:
-            String(
-              productData.currency || "NGN"
-            ).toUpperCase(),
-
-          rating:
-            Number(productData.rating) || 4.5,
-
-          image:
-            productData.image_url ||
-            "/images/headphones.jpg",
-
+          id: p.id,
+          name: p.name,
+          price: Number(p.price),
+          currency: String(p.currency || "NGN").toUpperCase(),
+          rating: Number(p.rating) || 4.5,
+          image: p.image_url || "/images/headphones.jpg",
           description:
-            productData.description ||
-            "Quality product from GoldMart.",
-
-          category:
-            productData.category_name ||
-            "Other",
-
-          stock:
-            Number(productData.stock) || 0,
-
-          seller_id:
-            Number(productData.seller_id),
-
-          seller_name:
-            productData.seller_name ||
-            "GoldMart Seller",
+            p.description || "Quality product from GoldMart.",
+          category: p.category_name || "Other",
+          stock: Number(p.stock) || 0,
+          seller_id: Number(p.seller_id),
+          seller_name: p.seller_name || "GoldMart Seller",
         });
       } catch (err) {
-        console.error(
-          "Product error:",
-          err
-        );
-
-        setError(
-          "Unable to load this product."
-        );
+        console.error("Product error:", err);
+        setError("Unable to load this product.");
       } finally {
         setLoading(false);
       }
     }
 
-    if (productId) {
-      fetchProduct();
-    }
+    if (productId) fetchProduct();
   }, [productId]);
 
-  function handleAddToCart() {
+  useEffect(() => {
+    async function checkWishlist() {
+      const token = localStorage.getItem("goldmart_token");
+      if (!token || !productId) return;
+
+      try {
+        const response = await fetch(
+          `${API_URL}/wishlist/check/${productId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          setWishlisted(Boolean(data.wishlisted));
+        }
+      } catch (err) {
+        console.error("Wishlist check error:", err);
+      }
+    }
+
+    checkWishlist();
+  }, [productId]);
+    function handleAddToCart() {
     if (!product) return;
 
-    const token =
-      localStorage.getItem(
-        "goldmart_token"
-      );
+    const token = localStorage.getItem("goldmart_token");
 
     if (!token) {
-      window.location.href =
-        "/login";
+      window.location.href = "/login";
       return;
     }
 
@@ -187,24 +164,69 @@ export default function ProductDetailsPage() {
     }, 2000);
   }
 
-  async function handleReportSeller() {
+  async function handleWishlist() {
     if (!product) return;
 
-    const token =
-      localStorage.getItem(
-        "goldmart_token"
-      );
+    const token = localStorage.getItem("goldmart_token");
 
     if (!token) {
-      window.location.href =
-        "/login";
+      window.location.href = "/login";
+      return;
+    }
+
+    try {
+      setWishlistLoading(true);
+
+      const response = await fetch(
+        wishlisted
+          ? `${API_URL}/wishlist/${product.id}`
+          : `${API_URL}/wishlist`,
+        {
+          method: wishlisted ? "DELETE" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: wishlisted
+            ? undefined
+            : JSON.stringify({
+                productId: product.id,
+              }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Wishlist action failed"
+        );
+      }
+
+      setWishlisted(!wishlisted);
+    } catch (err) {
+      console.error("Wishlist error:", err);
+      alert(
+        err instanceof Error
+          ? err.message
+          : "Wishlist action failed."
+      );
+    } finally {
+      setWishlistLoading(false);
+    }
+  }
+    async function handleReportSeller() {
+    if (!product) return;
+
+    const token = localStorage.getItem("goldmart_token");
+
+    if (!token) {
+      window.location.href = "/login";
       return;
     }
 
     if (!reportReason) {
-      setReportResult(
-        "Please select a reason."
-      );
+      setReportResult("Please select a reason.");
       return;
     }
 
@@ -212,33 +234,24 @@ export default function ProductDetailsPage() {
       setReporting(true);
       setReportResult("");
 
-      const response = await fetch(
-        `${API_URL}/reports`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            reportedUserId:
-              product.seller_id,
-            reason: reportReason,
-            message:
-              reportMessage.trim() ||
-              null,
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/reports`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          reportedUserId: product.seller_id,
+          reason: reportReason,
+          message: reportMessage.trim() || null,
+        }),
+      });
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          data.message ||
-            "Failed to submit report"
+          data.message || "Failed to submit report"
         );
       }
 
@@ -254,10 +267,7 @@ export default function ProductDetailsPage() {
         setReportResult("");
       }, 2000);
     } catch (err) {
-      console.error(
-        "Report seller error:",
-        err
-      );
+      console.error("Report seller error:", err);
 
       setReportResult(
         err instanceof Error
@@ -267,16 +277,12 @@ export default function ProductDetailsPage() {
     } finally {
       setReporting(false);
     }
-  }
-
-  if (loading) {
+    }
+    if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
         <div className="text-center">
-          <div className="text-5xl">
-            ⏳
-          </div>
-
+          <div className="text-5xl">⏳</div>
           <h1 className="mt-4 text-xl font-black">
             Loading product...
           </h1>
@@ -289,9 +295,7 @@ export default function ProductDetailsPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
         <div className="text-center">
-          <div className="text-6xl">
-            🔎
-          </div>
+          <div className="text-6xl">🔎</div>
 
           <h1 className="mt-4 text-3xl font-black">
             Product not found
@@ -312,22 +316,12 @@ export default function ProductDetailsPage() {
       </main>
     );
   }
-
-  return (
+    return (
     <main className="min-h-screen bg-gray-50 text-black">
-
-      {/* HEADER */}
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
-
-          <Link
-            href="/"
-            className="text-2xl font-black"
-          >
-            Gold
-            <span className="text-[#D4AF37]">
-              Mart
-            </span>
+          <Link href="/" className="text-2xl font-black">
+            Gold<span className="text-[#D4AF37]">Mart</span>
           </Link>
 
           <Link
@@ -336,13 +330,10 @@ export default function ProductDetailsPage() {
           >
             🛒 Cart
           </Link>
-
         </div>
       </header>
 
-      {/* PRODUCT */}
       <div className="mx-auto max-w-7xl px-4 py-10">
-
         <Link
           href="/shop"
           className="text-sm font-bold text-[#A67C00]"
@@ -351,10 +342,7 @@ export default function ProductDetailsPage() {
         </Link>
 
         <div className="mt-8 grid gap-8 rounded-3xl bg-white p-5 shadow-sm md:grid-cols-2 md:p-8">
-
-          {/* IMAGE */}
           <div className="relative min-h-[350px] overflow-hidden rounded-2xl bg-gray-100 md:min-h-[500px]">
-
             <Image
               src={product.image}
               alt={product.name}
@@ -363,12 +351,9 @@ export default function ProductDetailsPage() {
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
-
           </div>
 
-          {/* INFORMATION */}
           <div className="flex flex-col justify-center">
-
             <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
               {product.category}
             </p>
@@ -377,7 +362,6 @@ export default function ProductDetailsPage() {
               {product.name}
             </h1>
 
-            {/* SELLER */}
             <div className="mt-4 rounded-xl border bg-gray-50 p-4">
               <p className="text-xs font-semibold uppercase text-gray-500">
                 Sold by
@@ -392,9 +376,7 @@ export default function ProductDetailsPage() {
               </p>
             </div>
 
-            {/* RATING */}
             <div className="mt-4 flex items-center gap-3">
-
               <span className="text-lg">
                 ⭐ {product.rating.toFixed(1)}
               </span>
@@ -402,10 +384,8 @@ export default function ProductDetailsPage() {
               <span className="text-sm text-gray-500">
                 GoldMart customer rating
               </span>
-
             </div>
 
-            {/* PRICE */}
             <p className="mt-6 text-3xl font-black text-[#A67C00]">
               {formatPrice(
                 product.price,
@@ -413,12 +393,10 @@ export default function ProductDetailsPage() {
               )}
             </p>
 
-            {/* DESCRIPTION */}
             <p className="mt-6 leading-7 text-gray-600">
               {product.description}
             </p>
 
-            {/* STOCK */}
             <p className="mt-4 text-sm font-bold">
               {product.stock > 0 ? (
                 <span className="text-green-600">
@@ -430,25 +408,17 @@ export default function ProductDetailsPage() {
                 </span>
               )}
             </p>
-
-            {/* QUANTITY */}
-            <div className="mt-8">
-
+                        <div className="mt-8">
               <p className="mb-3 font-bold">
                 Quantity
               </p>
 
               <div className="flex w-fit items-center rounded-xl border">
-
                 <button
                   type="button"
                   onClick={() =>
-                    setQuantity(
-                      (current) =>
-                        Math.max(
-                          1,
-                          current - 1
-                        )
+                    setQuantity((current) =>
+                      Math.max(1, current - 1)
                     )
                   }
                   className="h-11 w-11 font-bold"
@@ -463,36 +433,27 @@ export default function ProductDetailsPage() {
                 <button
                   type="button"
                   onClick={() =>
-                    setQuantity(
-                      (current) =>
-                        Math.min(
-                          product.stock,
-                          current + 1
-                        )
+                    setQuantity((current) =>
+                      Math.min(
+                        product.stock,
+                        current + 1
+                      )
                     )
                   }
-                  disabled={
-                    product.stock === 0
-                  }
+                  disabled={product.stock === 0}
                   className="h-11 w-11 font-bold disabled:opacity-40"
                 >
                   +
                 </button>
-
               </div>
-
             </div>
 
-            {/* BUTTONS */}
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
-
               <button
                 type="button"
                 onClick={handleAddToCart}
-                disabled={
-                  product.stock === 0
-                }
-                className="rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={product.stock === 0}
+                className="rounded-xl bg-black py-4 font-bold text-white hover:bg-[#D4AF37] hover:text-black disabled:opacity-50"
               >
                 {added
                   ? "✓ Added to Cart"
@@ -502,44 +463,42 @@ export default function ProductDetailsPage() {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                disabled={
-                  product.stock === 0
-                }
-                className="rounded-xl bg-[#D4AF37] py-4 font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={product.stock === 0}
+                className="rounded-xl bg-[#D4AF37] py-4 font-bold text-black disabled:opacity-50"
               >
                 ⚡ Buy Now
               </button>
-
             </div>
 
-            {/* TRUST */}
+            <button
+              type="button"
+              onClick={handleWishlist}
+              disabled={wishlistLoading}
+              className="mt-3 w-full rounded-xl border py-4 font-bold hover:bg-gray-50 disabled:opacity-50"
+            >
+              {wishlistLoading
+                ? "Saving..."
+                : wishlisted
+                ? "❤️ Remove from Wishlist"
+                : "♡ Add to Wishlist"}
+            </button>
+
             <div className="mt-8 grid grid-cols-2 gap-3">
-
               <div className="rounded-xl border p-4">
-                <div className="text-xl">
-                  🔒
-                </div>
-
+                <div className="text-xl">🔒</div>
                 <p className="mt-2 text-sm font-bold">
                   Secure Payment
                 </p>
               </div>
 
               <div className="rounded-xl border p-4">
-                <div className="text-xl">
-                  🚚
-                </div>
-
+                <div className="text-xl">🚚</div>
                 <p className="mt-2 text-sm font-bold">
                   Reliable Delivery
                 </p>
               </div>
-
             </div>
-
-            {/* REPORT SELLER */}
-            <div className="mt-6 border-t pt-6">
-
+                        <div className="mt-6 border-t pt-6">
               <button
                 type="button"
                 onClick={() => {
@@ -549,15 +508,11 @@ export default function ProductDetailsPage() {
                     );
 
                   if (!token) {
-                    window.location.href =
-                      "/login";
+                    window.location.href = "/login";
                     return;
                   }
 
-                  setShowReport(
-                    (current) => !current
-                  );
-
+                  setShowReport((current) => !current);
                   setReportResult("");
                 }}
                 className="text-sm font-semibold text-red-600 hover:underline"
@@ -567,7 +522,6 @@ export default function ProductDetailsPage() {
 
               {showReport && (
                 <div className="mt-4 rounded-2xl border bg-gray-50 p-5">
-
                   <h2 className="text-lg font-black">
                     Report {product.seller_name}
                   </h2>
@@ -582,37 +536,29 @@ export default function ProductDetailsPage() {
 
                   <select
                     value={reportReason}
-                    onChange={(event) =>
-                      setReportReason(
-                        event.target.value
-                      )
+                    onChange={(e) =>
+                      setReportReason(e.target.value)
                     }
                     className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none"
                   >
                     <option value="">
                       Select a reason
                     </option>
-
                     <option value="Fraud or scam">
                       Fraud or scam
                     </option>
-
                     <option value="Fake product">
                       Fake product
                     </option>
-
                     <option value="Misleading listing">
                       Misleading listing
                     </option>
-
                     <option value="Bad behavior">
                       Bad behavior
                     </option>
-
                     <option value="Harassment">
                       Harassment
                     </option>
-
                     <option value="Other">
                       Other
                     </option>
@@ -624,10 +570,8 @@ export default function ProductDetailsPage() {
 
                   <textarea
                     value={reportMessage}
-                    onChange={(event) =>
-                      setReportMessage(
-                        event.target.value
-                      )
+                    onChange={(e) =>
+                      setReportMessage(e.target.value)
                     }
                     rows={4}
                     placeholder="Optional details..."
@@ -641,14 +585,11 @@ export default function ProductDetailsPage() {
                   )}
 
                   <div className="mt-4 flex gap-3">
-
                     <button
                       type="button"
-                      onClick={
-                        handleReportSeller
-                      }
+                      onClick={handleReportSeller}
                       disabled={reporting}
-                      className="rounded-xl bg-red-600 px-5 py-3 font-bold text-white hover:bg-red-700 disabled:opacity-50"
+                      className="rounded-xl bg-red-600 px-5 py-3 font-bold text-white disabled:opacity-50"
                     >
                       {reporting
                         ? "Submitting..."
@@ -667,17 +608,13 @@ export default function ProductDetailsPage() {
                     >
                       Cancel
                     </button>
-
                   </div>
-
                 </div>
               )}
-
             </div>
-
           </div>
         </div>
       </div>
     </main>
   );
-          }
+}
