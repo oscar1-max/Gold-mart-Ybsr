@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+const API_URL =
+  "https://goldmart-backend-yoxc.onrender.com";
+
 type User = {
   id?: number;
   name?: string;
@@ -11,12 +14,17 @@ type User = {
 };
 
 export default function AccountPage() {
-  const [user, setUser] = useState<User | null>(
-    null
-  );
+  const [user, setUser] =
+    useState<User | null>(null);
 
   const [checking, setChecking] =
     useState(true);
+
+  const [switching, setSwitching] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
 
   useEffect(() => {
     const savedUser =
@@ -26,10 +34,7 @@ export default function AccountPage() {
 
     if (savedUser) {
       try {
-        const parsedUser =
-          JSON.parse(savedUser);
-
-        setUser(parsedUser);
+        setUser(JSON.parse(savedUser));
       } catch {
         localStorage.removeItem(
           "goldmart_user"
@@ -58,7 +63,73 @@ export default function AccountPage() {
     setUser(null);
   };
 
-  // CHECKING LOGIN STATUS
+  const handleSwitchRole = async () => {
+    try {
+      setSwitching(true);
+      setError("");
+
+      const token =
+        localStorage.getItem(
+          "goldmart_token"
+        );
+
+      if (!token) {
+        window.location.href =
+          "/login";
+        return;
+      }
+
+      const response = await fetch(
+        `${API_URL}/api/auth/switch-role`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
+      const data =
+        await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message ||
+            "Failed to switch account type."
+        );
+      }
+
+      localStorage.setItem(
+        "goldmart_user",
+        JSON.stringify(data.user)
+      );
+
+      localStorage.setItem(
+        "goldmart_token",
+        data.token
+      );
+
+      setUser(data.user);
+
+      if (data.user.role === "seller") {
+        window.location.href =
+          "/seller";
+      } else {
+        window.location.href =
+          "/";
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to switch account type."
+      );
+
+      setSwitching(false);
+    }
+  };
+
   if (checking) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white">
@@ -69,11 +140,9 @@ export default function AccountPage() {
     );
   }
 
-  // NOT LOGGED IN
   if (!user) {
     return (
       <main className="min-h-screen bg-white px-4 py-10 text-black">
-
         <div className="mx-auto max-w-lg">
 
           <Link
@@ -98,7 +167,6 @@ export default function AccountPage() {
               account, orders and cart.
             </p>
 
-            {/* SIGN IN */}
             <Link
               href="/login"
               className="mt-8 block w-full rounded-full bg-black px-6 py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
@@ -106,7 +174,6 @@ export default function AccountPage() {
               🔐 Sign In
             </Link>
 
-            {/* CREATE ACCOUNT */}
             <Link
               href="/register"
               className="mt-3 block w-full rounded-full border border-gray-300 px-6 py-4 font-bold text-black transition hover:border-[#D4AF37]"
@@ -115,14 +182,14 @@ export default function AccountPage() {
             </Link>
 
           </div>
-
         </div>
-
       </main>
     );
   }
 
-  // LOGGED IN
+  const isSeller =
+    user.role === "seller";
+
   return (
     <main className="min-h-screen bg-white px-4 py-10 text-black">
 
@@ -147,6 +214,19 @@ export default function AccountPage() {
           </p>
 
         </div>
+
+        {/* ERROR */}
+        {error && (
+          <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
+            <p className="font-bold">
+              Something went wrong
+            </p>
+
+            <p className="mt-1 text-sm">
+              {error}
+            </p>
+          </div>
+        )}
 
         {/* ACCOUNT INFORMATION */}
         <div className="rounded-2xl border border-gray-200 p-6 shadow-sm">
@@ -181,18 +261,61 @@ export default function AccountPage() {
 
             <div>
               <p className="text-sm text-gray-500">
-                Account Type
+                Current Mode
               </p>
 
               <p className="mt-1 text-lg font-semibold capitalize">
-                {user.role ||
-                  "Buyer"}
+                {isSeller
+                  ? "Seller"
+                  : "Buyer"}
               </p>
             </div>
 
           </div>
 
         </div>
+
+        {/* SWITCH ACCOUNT MODE */}
+        <section className="mt-6 rounded-3xl border border-[#D4AF37] bg-[#FFFDF5] p-6">
+
+          <div className="flex items-start gap-4">
+
+            <div className="text-4xl">
+              {isSeller ? "🛍️" : "🏪"}
+            </div>
+
+            <div className="flex-1">
+
+              <h2 className="text-xl font-black">
+                {isSeller
+                  ? "Switch to Buyer"
+                  : "Switch to Seller"}
+              </h2>
+
+              <p className="mt-2 text-sm text-gray-500">
+                {isSeller
+                  ? "Return to the GoldMart shopping experience and shop as a buyer."
+                  : "Start managing products and selling on GoldMart."}
+              </p>
+
+              <button
+                type="button"
+                onClick={handleSwitchRole}
+                disabled={switching}
+                className="mt-5 rounded-full bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {switching
+                  ? "Switching..."
+                  : isSeller
+                    ? "🛍️ Switch to Buyer"
+                    : "🏪 Switch to Seller"}
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
 
         {/* QUICK ACTIONS */}
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -202,6 +325,7 @@ export default function AccountPage() {
             href="/orders"
             className="rounded-2xl border border-gray-200 p-5 transition hover:border-[#D4AF37] hover:shadow-md"
           >
+
             <div className="text-2xl">
               📦
             </div>
@@ -214,6 +338,7 @@ export default function AccountPage() {
               View your orders and order
               history.
             </p>
+
           </Link>
 
           {/* CART */}
@@ -221,6 +346,7 @@ export default function AccountPage() {
             href="/cart"
             className="rounded-2xl border border-gray-200 p-5 transition hover:border-[#D4AF37] hover:shadow-md"
           >
+
             <div className="text-2xl">
               🛒
             </div>
@@ -233,15 +359,16 @@ export default function AccountPage() {
               View items waiting in your
               cart.
             </p>
+
           </Link>
 
-          {/* SELLER */}
-          {user.role ===
-            "seller" && (
+          {/* SELLER DASHBOARD */}
+          {isSeller && (
             <Link
               href="/seller"
               className="rounded-2xl border border-gray-200 p-5 transition hover:border-[#D4AF37] hover:shadow-md"
             >
+
               <div className="text-2xl">
                 🏪
               </div>
@@ -254,6 +381,7 @@ export default function AccountPage() {
                 Manage your products and
                 sales.
               </p>
+
             </Link>
           )}
 
@@ -272,4 +400,4 @@ export default function AccountPage() {
 
     </main>
   );
-              }
+        }
