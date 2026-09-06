@@ -1,13 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  /* =====================================================
-     GOLDMART PREMIUM COLOUR SYSTEM
-     ===================================================== */
-
   --gold: #d4af37;
-  --gold-light: #f1d77a;
-  --gold-dark: #9c7400;
+  --gold-light: #f3d77a;
+  --gold-dark: #a67c00;
+
+  --orange: #ff8a00;
+  --orange-light: #fff0dc;
 
   --black: #050505;
   --black-soft: #111111;
@@ -34,10 +33,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* =====================================================
-   FORM ELEMENTS
-   ===================================================== */
-
 button,
 input,
 textarea,
@@ -49,18 +44,12 @@ button {
   cursor: pointer;
 }
 
-/* =====================================================
-   TEXT SELECTION
-   ===================================================== */
-
 ::selection {
   background: var(--gold);
   color: var(--black);
 }
 
-/* =====================================================
-   GOLD UTILITIES
-   ===================================================== */
+/* GoldMart colors */
 
 .gold-text {
   color: var(--gold);
@@ -73,15 +62,11 @@ button {
 .gold-gradient {
   background: linear-gradient(
     135deg,
-    #9c7400 0%,
-    #d4af37 50%,
-    #f1d77a 100%
+    var(--gold-dark) 0%,
+    var(--gold) 50%,
+    var(--gold-light) 100%
   );
 }
-
-/* =====================================================
-   PREMIUM GOLD EFFECTS
-   ===================================================== */
 
 .gold-border {
   border-color: var(--gold);
@@ -89,7 +74,7 @@ button {
 
 .gold-glow {
   box-shadow:
-    0 0 0 1px rgba(212, 175, 55, 0.15),
+    0 0 0 1px rgba(212, 175, 55, 0.18),
     0 8px 30px rgba(212, 175, 55, 0.12);
 }
 
@@ -99,10 +84,6 @@ button {
     0 2px 8px rgba(212, 175, 55, 0.12);
 }
 
-/* =====================================================
-   PREMIUM BLACK
-   ===================================================== */
-
 .black-bg {
   background: var(--black);
 }
@@ -110,10 +91,6 @@ button {
 .black-soft-bg {
   background: var(--black-soft);
 }
-
-/* =====================================================
-   PREMIUM HOVER
-   ===================================================== */
 
 .gold-hover {
   transition:
@@ -130,15 +107,10 @@ button {
   border-color: var(--gold);
 }
 
-/* =====================================================
-   PREMIUM FOCUS
-   ===================================================== */
-
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
   border-color: var(--gold);
-  box-shadow:
-    0 0 0 3px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
 }
