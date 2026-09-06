@@ -133,34 +133,36 @@ export default function ProductDetailsPage() {
   }, [productId]);
 
   function handleAddToCart() {
-    if (!product) return;
+  if (!product) return;
 
-    for (
-      let i = 0;
-      i < quantity;
-      i++
-    ) {
-      addToCart({
-        id: product.id,
-        name: product.name,
+  const token =
+    localStorage.getItem(
+      "goldmart_token"
+    );
 
-        // Keep the actual numeric price.
-        price: String(product.price),
-
-        image: product.image,
-
-        // Keep the real product currency.
-        currency: product.currency,
-      });
-    }
-
-    setAdded(true);
-
-    setTimeout(() => {
-      setAdded(false);
-    }, 2000);
+  if (!token) {
+    window.location.href =
+      "/login";
+    return;
   }
 
+  addToCart(
+    {
+      id: product.id,
+      name: product.name,
+      price: String(product.price),
+      image: product.image,
+      currency: product.currency,
+    },
+    quantity
+  );
+
+  setAdded(true);
+
+  setTimeout(() => {
+    setAdded(false);
+  }, 2000);
+  }
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
