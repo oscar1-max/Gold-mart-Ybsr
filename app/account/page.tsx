@@ -190,6 +190,10 @@ export default function AccountPage() {
   const isSeller =
     user.role === "seller";
 
+  const isAdmin =
+    Number(user.id) === 1 ||
+    Number(user.id) === 3;
+
   return (
     <main className="min-h-screen bg-white px-4 py-10 text-black">
 
@@ -274,6 +278,46 @@ export default function AccountPage() {
           </div>
 
         </div>
+
+        {/* ADMIN REPORTS */}
+        {isAdmin && (
+          <section className="mt-6 rounded-3xl border border-red-200 bg-red-50 p-6">
+
+            <div className="flex items-start gap-4">
+
+              <div className="text-4xl">
+                🛡️
+              </div>
+
+              <div className="flex-1">
+
+                <p className="text-xs font-bold uppercase tracking-wider text-red-600">
+                  Administrator
+                </p>
+
+                <h2 className="mt-1 text-xl font-black">
+                  Reports & User Management
+                </h2>
+
+                <p className="mt-2 text-sm text-gray-600">
+                  View reports submitted by buyers
+                  and sellers and manage reported
+                  accounts.
+                </p>
+
+                <Link
+                  href="/admin/reports"
+                  className="mt-5 inline-block rounded-full bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+                >
+                  📩 Open Reports
+                </Link>
+
+              </div>
+
+            </div>
+
+          </section>
+        )}
 
         {/* SWITCH ACCOUNT MODE */}
         <section className="mt-6 rounded-3xl border border-[#D4AF37] bg-[#FFFDF5] p-6">
@@ -400,4 +444,4 @@ export default function AccountPage() {
 
     </main>
   );
-        }
+    }
