@@ -708,9 +708,10 @@ export default function Home() {
 
                   {/* PRODUCT IMAGE */}
 
-                  <Link href={`/product/${product.id}`}>
-                    className="block"
-                  >
+                  <Link
+  href={`/product/${product.id}`}
+  className="block"
+>
 
                     <div className="relative aspect-square bg-[#f5f5f5]">
 
@@ -745,8 +746,8 @@ export default function Home() {
                   <div className="p-3">
 
                     <Link
-                      href={`/shop/${product.id}`}
-                    >
+  href={`/product/${product.id}`}
+>
 
                       <h3 className="line-clamp-2 min-h-[36px] text-sm font-semibold leading-5">
                         {product.name}
