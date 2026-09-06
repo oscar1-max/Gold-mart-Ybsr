@@ -708,8 +708,7 @@ export default function Home() {
 
                   {/* PRODUCT IMAGE */}
 
-                  <Link
-                    href={`/shop/${product.id}`}
+                  <Link href={`/product/${product.id}`}>
                     className="block"
                   >
 
