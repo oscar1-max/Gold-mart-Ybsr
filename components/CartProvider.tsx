@@ -19,7 +19,7 @@ export type CartItem = {
 
 type CartContextType = {
   cart: CartItem[];
-  addToCart: (item: Omit<CartItem, "quantity">) => void;
+  addToCart: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
   removeFromCart: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;
@@ -30,6 +30,9 @@ const CartContext = createContext<CartContextType | undefined>(
   undefined
 );
 
+const API_URL =
+  "https://goldmart-backend-yoxc.onrender.com";
+
 export function CartProvider({
   children,
 }: {
@@ -38,7 +41,7 @@ export function CartProvider({
   const [cart, setCart] = useState<CartItem[]>([]);
 
   // =====================================================
-  // LOAD CART
+  // LOAD LOCAL CART
   // =====================================================
 
   useEffect(() => {
@@ -64,13 +67,17 @@ export function CartProvider({
   }, []);
 
   // =====================================================
-  // SAVE CART
+  // SAVE LOCAL CART
   // =====================================================
 
   useEffect(() => {
     localStorage.setItem(
       "goldmart-cart",
       JSON.stringify(cart)
+    );
+
+    window.dispatchEvent(
+      new Event("goldmart-cart-updated")
     );
   }, [cart]);
 
@@ -79,13 +86,19 @@ export function CartProvider({
   // =====================================================
 
   function addToCart(
-    item: Omit<CartItem, "quantity">
+    item: Omit<CartItem, "quantity">,
+    quantity = 1
   ) {
+    if (quantity < 1) {
+      quantity = 1;
+    }
+
     setCart((currentCart) => {
-      const existing = currentCart.find(
-        (product) =>
-          product.id === item.id
-      );
+      const existing =
+        currentCart.find(
+          (product) =>
+            product.id === item.id
+        );
 
       if (existing) {
         return currentCart.map(
@@ -94,7 +107,8 @@ export function CartProvider({
               ? {
                   ...product,
                   quantity:
-                    product.quantity + 1,
+                    product.quantity +
+                    quantity,
                 }
               : product
         );
@@ -104,12 +118,65 @@ export function CartProvider({
         ...currentCart,
         {
           ...item,
-          quantity: 1,
+          quantity,
           currency:
-            item.currency || "USD",
+            item.currency ||
+            "USD",
         },
       ];
     });
+
+    // ===================================================
+    // SYNC WITH BACKEND WHEN LOGGED IN
+    // ===================================================
+
+    try {
+      const token =
+        localStorage.getItem(
+          "goldmart_token"
+        );
+
+      if (token) {
+        fetch(`${API_URL}/api/cart`, {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+            Authorization:
+              `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            productId: item.id,
+            quantity,
+          }),
+        })
+          .then(async (response) => {
+            if (!response.ok) {
+              const data =
+                await response
+                  .json()
+                  .catch(() => null);
+
+              console.error(
+                "Backend cart sync failed:",
+                data?.message ||
+                  "Unable to add product to backend cart"
+              );
+            }
+          })
+          .catch((error) => {
+            console.error(
+              "Backend cart sync error:",
+              error
+            );
+          });
+      }
+    } catch (error) {
+      console.error(
+        "Cart authentication error:",
+        error
+      );
+    }
   }
 
   // =====================================================
@@ -123,6 +190,36 @@ export function CartProvider({
           product.id !== id
       )
     );
+
+    try {
+      const token =
+        localStorage.getItem(
+          "goldmart_token"
+        );
+
+      if (token) {
+        fetch(
+          `${API_URL}/api/cart/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        ).catch((error) => {
+          console.error(
+            "Backend remove cart error:",
+            error
+          );
+        });
+      }
+    } catch (error) {
+      console.error(
+        "Remove cart error:",
+        error
+      );
+    }
   }
 
   // =====================================================
@@ -149,6 +246,9 @@ export function CartProvider({
             : product
       )
     );
+
+    // The checkout sync endpoint will
+    // make the database quantity authoritative.
   }
 
   // =====================================================
@@ -157,20 +257,49 @@ export function CartProvider({
 
   function clearCart() {
     setCart([]);
+
     localStorage.removeItem(
       "goldmart-cart"
     );
+
+    try {
+      const token =
+        localStorage.getItem(
+          "goldmart_token"
+        );
+
+      if (token) {
+        fetch(`${API_URL}/api/cart`, {
+          method: "DELETE",
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }).catch((error) => {
+          console.error(
+            "Backend clear cart error:",
+            error
+          );
+        });
+      }
+    } catch (error) {
+      console.error(
+        "Clear cart error:",
+        error
+      );
+    }
   }
 
   // =====================================================
   // CART COUNT
   // =====================================================
 
-  const cartCount = cart.reduce(
-    (total, product) =>
-      total + product.quantity,
-    0
-  );
+  const cartCount =
+    cart.reduce(
+      (total, product) =>
+        total + product.quantity,
+      0
+    );
 
   return (
     <CartContext.Provider
@@ -203,4 +332,4 @@ export function useCart() {
   }
 
   return context;
-}
+  }
