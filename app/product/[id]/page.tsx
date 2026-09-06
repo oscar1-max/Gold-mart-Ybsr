@@ -19,6 +19,8 @@ type Product = {
   description: string;
   category: string;
   stock: number;
+  seller_id: number;
+  seller_name: string;
 };
 
 function formatPrice(
@@ -54,6 +56,22 @@ export default function ProductDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Report state
+  const [showReport, setShowReport] =
+    useState(false);
+
+  const [reportReason, setReportReason] =
+    useState("");
+
+  const [reportMessage, setReportMessage] =
+    useState("");
+
+  const [reporting, setReporting] =
+    useState(false);
+
+  const [reportResult, setReportResult] =
+    useState("");
+
   const productId = Number(params.id);
 
   useEffect(() => {
@@ -88,8 +106,6 @@ export default function ProductDetailsPage() {
           name: productData.name,
           price: Number(productData.price),
 
-          // IMPORTANT:
-          // Keep the real currency from the database.
           currency:
             String(
               productData.currency || "NGN"
@@ -112,6 +128,13 @@ export default function ProductDetailsPage() {
 
           stock:
             Number(productData.stock) || 0,
+
+          seller_id:
+            Number(productData.seller_id),
+
+          seller_name:
+            productData.seller_name ||
+            "GoldMart Seller",
         });
       } catch (err) {
         console.error(
@@ -133,36 +156,119 @@ export default function ProductDetailsPage() {
   }, [productId]);
 
   function handleAddToCart() {
-  if (!product) return;
+    if (!product) return;
 
-  const token =
-    localStorage.getItem(
-      "goldmart_token"
+    const token =
+      localStorage.getItem(
+        "goldmart_token"
+      );
+
+    if (!token) {
+      window.location.href =
+        "/login";
+      return;
+    }
+
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: String(product.price),
+        image: product.image,
+        currency: product.currency,
+      },
+      quantity
     );
 
-  if (!token) {
-    window.location.href =
-      "/login";
-    return;
+    setAdded(true);
+
+    setTimeout(() => {
+      setAdded(false);
+    }, 2000);
   }
 
-  addToCart(
-    {
-      id: product.id,
-      name: product.name,
-      price: String(product.price),
-      image: product.image,
-      currency: product.currency,
-    },
-    quantity
-  );
+  async function handleReportSeller() {
+    if (!product) return;
 
-  setAdded(true);
+    const token =
+      localStorage.getItem(
+        "goldmart_token"
+      );
 
-  setTimeout(() => {
-    setAdded(false);
-  }, 2000);
+    if (!token) {
+      window.location.href =
+        "/login";
+      return;
+    }
+
+    if (!reportReason) {
+      setReportResult(
+        "Please select a reason."
+      );
+      return;
+    }
+
+    try {
+      setReporting(true);
+      setReportResult("");
+
+      const response = await fetch(
+        `${API_URL}/reports`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            reportedUserId:
+              product.seller_id,
+            reason: reportReason,
+            message:
+              reportMessage.trim() ||
+              null,
+          }),
+        }
+      );
+
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message ||
+            "Failed to submit report"
+        );
+      }
+
+      setReportResult(
+        "✓ Report submitted successfully."
+      );
+
+      setReportReason("");
+      setReportMessage("");
+
+      setTimeout(() => {
+        setShowReport(false);
+        setReportResult("");
+      }, 2000);
+    } catch (err) {
+      console.error(
+        "Report seller error:",
+        err
+      );
+
+      setReportResult(
+        err instanceof Error
+          ? err.message
+          : "Failed to submit report."
+      );
+    } finally {
+      setReporting(false);
+    }
   }
+
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
@@ -270,6 +376,21 @@ export default function ProductDetailsPage() {
             <h1 className="mt-2 text-3xl font-black sm:text-4xl">
               {product.name}
             </h1>
+
+            {/* SELLER */}
+            <div className="mt-4 rounded-xl border bg-gray-50 p-4">
+              <p className="text-xs font-semibold uppercase text-gray-500">
+                Sold by
+              </p>
+
+              <p className="mt-1 font-bold">
+                {product.seller_name}
+              </p>
+
+              <p className="text-xs text-gray-500">
+                Seller ID: {product.seller_id}
+              </p>
+            </div>
 
             {/* RATING */}
             <div className="mt-4 flex items-center gap-3">
@@ -416,9 +537,147 @@ export default function ProductDetailsPage() {
 
             </div>
 
+            {/* REPORT SELLER */}
+            <div className="mt-6 border-t pt-6">
+
+              <button
+                type="button"
+                onClick={() => {
+                  const token =
+                    localStorage.getItem(
+                      "goldmart_token"
+                    );
+
+                  if (!token) {
+                    window.location.href =
+                      "/login";
+                    return;
+                  }
+
+                  setShowReport(
+                    (current) => !current
+                  );
+
+                  setReportResult("");
+                }}
+                className="text-sm font-semibold text-red-600 hover:underline"
+              >
+                🚩 Report Seller
+              </button>
+
+              {showReport && (
+                <div className="mt-4 rounded-2xl border bg-gray-50 p-5">
+
+                  <h2 className="text-lg font-black">
+                    Report {product.seller_name}
+                  </h2>
+
+                  <p className="mt-1 text-sm text-gray-500">
+                    Tell GoldMart why you are reporting this seller.
+                  </p>
+
+                  <label className="mt-5 block text-sm font-bold">
+                    Reason
+                  </label>
+
+                  <select
+                    value={reportReason}
+                    onChange={(event) =>
+                      setReportReason(
+                        event.target.value
+                      )
+                    }
+                    className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none"
+                  >
+                    <option value="">
+                      Select a reason
+                    </option>
+
+                    <option value="Fraud or scam">
+                      Fraud or scam
+                    </option>
+
+                    <option value="Fake product">
+                      Fake product
+                    </option>
+
+                    <option value="Misleading listing">
+                      Misleading listing
+                    </option>
+
+                    <option value="Bad behavior">
+                      Bad behavior
+                    </option>
+
+                    <option value="Harassment">
+                      Harassment
+                    </option>
+
+                    <option value="Other">
+                      Other
+                    </option>
+                  </select>
+
+                  <label className="mt-4 block text-sm font-bold">
+                    Additional message
+                  </label>
+
+                  <textarea
+                    value={reportMessage}
+                    onChange={(event) =>
+                      setReportMessage(
+                        event.target.value
+                      )
+                    }
+                    rows={4}
+                    placeholder="Optional details..."
+                    className="mt-2 w-full resize-none rounded-xl border bg-white px-4 py-3 outline-none"
+                  />
+
+                  {reportResult && (
+                    <p className="mt-3 text-sm font-semibold">
+                      {reportResult}
+                    </p>
+                  )}
+
+                  <div className="mt-4 flex gap-3">
+
+                    <button
+                      type="button"
+                      onClick={
+                        handleReportSeller
+                      }
+                      disabled={reporting}
+                      className="rounded-xl bg-red-600 px-5 py-3 font-bold text-white hover:bg-red-700 disabled:opacity-50"
+                    >
+                      {reporting
+                        ? "Submitting..."
+                        : "Submit Report"}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowReport(false);
+                        setReportReason("");
+                        setReportMessage("");
+                        setReportResult("");
+                      }}
+                      className="rounded-xl border bg-white px-5 py-3 font-bold"
+                    >
+                      Cancel
+                    </button>
+
+                  </div>
+
+                </div>
+              )}
+
+            </div>
+
           </div>
         </div>
       </div>
     </main>
   );
-      }
+          }
