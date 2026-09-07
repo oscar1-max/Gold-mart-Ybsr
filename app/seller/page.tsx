@@ -21,6 +21,14 @@ type SellerStats = {
   sales: string | number;
 };
 
+type SellerReview = {
+  id: number;
+  rating: number;
+  review?: string | null;
+  created_at: string;
+  buyer_name?: string | null;
+};
+
 export default function SellerDashboard() {
   const [products, setProducts] =
     useState<Product[]>([]);
@@ -31,6 +39,15 @@ export default function SellerDashboard() {
       orders: 0,
       sales: 0,
     });
+
+  const [rating, setRating] =
+    useState({
+      review_count: 0,
+      average_rating: 0,
+    });
+
+  const [reviews, setReviews] =
+    useState<SellerReview[]>([]);
 
   const [loading, setLoading] =
     useState(true);
@@ -63,8 +80,10 @@ export default function SellerDashboard() {
           {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: "application/json",
+              Authorization:
+                `Bearer ${token}`,
+              Accept:
+                "application/json",
             },
           }
         );
@@ -119,28 +138,61 @@ export default function SellerDashboard() {
         }
 
         const headers = {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
+          Authorization:
+            `Bearer ${token}`,
+          Accept:
+            "application/json",
         };
+
+        const userResponse =
+          await fetch(
+            `${API_URL}/api/auth/me`,
+            {
+              headers,
+              cache: "no-store",
+            }
+          );
+
+        const userData =
+          await userResponse.json();
+
+        if (
+          !userResponse.ok ||
+          !userData.success
+        ) {
+          throw new Error(
+            userData.message ||
+              "Failed to load seller account."
+          );
+        }
+
+        const sellerId =
+          Number(userData.user?.id);
+
+        if (
+          !Number.isInteger(sellerId)
+        ) {
+          throw new Error(
+            "Could not determine seller ID."
+          );
+        }
 
         const [
           productsResponse,
           statsResponse,
+          reviewsResponse,
         ] = await Promise.all([
           fetch(
             `${API_URL}/api/seller/products`,
-            {
-              headers,
-              cache: "no-store",
-            }
+            { headers, cache: "no-store" }
           ),
-
           fetch(
             `${API_URL}/api/seller/stats`,
-            {
-              headers,
-              cache: "no-store",
-            }
+            { headers, cache: "no-store" }
+          ),
+          fetch(
+            `${API_URL}/api/reviews/seller/${sellerId}`,
+            { headers, cache: "no-store" }
           ),
         ]);
 
@@ -150,13 +202,16 @@ export default function SellerDashboard() {
         const statsData =
           await statsResponse.json();
 
+        const reviewsData =
+          await reviewsResponse.json();
+
         if (
           !productsResponse.ok ||
           !productsData.success
         ) {
           throw new Error(
             productsData.message ||
-              "Failed to load seller products."
+              "Failed to load products."
           );
         }
 
@@ -166,7 +221,17 @@ export default function SellerDashboard() {
         ) {
           throw new Error(
             statsData.message ||
-              "Failed to load seller statistics."
+              "Failed to load statistics."
+          );
+        }
+
+        if (
+          !reviewsResponse.ok ||
+          !reviewsData.success
+        ) {
+          throw new Error(
+            reviewsData.message ||
+              "Failed to load reviews."
           );
         }
 
@@ -194,11 +259,33 @@ export default function SellerDashboard() {
               statsData.stats?.sales
             ) || 0,
         });
+
+        setRating({
+          review_count:
+            Number(
+              reviewsData.rating
+                ?.review_count
+            ) || 0,
+
+          average_rating:
+            Number(
+              reviewsData.rating
+                ?.average_rating
+            ) || 0,
+        });
+
+        setReviews(
+          Array.isArray(
+            reviewsData.reviews
+          )
+            ? reviewsData.reviews
+            : []
+        );
       } catch (err) {
         setError(
           err instanceof Error
             ? err.message
-            : "Failed to load seller dashboard."
+            : "Failed to load dashboard."
         );
       } finally {
         setLoading(false);
@@ -224,30 +311,25 @@ export default function SellerDashboard() {
         maximumFractionDigits: 2,
       });
 
-    switch (currency) {
-      case "USD":
-        return `$${formatted}`;
+    if (currency === "EUR")
+      return `€${formatted}`;
 
-      case "EUR":
-        return `€${formatted}`;
+    if (currency === "GBP")
+      return `£${formatted}`;
 
-      case "GBP":
-        return `£${formatted}`;
+    if (currency === "NGN")
+      return `₦${formatted}`;
 
-      case "NGN":
-        return `₦${formatted}`;
-
-      default:
-        return `$${formatted}`;
-    }
+    return `$${formatted}`;
   }
 
-  return (
+  const averageRating =
+    Number(rating.average_rating) || 0;
+    return (
     <main className="min-h-screen bg-gray-50 text-black">
 
       {/* HEADER */}
       <header className="border-b bg-white">
-
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
 
           <Link
@@ -264,7 +346,7 @@ export default function SellerDashboard() {
             type="button"
             onClick={handleSwitchToBuyer}
             disabled={switching}
-            className="rounded-full border px-5 py-2 text-sm font-bold transition hover:border-[#D4AF37] hover:bg-[#FFFDF5] disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-full border px-5 py-2 text-sm font-bold transition hover:border-[#D4AF37] hover:bg-[#FFFDF5] disabled:opacity-60"
           >
             {switching
               ? "Switching..."
@@ -272,34 +354,26 @@ export default function SellerDashboard() {
           </button>
 
         </div>
-
       </header>
 
       {/* CONTENT */}
       <div className="mx-auto max-w-7xl px-4 py-10">
 
-        {/* TITLE */}
-        <div>
+        <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+          Seller Center
+        </p>
 
-          <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
-            Seller Center
-          </p>
+        <h1 className="mt-1 text-3xl font-black sm:text-4xl">
+          Seller Dashboard
+        </h1>
 
-          <h1 className="mt-1 text-3xl font-black sm:text-4xl">
-            Seller Dashboard
-          </h1>
-
-          <p className="mt-3 text-gray-500">
-            Manage your GoldMart store,
-            products and orders.
-          </p>
-
-        </div>
+        <p className="mt-3 text-gray-500">
+          Manage your GoldMart store, products and orders.
+        </p>
 
         {/* ERROR */}
         {error && (
           <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-700">
-
             <p className="font-bold">
               Something went wrong
             </p>
@@ -307,61 +381,48 @@ export default function SellerDashboard() {
             <p className="mt-1 text-sm">
               {error}
             </p>
-
           </div>
         )}
 
         {/* STATS */}
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
+          {/* PRODUCTS */}
           <div className="rounded-2xl border bg-white p-6">
-
-            <div className="text-3xl">
-              📦
-            </div>
+            <div className="text-3xl">📦</div>
 
             <p className="mt-4 text-sm text-gray-500">
               Products
             </p>
 
             <h2 className="mt-1 text-3xl font-black">
-              {loading
-                ? "..."
-                : stats.products}
+              {loading ? "..." : stats.products}
             </h2>
-
           </div>
 
+          {/* ORDERS */}
           <Link
             href="/seller/orders"
             className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-md"
           >
-
-            <div className="text-3xl">
-              🛍️
-            </div>
+            <div className="text-3xl">🛍️</div>
 
             <p className="mt-4 text-sm text-gray-500">
               Orders
             </p>
 
             <h2 className="mt-1 text-3xl font-black">
-              {loading
-                ? "..."
-                : stats.orders}
+              {loading ? "..." : stats.orders}
             </h2>
 
             <p className="mt-2 text-xs font-bold text-[#A67C00]">
               View Orders →
             </p>
-
           </Link>
 
+          {/* SALES */}
           <div className="rounded-2xl border bg-white p-6">
-
-            <div className="text-3xl">
-              💰
-            </div>
+            <div className="text-3xl">💰</div>
 
             <p className="mt-4 text-sm text-gray-500">
               Sales
@@ -372,44 +433,162 @@ export default function SellerDashboard() {
                 ? "..."
                 : `₦${Number(
                     stats.sales
-                  ).toLocaleString(
-                    "en-US",
-                    {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    }
-                  )}`}
+                  ).toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}`}
             </h2>
 
             <p className="mt-2 text-xs text-gray-400">
               Total completed/non-cancelled sales
             </p>
-
           </div>
 
+          {/* RATING */}
           <div className="rounded-2xl border bg-white p-6">
-
-            <div className="text-3xl">
-              ⭐
-            </div>
+            <div className="text-3xl">⭐</div>
 
             <p className="mt-4 text-sm text-gray-500">
               Rating
             </p>
 
             <h2 className="mt-1 text-3xl font-black">
-              —
+              {loading
+                ? "..."
+                : averageRating > 0
+                ? averageRating.toFixed(1)
+                : "—"}
             </h2>
 
             <p className="mt-2 text-xs text-gray-400">
-              Reviews coming next
+              {loading
+                ? "Loading reviews..."
+                : `${rating.review_count} ${
+                    rating.review_count === 1
+                      ? "review"
+                      : "reviews"
+                  }`}
             </p>
-
           </div>
 
         </div>
 
-        {/* STORE MANAGEMENT */}
+        {/* REVIEWS */}
+        <section className="mt-10">
+
+          <h2 className="text-2xl font-black">
+            ⭐ Customer Reviews & Ratings
+          </h2>
+
+          <p className="mt-1 text-sm text-gray-500">
+            See what your customers are saying about your store.
+          </p>
+
+          <div className="mt-5 rounded-2xl border bg-white p-5">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-sm text-gray-500">
+                  Average Rating
+                </p>
+
+                <p className="text-3xl font-black">
+                  {averageRating > 0
+                    ? `⭐ ${averageRating.toFixed(1)} / 5`
+                    : "No rating yet"}
+                </p>
+              </div>
+
+              <div className="text-right">
+                <p className="text-sm text-gray-500">
+                  Total Reviews
+                </p>
+
+                <p className="text-2xl font-black">
+                  {rating.review_count}
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+          {!loading &&
+            !error &&
+            reviews.length === 0 && (
+              <div className="mt-5 rounded-2xl border bg-white p-8 text-center">
+
+                <div className="text-5xl">⭐</div>
+
+                <h3 className="mt-4 text-xl font-black">
+                  No reviews yet
+                </h3>
+
+                <p className="mt-2 text-gray-500">
+                  Customer ratings and reviews will appear here.
+                </p>
+
+              </div>
+            )}
+
+          {!loading &&
+            !error &&
+            reviews.length > 0 && (
+              <div className="mt-5 grid gap-4 md:grid-cols-2">
+
+                {reviews.map((item) => (
+                  <article
+                    key={item.id}
+                    className="rounded-2xl border bg-white p-6"
+                  >
+
+                    <div className="flex items-start justify-between gap-4">
+
+                      <div>
+                        <p className="font-black">
+                          {item.buyer_name ||
+                            "GoldMart Customer"}
+                        </p>
+
+                        <div className="mt-1 text-lg">
+                          {Array.from({
+                            length: 5,
+                          }).map((_, index) => (
+                            <span key={index}>
+                              {index <
+                              Number(item.rating)
+                                ? "⭐"
+                                : "☆"}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <span className="text-xs text-gray-400">
+                        {new Date(
+                          item.created_at
+                        ).toLocaleDateString(
+                          "en-US"
+                        )}
+                      </span>
+
+                    </div>
+
+                    {item.review && (
+                      <p className="mt-4 rounded-xl bg-gray-50 p-4 text-sm leading-6 text-gray-700">
+                        “{item.review}”
+                      </p>
+                    )}
+
+                  </article>
+                ))}
+
+              </div>
+            )}
+
+        </section>
+                {/* STORE MANAGEMENT */}
         <section className="mt-10">
 
           <h2 className="text-2xl font-black">
@@ -422,10 +601,7 @@ export default function SellerDashboard() {
               href="/seller/products"
               className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
             >
-
-              <div className="text-4xl">
-                📦
-              </div>
+              <div className="text-4xl">📦</div>
 
               <h3 className="mt-4 text-lg font-black">
                 My Products
@@ -434,17 +610,13 @@ export default function SellerDashboard() {
               <p className="mt-2 text-sm text-gray-500">
                 View, edit and manage your products.
               </p>
-
             </Link>
 
             <Link
               href="/seller/products/new"
               className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
             >
-
-              <div className="text-4xl">
-                ➕
-              </div>
+              <div className="text-4xl">➕</div>
 
               <h3 className="mt-4 text-lg font-black">
                 Add Product
@@ -453,17 +625,13 @@ export default function SellerDashboard() {
               <p className="mt-2 text-sm text-gray-500">
                 Add a new product to your GoldMart store.
               </p>
-
             </Link>
 
             <Link
               href="/seller/orders"
               className="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
             >
-
-              <div className="text-4xl">
-                🚚
-              </div>
+              <div className="text-4xl">🚚</div>
 
               <h3 className="mt-4 text-lg font-black">
                 Orders
@@ -472,11 +640,9 @@ export default function SellerDashboard() {
               <p className="mt-2 text-sm text-gray-500">
                 View and manage customer orders.
               </p>
-
             </Link>
 
           </div>
-
         </section>
 
         {/* PRODUCTS */}
@@ -490,7 +656,7 @@ export default function SellerDashboard() {
 
             <Link
               href="/seller/products"
-              className="font-bold text-[#A67C00] hover:text-black"
+              className="font-bold text-[#A67C00]"
             >
               View All →
             </Link>
@@ -499,15 +665,11 @@ export default function SellerDashboard() {
 
           {loading && (
             <div className="mt-5 rounded-2xl border bg-white p-8 text-center">
-
-              <div className="text-4xl">
-                📦
-              </div>
+              <div className="text-4xl">📦</div>
 
               <p className="mt-3 font-bold">
                 Loading your products...
               </p>
-
             </div>
           )}
 
@@ -516,9 +678,7 @@ export default function SellerDashboard() {
             products.length === 0 && (
               <div className="mt-5 rounded-2xl border bg-white p-8 text-center">
 
-                <div className="text-5xl">
-                  📦
-                </div>
+                <div className="text-5xl">📦</div>
 
                 <h3 className="mt-4 text-xl font-black">
                   No products yet
@@ -530,7 +690,7 @@ export default function SellerDashboard() {
 
                 <Link
                   href="/seller/products/new"
-                  className="mt-5 inline-block rounded-full bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+                  className="mt-5 inline-block rounded-full bg-black px-6 py-3 font-bold text-white"
                 >
                   Add Product
                 </Link>
@@ -582,7 +742,7 @@ export default function SellerDashboard() {
 
                         <Link
                           href={`/seller/products/${product.id}/edit`}
-                          className="mt-4 block rounded-xl border px-4 py-2 text-center text-sm font-bold transition hover:bg-gray-100"
+                          className="mt-4 block rounded-xl border px-4 py-2 text-center text-sm font-bold"
                         >
                           Edit Product
                         </Link>
@@ -636,4 +796,4 @@ export default function SellerDashboard() {
       </div>
     </main>
   );
-          }
+}
