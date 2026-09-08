@@ -202,12 +202,11 @@ export default function ProductPage() {
     if (!product) return;
 
     addToCart({
-      id: product.id,
-      name: product.name,
-      price: String(product.price),
-      quantity,
-      image_url: product.image_url,
-    });
+  id: product.id,
+  name: product.name,
+  price: String(product.price),
+  image_url: product.image_url,
+});
 
     alert("Product added to cart!");
   };
@@ -216,12 +215,11 @@ export default function ProductPage() {
     if (!product) return;
 
     addToCart({
-      id: product.id,
-      name: product.name,
-      price: String(product.price),
-      quantity,
-      image_url: product.image_url,
-    });
+  id: product.id,
+  name: product.name,
+  price: String(product.price),
+  image_url: product.image_url,
+});
 
     router.push("/checkout");
   };
