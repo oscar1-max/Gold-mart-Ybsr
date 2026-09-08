@@ -205,6 +205,7 @@ export default function ProductPage() {
   id: product.id,
   name: product.name,
   price: String(product.price),
+  image: product.image_url || "",
 });
 
     alert("Product added to cart!");
@@ -217,6 +218,7 @@ export default function ProductPage() {
   id: product.id,
   name: product.name,
   price: String(product.price),
+  image: product.image_url || "",
 });
 
     router.push("/checkout");
