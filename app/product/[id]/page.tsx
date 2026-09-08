@@ -204,7 +204,7 @@ export default function ProductPage() {
     addToCart({
       id: product.id,
       name: product.name,
-      price: Number(product.price),
+      price: String(product.price),
       quantity,
       image_url: product.image_url,
     });
@@ -218,7 +218,7 @@ export default function ProductPage() {
     addToCart({
       id: product.id,
       name: product.name,
-      price: Number(product.price),
+      price: String(product.price),
       quantity,
       image_url: product.image_url,
     });
