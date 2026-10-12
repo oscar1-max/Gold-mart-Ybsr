@@ -1,19 +1,40 @@
+
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "../../components/CartProvider";
 
 const API_URL =
   "https://goldmart-backend-yoxc.onrender.com";
 
+type PaymentResponse = {
+  success: boolean;
+  message?: string;
+  payment?: {
+    status?: string;
+    order_id?: number | null;
+  };
+};
+
+type OrderResponse = {
+  success: boolean;
+  message?: string;
+  order?: {
+    id: number;
+  };
+};
+
 export default function OrderSuccessPage() {
   const { clearCart } = useCart();
+
+  const clearCartRef = useRef(clearCart);
+  clearCartRef.current = clearCart;
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [step, setStep] = useState(
-    "Confirming your GoldMart payment..."
+    "Preparing payment confirmation..."
   );
   const [orderId, setOrderId] =
     useState<number | null>(null);
@@ -26,90 +47,54 @@ export default function OrderSuccessPage() {
         setLoading(true);
         setError("");
 
-        // =================================================
-        // 1. CHECK LOGIN
-        // =================================================
-
-        setStep(
-          "Checking your GoldMart account..."
+        // 1. Read the Paystack reference.
+        const params = new URLSearchParams(
+          window.location.search
         );
-
-        const token =
-          localStorage.getItem(
-            "goldmart_token"
-          );
-
-        if (!token) {
-          window.location.href = "/login";
-          return;
-        }
-
-        // =================================================
-        // 2. GET PAYSTACK REFERENCE
-        // =================================================
-
-        setStep(
-          "Reading your payment reference..."
-        );
-
-        const params =
-          new URLSearchParams(
-            window.location.search
-          );
 
         const reference =
           params.get("reference") ||
-          params.get("trxref");
+          params.get("trxref") ||
+          sessionStorage.getItem(
+            "goldmart-payment-reference"
+          );
 
         if (!reference) {
           throw new Error(
-            "Payment reference was not found."
+            "Payment reference was not found. Please check your payment history before trying again."
           );
         }
 
-        console.log(
-          "GoldMart reference:",
-          reference
+        // 2. Authenticate the buyer.
+        const token = localStorage.getItem(
+          "goldmart_token"
         );
 
-        // =================================================
-        // 3. VERIFY PAYMENT
-        // =================================================
-
-        setStep(
-          "Verifying your payment with Paystack..."
-        );
-
-        const verifyResponse =
-          await fetch(
-            `${API_URL}/api/payments/verify/${encodeURIComponent(
-              reference
-            )}`,
-            {
-              method: "GET",
-              headers: {
-                Accept:
-                  "application/json",
-              },
-              cache: "no-store",
-            }
-          );
-
-        let verifyData: any;
-
-        try {
-          verifyData =
-            await verifyResponse.json();
-        } catch {
+        if (!token) {
           throw new Error(
-            `Payment verification server returned an invalid response (HTTP ${verifyResponse.status}).`
+            "Please sign in to your GoldMart account, then return to this page to confirm your payment. Do not pay again."
           );
         }
 
-        console.log(
-          "GoldMart verification:",
-          verifyData
+        setStep("Verifying payment with Paystack...");
+
+        // 3. Verify the actual payment.
+        const verifyResponse = await fetch(
+          `${API_URL}/api/payments/verify/${encodeURIComponent(
+            reference
+          )}`,
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            cache: "no-store",
+          }
         );
+
+        const verifyData: PaymentResponse =
+          await verifyResponse.json();
 
         if (
           !verifyResponse.ok ||
@@ -117,103 +102,39 @@ export default function OrderSuccessPage() {
         ) {
           throw new Error(
             verifyData.message ||
-              "Payment verification failed."
+              "Unable to verify payment. Do not pay again."
           );
         }
 
         if (
-          verifyData.payment?.status !==
-          "success"
+          verifyData.payment?.status !== "success"
         ) {
           throw new Error(
-            "Payment was not successful."
+            "Payment has not been confirmed. Do not make another payment while verification is pending."
           );
         }
 
-        // =================================================
-        // 4. GET DELIVERY INFORMATION
-        // =================================================
+        // 4. Create or recover the order.
+        setStep("Finalizing your GoldMart order...");
 
-        setStep(
-          "Preparing your delivery information..."
-        );
-
-        let delivery = {};
-
-        const savedDelivery =
-          sessionStorage.getItem(
-            "goldmart-delivery"
-          );
-
-        if (savedDelivery) {
-          try {
-            delivery =
-              JSON.parse(
-                savedDelivery
-              );
-          } catch {
-            delivery = {};
+        const orderResponse = await fetch(
+          `${API_URL}/api/orders`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              paymentReference: reference,
+            }),
+            cache: "no-store",
           }
-        }
-
-        // =================================================
-        // 5. CREATE / RECOVER ORDER
-        // =================================================
-
-        setStep(
-          "Creating your GoldMart order..."
         );
 
-        const orderResponse =
-          await fetch(
-            `${API_URL}/api/orders`,
-            {
-              method: "POST",
-
-              headers: {
-                Authorization:
-                  `Bearer ${token}`,
-
-                "Content-Type":
-                  "application/json",
-
-                Accept:
-                  "application/json",
-              },
-
-              body: JSON.stringify({
-                paymentReference:
-                  reference,
-
-                delivery,
-              }),
-
-              cache: "no-store",
-            }
-          );
-
-        let orderData: any;
-
-        try {
-          orderData =
-            await orderResponse.json();
-        } catch {
-          throw new Error(
-            `GoldMart order server returned an invalid response (HTTP ${orderResponse.status}).`
-          );
-        }
-
-        console.log(
-          "GoldMart order response:",
-          orderData
-        );
-
-        // =================================================
-        // IMPORTANT
-        //
-        // If the order already exists, the backend
-        // returns success:true.
-        // =================================================
+        const orderData: OrderResponse =
+          await orderResponse.json();
 
         if (
           !orderResponse.ok ||
@@ -221,67 +142,54 @@ export default function OrderSuccessPage() {
         ) {
           throw new Error(
             orderData.message ||
-              `Order creation failed (HTTP ${orderResponse.status}).`
+              "Unable to finalize this order. If you were charged, do not pay again."
           );
         }
 
-        // =================================================
-        // 6. SAVE ORDER ID
-        // =================================================
+        const confirmedOrderId =
+          Number(orderData.order?.id);
 
-        const createdOrderId =
-          orderData.order?.id;
-
-        if (createdOrderId) {
-          setOrderId(
-            Number(createdOrderId)
+        if (
+          !Number.isInteger(confirmedOrderId) ||
+          confirmedOrderId <= 0
+        ) {
+          throw new Error(
+            "Payment was verified, but the order confirmation needs review. Do not pay again."
           );
         }
 
-        // =================================================
-        // 7. CLEAR CART
-        // =================================================
+        if (cancelled) return;
 
-        setStep(
-          "Finishing your GoldMart order..."
-        );
+        // 5. Only clear cart after an order exists.
+        setStep("Completing your order...");
 
-        clearCart();
+        setOrderId(confirmedOrderId);
 
-        // =================================================
-        // 8. REMOVE TEMPORARY DATA
-        // =================================================
+        clearCartRef.current();
 
         sessionStorage.removeItem(
           "goldmart-payment-reference"
         );
-
         sessionStorage.removeItem(
           "goldmart-delivery"
         );
 
-        // =================================================
-        // 9. SUCCESS
-        // =================================================
-
-        if (!cancelled) {
-          setLoading(false);
-        }
+        setLoading(false);
       } catch (err) {
+        if (cancelled) return;
+
         console.error(
-          "GoldMart order completion error:",
+          "Order confirmation failed:",
           err
         );
 
-        if (!cancelled) {
-          setError(
-            err instanceof Error
-              ? err.message
-              : "Something went wrong while completing your order."
-          );
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Unable to complete order confirmation. If you were charged, do not pay again."
+        );
 
-          setLoading(false);
-        }
+        setLoading(false);
       }
     }
 
@@ -290,26 +198,23 @@ export default function OrderSuccessPage() {
     return () => {
       cancelled = true;
     };
-  }, [clearCart]);
+  }, []);
 
-  // =====================================================
+  // ===============================================
   // LOADING
-  // =====================================================
+  // ===============================================
 
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 text-black">
         <div className="w-full max-w-md rounded-3xl bg-white p-8 text-center shadow-sm">
-
-          <div className="text-6xl">
-            ⏳
-          </div>
+          <div className="text-5xl">⏳</div>
 
           <h1 className="mt-5 text-2xl font-black">
-            Confirming Your GoldMart Order
+            Confirming Your Order
           </h1>
 
-          <p className="mt-3 text-gray-500">
+          <p className="mt-4 text-gray-600">
             {step}
           </p>
 
@@ -317,72 +222,81 @@ export default function OrderSuccessPage() {
             <div className="h-full w-1/2 animate-pulse rounded-full bg-[#D4AF37]" />
           </div>
 
-          <p className="mt-5 text-xs text-gray-400">
-            Please do not close this page.
+          <p className="mt-5 text-sm text-gray-500">
+            Please wait while GoldMart verifies
+            your transaction.
           </p>
-
         </div>
       </main>
     );
   }
 
-  // =====================================================
+  // ===============================================
   // ERROR
-  // =====================================================
+  // ===============================================
 
   if (error) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 text-black">
-        <div className="w-full max-w-lg rounded-3xl bg-white p-8 text-center shadow-sm sm:p-10">
-
-          <div className="text-6xl">
-            ⚠️
-          </div>
+        <div className="w-full max-w-lg rounded-3xl bg-white p-8 text-center shadow-sm">
+          <div className="text-5xl">⚠️</div>
 
           <h1 className="mt-5 text-2xl font-black">
-            We Could Not Complete Your Order
+            Order Confirmation Needs Attention
           </h1>
 
-          <p className="mt-4 break-words text-gray-600">
+          <p className="mt-4 text-gray-600">
             {error}
           </p>
 
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <p className="mt-4 text-sm font-semibold text-red-700">
+            If Paystack has charged you, do not
+            pay again. Keep your payment reference
+            for support.
+          </p>
 
-            <Link
-              href="/checkout"
-              className="rounded-full bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+          <div className="mt-7 flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={() =>
+                window.location.reload()
+              }
+              className="rounded-xl bg-black px-6 py-4 font-bold text-white"
             >
-              Return to Checkout
-            </Link>
+              Retry Confirmation
+            </button>
 
             <Link
               href="/orders"
-              className="rounded-full border px-6 py-3 font-bold transition hover:bg-gray-100"
+              className="rounded-xl border px-6 py-4 text-center font-bold"
             >
               View My Orders
             </Link>
 
+            <Link
+              href="/login"
+              className="text-center text-sm font-semibold underline"
+            >
+              Sign In
+            </Link>
           </div>
-
         </div>
       </main>
     );
   }
 
-  // =====================================================
+  // ===============================================
   // SUCCESS
-  // =====================================================
+  // ===============================================
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 text-black">
-      <div className="w-full max-w-lg rounded-3xl bg-white p-8 text-center shadow-sm sm:p-10">
-
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-4xl">
+      <div className="w-full max-w-lg rounded-3xl bg-white p-8 text-center shadow-sm">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-4xl text-green-700">
           ✓
         </div>
 
-        <p className="mt-6 text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+        <p className="mt-6 font-bold uppercase tracking-wider text-[#A67C00]">
           GoldMart
         </p>
 
@@ -390,45 +304,40 @@ export default function OrderSuccessPage() {
           Order Successful!
         </h1>
 
-        <p className="mt-4 text-gray-500">
-          Your payment has been verified
-          and your GoldMart order has been
-          created successfully.
+        <p className="mt-4 text-gray-600">
+          Your payment has been verified and
+          your GoldMart order was created
+          successfully.
         </p>
 
-        {orderId && (
-          <div className="mt-6 rounded-2xl bg-gray-50 p-4">
-
+        {orderId !== null && (
+          <div className="mt-6 rounded-2xl bg-gray-50 p-5">
             <p className="text-sm text-gray-500">
               Order Number
             </p>
 
-            <p className="mt-1 text-xl font-black">
+            <p className="mt-2 text-2xl font-black">
               #{orderId}
             </p>
-
           </div>
         )}
 
         <div className="mt-7 grid gap-3 sm:grid-cols-2">
-
           <Link
             href="/orders"
-            className="rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+            className="rounded-xl bg-black px-6 py-4 text-center font-bold text-white"
           >
             View My Orders
           </Link>
 
           <Link
             href="/"
-            className="rounded-xl border py-4 font-bold transition hover:bg-gray-100"
+            className="rounded-xl border px-6 py-4 text-center font-bold"
           >
             Back to Home
           </Link>
-
         </div>
-
       </div>
     </main>
   );
-      }
+}
