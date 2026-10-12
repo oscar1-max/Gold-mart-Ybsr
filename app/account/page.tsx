@@ -4,8 +4,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const API_URL =
-  "https://goldmart-backend-yoxc.onrender.com";
+const API_URL = "https://goldmart-backend-yoxc.onrender.com";
 
 type User = {
   id?: number;
@@ -14,62 +13,97 @@ type User = {
   role?: string;
 };
 
+const shoppingLinks = [
+  {
+    href: "/orders",
+    icon: "📦",
+    title: "My Orders",
+    detail: "Purchases & history",
+  },
+  {
+    href: "/track-order",
+    icon: "🚚",
+    title: "Track Orders",
+    detail: "Delivery updates",
+  },
+  {
+    href: "/order-protection",
+    icon: "🛡️",
+    title: "Buyer Protection",
+    detail: "Returns & requests",
+  },
+  {
+    href: "/cart",
+    icon: "🛒",
+    title: "Shopping Cart",
+    detail: "Items saved to buy",
+  },
+  {
+    href: "/chat",
+    icon: "💬",
+    title: "Messages",
+    detail: "Conversations",
+  },
+  {
+    href: "/wishlist",
+    icon: "🤍",
+    title: "Wishlist",
+    detail: "Your favourites",
+  },
+];
+
+function initials(name?: string) {
+  const words = (name || "GoldMart Member")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  return words
+    .slice(0, 2)
+    .map((word) => word[0]?.toUpperCase() || "")
+    .join("");
+}
+
 export default function AccountPage() {
-  const [user, setUser] =
-    useState<User | null>(null);
-
-  const [checking, setChecking] =
-    useState(true);
-
-  const [switching, setSwitching] =
-    useState(false);
-
-  const [error, setError] =
-    useState("");
-
-  const [isRefundAdmin, setIsRefundAdmin] =
-    useState(false);
-
-  // =====================================================
-  // LOAD ACCOUNT AND CHECK ADMIN REFUND ACCESS
-  // =====================================================
+  const [user, setUser] = useState<User | null>(null);
+  const [checking, setChecking] = useState(true);
+  const [switching, setSwitching] = useState(false);
+  const [error, setError] = useState("");
+  const [isRefundAdmin, setIsRefundAdmin] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
+    const savedUser = localStorage.getItem("goldmart_user");
+    const token = localStorage.getItem("goldmart_token");
 
-    async function loadAccount() {
-      const savedUser =
-        localStorage.getItem("goldmart_user");
+    if (!savedUser || !token) {
+      setChecking(false);
+      return () => controller.abort();
+    }
 
-      const token =
-        localStorage.getItem("goldmart_token");
+    try {
+      const parsed = JSON.parse(savedUser) as User;
 
-      if (!savedUser || !token) {
-        setUser(null);
-        setChecking(false);
-        return;
+      if (!parsed || typeof parsed !== "object") {
+        throw new Error("Invalid user session");
       }
 
-      try {
-        const parsed: User = JSON.parse(savedUser);
-        setUser(parsed);
-      } catch {
-        localStorage.removeItem("goldmart_user");
-        localStorage.removeItem("goldmart_token");
-        setUser(null);
-        setChecking(false);
-        return;
-      }
+      setUser(parsed);
+    } catch {
+      localStorage.removeItem("goldmart_user");
+      localStorage.removeItem("goldmart_token");
+      setChecking(false);
+      return () => controller.abort();
+    }
 
-      // The backend confirms administrator access.
-      // We do not trust an admin role stored in the
-      // browser for refund-management permissions.
+    setChecking(false);
 
+    // Backend verifies refund administrator access.
+    async function checkAdmin() {
       try {
         const response = await fetch(
           `${API_URL}/api/admin/refunds?page=1`,
           {
-            method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
               Accept: "application/json",
@@ -86,23 +120,13 @@ export default function AccountPage() {
         if (!controller.signal.aborted) {
           setIsRefundAdmin(false);
         }
-      } finally {
-        if (!controller.signal.aborted) {
-          setChecking(false);
-        }
       }
     }
 
-    void loadAccount();
+    void checkAdmin();
 
-    return () => {
-      controller.abort();
-    };
+    return () => controller.abort();
   }, []);
-
-  // =====================================================
-  // LOG OUT
-  // =====================================================
 
   const handleLogout = () => {
     localStorage.removeItem("goldmart_user");
@@ -114,17 +138,14 @@ export default function AccountPage() {
     window.location.href = "/";
   };
 
-  // =====================================================
-  // SWITCH BUYER / SELLER
-  // =====================================================
-
   const handleSwitchRole = async () => {
-    try {
-      setSwitching(true);
-      setError("");
+    if (switching) return;
 
-      const token =
-        localStorage.getItem("goldmart_token");
+    setSwitching(true);
+    setError("");
+
+    try {
+      const token = localStorage.getItem("goldmart_token");
 
       if (!token) {
         window.location.href = "/login";
@@ -144,10 +165,14 @@ export default function AccountPage() {
 
       const data = await response.json();
 
-      if (!response.ok || !data.success) {
+      if (
+        !response.ok ||
+        !data.success ||
+        !data.user ||
+        !data.token
+      ) {
         throw new Error(
-          data.message ||
-            "Failed to switch account type."
+          data.message || "Could not switch account mode."
         );
       }
 
@@ -156,84 +181,80 @@ export default function AccountPage() {
         JSON.stringify(data.user)
       );
 
-      localStorage.setItem(
-        "goldmart_token",
-        data.token
-      );
+      localStorage.setItem("goldmart_token", data.token);
 
       setUser(data.user);
 
-      if (data.user.role === "seller") {
-        window.location.href = "/seller";
-      } else {
-        window.location.href = "/";
-      }
+      window.location.href =
+        data.user.role === "seller" ? "/seller" : "/";
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to switch account type."
+          : "Could not switch account mode."
       );
 
       setSwitching(false);
     }
   };
 
-  // =====================================================
-  // LOADING
-  // =====================================================
-
   if (checking) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-white">
-        <p className="text-gray-500">
+      <main className="flex min-h-screen items-center justify-center bg-[#FAF8F3] text-[#17191D]">
+        <p className="text-sm font-medium text-[#74716B]">
           Loading your account...
         </p>
       </main>
     );
   }
 
-  // =====================================================
-  // NOT LOGGED IN
-  // =====================================================
-
   if (!user) {
     return (
-      <main className="min-h-screen bg-white px-4 py-10 text-black">
+      <main className="min-h-screen bg-[#FAF8F3] px-4 py-10 text-[#17191D]">
         <div className="mx-auto max-w-lg">
           <Link
             href="/"
-            className="text-sm font-medium text-gray-500 hover:text-[#A67C00]"
+            className="text-sm font-semibold text-[#96713D]"
           >
             ← Back to GoldMart
           </Link>
 
-          <div className="mt-10 rounded-3xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-            <div className="text-5xl">👤</div>
+          <section className="mt-8 overflow-hidden rounded-[28px] border border-[#E8E1D5] bg-white shadow-[0_16px_45px_rgba(23,25,29,0.06)]">
+            <div className="h-2 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
-            <h1 className="mt-5 text-3xl font-black">
-              Your Account
-            </h1>
+            <div className="px-7 py-12 text-center sm:px-10">
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-[#E9D9BB] bg-[#FAF8F3] text-4xl">
+                👤
+              </div>
 
-            <p className="mt-3 text-gray-500">
-              Sign in to access your account,
-              orders and cart.
-            </p>
+              <p className="mt-7 text-xs font-bold uppercase tracking-[0.22em] text-[#96713D]">
+                The GoldMart Experience
+              </p>
 
-            <Link
-              href="/login"
-              className="mt-8 block w-full rounded-full bg-black px-6 py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
-            >
-              🔐 Sign In
-            </Link>
+              <h1 className="mt-2 text-3xl font-black tracking-tight">
+                Welcome to GoldMart
+              </h1>
 
-            <Link
-              href="/register"
-              className="mt-3 block w-full rounded-full border border-gray-300 px-6 py-4 font-bold text-black transition hover:border-[#D4AF37]"
-            >
-              📝 Create Account
-            </Link>
-          </div>
+              <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[#74716B]">
+                Sign in to manage orders, messages,
+                buyer protection and your account.
+              </p>
+
+              <Link
+                href="/login"
+                className="mt-8 block rounded-full bg-[#17191D] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-[#96713D]"
+              >
+                Sign In →
+              </Link>
+
+              <Link
+                href="/register"
+                className="mt-3 block rounded-full border border-[#D7BF97] bg-white px-6 py-3.5 text-sm font-bold text-[#17191D] transition hover:bg-[#FAF8F3]"
+              >
+                Create an Account
+              </Link>
+            </div>
+          </section>
         </div>
       </main>
     );
@@ -241,189 +262,206 @@ export default function AccountPage() {
 
   const isSeller = user.role === "seller";
 
-  // Preserve the original Reports shortcut.
-  // Actual report permissions are enforced
-  // separately by the backend.
+  // Keep the existing reports shortcut.
+  // The reports backend must enforce permissions.
   const isLegacyReportsAdmin =
-    Number(user.id) === 1 ||
-    Number(user.id) === 3;
+    Number(user.id) === 1 || Number(user.id) === 3;
 
   const showAdminSection =
     isLegacyReportsAdmin || isRefundAdmin;
 
-  // =====================================================
-  // ACCOUNT PAGE
-  // =====================================================
+  const displayName =
+    user.name?.trim() || "GoldMart Member";
 
   return (
-    <main className="min-h-screen bg-white px-4 py-10 text-black">
-      <div className="mx-auto max-w-3xl">
+    <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
+      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
-        {/* HEADER */}
+      {/* HEADER */}
 
-        <div className="mb-8">
+      <header className="border-b border-[#EEE6DA] bg-white/95 px-4 py-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3">
           <Link
             href="/"
-            className="text-sm font-medium text-gray-500 hover:text-[#A67C00]"
+            className="text-xl font-black tracking-tight"
+            aria-label="GoldMart home"
           >
-            ← Back to GoldMart
+            Gold
+            <span className="text-[#B08A50]">
+              Mart
+            </span>
           </Link>
 
-          <h1 className="mt-5 text-4xl font-black">
-            My Account
-          </h1>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/shop"
+              className="text-xs font-semibold text-[#74716B] transition hover:text-[#96713D] sm:text-sm"
+            >
+              Continue Shopping
+            </Link>
 
-          <p className="mt-2 text-gray-500">
-            Manage your GoldMart account.
-          </p>
+            <Link
+              href="/notifications"
+              aria-label="Notifications"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E8E1D5] bg-[#FAF8F3] text-lg transition hover:border-[#C5A46D]"
+            >
+              🔔
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-5xl px-4 py-7 sm:px-6 sm:py-10">
+        <div className="mb-6 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#96713D]">
+              Your GoldMart
+            </p>
+
+            <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">
+              My Account
+            </h1>
+          </div>
+
+          <Link
+            href="/"
+            className="rounded-full border border-[#E8E1D5] bg-white px-4 py-2 text-xs font-bold transition hover:border-[#C5A46D]"
+          >
+            ← Home
+          </Link>
         </div>
 
-        {/* ERROR */}
+        {/* PREMIUM PROFILE HEADER */}
 
-        {error && (
-          <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
-            <p className="font-bold">
-              Something went wrong
-            </p>
+        <section className="relative overflow-hidden rounded-[28px] bg-[#17191D] px-5 py-7 text-white shadow-[0_16px_45px_rgba(23,25,29,0.14)] sm:px-8 sm:py-9">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#C5A46D]/25" />
 
-            <p className="mt-1 text-sm">
-              {error}
-            </p>
+          <div className="pointer-events-none absolute -right-8 -top-12 h-40 w-40 rounded-full bg-[#C5A46D]/10 blur-xl" />
+
+          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-[#E9D9BB]/50 bg-[#C5A46D] text-2xl font-black text-[#17191D]">
+              {initials(displayName)}
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+                Welcome back
+              </p>
+
+              <h2 className="mt-1 break-words text-2xl font-black tracking-tight sm:text-3xl">
+                {displayName}
+              </h2>
+
+              <p className="mt-1 break-all text-sm text-[#E4E1DB]">
+                {user.email || "Email not provided"}
+              </p>
+            </div>
+
+            <span className="w-fit rounded-full border border-[#C5A46D]/60 bg-[#C5A46D]/15 px-4 py-2 text-xs font-bold text-[#E9D9BB]">
+              {isSeller
+                ? "✦ Seller Account"
+                : "✦ Buyer Account"}
+            </span>
           </div>
-        )}
 
-        {/* ACCOUNT INFORMATION */}
-
-        <section className="rounded-2xl border border-gray-200 p-6 shadow-sm">
-          <h2 className="mb-6 text-2xl font-bold">
-            Account Information
-          </h2>
-
-          <div className="space-y-5">
-            <div>
-              <p className="text-sm text-gray-500">
-                Name
-              </p>
-
-              <p className="mt-1 text-lg font-semibold">
-                {user.name || "Not provided"}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-500">
-                Email
-              </p>
-
-              <p className="mt-1 break-all text-lg font-semibold">
-                {user.email || "Not provided"}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-500">
-                Current Mode
-              </p>
-
-              <p className="mt-1 text-lg font-semibold capitalize">
-                {isSeller ? "Seller" : "Buyer"}
-              </p>
-            </div>
+          <div className="relative mt-7 border-t border-white/15 pt-5 text-xs text-[#D8D1C4]">
+            Your shopping, orders and account tools
+            in one place.
           </div>
         </section>
 
-        {/* ============================================
-            ADMIN DASHBOARD SECTION
-            ============================================ */}
+        {/* ERROR MESSAGE */}
 
-        {showAdminSection && (
-          <section className="mt-6 rounded-3xl border border-[#D4AF37] bg-[#FFFDF5] p-6 shadow-sm">
-            <div className="flex items-start gap-4">
-              <div className="text-4xl">
-                🛡️
-              </div>
-
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#9A7617]">
-                  GoldMart Administration
-                </p>
-
-                <h2 className="mt-1 text-2xl font-black">
-                  Admin Dashboard
-                </h2>
-
-                <p className="mt-2 text-sm text-gray-600">
-                  Manage GoldMart reports,
-                  buyer protection and refund requests.
-                </p>
-
-                <div className="mt-5 flex flex-wrap gap-3">
-
-                  {/* EXISTING REPORTS FEATURE */}
-
-                  {isLegacyReportsAdmin && (
-                    <Link
-                      href="/admin/reports"
-                      className="inline-block rounded-full bg-black px-5 py-3 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
-                    >
-                      📩 Reports & Users
-                    </Link>
-                  )}
-
-                  {/* NEW ADMIN REFUND FEATURE */}
-
-                  {isRefundAdmin && (
-                    <Link
-                      href="/admin/refunds"
-                      className="inline-block rounded-full bg-[#B58A1E] px-5 py-3 text-sm font-bold text-white transition hover:bg-black"
-                    >
-                      💳 Manage Refunds
-                    </Link>
-                  )}
-
-                </div>
-
-                {isRefundAdmin && (
-                  <p className="mt-4 text-xs leading-5 text-gray-500">
-                    Refund approvals are recorded
-                    for processing. They do not
-                    automatically send money to
-                    buyers or sellers.
-                  </p>
-                )}
-              </div>
-            </div>
-          </section>
+        {error && (
+          <div
+            role="alert"
+            className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"
+          >
+            {error}
+          </div>
         )}
 
-        {/* ============================================
-            SWITCH BUYER / SELLER
-            ============================================ */}
+        {/* SHOPPING DASHBOARD */}
 
-        <section className="mt-6 rounded-3xl border border-[#D4AF37] bg-[#FFFDF5] p-6">
+        <section className="mt-9">
+          <div className="mb-4 flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#96713D]">
+                Everything you need
+              </p>
+
+              <h2 className="mt-1 text-2xl font-black tracking-tight">
+                My Shopping
+              </h2>
+            </div>
+
+            <Link
+              href="/shop"
+              className="text-xs font-bold text-[#96713D] hover:underline"
+            >
+              Browse Shop →
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+            {shoppingLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group min-w-0 rounded-2xl border border-[#E8E1D5] bg-white p-4 shadow-[0_5px_16px_rgba(23,25,29,0.035)] transition duration-200 hover:-translate-y-0.5 hover:border-[#C5A46D] hover:shadow-[0_12px_28px_rgba(23,25,29,0.08)] sm:p-5"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
+                    {item.icon}
+                  </span>
+
+                  <span className="text-sm text-[#B69B70] transition group-hover:translate-x-0.5">
+                    ↗
+                  </span>
+                </div>
+
+                <h3 className="mt-4 text-sm font-extrabold sm:text-base">
+                  {item.title}
+                </h3>
+
+                <p className="mt-1 text-xs leading-5 text-[#74716B]">
+                  {item.detail}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* BUYER / SELLER SWITCH */}
+
+        <section className="mt-8 overflow-hidden rounded-[24px] border border-[#E4D4B9] bg-gradient-to-br from-[#FFFDF8] to-[#F3E9D7] p-5 sm:p-7">
           <div className="flex items-start gap-4">
-            <div className="text-4xl">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-2xl shadow-sm">
               {isSeller ? "🛍️" : "🏪"}
             </div>
 
-            <div className="flex-1">
-              <h2 className="text-xl font-black">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#96713D]">
+                Account Modes
+              </p>
+
+              <h2 className="mt-1 text-xl font-black">
                 {isSeller
                   ? "Switch to Buyer"
                   : "Switch to Seller"}
               </h2>
 
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mt-2 text-sm leading-6 text-[#665F55]">
                 {isSeller
-                  ? "Return to the GoldMart shopping experience and shop as a buyer."
-                  : "Start managing products and selling on GoldMart."}
+                  ? "Return to shopping and browse GoldMart as a buyer."
+                  : "Start selling and manage products from your seller dashboard."}
               </p>
 
               <button
                 type="button"
                 onClick={handleSwitchRole}
                 disabled={switching}
-                className="mt-5 rounded-full bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-5 rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#96713D] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {switching
                   ? "Switching..."
@@ -431,115 +469,121 @@ export default function AccountPage() {
                     ? "🛍️ Switch to Buyer"
                     : "🏪 Switch to Seller"}
               </button>
+
+              {isSeller && (
+                <Link
+                  href="/seller"
+                  className="ml-3 inline-flex py-3 text-sm font-bold text-[#96713D] hover:underline"
+                >
+                  Seller Dashboard →
+                </Link>
+              )}
             </div>
           </div>
         </section>
 
-        {/* ============================================
-            QUICK ACTIONS
-            ============================================ */}
+        {/* ADMIN DASHBOARD */}
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        {showAdminSection && (
+          <section className="mt-8 rounded-[24px] border border-[#D7BF97] bg-white p-5 shadow-sm sm:p-7">
+            <div className="flex items-start gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#17191D] text-2xl text-white">
+                🛡️
+              </div>
 
-          {/* ORDERS */}
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#96713D]">
+                  Administration
+                </p>
 
-          <Link
-            href="/orders"
-            className="rounded-2xl border border-gray-200 p-5 transition hover:border-[#D4AF37] hover:shadow-md"
-          >
-            <div className="text-2xl">📦</div>
+                <h2 className="mt-1 text-xl font-black">
+                  Admin Dashboard
+                </h2>
 
-            <h3 className="mt-3 text-lg font-bold">
-              My Orders
-            </h3>
+                <p className="mt-2 text-sm leading-6 text-[#74716B]">
+                  Manage marketplace reports and
+                  refund requests.
+                </p>
 
-            <p className="mt-1 text-sm text-gray-500">
-              View your orders and order history.
-            </p>
-          </Link>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  {isLegacyReportsAdmin && (
+                    <Link
+                      href="/admin/reports"
+                      className="rounded-full border border-[#D7BF97] px-5 py-3 text-sm font-bold transition hover:bg-[#FAF8F3]"
+                    >
+                      📩 Reports & Users
+                    </Link>
+                  )}
 
-          {/* CART */}
+                  {isRefundAdmin && (
+                    <Link
+                      href="/admin/refunds"
+                      className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#96713D]"
+                    >
+                      💳 Manage Refunds
+                    </Link>
+                  )}
+                </div>
 
-          <Link
-            href="/cart"
-            className="rounded-2xl border border-gray-200 p-5 transition hover:border-[#D4AF37] hover:shadow-md"
-          >
-            <div className="text-2xl">🛒</div>
+                {isRefundAdmin && (
+                  <p className="mt-4 text-xs leading-5 text-[#74716B]">
+                    Approving a refund request
+                    does not itself send money
+                    to a buyer.
+                  </p>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
 
-            <h3 className="mt-3 text-lg font-bold">
-              My Cart
-            </h3>
+        {/* MORE GOLDMART TOOLS */}
 
-            <p className="mt-1 text-sm text-gray-500">
-              View items waiting in your cart.
-            </p>
-          </Link>
+        <section className="mt-9">
+          <h2 className="text-2xl font-black tracking-tight">
+            More from GoldMart
+          </h2>
 
-          {/* ORDER TRACKING */}
-
-          <Link
-            href="/track-order"
-            className="rounded-2xl border border-gray-200 p-5 transition hover:border-[#D4AF37] hover:shadow-md"
-          >
-            <div className="text-2xl">🚚</div>
-
-            <h3 className="mt-3 text-lg font-bold">
-              Track Orders
-            </h3>
-
-            <p className="mt-1 text-sm text-gray-500">
-              Check your order and delivery status.
-            </p>
-          </Link>
-
-          {/* BUYER PROTECTION */}
-
-          <Link
-            href="/order-protection"
-            className="rounded-2xl border border-gray-200 p-5 transition hover:border-[#D4AF37] hover:shadow-md"
-          >
-            <div className="text-2xl">🛡️</div>
-
-            <h3 className="mt-3 text-lg font-bold">
-              Buyer Protection
-            </h3>
-
-            <p className="mt-1 text-sm text-gray-500">
-              Request cancellation, seek refunds
-              and confirm delivery.
-            </p>
-          </Link>
-
-          {/* SELLER DASHBOARD */}
-
-          {isSeller && (
+          <div className="mt-4 overflow-hidden rounded-[24px] border border-[#E8E1D5] bg-white">
             <Link
-              href="/seller"
-              className="rounded-2xl border border-gray-200 p-5 transition hover:border-[#D4AF37] hover:shadow-md"
+              href="/notifications"
+              className="flex items-center justify-between gap-4 border-b border-[#F0ECE5] px-5 py-4 text-sm font-bold transition hover:bg-[#FAF8F3]"
             >
-              <div className="text-2xl">🏪</div>
-
-              <h3 className="mt-3 text-lg font-bold">
-                Seller Dashboard
-              </h3>
-
-              <p className="mt-1 text-sm text-gray-500">
-                Manage your products and sales.
-              </p>
+              <span>🔔 &nbsp; Notifications</span>
+              <span className="text-[#96713D]">→</span>
             </Link>
-          )}
 
-        </div>
+            <Link
+              href="/categories"
+              className="flex items-center justify-between gap-4 border-b border-[#F0ECE5] px-5 py-4 text-sm font-bold transition hover:bg-[#FAF8F3]"
+            >
+              <span>🛍️ &nbsp; Shop Categories</span>
+              <span className="text-[#96713D]">→</span>
+            </Link>
 
-        {/* LOGOUT */}
+            <Link
+              href="/help"
+              className="flex items-center justify-between gap-4 px-5 py-4 text-sm font-bold transition hover:bg-[#FAF8F3]"
+            >
+              <span>🎧 &nbsp; Help Centre</span>
+              <span className="text-[#96713D]">→</span>
+            </Link>
+          </div>
+        </section>
+
+        {/* LOG OUT */}
 
         <button
           type="button"
           onClick={handleLogout}
-          className="mt-8 w-full rounded-full bg-black px-6 py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+          className="mt-8 w-full rounded-full border border-[#D7BF97] bg-white px-6 py-4 text-sm font-extrabold text-[#17191D] transition hover:border-[#96713D] hover:bg-[#F5F1E9]"
         >
           🚪 Log Out
         </button>
+
+        <p className="mt-7 text-center text-xs text-[#89847A]">
+          GoldMart · Shop beautifully. Shop confidently.
+        </p>
       </div>
     </main>
   );
