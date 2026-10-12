@@ -1,302 +1,697 @@
+
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 const API_URL =
   "https://goldmart-backend-yoxc.onrender.com/api";
+
+// =====================================================
+// TYPES
+// =====================================================
 
 type Notification = {
   id: number;
   title: string;
   message: string;
   type?: string | null;
-  is_read?: boolean;
+  is_read: boolean;
   created_at?: string | null;
+  conversation_id?: number | string | null;
 };
 
-type NotificationResponse = {
-  success?: boolean;
+type NotificationsResponse = {
+  success: boolean;
   message?: string;
   notifications?: Notification[];
 };
 
-function notificationIcon(type?: string | null) {
-  switch (type) {
-    case "message": return "💬";
-    case "order": return "📦";
-    case "seller": return "🏪";
-    case "payment": return "💳";
-    case "review": return "⭐";
-    case "wishlist": return "❤️";
-    default: return "🔔";
-  }
-}
+// =====================================================
+// NOTIFICATIONS PAGE
+// =====================================================
 
 export default function NotificationsPage() {
-  const router = useRouter();
-  const [token, setToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [notifications, setNotifications] =
     useState<Notification[]>([]);
+
+  const [token, setToken] =
+    useState<string | null>(null);
+
+  const [ready, setReady] =
+    useState(false);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
   const [expandedId, setExpandedId] =
     useState<number | null>(null);
+
   const [busyId, setBusyId] =
     useState<number | null>(null);
-  const [markingAll, setMarkingAll] = useState(false);
+
+  const [markingAll, setMarkingAll] =
+    useState(false);
+
+  // ===================================================
+  // CHECK ACCOUNT
+  // ===================================================
 
   useEffect(() => {
-    const savedToken = localStorage.getItem("goldmart_token");
-    setToken(savedToken);
-    if (!savedToken) setLoading(false);
-  }, []);
+    const savedToken =
+      localStorage.getItem("goldmart_token");
 
-  const loadNotifications = useCallback(async (showLoading = true) => {
-    if (!token) return;
-    if (showLoading) setLoading(true);
-    try {
-      const response = await fetch(`${API_URL}/notifications`, {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        cache: "no-store",
-      });
-      const data: NotificationResponse = await response.json();
-      if (!response.ok || data.success === false) {
-        throw new Error(data.message || "Unable to load notifications.");
-      }
-      setNotifications(Array.isArray(data.notifications)
-        ? data.notifications
-        : []);
-      setError("");
-    } catch (err) {
-      setError(err instanceof Error
-        ? err.message
-        : "Unable to load notifications.");
-    } finally {
+    setToken(savedToken);
+    setReady(true);
+
+    if (!savedToken) {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
+
+  // ===================================================
+  // LOAD NOTIFICATIONS
+  // ===================================================
+
+  const loadNotifications = useCallback(
+    async (showLoading = true) => {
+      if (!token) return;
+
+      if (showLoading) {
+        setLoading(true);
+      }
+
+      try {
+        const response = await fetch(
+          `${API_URL}/notifications`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+            cache: "no-store",
+          }
+        );
+
+        const data: NotificationsResponse =
+          await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.message ||
+              "Unable to load notifications"
+          );
+        }
+
+        setNotifications(
+          Array.isArray(data.notifications)
+            ? data.notifications
+            : []
+        );
+
+        setError("");
+      } catch (err) {
+        console.error(
+          "Notifications loading error:",
+          err
+        );
+
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Unable to load notifications"
+        );
+      } finally {
+        setLoading(false);
+      }
+    },
+    [token]
+  );
 
   useEffect(() => {
     if (!token) return;
+
     void loadNotifications();
-    const refresh = () => void loadNotifications(false);
-    window.addEventListener("focus", refresh);
-    return () => window.removeEventListener("focus", refresh);
+
+    const interval = window.setInterval(() => {
+      if (
+        document.visibilityState === "visible"
+      ) {
+        void loadNotifications(false);
+      }
+    }, 15000);
+
+    return () => {
+      window.clearInterval(interval);
+    };
   }, [token, loadNotifications]);
 
-  const unreadCount = notifications.filter((n) => !n.is_read).length;
+  // ===================================================
+  // ICONS
+  // ===================================================
 
-  async function changeRead(id: number, read: boolean) {
+  function notificationIcon(type?: string | null) {
+    switch (type) {
+      case "message":
+        return "💬";
+      case "order":
+        return "📦";
+      case "seller":
+        return "🏪";
+      case "payment":
+        return "💳";
+      case "review":
+        return "⭐";
+      case "wishlist":
+        return "❤️";
+      case "system":
+        return "⚙️";
+      default:
+        return "🔔";
+    }
+  }
+
+  // ===================================================
+  // CHANGE READ STATUS
+  // ===================================================
+
+  async function updateReadStatus(
+    id: number,
+    isRead: boolean
+  ) {
     if (!token) return;
+
     setBusyId(id);
+
     try {
+      const action = isRead ? "read" : "unread";
+
       const response = await fetch(
-        `${API_URL}/notifications/${id}/${read ? "read" : "unread"}`,
+        `${API_URL}/notifications/${id}/${action}`,
         {
           method: "PATCH",
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
         }
       );
-      const data = await response.json().catch(() => null);
-      if (!response.ok || data?.success === false) {
-        throw new Error(data?.message || "Unable to update notification.");
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message ||
+            "Could not update notification"
+        );
       }
-      setNotifications((prev) => prev.map((n) =>
-        n.id === id ? { ...n, is_read: read } : n
-      ));
+
+      setNotifications((current) =>
+        current.map((item) =>
+          item.id === id
+            ? { ...item, is_read: isRead }
+            : item
+        )
+      );
+
+      setError("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to update notification.");
+      console.error(
+        "Update notification error:",
+        err
+      );
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to update notification"
+      );
     } finally {
       setBusyId(null);
     }
   }
 
-  async function deleteNotification(id: number) {
-    if (!token) return;
-    setBusyId(id);
-    try {
-      const response = await fetch(`${API_URL}/notifications/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await response.json().catch(() => null);
-      if (!response.ok || data?.success === false) {
-        throw new Error(data?.message || "Unable to delete notification.");
-      }
-      setNotifications((prev) => prev.filter((n) => n.id !== id));
-      setExpandedId((prev) => prev === id ? null : prev);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to delete notification.");
-    } finally {
-      setBusyId(null);
-    }
-  }
+  // ===================================================
+  // MARK ALL READ
+  // ===================================================
 
   async function markAllAsRead() {
-    if (!token || unreadCount === 0) return;
+    if (!token) return;
+
     setMarkingAll(true);
+
     try {
-      const response = await fetch(`${API_URL}/notifications/read-all`, {
-        method: "PATCH",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await response.json().catch(() => null);
-      if (!response.ok || data?.success === false) {
-        throw new Error(data?.message || "Unable to mark all as read.");
+      const response = await fetch(
+        `${API_URL}/notifications/read-all`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message ||
+            "Unable to mark all as read"
+        );
       }
-      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+
+      setNotifications((current) =>
+        current.map((item) => ({
+          ...item,
+          is_read: true,
+        }))
+      );
+
+      setError("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to mark all as read.");
+      console.error(
+        "Mark all read error:",
+        err
+      );
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to mark notifications as read"
+      );
     } finally {
       setMarkingAll(false);
     }
   }
 
-  function openNotification(n: Notification) {
-    // Existing message notifications do not contain a conversation ID.
-    // Open the authenticated conversation list, not an invented chat ID.
-    if (n.type === "message") {
-      if (!n.is_read) void changeRead(n.id, true);
-      router.push("/chat");
-      return;
+  // ===================================================
+  // DELETE NOTIFICATION
+  // ===================================================
+
+  async function deleteNotification(id: number) {
+    if (!token) return;
+
+    setBusyId(id);
+
+    try {
+      const response = await fetch(
+        `${API_URL}/notifications/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message ||
+            "Unable to delete notification"
+        );
+      }
+
+      setNotifications((current) =>
+        current.filter((item) => item.id !== id)
+      );
+
+      if (expandedId === id) {
+        setExpandedId(null);
+      }
+
+      setError("");
+    } catch (err) {
+      console.error(
+        "Delete notification error:",
+        err
+      );
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to delete notification"
+      );
+    } finally {
+      setBusyId(null);
     }
-    setExpandedId((prev) => prev === n.id ? null : n.id);
-    if (!n.is_read) void changeRead(n.id, true);
   }
+
+  // ===================================================
+  // CHAT NAVIGATION
+  // ===================================================
+
+  function getNotificationLink(
+    notification: Notification
+  ) {
+    if (notification.type === "message") {
+      const conversationId = Number(
+        notification.conversation_id
+      );
+
+      if (
+        Number.isSafeInteger(conversationId) &&
+        conversationId > 0
+      ) {
+        return `/chat/${conversationId}`;
+      }
+
+      // Old notifications don't have a conversation ID.
+      return "/chat";
+    }
+
+    if (
+      notification.type === "order" ||
+      notification.type === "seller"
+    ) {
+      return "/orders";
+    }
+
+    return null;
+  }
+
+  // ===================================================
+  // COUNTERS
+  // ===================================================
+
+  const unreadCount = notifications.filter(
+    (item) => !item.is_read
+  ).length;
+
+  // ===================================================
+  // PAGE
+  // ===================================================
 
   return (
     <main className="min-h-screen bg-[#F7F6F2] text-black">
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-5">
-          <Link href="/" className="text-2xl font-black">
-            Gold<span className="text-[#A67C00]">Mart</span>
+
+      {/* HEADER */}
+      <header className="border-b border-black/10 bg-white">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
+          <Link
+            href="/"
+            className="text-2xl font-black tracking-tight"
+          >
+            Gold
+            <span className="text-[#C9A227]">
+              Mart
+            </span>
           </Link>
-          <div className="flex gap-2">
-            <Link href="/chat" className="rounded-full border px-4 py-2 text-sm font-bold">
-              💬 Messages
-            </Link>
-            <Link href="/account" className="rounded-full border px-4 py-2 text-sm font-bold">
-              Account
-            </Link>
-          </div>
+
+          <Link
+            href="/account"
+            className="rounded-full border border-gray-200 px-4 py-2 text-sm font-bold"
+          >
+            Account
+          </Link>
         </div>
       </header>
 
       <section className="mx-auto max-w-5xl px-4 py-8 sm:py-12">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+
+        {/* TITLE */}
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-xs font-black uppercase tracking-widest text-[#A67C00]">GoldMart</p>
-            <h1 className="mt-1 text-3xl font-black">Notifications</h1>
-            <p className="mt-2 text-sm text-gray-600">
-              Orders, messages, payments and marketplace updates.
+            <p className="text-xs font-black uppercase tracking-widest text-[#9A7617]">
+              GoldMart
+            </p>
+
+            <h1 className="mt-2 text-3xl font-black">
+              🔔 Notifications
+            </h1>
+
+            <p className="mt-2 text-sm text-gray-500">
+              See updates about messages, orders,
+              payments, reviews and GoldMart activity.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={() => void loadNotifications()}
+
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() =>
+                void loadNotifications()
+              }
               disabled={!token || loading}
-              className="rounded-full border bg-white px-4 py-3 text-sm font-bold disabled:opacity-50">
-              Refresh
+              className="rounded-full border bg-white px-4 py-3 text-xs font-bold disabled:opacity-50"
+            >
+              ↻ Refresh
             </button>
+
             {unreadCount > 0 && (
-              <button type="button" onClick={() => void markAllAsRead()}
+              <button
+                type="button"
+                onClick={() =>
+                  void markAllAsRead()
+                }
                 disabled={markingAll}
-                className="rounded-full bg-black px-4 py-3 text-sm font-bold text-white disabled:opacity-50">
-                {markingAll ? "Marking..." : `Mark all read (${unreadCount})`}
+                className="rounded-full bg-black px-4 py-3 text-xs font-bold text-white disabled:opacity-50"
+              >
+                {markingAll
+                  ? "Working..."
+                  : `Mark all read (${unreadCount})`}
               </button>
             )}
           </div>
         </div>
 
-        {error && (
-          <p role="alert" className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-            {error}
-          </p>
-        )}
+        {/* NOT LOGGED IN */}
+        {ready && !token && (
+          <div className="mt-8 rounded-3xl bg-white p-10 text-center shadow-sm">
+            <div className="text-5xl">👤</div>
 
-        {!token && !loading && (
-          <div className="mt-8 rounded-2xl bg-white p-10 text-center">
-            <p className="font-bold">Sign in to see your notifications.</p>
-            <Link href="/login" className="mt-4 inline-block rounded-full bg-black px-6 py-3 font-bold text-white">
+            <h2 className="mt-4 text-xl font-black">
+              Sign in to view notifications
+            </h2>
+
+            <Link
+              href="/login"
+              className="mt-6 inline-block rounded-full bg-black px-6 py-3 font-bold text-white"
+            >
               Sign In
             </Link>
           </div>
         )}
 
-        {loading && (
-          <div className="mt-8 rounded-2xl bg-white p-10 text-center text-gray-600">
+        {/* ERROR */}
+        {error && (
+          <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            ⚠️ {error}
+          </div>
+        )}
+
+        {/* LOADING */}
+        {loading && token && (
+          <div className="mt-8 rounded-3xl bg-white p-10 text-center shadow-sm">
             Loading notifications...
           </div>
         )}
 
-        {token && !loading && !error && notifications.length === 0 && (
-          <div className="mt-8 rounded-2xl bg-white p-10 text-center">
-            <div className="text-4xl">🔔</div>
-            <h2 className="mt-4 text-xl font-black">You're all caught up</h2>
-            <p className="mt-2 text-gray-600">No notifications yet.</p>
-          </div>
-        )}
+        {/* EMPTY */}
+        {!loading &&
+          token &&
+          notifications.length === 0 &&
+          !error && (
+            <div className="mt-8 rounded-3xl bg-white p-10 text-center shadow-sm">
+              <div className="text-5xl">🔔</div>
 
-        {token && !loading && notifications.length > 0 && (
-          <div className="mt-8 space-y-3">
-            {notifications.map((n) => {
-              const expanded = expandedId === n.id;
-              const busy = busyId === n.id;
-              const messageNotice = n.type === "message";
-              return (
-                <article key={n.id}
-                  className={`overflow-hidden rounded-2xl border bg-white shadow-sm ${!n.is_read ? "border-[#C9A227]" : "border-gray-100"}`}>
-                  <button type="button" onClick={() => openNotification(n)}
-                    className="flex w-full gap-4 p-5 text-left hover:bg-[#FFFDF5]">
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-black text-lg">
-                      {notificationIcon(n.type)}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        {!n.is_read && <span className="h-2 w-2 rounded-full bg-[#C9A227]" />}
-                        <h2 className="font-black">{n.title}</h2>
+              <h2 className="mt-4 text-xl font-black">
+                You're all caught up
+              </h2>
+
+              <p className="mt-2 text-gray-500">
+                You don't have any notifications yet.
+              </p>
+
+              <Link
+                href="/shop"
+                className="mt-6 inline-block rounded-full bg-black px-6 py-3 font-bold text-white"
+              >
+                Continue Shopping
+              </Link>
+            </div>
+          )}
+
+        {/* NOTIFICATION LIST */}
+        {!loading &&
+          token &&
+          notifications.length > 0 && (
+            <div className="mt-8 space-y-3">
+              {notifications.map((notification) => {
+                const isExpanded =
+                  expandedId === notification.id;
+
+                const isBusy =
+                  busyId === notification.id;
+
+                const destination =
+                  getNotificationLink(notification);
+
+                return (
+                  <article
+                    key={notification.id}
+                    className={`overflow-hidden rounded-2xl border bg-white shadow-sm ${
+                      notification.is_read
+                        ? "border-gray-100"
+                        : "border-[#C9A227] bg-[#FFFDF5]"
+                    }`}
+                  >
+                    {/* NOTIFICATION HEADER */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setExpandedId(
+                          isExpanded
+                            ? null
+                            : notification.id
+                        );
+                      }}
+                      className="w-full p-5 text-left"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-black text-xl">
+                          {notificationIcon(
+                            notification.type
+                          )}
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            {!notification.is_read && (
+                              <span className="h-2 w-2 rounded-full bg-[#C9A227]" />
+                            )}
+
+                            <h2 className="font-black">
+                              {notification.title}
+                            </h2>
+                          </div>
+
+                          <p className={`mt-2 text-sm text-gray-600 ${
+                            isExpanded
+                              ? ""
+                              : "line-clamp-2"
+                          }`}>
+                            {notification.message}
+                          </p>
+
+                          {notification.created_at && (
+                            <p className="mt-2 text-xs text-gray-400">
+                              {new Date(
+                                notification.created_at
+                              ).toLocaleString()}
+                            </p>
+                          )}
+                        </div>
+
+                        <span className="text-sm text-gray-400">
+                          {isExpanded ? "▲" : "▼"}
+                        </span>
                       </div>
-                      <p className={`mt-2 text-sm text-gray-600 ${expanded || messageNotice ? "" : "line-clamp-2"}`}>
-                        {n.message}
-                      </p>
-                      {n.created_at && (
-                        <p className="mt-2 text-xs text-gray-400">
-                          {new Date(n.created_at).toLocaleString()}
-                        </p>
-                      )}
-                      <p className="mt-2 text-xs font-bold text-[#A67C00]">
-                        {messageNotice ? "Open messages and reply →" : expanded ? "Collapse ▲" : "Read more ▼"}
-                      </p>
-                    </div>
-                  </button>
+                    </button>
 
-                  <div className="flex flex-wrap items-center gap-2 border-t bg-gray-50 p-3 sm:px-5">
-                    {messageNotice && (
-                      <Link href="/chat" className="rounded-full bg-black px-4 py-2 text-xs font-bold text-white">
-                        💬 Open Chat
-                      </Link>
-                    )}
-                    <button type="button" disabled={busy}
-                      onClick={() => void changeRead(n.id, !n.is_read)}
-                      className="rounded-full border bg-white px-4 py-2 text-xs font-bold disabled:opacity-50">
-                      {n.is_read ? "Mark unread" : "Mark read"}
-                    </button>
-                    <button type="button" disabled={busy}
-                      onClick={() => void deleteNotification(n.id)}
-                      className="rounded-full border border-red-200 bg-white px-4 py-2 text-xs font-bold text-red-600 disabled:opacity-50">
-                      Delete
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
+                    {/* ACTIONS */}
+                    <div className="flex flex-wrap items-center gap-2 border-t bg-gray-50 p-4">
+
+                      {/* OPEN CHAT / ORDER */}
+                      {destination && (
+                        <Link
+                          href={destination}
+                          onClick={() => {
+                            if (!notification.is_read) {
+                              void updateReadStatus(
+                                notification.id,
+                                true
+                              );
+                            }
+                          }}
+                          className="rounded-full bg-black px-4 py-2 text-xs font-black text-white hover:bg-[#C9A227] hover:text-black"
+                        >
+                          {notification.type === "message"
+                            ? "💬 Open Chat"
+                            : "📦 View Orders"}
+                        </Link>
+                      )}
+
+                      {/* READ / UNREAD */}
+                      <button
+                        type="button"
+                        disabled={isBusy}
+                        onClick={() =>
+                          void updateReadStatus(
+                            notification.id,
+                            !notification.is_read
+                          )
+                        }
+                        className="rounded-full border bg-white px-4 py-2 text-xs font-bold disabled:opacity-50"
+                      >
+                        {isBusy
+                          ? "Working..."
+                          : notification.is_read
+                          ? "Mark Unread"
+                          : "Mark Read"}
+                      </button>
+
+                      {/* DELETE */}
+                      <button
+                        type="button"
+                        disabled={isBusy}
+                        onClick={() =>
+                          void deleteNotification(
+                            notification.id
+                          )
+                        }
+                        className="rounded-full border border-red-200 bg-white px-4 py-2 text-xs font-bold text-red-600 disabled:opacity-50"
+                      >
+                        {isBusy
+                          ? "Working..."
+                          : "🗑️ Delete"}
+                      </button>
+
+                      {/* EXPAND / COLLAPSE */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedId(
+                            isExpanded
+                              ? null
+                              : notification.id
+                          )
+                        }
+                        className="ml-auto rounded-full px-3 py-2 text-xs font-bold text-gray-500"
+                      >
+                        {isExpanded
+                          ? "Collapse"
+                          : "Expand"}
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
       </section>
+
+      {/* FOOTER */}
+      <footer className="border-t bg-black px-4 py-8 text-center text-white">
+        <p className="text-2xl font-black">
+          Gold<span className="text-[#D4AF37]">Mart</span>
+        </p>
+
+        <p className="mt-2 text-xs text-gray-400">
+          Everything you need, all in one place.
+        </p>
+      </footer>
     </main>
   );
 }
