@@ -1,18 +1,39 @@
-import type { Metadata } from "next";
+
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { CartProvider } from "../components/CartProvider";
 
 export const metadata: Metadata = {
-  title: "GoldMart | Premium Marketplace",
+  title: {
+    default: "GoldMart | Premium Marketplace",
+    template: "%s | GoldMart",
+  },
+
   description:
-    "GoldMart is a modern marketplace connecting buyers and sellers with secure shopping experiences.",
+    "Discover and shop products on GoldMart, a premium online marketplace connecting buyers and sellers.",
+
+  applicationName: "GoldMart",
+
+  manifest: "/manifest.webmanifest",
+
+  appleWebApp: {
+    capable: true,
+    title: "GoldMart",
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#17191D",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
       <body>
