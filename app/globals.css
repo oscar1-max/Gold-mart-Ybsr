@@ -1,22 +1,49 @@
+
 @import "tailwindcss";
 
+/* =========================================
+   GOLDMART PREMIUM LUXURY THEME
+   Champagne Gold • Ivory • Midnight Black
+========================================= */
+
 :root {
-  --gold: #d4af37;
-  --gold-light: #f3d77a;
-  --gold-dark: #a67c00;
+  --gold: #c5a46d;
+  --gold-light: #e9d9bb;
+  --gold-dark: #96713d;
 
-  --orange: #ff8a00;
-  --orange-light: #fff0dc;
+  --orange: #b88a4a;
+  --orange-light: #faf1e1;
 
-  --black: #050505;
-  --black-soft: #111111;
+  --black: #17191d;
+  --black-soft: #26282d;
 
   --white: #ffffff;
-  --off-white: #fafafa;
+  --off-white: #faf8f3;
 
-  --gray: #eeeeee;
-  --gray-dark: #666666;
+  --gray: #e8e4dc;
+  --gray-dark: #74716b;
+
+  --background: #faf8f3;
+  --foreground: #17191d;
+
+  --surface: #ffffff;
+  --surface-soft: #f5f1e9;
+
+  --border: #e8e1d5;
+  --border-gold: #d7bf97;
+
+  --shadow-soft:
+    0 4px 20px rgba(23, 25, 29, 0.045);
+
+  --shadow-premium:
+    0 12px 35px rgba(23, 25, 29, 0.075);
+
+  --radius-premium: 16px;
 }
+
+/* =========================================
+   BASE STYLES
+========================================= */
 
 * {
   box-sizing: border-box;
@@ -28,9 +55,16 @@ html {
 
 body {
   margin: 0;
-  background: var(--white);
-  color: var(--black);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 button,
@@ -44,12 +78,47 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 ::selection {
-  background: var(--gold);
+  background: var(--gold-light);
   color: var(--black);
 }
 
-/* GoldMart colors */
+/* =========================================
+   PREMIUM TYPOGRAPHY
+========================================= */
+
+.luxury-title {
+  color: var(--black);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+.luxury-subtitle {
+  color: var(--gray-dark);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.luxury-label {
+  color: var(--gold-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* =========================================
+   GOLDMART COLOR UTILITIES
+========================================= */
 
 .gold-text {
   color: var(--gold);
@@ -59,29 +128,8 @@ button {
   background: var(--gold);
 }
 
-.gold-gradient {
-  background: linear-gradient(
-    135deg,
-    var(--gold-dark) 0%,
-    var(--gold) 50%,
-    var(--gold-light) 100%
-  );
-}
-
 .gold-border {
   border-color: var(--gold);
-}
-
-.gold-glow {
-  box-shadow:
-    0 0 0 1px rgba(212, 175, 55, 0.18),
-    0 8px 30px rgba(212, 175, 55, 0.12);
-}
-
-.gold-shadow {
-  box-shadow:
-    0 8px 25px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(212, 175, 55, 0.12);
 }
 
 .black-bg {
@@ -91,6 +139,168 @@ button {
 .black-soft-bg {
   background: var(--black-soft);
 }
+
+.luxury-bg {
+  background: var(--background);
+}
+
+.luxury-surface {
+  background: var(--surface);
+}
+
+.luxury-border {
+  border: 1px solid var(--border);
+}
+
+/* =========================================
+   PREMIUM GOLD GRADIENT
+========================================= */
+
+.gold-gradient {
+  background: linear-gradient(
+    135deg,
+    #96713d 0%,
+    #b9965d 30%,
+    #e5d1aa 53%,
+    #c5a46d 75%,
+    #96713d 100%
+  );
+}
+
+.luxury-hero-gradient {
+  background: linear-gradient(
+    135deg,
+    #faf8f3 0%,
+    #f2e8d8 55%,
+    #e8d7ba 100%
+  );
+}
+
+/* =========================================
+   REFINED SHADOWS
+========================================= */
+
+.gold-glow {
+  box-shadow:
+    0 0 0 1px rgba(197, 164, 109, 0.16),
+    0 10px 30px rgba(150, 113, 61, 0.09);
+}
+
+.gold-shadow {
+  box-shadow:
+    0 8px 25px rgba(23, 25, 29, 0.07),
+    0 2px 8px rgba(197, 164, 109, 0.08);
+}
+
+.luxury-shadow {
+  box-shadow: var(--shadow-premium);
+}
+
+/* =========================================
+   LUXURY BUTTONS
+========================================= */
+
+.luxury-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  padding: 0.85rem 1.5rem;
+
+  border: 1px solid var(--black);
+  border-radius: 999px;
+
+  background: var(--black);
+  color: var(--white);
+
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
+
+.luxury-button:hover {
+  background: var(--gold-dark);
+  border-color: var(--gold-dark);
+  color: var(--white);
+  box-shadow: var(--shadow-premium);
+  transform: translateY(-1px);
+}
+
+.luxury-button:active {
+  transform: translateY(0);
+}
+
+.luxury-button-gold {
+  background: var(--gold);
+  color: var(--black);
+  border-color: var(--gold);
+}
+
+.luxury-button-gold:hover {
+  background: var(--gold-dark);
+  border-color: var(--gold-dark);
+  color: var(--white);
+}
+
+.luxury-button-outline {
+  background: transparent;
+  color: var(--black);
+  border-color: var(--border-gold);
+}
+
+.luxury-button-outline:hover {
+  background: var(--surface-soft);
+  color: var(--black);
+  border-color: var(--gold);
+}
+
+/* =========================================
+   PRODUCT CARDS
+========================================= */
+
+.luxury-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-premium);
+  overflow: hidden;
+
+  box-shadow: var(--shadow-soft);
+
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.luxury-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-gold);
+  box-shadow: var(--shadow-premium);
+}
+
+.luxury-price {
+  color: var(--black);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.luxury-divider {
+  height: 1px;
+  border: 0;
+  background: var(--border);
+}
+
+/* =========================================
+   EXISTING GOLDMART HOVER CLASS
+========================================= */
 
 .gold-hover {
   transition:
@@ -107,10 +317,73 @@ button {
   border-color: var(--gold);
 }
 
+/* =========================================
+   INPUTS AND FORMS
+========================================= */
+
+input,
+textarea,
+select {
+  accent-color: var(--gold-dark);
+}
+
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+
+  box-shadow:
+    0 0 0 3px rgba(197, 164, 109, 0.15);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #99958e;
+}
+
+/* =========================================
+   SCROLLBARS
+========================================= */
+
+.og-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #d5c6ac transparent;
+}
+
+.og-scrollbar::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+
+.og-scrollbar::-webkit-scrollbar-thumb {
+  background: #d5c6ac;
+  border-radius: 999px;
+}
+
+.og-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+:focus-visible {
+  outline: 2px solid var(--gold-dark);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
