@@ -23,7 +23,7 @@ type Delivery = {
 };
 
 function normalizeCurrency(currency?: string) {
-  return String(currency || "NGN").toUpperCase();
+  return String(currency || "USD").toUpperCase();
 }
 
 function getNumericPrice(
@@ -74,7 +74,7 @@ function getCurrencySymbol(currency: string) {
 }
 
 export default function CheckoutPage() {
-  const { cart } = useCart();
+  const { cart, refreshCartFromServer } = useCart();
 
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>("card");
@@ -285,6 +285,94 @@ export default function CheckoutPage() {
       }
 
       // =================================================
+      // CHECK CART PRICES AGAINST NEON BEFORE PAYSTACK
+      // =================================================
+
+      // This GET happens after the cart sync above.
+      // It updates the CartProvider with the actual
+      // product prices/currencies stored in Neon.
+      const refreshed = await refreshCartFromServer();
+
+      if (refreshed.changed) {
+        // The updated cart will now display on screen.
+        // Ask the customer to review it before payment.
+        throw new Error(
+          "Your cart was updated with the latest prices or quantities. Please review the new order total and click Pay again. No payment was started."
+        );
+      }
+
+      if (refreshed.cart.length === 0) {
+        throw new Error(
+          "Your cart is empty. Please add a product before paying."
+        );
+      }
+
+      const verifiedCurrencies = Array.from(
+        new Set(
+          refreshed.cart.map((item) =>
+            normalizeCurrency(item.currency)
+          )
+        )
+      );
+
+      if (
+        verifiedCurrencies.length !== 1 ||
+        !["USD", "NGN"].includes(verifiedCurrencies[0])
+      ) {
+        throw new Error(
+          "Your cart needs products in one supported currency (USD or NGN)."
+        );
+      }
+
+      const verifiedCurrency = verifiedCurrencies[0];
+
+      // Calculate in cents to avoid floating-point
+      // differences between checkout and the backend.
+      let verifiedTotalMinor = 0;
+
+      for (const item of refreshed.cart) {
+        const itemPriceMinor = Math.round(
+          getNumericPrice(item.price) * 100
+        );
+        const itemQuantity = Number(item.quantity);
+
+        if (
+          !Number.isSafeInteger(itemPriceMinor) ||
+          itemPriceMinor <= 0 ||
+          !Number.isInteger(itemQuantity) ||
+          itemQuantity <= 0
+        ) {
+          throw new Error(
+            "Your cart contains an invalid price or quantity. Please update it before paying."
+          );
+        }
+
+        verifiedTotalMinor += itemPriceMinor * itemQuantity;
+      }
+
+      if (
+        !Number.isSafeInteger(verifiedTotalMinor) ||
+        verifiedTotalMinor <= 0
+      ) {
+        throw new Error(
+          "Your cart total is invalid. No payment was started."
+        );
+      }
+
+      const verifiedTotal = verifiedTotalMinor / 100;
+
+      // Ensure the checkout screen is showing the same
+      // total as the refreshed database cart.
+      if (
+        verifiedCurrency !== currency ||
+        verifiedTotalMinor !== Math.round(total * 100)
+      ) {
+        throw new Error(
+          "Your checkout total has been updated. Please review the amount shown and click Pay again. No payment was started."
+        );
+      }
+
+      // =================================================
       // STEP 2: SAVE DELIVERY
       // =================================================
 
@@ -329,10 +417,10 @@ export default function CheckoutPage() {
                 delivery.email,
 
               amount:
-                total,
+                verifiedTotal,
 
               currency:
-                currency,
+                verifiedCurrency,
 
               metadata: {
                 payment_method:
@@ -341,12 +429,10 @@ export default function CheckoutPage() {
                 delivery,
 
                 goldmart_currency:
-                  currency,
+                  verifiedCurrency,
 
                 goldmart_total:
-                  Number(
-                    total.toFixed(2)
-                  ),
+                  verifiedTotal,
               },
             }),
           }
