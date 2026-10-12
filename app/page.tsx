@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import AddToCartButton from "../components/AddToCartButton";
 
-const API_URL =
-  "https://goldmart-backend-yoxc.onrender.com";
+const API_URL = "https://goldmart-backend-yoxc.onrender.com";
 
 type User = {
   id?: number;
@@ -34,1170 +33,458 @@ const categories = [
   { icon: "👕", name: "Fashion", value: "Fashion" },
   { icon: "💄", name: "Beauty", value: "Beauty & Cosmetics" },
   { icon: "🛒", name: "Groceries", value: "Groceries" },
-  { icon: "🏠", name: "Home", value: "Home & Kitchen" },
+  { icon: "🏡", name: "Home", value: "Home & Kitchen" },
   { icon: "💎", name: "Jewelry", value: "Jewelry & Accessories" },
 ];
 
-const discoveryTabs = [
-  "All",
-  "Deals",
-  "5-Star Rated",
-  "Best Selling",
-  "New Arrivals",
+const discoveryTabs = ["All", "Deals", "5-Star Rated", "Best Selling", "New Arrivals"];
+
+const quickLinks = [
+  { href: "/categories", icon: "▦", label: "Categories" },
+  { href: "/track-order", icon: "📦", label: "Track Order" },
+  { href: "/order-protection", icon: "🛡️", label: "Buyer Protection" },
+  { href: "/help", icon: "❔", label: "Help Centre" },
 ];
+
+const cardClass =
+  "group overflow-hidden rounded-[20px] border border-[#E9E2D6] bg-white shadow-[0_5px_22px_rgba(23,25,29,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#D5BE98] hover:shadow-[0_12px_28px_rgba(23,25,29,0.09)]";
+
+function formatPrice(price: string | number, currency?: string | null) {
+  const amount = Number(price);
+  if (!Number.isFinite(amount)) return "0.00";
+
+  const formatted = amount.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  switch (currency?.toUpperCase()) {
+    case "USD":
+      return `$${formatted}`;
+    case "EUR":
+      return `€${formatted}`;
+    case "GBP":
+      return `£${formatted}`;
+    case "NGN":
+      return `₦${formatted}`;
+    default:
+      return formatted;
+  }
+}
+
+function ProductCard({ product, compact = false }: { product: Product; compact?: boolean }) {
+  const rating = Number(product.rating || 0);
+  const available = Number(product.stock) > 0;
+
+  return (
+    <article className={`${cardClass} ${compact ? "min-w-[180px] max-w-[180px] shrink-0" : "min-w-0"}`}>
+      <Link href={`/product/${product.id}`} className="block" aria-label={`View ${product.name}`}>
+        <div className="relative aspect-square overflow-hidden bg-[#F6F3EE]">
+          {product.image_url ? (
+            <Image
+              src={product.image_url}
+              alt={product.name}
+              fill
+              sizes={compact ? "180px" : "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"}
+              className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-4xl" aria-hidden="true">
+              🛍️
+            </div>
+          )}
+          {!available && (
+            <span className="absolute left-2 top-2 rounded-full bg-[#17191D]/90 px-2.5 py-1 text-[10px] font-bold text-white">
+              Sold out
+            </span>
+          )}
+        </div>
+      </Link>
+
+      <div className="p-3 sm:p-4">
+        {product.category_name && (
+          <p className="mb-1 truncate text-[10px] font-bold uppercase tracking-[0.1em] text-[#96713D]">
+            {product.category_name}
+          </p>
+        )}
+        <Link href={`/product/${product.id}`}>
+          <h3 className="line-clamp-2 min-h-[38px] text-[13px] font-semibold leading-[19px] text-[#17191D] sm:text-sm">
+            {product.name}
+          </h3>
+        </Link>
+        <p className="mt-2 break-words text-[15px] font-black tracking-tight text-[#17191D] sm:text-lg">
+          {formatPrice(product.price, product.currency)}
+        </p>
+        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-[#746F67]">
+          <span>⭐ {Number.isFinite(rating) ? rating.toFixed(1) : "0.0"}</span>
+          <span aria-hidden="true">•</span>
+          <span>{available ? "In stock" : "Unavailable"}</span>
+        </div>
+        {!compact && (
+          <div className="mt-3">
+            <AddToCartButton
+              product={{
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image_url: product.image_url,
+                stock: product.stock,
+              }}
+              disabled={!available}
+            />
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
-
+  const [productsError, setProductsError] = useState(false);
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState("");
   const [activeTab, setActiveTab] = useState("All");
 
   useEffect(() => {
     const savedUser = localStorage.getItem("goldmart_user");
-
     if (!savedUser) return;
-
     try {
-      setUser(JSON.parse(savedUser));
+      const parsed: User = JSON.parse(savedUser);
+      setUser(parsed && typeof parsed === "object" ? parsed : null);
     } catch {
       setUser(null);
     }
   }, []);
 
   useEffect(() => {
+    const controller = new AbortController();
     async function loadProducts() {
       try {
         setLoadingProducts(true);
-
-        const response = await fetch(
-          `${API_URL}/api/products`,
-          {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-            },
-            cache: "no-store",
-          }
-        );
-
+        setProductsError(false);
+        const response = await fetch(`${API_URL}/api/products`, {
+          method: "GET",
+          headers: { Accept: "application/json" },
+          cache: "no-store",
+          signal: controller.signal,
+        });
         const data = await response.json();
-
         if (!response.ok || !data.success) {
-          throw new Error(
-            data.message || "Failed to load products"
-          );
+          throw new Error(data.message || "Failed to load products");
         }
-
-        setProducts(
-          Array.isArray(data.products)
-            ? data.products
-            : []
-        );
+        if (!controller.signal.aborted) {
+          setProducts(Array.isArray(data.products) ? data.products : []);
+        }
       } catch (error) {
-        console.error(
-          "GoldMart products error:",
-          error
-        );
-
-        setProducts([]);
+        if (!controller.signal.aborted) {
+          console.error("GoldMart products error:", error);
+          setProductsError(true);
+          setProducts([]);
+        }
       } finally {
-        setLoadingProducts(false);
+        if (!controller.signal.aborted) setLoadingProducts(false);
       }
     }
-
-    loadProducts();
+    void loadProducts();
+    return () => controller.abort();
   }, []);
 
   function handleSearch() {
     const query = search.trim();
-
-    if (!query) {
-      window.location.href = "/shop";
-      return;
-    }
-
-    window.location.href =
-      `/shop?search=${encodeURIComponent(query)}`;
-  }
-
-  function handleCategory(category: string) {
-    setActiveCategory(category);
-
-    if (!category) {
-      window.location.href = "/shop";
-      return;
-    }
-
-    window.location.href =
-      `/shop?category=${encodeURIComponent(category)}`;
-  }
-
-  function formatPrice(
-    price: string | number,
-    currency?: string | null
-  ) {
-    const amount = Number(price);
-
-    if (!Number.isFinite(amount)) {
-      return "0.00";
-    }
-
-    const formatted = amount.toLocaleString(
-      "en-US",
-      {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }
-    );
-
-    switch (currency?.toUpperCase()) {
-      case "USD":
-        return `$${formatted}`;
-
-      case "EUR":
-        return `€${formatted}`;
-
-      case "GBP":
-        return `£${formatted}`;
-
-      case "NGN":
-        return `₦${formatted}`;
-
-      default:
-        return formatted;
-    }
+    window.location.href = query
+      ? `/shop?search=${encodeURIComponent(query)}`
+      : "/shop";
   }
 
   const displayedProducts = useMemo(() => {
     let result = [...products];
 
-    if (activeCategory) {
-      result = result.filter((product) =>
-        product.category_name
-          ?.toLowerCase()
-          .includes(activeCategory.toLowerCase())
-      );
-    }
-
     if (activeTab === "5-Star Rated") {
-      result = result.filter(
-        (product) =>
-          Number(product.rating || 0) >= 5
-      );
+      result = result.filter((product) => Number(product.rating || 0) >= 5);
+    } else if (activeTab === "Best Selling") {
+      // Sales counts are not provided by this endpoint; rank by rating for now.
+      result.sort((a, b) => Number(b.rating || 0) - Number(a.rating || 0));
+    } else if (activeTab === "New Arrivals") {
+      // Product IDs are used as a provisional recency signal.
+      result.sort((a, b) => Number(b.id) - Number(a.id));
+    } else if (activeTab === "Deals") {
+      // There is no discount field in the current API; don't invent markdown prices.
+      result = result.filter((product) => Number(product.price) > 0);
     }
-
-    if (activeTab === "Best Selling") {
-      result = [...result].sort(
-        (a, b) =>
-          Number(b.rating || 0) -
-          Number(a.rating || 0)
-      );
-    }
-
-    if (activeTab === "New Arrivals") {
-      result = [...result].reverse();
-    }
-
-    if (activeTab === "Deals") {
-      result = result.filter(
-        (product) => Number(product.price) > 0
-      );
-    }
-
     return result;
-  }, [
-    products,
-    activeCategory,
-    activeTab,
-  ]);
+  }, [products, activeTab]);
 
   return (
-    <main className="min-h-screen bg-[#f7f7f7] text-[#111] pb-20">
-
-      {/* ================================
-          TOP MOBILE HEADER
-          ================================ */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
-
-        <div className="flex items-center justify-between px-4 py-3">
-
-          <Link
-            href="/"
-            className="text-xl font-black tracking-tight"
-          >
-            Gold
-            <span className="text-[#d4af37]">
-              Mart
-            </span>
+    <main className="min-h-screen overflow-x-hidden bg-[#FAF8F3] pb-24 text-[#17191D] md:pb-0">
+      {/* TOP BAR + MOBILE SEARCH */}
+      <header className="sticky top-0 z-50 border-b border-[#EBE4D9] bg-white/95 shadow-[0_3px_16px_rgba(23,25,29,0.035)] backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+          <Link href="/" className="shrink-0 text-[23px] font-black tracking-[-0.055em]" aria-label="GoldMart home">
+            Gold<span className="text-[#B08A50]">Mart</span><span className="ml-1 align-top text-[10px] text-[#C5A46D]">✦</span>
           </Link>
-
+          <nav aria-label="Desktop navigation" className="hidden items-center gap-6 text-sm font-semibold text-[#59554E] md:flex">
+            <Link href="/shop" className="hover:text-[#96713D]">Shop</Link>
+            <Link href="/categories" className="hover:text-[#96713D]">Categories</Link>
+            <Link href="/track-order" className="hover:text-[#96713D]">Track Order</Link>
+            <Link href="/help" className="hover:text-[#96713D]">Help</Link>
+          </nav>
           <div className="flex items-center gap-2">
-
             {user && (
-              <Link
-                href="/notifications"
-                aria-label="Notifications"
-                className="relative flex h-10 w-10 items-center justify-center rounded-full bg-[#f5f5f5]"
-              >
-                🔔
-              </Link>
+              <Link href="/notifications" aria-label="Notifications" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#FAF8F3] text-lg transition hover:border-[#C5A46D]">🔔</Link>
             )}
-
-            <Link
-              href={
-                user
-                  ? "/account"
-                  : "/login"
-              }
-              aria-label="Account"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f5f5f5]"
-            >
-              👤
-            </Link>
-
-            <Link
-              href="/cart"
-              aria-label="Cart"
-              className="relative flex h-10 w-10 items-center justify-center rounded-full bg-[#f5f5f5]"
-            >
-              🛒
-            </Link>
-
+            <Link href={user ? "/account" : "/login"} aria-label="Account" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#FAF8F3] text-lg transition hover:border-[#C5A46D]">👤</Link>
+            <Link href="/cart" aria-label="Cart" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#FAF8F3] text-lg transition hover:border-[#C5A46D]">🛒</Link>
           </div>
         </div>
 
-        {/* SEARCH */}
-        <div className="px-3 pb-3">
-
-          <div className="flex h-12 items-center overflow-hidden rounded-full border-2 border-[#111] bg-white">
-
-            <span className="pl-4 text-lg">
-              🔍
-            </span>
-
+        <div className="mx-auto max-w-4xl px-4 pb-3 sm:px-6">
+          <form
+            onSubmit={(event) => { event.preventDefault(); handleSearch(); }}
+            className="flex h-12 items-center gap-2 overflow-hidden rounded-full border border-[#D8CAB4] bg-[#FAF8F3] pl-4 pr-1.5 transition focus-within:border-[#96713D] focus-within:ring-2 focus-within:ring-[#C5A46D]/15"
+            role="search"
+          >
+            <span className="text-lg" aria-hidden="true">⌕</span>
             <input
               type="search"
+              aria-label="Search products"
               value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  handleSearch();
-                }
-              }}
-              placeholder="What are you looking for?"
-              className="min-w-0 flex-1 px-3 text-sm outline-none"
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search products and more..."
+              className="min-w-0 flex-1 bg-transparent text-sm text-[#17191D] outline-none placeholder:text-[#8A847A]"
             />
-
-            <Link
-              href="/visual-search"
-              className="mr-1 flex h-10 w-10 items-center justify-center rounded-full bg-[#f3f3f3]"
-              aria-label="Visual search"
-            >
-              📷
-            </Link>
-
-            <button
-              type="button"
-              onClick={handleSearch}
-              className="mr-1 flex h-10 w-10 items-center justify-center rounded-full bg-black text-xl text-white"
-              aria-label="Search"
-            >
-              🔎
-            </button>
-
-          </div>
+            <Link href="/visual-search" aria-label="Visual search" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg hover:bg-white">📷</Link>
+            <button type="submit" aria-label="Search" className="flex h-9 w-10 shrink-0 items-center justify-center rounded-full bg-[#17191D] text-lg text-white transition hover:bg-[#96713D]">⌕</button>
+          </form>
         </div>
-
       </header>
 
-      {/* QUICK LINKS — working GoldMart support and shopping pages */}
-      <nav aria-label="Quick links" className="border-b border-[#f0e5c5] bg-[#fffaf0]">
-        <div className="mx-auto flex max-w-5xl gap-2 overflow-x-auto px-3 py-3 sm:justify-center">
-          <Link href="/categories" className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">📂 Categories</Link>
-          <Link href="/track-order" className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">📦 Track Order</Link>
-          <Link href="/order-protection" className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">🛡️ Buyer Protection</Link>
-          <Link href="/help" className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">❓ Help Centre</Link>
+      {/* QUICK ACCESS - LINKS TO EXISTING PAGES */}
+      <nav aria-label="Quick links" className="border-b border-[#E9E1D4] bg-[#F5F0E7]">
+        <div className="og-scrollbar mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto px-4 py-3 sm:px-6 lg:px-8">
+          {quickLinks.map((item) => (
+            <Link key={item.href} href={item.href} className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#E6DCCD] bg-white px-3.5 py-2 text-xs font-bold text-[#51473C] transition hover:border-[#C5A46D] hover:text-[#96713D]">
+              <span aria-hidden="true">{item.icon}</span>{item.label}
+            </Link>
+          ))}
         </div>
       </nav>
 
-      {/* ================================
-          FREE SHIPPING BAR
-          ================================ */}
-      <section className="bg-[#fff1df]">
-
-        <div className="flex items-center gap-5 overflow-x-auto whitespace-nowrap px-4 py-3 text-sm">
-
-          <div className="flex items-center gap-2">
-            <span className="font-black text-green-600">
-              ✓
-            </span>
-            <span className="font-semibold">
-              Track your orders
-            </span>
-          </div>
-
-          <div className="h-5 w-px bg-[#d8c7b5]" />
-
-          <div className="flex items-center gap-2">
-            <span className="font-black text-green-600">
-              ✓
-            </span>
-            <span className="font-semibold">
-              Request help with a purchase
-            </span>
-          </div>
-
-          <span className="ml-auto text-lg">
-            →
-          </span>
-
+      {/* INTRO BANNER */}
+      <section className="border-b border-[#EFE7DA] bg-white">
+        <div className="mx-auto flex max-w-7xl items-center gap-5 overflow-x-auto px-4 py-2.5 text-[11px] font-semibold text-[#6C6255] sm:justify-center sm:text-xs">
+          <span className="shrink-0">✦ Curated shopping</span>
+          <span className="text-[#D0B48A]" aria-hidden="true">•</span>
+          <span className="shrink-0">📦 Order updates</span>
+          <span className="text-[#D0B48A]" aria-hidden="true">•</span>
+          <span className="shrink-0">🛡️ Buyer support</span>
         </div>
-
       </section>
 
-      {/* ================================
-          HERO PROMOTION
-          ================================ */}
-      <section className="bg-white px-4 pt-4">
-
-        <div className="relative overflow-hidden rounded-2xl bg-[#fff0df] p-5">
-
-          <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#f7b955]/30" />
-
-          <div className="relative">
-
-            <p className="text-xs font-bold uppercase tracking-wider text-[#e87500]">
-              GoldMart Deals
-            </p>
-
-            <h1 className="mt-1 max-w-[260px] text-3xl font-black leading-tight">
-              Great products.
-              <br />
-              Better prices.
+      {/* LUXURY HERO */}
+      <section className="mx-auto max-w-7xl px-4 pb-5 pt-5 sm:px-6 sm:pt-7 lg:px-8">
+        <div className="relative isolate overflow-hidden rounded-[28px] bg-[#17191D] px-6 pb-7 pt-9 text-white shadow-[0_18px_42px_rgba(23,25,29,0.14)] sm:px-10 sm:py-12 lg:px-16 lg:py-16">
+          <div className="pointer-events-none absolute -right-20 -top-32 h-[340px] w-[340px] rounded-full border border-[#C5A46D]/25 sm:right-0" />
+          <div className="pointer-events-none absolute -right-10 -top-20 h-[230px] w-[230px] rounded-full border border-[#C5A46D]/30" />
+          <div className="pointer-events-none absolute bottom-[-110px] right-[-85px] h-[290px] w-[290px] rounded-full bg-[#C5A46D]/15 blur-3xl" />
+          <div className="pointer-events-none absolute right-8 top-24 hidden text-[125px] font-black leading-none text-[#C5A46D]/15 lg:block" aria-hidden="true">GM</div>
+          <div className="relative z-10 max-w-2xl">
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#E9D9BB] sm:text-xs">The GoldMart Collection</p>
+            <h1 className="mt-3 max-w-xl text-[34px] font-black leading-[1.08] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
+              Everyday finds.<br /><span className="text-[#D6B780]">Elevated shopping.</span>
             </h1>
-
-            <p className="mt-2 max-w-[270px] text-sm text-gray-600">
-              Discover products from trusted
-              sellers and find your next favorite
-              item.
+            <p className="mt-4 max-w-md text-sm leading-6 text-[#DED8CE] sm:text-base">
+              Explore phones, fashion, electronics and more, all in one place.
             </p>
-
-            <Link
-              href="/shop"
-              className="mt-4 inline-flex rounded-full bg-[#ff8500] px-6 py-3 text-sm font-bold text-white"
-            >
-              Shop now →
-            </Link>
-
-          </div>
-
-        </div>
-
-      </section>
-            {/* ================================
-          CATEGORIES
-          ================================ */}
-      <section className="mt-3 bg-white px-4 py-4">
-
-        <div className="mb-3 flex items-center justify-between">
-
-          <h2 className="text-lg font-black">
-            Categories
-          </h2>
-
-          <Link
-            href="/categories"
-            className="text-sm font-semibold text-[#d4af37]"
-          >
-            See all →
-          </Link>
-
-        </div>
-
-        <div className="og-scrollbar flex gap-4 overflow-x-auto pb-2">
-
-          {categories.map((category) => (
-            <button
-              key={category.name}
-              type="button"
-              onClick={() =>
-                handleCategory(category.value)
-              }
-              className={`flex min-w-[76px] flex-col items-center gap-2 ${
-                activeCategory === category.value
-                  ? "text-[#d4af37]"
-                  : "text-gray-800"
-              }`}
-            >
-
-              <span
-                className={`flex h-16 w-16 items-center justify-center rounded-full text-2xl ${
-                  activeCategory === category.value
-                    ? "border-2 border-[#d4af37] bg-[#fff8e8]"
-                    : "bg-[#f5f5f5]"
-                }`}
-              >
-                {category.icon}
-              </span>
-
-              <span className="text-xs font-semibold">
-                {category.name}
-              </span>
-
-            </button>
-          ))}
-
-        </div>
-
-      </section>
-
-      {/* ================================
-          PROMOTION CARDS
-          ================================ */}
-      <section className="mt-3 bg-white px-4 py-4">
-
-        <div className="grid grid-cols-2 gap-3">
-
-          <Link
-            href="/shop?sort=deals"
-            className="relative min-h-[150px] overflow-hidden rounded-2xl bg-[#ffe6e6] p-4"
-          >
-
-            <span className="text-2xl">
-              🔥
-            </span>
-
-            <h3 className="mt-2 text-lg font-black">
-              Hot Deals
-            </h3>
-
-            <p className="mt-1 text-xs text-gray-600">
-              Great prices every day
-            </p>
-
-            <span className="absolute bottom-3 text-xs font-bold text-[#d94343]">
-              Shop deals →
-            </span>
-
-          </Link>
-
-          <Link
-            href="/shop?sort=new"
-            className="relative min-h-[150px] overflow-hidden rounded-2xl bg-[#e9f7ef] p-4"
-          >
-
-            <span className="text-2xl">
-              ✨
-            </span>
-
-            <h3 className="mt-2 text-lg font-black">
-              New Arrivals
-            </h3>
-
-            <p className="mt-1 text-xs text-gray-600">
-              Fresh products to discover
-            </p>
-
-            <span className="absolute bottom-3 text-xs font-bold text-green-700">
-              Explore →
-            </span>
-
-          </Link>
-
-        </div>
-
-      </section>
-
-      {/* ================================
-          QUICK BENEFITS
-          ================================ */}
-      <section className="mt-3 bg-white px-4 py-4">
-
-        <div className="grid grid-cols-3 gap-2">
-
-          <div className="rounded-xl bg-[#f7f7f7] p-3 text-center">
-
-            <div className="text-xl">
-              🛡️
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/shop" className="inline-flex items-center justify-center rounded-full bg-[#C5A46D] px-6 py-3 text-sm font-extrabold text-[#17191D] transition hover:bg-[#E9D9BB]">Explore the Shop →</Link>
+              <Link href="/categories" className="inline-flex items-center justify-center rounded-full border border-[#8D816D] px-6 py-3 text-sm font-bold text-white transition hover:border-[#E9D9BB]">Browse Categories</Link>
             </div>
-
-            <p className="mt-1 text-[11px] font-bold">
-              Buyer Protection
-            </p>
-
           </div>
-
-          <div className="rounded-xl bg-[#f7f7f7] p-3 text-center">
-
-            <div className="text-xl">
-              🚚
-            </div>
-
-            <p className="mt-1 text-[11px] font-bold">
-              Fast Delivery
-            </p>
-
-          </div>
-
-          <div className="rounded-xl bg-[#f7f7f7] p-3 text-center">
-
-            <div className="text-xl">
-              ⭐
-            </div>
-
-            <p className="mt-1 text-[11px] font-bold">
-              Trusted Sellers
-            </p>
-
-          </div>
-
         </div>
-
       </section>
 
-      {/* ================================
-          DISCOVERY NAVIGATION
-          ================================ */}
-      <section className="mt-3 bg-white px-4 py-4">
-
-        <div className="mb-3 flex items-center justify-between">
-
-          <h2 className="text-lg font-black">
-            Discover
-          </h2>
-
-          <Link
-            href="/shop"
-            className="text-sm font-semibold text-[#d4af37]"
-          >
-            See all →
-          </Link>
-
+      {/* CATEGORY RAIL */}
+      <section className="mx-auto max-w-7xl px-4 pb-5 sm:px-6 lg:px-8">
+        <div className="rounded-[24px] border border-[#EAE3D9] bg-white px-4 pb-5 pt-5 sm:px-6">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#96713D]">Find your style</p>
+              <h2 className="mt-1 text-xl font-black tracking-tight sm:text-2xl">Shop by Category</h2>
+            </div>
+            <Link href="/categories" className="shrink-0 text-xs font-bold text-[#96713D] hover:underline sm:text-sm">View All →</Link>
+          </div>
+          <div className="og-scrollbar mt-5 flex gap-4 overflow-x-auto pb-1 sm:gap-6">
+            {categories.map((category) => (
+              <Link key={category.name} href={`/shop?category=${encodeURIComponent(category.value)}`} className="group flex min-w-[78px] flex-col items-center gap-2 text-center sm:min-w-[96px]">
+                <span className="flex h-[68px] w-[68px] items-center justify-center rounded-[22px] border border-[#EAE3D9] bg-[#F8F4EC] text-[29px] transition group-hover:-translate-y-0.5 group-hover:border-[#C5A46D] group-hover:bg-[#F3E8D5] sm:h-20 sm:w-20">{category.icon}</span>
+                <span className="text-[11px] font-bold text-[#47433E] sm:text-xs">{category.name}</span>
+              </Link>
+            ))}
+          </div>
         </div>
+      </section>
 
-        <div className="og-scrollbar flex gap-2 overflow-x-auto pb-1">
+      {/* EDITORIAL DISCOVERY CARDS */}
+      <section className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 pb-6 sm:gap-5 sm:px-6 lg:px-8">
+        <Link href="/shop?sort=new" className="group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] border border-[#E7D8C0] bg-[#F1E7D6] p-4 transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
+          <span className="pointer-events-none absolute -right-8 -top-9 h-32 w-32 rounded-full border-[20px] border-white/40" />
+          <span className="relative text-2xl" aria-hidden="true">✦</span>
+          <div className="relative">
+            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#916C38]">Just discovered</p>
+            <h3 className="mt-1 text-lg font-black tracking-tight sm:text-2xl">New Arrivals</h3>
+            <span className="mt-2 inline-block text-xs font-bold text-[#75552F]">Explore products →</span>
+          </div>
+        </Link>
+        <Link href="/shop" className="group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] bg-[#24272D] p-4 text-white transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
+          <span className="pointer-events-none absolute -right-6 -top-11 h-36 w-36 rounded-full border-[20px] border-[#C5A46D]/15" />
+          <span className="relative text-2xl" aria-hidden="true">◈</span>
+          <div className="relative">
+            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#D6B780]">Discover GoldMart</p>
+            <h3 className="mt-1 text-lg font-black tracking-tight sm:text-2xl">Shop All</h3>
+            <span className="mt-2 inline-block text-xs font-bold text-[#E3CA9F]">Browse collection →</span>
+          </div>
+        </Link>
+      </section>
 
+      {/* PRODUCT DISCOVERY */}
+      <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
+        <div className="mb-4 flex items-end justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.19em] text-[#96713D]">The marketplace</p>
+            <h2 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Discover Products</h2>
+          </div>
+          <Link href="/shop" className="shrink-0 text-xs font-bold text-[#96713D] hover:underline sm:text-sm">Shop All →</Link>
+        </div>
+        <div role="tablist" aria-label="Explore products" className="og-scrollbar mb-5 flex gap-2 overflow-x-auto pb-1">
           {discoveryTabs.map((tab) => (
-
             <button
-              key={tab}
               type="button"
-              onClick={() =>
-                setActiveTab(tab)
-              }
-              className={`whitespace-nowrap rounded-full px-4 py-2 text-xs font-bold transition ${
-                activeTab === tab
-                  ? "bg-black text-white"
-                  : "bg-[#f2f2f2] text-gray-700"
-              }`}
+              role="tab"
+              aria-selected={activeTab === tab}
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${activeTab === tab ? "border-[#17191D] bg-[#17191D] text-white" : "border-[#E6DCCD] bg-white text-[#5D564D] hover:border-[#C5A46D]"}`}
             >
               {tab}
             </button>
-
           ))}
-
         </div>
-
-      </section>
-
-      {/* ================================
-          FLASH DEAL HEADER
-          ================================ */}
-      <section className="mt-3 bg-white px-4 py-4">
-
-        <div className="flex items-center justify-between">
-
-          <div>
-
-            <div className="flex items-center gap-2">
-
-              <span className="text-xl">
-                ⚡
-              </span>
-
-              <h2 className="text-xl font-black">
-                Flash Deals
-              </h2>
-
-            </div>
-
-            <p className="mt-1 text-xs text-gray-500">
-              Limited-time marketplace deals
-            </p>
-
-          </div>
-
-          <Link
-            href="/shop?sort=deals"
-            className="text-sm font-semibold text-[#d4af37]"
-          >
-            More →
-          </Link>
-
-        </div>
-
-      </section>
-
-      {/* ================================
-          PRODUCT GRID
-          ================================ */}
-      <section className="bg-[#f7f7f7] px-3 pb-6">
 
         {loadingProducts ? (
-
-          <div className="grid grid-cols-2 gap-3">
-
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4" aria-label="Loading products">
             {[1, 2, 3, 4].map((item) => (
-
-              <div
-                key={item}
-                className="animate-pulse overflow-hidden rounded-xl bg-white"
-              >
-
-                <div className="h-44 bg-gray-200" />
-
-                <div className="space-y-2 p-3">
-
-                  <div className="h-3 w-3/4 rounded bg-gray-200" />
-
-                  <div className="h-4 w-1/2 rounded bg-gray-200" />
-
-                  <div className="h-3 w-1/3 rounded bg-gray-200" />
-
+              <div key={item} className="animate-pulse overflow-hidden rounded-[20px] border border-[#EAE3D9] bg-white">
+                <div className="aspect-square bg-[#EEE9DF]" />
+                <div className="space-y-3 p-4">
+                  <div className="h-3 w-4/5 rounded-full bg-[#EEE9DF]" />
+                  <div className="h-4 w-1/2 rounded-full bg-[#EEE9DF]" />
+                  <div className="h-9 rounded-full bg-[#EEE9DF]" />
                 </div>
-
               </div>
-
             ))}
-
           </div>
-
         ) : displayedProducts.length === 0 ? (
-
-          <div className="rounded-2xl bg-white px-5 py-12 text-center">
-
-            <div className="text-4xl">
-              🛍️
-            </div>
-
-            <h3 className="mt-3 text-lg font-black">
-              No products found
-            </h3>
-
-            <p className="mt-1 text-sm text-gray-500">
-              Try another category or browse
-              all products.
-            </p>
-
-            <Link
-              href="/shop"
-              className="mt-5 inline-flex rounded-full bg-black px-6 py-3 text-sm font-bold text-white"
-            >
-              Browse products
-            </Link>
-
+          <div className="rounded-[22px] border border-[#EAE3D9] bg-white px-5 py-12 text-center">
+            <span className="text-4xl" aria-hidden="true">🛍️</span>
+            <h3 className="mt-3 text-lg font-black">{productsError ? "Products unavailable right now" : "No products found"}</h3>
+            <p className="mt-2 text-sm text-[#746F67]">{productsError ? "Please try again in a moment." : "Browse the shop or choose another filter."}</p>
+            <Link href="/shop" className="mt-5 inline-flex rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white hover:bg-[#96713D]">Visit Shop →</Link>
           </div>
-
         ) : (
-
-          <div className="grid grid-cols-2 gap-3">
-
-            {displayedProducts
-              .slice(0, 12)
-              .map((product) => (
-
-                <article
-                  key={product.id}
-                  className="overflow-hidden rounded-xl bg-white shadow-sm"
-                >
-
-                  {/* PRODUCT IMAGE */}
-
-                  <Link
-  href={`/product/${product.id}`}
-  className="block"
->
-
-                    <div className="relative aspect-square bg-[#f5f5f5]">
-
-                      {product.image_url ? (
-
-                        <Image
-                          src={product.image_url}
-                          alt={product.name}
-                          fill
-                          sizes="(max-width: 768px) 50vw, 25vw"
-                          className="object-cover"
-                        />
-
-                      ) : (
-
-                        <div className="flex h-full items-center justify-center text-4xl">
-                          🛍️
-                        </div>
-
-                      )}
-
-                      <span className="absolute left-2 top-2 rounded-md bg-[#ff3b30] px-2 py-1 text-[10px] font-black text-white">
-                        DEAL
-                      </span>
-
-                    </div>
-
-                  </Link>
-
-                  {/* PRODUCT INFO */}
-
-                  <div className="p-3">
-
-                    <Link
-  href={`/product/${product.id}`}
->
-
-                      <h3 className="line-clamp-2 min-h-[36px] text-sm font-semibold leading-5">
-                        {product.name}
-                      </h3>
-
-                    </Link>
-
-                    <div className="mt-2 flex items-center gap-1">
-
-                      <span className="text-sm font-black">
-                        {formatPrice(
-                          product.price,
-                          product.currency
-                        )}
-                      </span>
-
-                    </div>
-
-                    <div className="mt-1 flex items-center gap-1">
-
-                      <span className="text-xs">
-                        ⭐
-                      </span>
-
-                      <span className="text-[11px] text-gray-500">
-                        {Number(
-                          product.rating || 0
-                        ).toFixed(1)}
-                      </span>
-
-                      <span className="text-[11px] text-gray-400">
-                        •
-                      </span>
-
-                      <span className="text-[11px] text-gray-500">
-                        {product.stock > 0
-                          ? "In stock"
-                          : "Sold out"}
-                      </span>
-
-                    </div>
-
-                    <div className="mt-3">
-
-                      <AddToCartButton
-  product={{
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    image_url: product.image_url,
-    stock: product.stock,
-  }}
-  disabled={
-    product.stock <= 0
-  }
-/>
-
-                    </div>
-
-                  </div>
-
-                </article>
-
-              ))}
-
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+            {displayedProducts.slice(0, 12).map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
           </div>
-
         )}
 
-      </section>
-            {/* ================================
-          MORE PRODUCTS
-          ================================ */}
-      {displayedProducts.length > 12 && (
-        <section className="mt-3 bg-white px-4 py-5">
-
-          <div className="mb-4 flex items-center justify-between">
-
-            <div>
-              <h2 className="text-xl font-black">
-                Recommended for you
-              </h2>
-
-              <p className="mt-1 text-xs text-gray-500">
-                More products you may like
-              </p>
+        {!loadingProducts && displayedProducts.length > 12 && (
+          <section className="mt-8">
+            <div className="mb-4 flex items-end justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#96713D]">Keep exploring</p>
+                <h2 className="mt-1 text-xl font-black sm:text-2xl">More to Discover</h2>
+              </div>
+              <Link href="/shop" className="text-xs font-bold text-[#96713D] hover:underline">View All →</Link>
             </div>
-
-            <Link
-              href="/shop"
-              className="text-sm font-semibold text-[#c99b25]"
-            >
-              See all →
-            </Link>
-
-          </div>
-
-          <div className="og-scrollbar flex gap-3 overflow-x-auto pb-2">
-
-            {displayedProducts
-              .slice(12, 20)
-              .map((product) => (
-
-                <article
-                  key={product.id}
-                  className="min-w-[170px] max-w-[170px] overflow-hidden rounded-xl bg-[#f7f7f7]"
-                >
-
-                  <Link
-                    href={`/product/${product.id}`}
-                    className="block"
-                  >
-
-                    <div className="relative aspect-square bg-white">
-
-                      {product.image_url ? (
-
-                        <Image
-                          src={product.image_url}
-                          alt={product.name}
-                          fill
-                          sizes="170px"
-                          className="object-cover"
-                        />
-
-                      ) : (
-
-                        <div className="flex h-full items-center justify-center text-4xl">
-                          🛍️
-                        </div>
-
-                      )}
-
-                    </div>
-
-                  </Link>
-
-                  <div className="p-3">
-
-                    <Link
-                      href={`/product/${product.id}`}
-                    >
-
-                      <h3 className="line-clamp-2 text-sm font-semibold">
-                        {product.name}
-                      </h3>
-
-                    </Link>
-
-                    <p className="mt-2 text-base font-black">
-                      {formatPrice(
-                        product.price,
-                        product.currency
-                      )}
-                    </p>
-
-                    <div className="mt-1 text-xs text-gray-500">
-                      ⭐ {Number(
-                        product.rating || 0
-                      ).toFixed(1)}
-                    </div>
-
-                  </div>
-
-                </article>
-
+            <div className="og-scrollbar flex gap-3 overflow-x-auto pb-3">
+              {displayedProducts.slice(12, 20).map((product) => (
+                <ProductCard key={product.id} product={product} compact />
               ))}
-
-          </div>
-
-        </section>
-      )}
-
-      {/* ================================
-          GOLDMART TRUST SECTION
-          ================================ */}
-      <section className="mt-3 bg-white px-4 py-6">
-
-        <div className="rounded-2xl bg-[#d4af37] p-5">
-
-          <div className="flex items-start gap-3">
-
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#c99b25] text-xl">
-              🛡️
             </div>
-
-            <div>
-
-              <h2 className="text-lg font-black">
-                Shop with confidence
-              </h2>
-
-              <p className="mt-1 text-sm leading-5 text-gray-600">
-                GoldMart connects you with sellers
-                while giving buyers a safer and
-                easier shopping experience.
-              </p>
-
-            </div>
-
-          </div>
-
-          <div className="mt-5 grid grid-cols-2 gap-3">
-
-            <div className="rounded-xl bg-white p-3">
-
-              <div className="text-lg">
-                🔒
-              </div>
-
-              <p className="mt-1 text-xs font-bold">
-                Secure shopping
-              </p>
-
-              <p className="mt-1 text-[11px] text-gray-500">
-                Your account and orders are
-                protected.
-              </p>
-
-            </div>
-
-            <div className="rounded-xl bg-white p-3">
-
-              <div className="text-lg">
-                ⭐
-              </div>
-
-              <p className="mt-1 text-xs font-bold">
-                Seller ratings
-              </p>
-
-              <p className="mt-1 text-[11px] text-gray-500">
-                Discover trusted sellers and
-                product reviews.
-              </p>
-
-            </div>
-
-            <Link href="/track-order" className="rounded-xl bg-white p-3 hover:shadow-md">
-              <div className="text-lg">📦</div>
-              <p className="mt-1 text-xs font-bold">Order tracking →</p>
-              <p className="mt-1 text-[11px] text-gray-500">See your latest order status.</p>
-            </Link>
-
-            <Link href="/help" className="rounded-xl bg-white p-3 hover:shadow-md">
-              <div className="text-lg">💬</div>
-              <p className="mt-1 text-xs font-bold">Help Centre →</p>
-              <p className="mt-1 text-[11px] text-gray-500">Find answers to common questions.</p>
-            </Link>
-
-          </div>
-
-        </div>
-
+          </section>
+        )}
       </section>
 
-      {/* ================================
-          SELLER CTA
-          ================================ */}
-      <section className="mt-3 bg-white px-4 py-5">
-
-        <div className="rounded-2xl bg-black p-5 text-white">
-
-          <p className="text-xs font-bold uppercase tracking-wider text-[#e4bb55]">
-            Grow with GoldMart
-          </p>
-
-          <h2 className="mt-2 text-2xl font-black">
-            Have products to sell?
-          </h2>
-
-          <p className="mt-2 max-w-[300px] text-sm leading-5 text-gray-300">
-            Join the GoldMart marketplace and
-            start reaching more customers.
-          </p>
-
-          <Link
-            href="/seller"
-            className="mt-4 inline-flex rounded-full bg-[#d4af37] px-5 py-3 text-sm font-black text-black"
-          >
-            Become a seller →
-          </Link>
-
+      {/* CUSTOMER ASSISTANCE */}
+      <section className="mx-auto max-w-7xl px-4 pb-7 sm:px-6 lg:px-8">
+        <div className="rounded-[25px] border border-[#E7D9C4] bg-[#F1E7D6] p-5 sm:p-8">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#96713D]">Shopping with confidence</p>
+          <h2 className="mt-2 text-xl font-black tracking-tight sm:text-2xl">Here when you need us.</h2>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-[#676056]">Explore order updates, submit a buyer-protection request or find answers in the Help Centre.</p>
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <Link href="/track-order" className="rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#C5A46D]">
+              <span className="text-2xl">📦</span><p className="mt-2 text-sm font-black">Track an Order</p><p className="mt-1 text-xs text-[#746F67]">See your order status</p>
+            </Link>
+            <Link href="/order-protection" className="rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#C5A46D]">
+              <span className="text-2xl">🛡️</span><p className="mt-2 text-sm font-black">Buyer Protection</p><p className="mt-1 text-xs text-[#746F67]">Get help with a purchase</p>
+            </Link>
+            <Link href="/help" className="col-span-2 rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#C5A46D] sm:col-span-1">
+              <span className="text-2xl">💬</span><p className="mt-2 text-sm font-black">Help Centre</p><p className="mt-1 text-xs text-[#746F67]">Helpful answers and guides</p>
+            </Link>
+          </div>
         </div>
-
       </section>
 
-      {/* ================================
-          FOOTER
-          ================================ */}
-      <footer className="mt-3 bg-white px-5 pb-8 pt-6">
-
-        <div className="text-center">
-
-          <Link
-            href="/"
-            className="text-2xl font-black"
-          >
-            Gold
-            <span className="text-[#d4af37]">
-              Mart
-            </span>
-          </Link>
-
-          <p className="mx-auto mt-2 max-w-[300px] text-xs leading-5 text-gray-500">
-            Your marketplace for products,
-            great deals and trusted sellers.
-          </p>
-
+      {/* SELLER CTA */}
+      <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-[25px] bg-[#17191D] p-6 text-white sm:p-9">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#C5A46D]/25" />
+          <div className="relative">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D6B780]">Sell with GoldMart</p>
+            <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Have products to sell?</h2>
+            <p className="mt-2 max-w-lg text-sm leading-6 text-[#D8D4CA]">Manage your products and reach customers from your seller dashboard.</p>
+            <Link href="/seller" className="mt-5 inline-flex rounded-full bg-[#C5A46D] px-6 py-3 text-sm font-extrabold text-[#17191D] transition hover:bg-[#E9D9BB]">Explore Selling →</Link>
+          </div>
         </div>
+      </section>
 
-        <div className="mt-6 grid grid-cols-2 gap-y-3 text-center text-xs font-semibold text-gray-600">
-
-          <Link href="/shop">
-            Shop
-          </Link>
-
-          <Link href="/categories">
-            Categories
-          </Link>
-
-          <Link href="/orders">
-            My Orders
-          </Link>
-
-          <Link href="/account">
-            My Account
-          </Link>
-
-          <Link href="/seller">
-            Sell on GoldMart
-          </Link>
-
-          <Link href="/help">
-            Help Centre
-          </Link>
-
-          <Link href="/track-order">
-            Track Order
-          </Link>
-
-          <Link href="/order-protection">
-            Buyer Protection
-          </Link>
-
+      {/* FOOTER */}
+      <footer className="border-t border-[#EAE2D7] bg-white px-5 pb-10 pt-9 text-center md:pb-12">
+        <Link href="/" className="text-2xl font-black tracking-[-0.05em]">Gold<span className="text-[#B08A50]">Mart</span></Link>
+        <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-[#746F67]">Discover products, manage orders and connect with sellers in one place.</p>
+        <div className="mx-auto mt-6 grid max-w-md grid-cols-2 gap-3 text-xs font-semibold text-[#625B50]">
+          <Link href="/shop" className="hover:text-[#96713D]">Shop</Link>
+          <Link href="/categories" className="hover:text-[#96713D]">Categories</Link>
+          <Link href="/orders" className="hover:text-[#96713D]">My Orders</Link>
+          <Link href="/account" className="hover:text-[#96713D]">My Account</Link>
+          <Link href="/seller" className="hover:text-[#96713D]">Sell on GoldMart</Link>
+          <Link href="/help" className="hover:text-[#96713D]">Help Centre</Link>
+          <Link href="/track-order" className="hover:text-[#96713D]">Track Order</Link>
+          <Link href="/order-protection" className="hover:text-[#96713D]">Buyer Protection</Link>
         </div>
-
-        <div className="mt-6 border-t border-gray-100 pt-5 text-center">
-
-          <p className="text-[11px] text-gray-400">
-            © {new Date().getFullYear()} GoldMart.
-            All rights reserved.
-          </p>
-
-        </div>
-
+        <p className="mt-6 border-t border-[#F0ECE5] pt-5 text-[11px] text-[#8A847A]">© {new Date().getFullYear()} GoldMart. All rights reserved.</p>
       </footer>
-            {/* ================================
-          MOBILE BOTTOM NAVIGATION
-          ================================ */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white/95 backdrop-blur md:hidden">
 
-        <div className="mx-auto flex h-[68px] max-w-lg items-center justify-around px-2">
-
-          {/* HOME */}
-
-          <Link
-            href="/"
-            className="flex min-w-[64px] flex-col items-center justify-center gap-1"
-          >
-
-            <span className="text-xl">
-              🏠
-            </span>
-
-            <span className="text-[10px] font-bold text-[#d4af37]">
-              Home
-            </span>
-
-          </Link>
-
-          {/* CATEGORIES */}
-
-          <Link
-            href="/categories"
-            className="flex min-w-[64px] flex-col items-center justify-center gap-1"
-          >
-
-            <span className="text-xl">
-              📂
-            </span>
-
-            <span className="text-[10px] font-semibold text-gray-600">
-              Categories
-            </span>
-
-          </Link>
-
-          {/* CART */}
-
-          <Link
-            href="/cart"
-            className="relative flex min-w-[64px] flex-col items-center justify-center gap-1"
-          >
-
-            <span className="text-xl">
-              🛒
-            </span>
-
-            <span className="text-[10px] font-semibold text-gray-600">
-              Cart
-            </span>
-
-          </Link>
-
-          {/* YOU */}
-
-          <Link
-            href={
-              user
-                ? "/account"
-                : "/login"
-            }
-            className="flex min-w-[64px] flex-col items-center justify-center gap-1"
-          >
-
-            <span className="text-xl">
-              👤
-            </span>
-
-            <span className="text-[10px] font-semibold text-gray-600">
-              You
-            </span>
-
-          </Link>
-
+      {/* MOBILE TAB BAR */}
+      <nav aria-label="Mobile navigation" className="fixed inset-x-0 bottom-0 z-50 border-t border-[#EAE2D7] bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_25px_rgba(23,25,29,0.05)] backdrop-blur-xl md:hidden">
+        <div className="mx-auto grid h-[66px] max-w-lg grid-cols-5 items-center px-1">
+          {[
+            { href: "/", icon: "⌂", label: "Home", active: true },
+            { href: "/categories", icon: "▦", label: "Categories", active: false },
+            { href: "/orders", icon: "📦", label: "Orders", active: false },
+            { href: "/cart", icon: "🛒", label: "Cart", active: false },
+            { href: user ? "/account" : "/login", icon: "👤", label: "You", active: false },
+          ].map((item) => (
+            <Link key={item.label} href={item.href} className="flex min-w-0 flex-col items-center justify-center gap-0.5 px-1 text-center" aria-current={item.active ? "page" : undefined}>
+              <span className={`text-xl leading-6 ${item.active ? "text-[#96713D]" : "text-[#514B43]"}`}>{item.icon}</span>
+              <span className={`text-[10px] font-bold ${item.active ? "text-[#96713D]" : "text-[#6D665E]"}`}>{item.label}</span>
+            </Link>
+          ))}
         </div>
-
       </nav>
-
     </main>
   );
 }
