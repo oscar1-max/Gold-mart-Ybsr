@@ -315,6 +315,16 @@ export default function Home() {
 
       </header>
 
+      {/* QUICK LINKS — working GoldMart support and shopping pages */}
+      <nav aria-label="Quick links" className="border-b border-[#f0e5c5] bg-[#fffaf0]">
+        <div className="mx-auto flex max-w-5xl gap-2 overflow-x-auto px-3 py-3 sm:justify-center">
+          <Link href="/categories" className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">📂 Categories</Link>
+          <Link href="/track-order" className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">📦 Track Order</Link>
+          <Link href="/order-protection" className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">🛡️ Buyer Protection</Link>
+          <Link href="/help" className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">❓ Help Centre</Link>
+        </div>
+      </nav>
+
       {/* ================================
           FREE SHIPPING BAR
           ================================ */}
@@ -327,7 +337,7 @@ export default function Home() {
               ✓
             </span>
             <span className="font-semibold">
-              Free shipping
+              Track your orders
             </span>
           </div>
 
@@ -338,7 +348,7 @@ export default function Home() {
               ✓
             </span>
             <span className="font-semibold">
-              Price adjustment within 30 days
+              Request help with a purchase
             </span>
           </div>
 
@@ -986,38 +996,17 @@ export default function Home() {
 
             </div>
 
-            <div className="rounded-xl bg-white p-3">
+            <Link href="/track-order" className="rounded-xl bg-white p-3 hover:shadow-md">
+              <div className="text-lg">📦</div>
+              <p className="mt-1 text-xs font-bold">Order tracking →</p>
+              <p className="mt-1 text-[11px] text-gray-500">See your latest order status.</p>
+            </Link>
 
-              <div className="text-lg">
-                📦
-              </div>
-
-              <p className="mt-1 text-xs font-bold">
-                Order tracking
-              </p>
-
-              <p className="mt-1 text-[11px] text-gray-500">
-                Keep track of your purchases
-                from your account.
-              </p>
-
-            </div>
-
-            <div className="rounded-xl bg-white p-3">
-
-              <div className="text-lg">
-                💬
-              </div>
-
-              <p className="mt-1 text-xs font-bold">
-                Customer support
-              </p>
-
-              <p className="mt-1 text-[11px] text-gray-500">
-                Get help when you need it.
-              </p>
-
-            </div>
+            <Link href="/help" className="rounded-xl bg-white p-3 hover:shadow-md">
+              <div className="text-lg">💬</div>
+              <p className="mt-1 text-xs font-bold">Help Centre →</p>
+              <p className="mt-1 text-[11px] text-gray-500">Find answers to common questions.</p>
+            </Link>
 
           </div>
 
@@ -1103,7 +1092,15 @@ export default function Home() {
           </Link>
 
           <Link href="/help">
-            Help Center
+            Help Centre
+          </Link>
+
+          <Link href="/track-order">
+            Track Order
+          </Link>
+
+          <Link href="/order-protection">
+            Buyer Protection
           </Link>
 
         </div>
