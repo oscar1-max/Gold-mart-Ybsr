@@ -108,7 +108,7 @@ export default function AccountPage() {
 
     setChecking(false);
 
-    // Refund admin permission is checked by backend.
+    // Backend checks refund administrator access.
     async function checkRefundAdmin() {
       try {
         const response = await fetch(
@@ -133,7 +133,7 @@ export default function AccountPage() {
       }
     }
 
-    // Support admin permission is checked by backend.
+    // Backend checks support administrator access.
     async function checkSupportAdmin() {
       try {
         const response = await fetch(
@@ -306,8 +306,8 @@ export default function AccountPage() {
 
   const isSeller = user.role === "seller";
 
-  // Preserve existing reports shortcut.
-  // Actual report permissions must be checked by backend.
+  // Existing reports shortcut.
+  // Backend must independently enforce permissions.
   const isLegacyReportsAdmin =
     Number(user.id) === 1 ||
     Number(user.id) === 3;
@@ -553,7 +553,16 @@ export default function AccountPage() {
                   customer support.
                 </p>
 
+                {/* ADMIN OVERVIEW BUTTON - ADDED */}
+
                 <div className="mt-5 flex flex-wrap gap-3">
+                  <Link
+                    href="/admin"
+                    className="rounded-full bg-[#C5A46D] px-5 py-3 text-sm font-black text-[#17191D] transition hover:bg-[#E9D9BB]"
+                  >
+                    🛡️ Admin Overview →
+                  </Link>
+
                   {isLegacyReportsAdmin && (
                     <Link
                       href="/admin/reports"
