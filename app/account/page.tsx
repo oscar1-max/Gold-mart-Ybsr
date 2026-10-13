@@ -69,12 +69,21 @@ export default function AccountPage() {
   const [checking, setChecking] = useState(true);
   const [switching, setSwitching] = useState(false);
   const [error, setError] = useState("");
-  const [isRefundAdmin, setIsRefundAdmin] = useState(false);
+
+  const [isRefundAdmin, setIsRefundAdmin] =
+    useState(false);
+
+  const [isSupportAdmin, setIsSupportAdmin] =
+    useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
-    const savedUser = localStorage.getItem("goldmart_user");
-    const token = localStorage.getItem("goldmart_token");
+
+    const savedUser =
+      localStorage.getItem("goldmart_user");
+
+    const token =
+      localStorage.getItem("goldmart_token");
 
     if (!savedUser || !token) {
       setChecking(false);
@@ -93,13 +102,14 @@ export default function AccountPage() {
       localStorage.removeItem("goldmart_user");
       localStorage.removeItem("goldmart_token");
       setChecking(false);
+
       return () => controller.abort();
     }
 
     setChecking(false);
 
-    // Backend verifies refund administrator access.
-    async function checkAdmin() {
+    // Refund admin permission is checked by backend.
+    async function checkRefundAdmin() {
       try {
         const response = await fetch(
           `${API_URL}/api/admin/refunds?page=1`,
@@ -123,29 +133,57 @@ export default function AccountPage() {
       }
     }
 
-    void checkAdmin();
+    // Support admin permission is checked by backend.
+    async function checkSupportAdmin() {
+      try {
+        const response = await fetch(
+          `${API_URL}/api/support/admin/tickets`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+            cache: "no-store",
+            signal: controller.signal,
+          }
+        );
+
+        if (!controller.signal.aborted) {
+          setIsSupportAdmin(response.ok);
+        }
+      } catch {
+        if (!controller.signal.aborted) {
+          setIsSupportAdmin(false);
+        }
+      }
+    }
+
+    void checkRefundAdmin();
+    void checkSupportAdmin();
 
     return () => controller.abort();
   }, []);
 
-  const handleLogout = () => {
+  function handleLogout() {
     localStorage.removeItem("goldmart_user");
     localStorage.removeItem("goldmart_token");
 
     setUser(null);
     setIsRefundAdmin(false);
+    setIsSupportAdmin(false);
 
     window.location.href = "/";
-  };
+  }
 
-  const handleSwitchRole = async () => {
+  async function handleSwitchRole() {
     if (switching) return;
 
     setSwitching(true);
     setError("");
 
     try {
-      const token = localStorage.getItem("goldmart_token");
+      const token =
+        localStorage.getItem("goldmart_token");
 
       if (!token) {
         window.location.href = "/login";
@@ -172,7 +210,8 @@ export default function AccountPage() {
         !data.token
       ) {
         throw new Error(
-          data.message || "Could not switch account mode."
+          data.message ||
+            "Could not switch account mode."
         );
       }
 
@@ -181,12 +220,17 @@ export default function AccountPage() {
         JSON.stringify(data.user)
       );
 
-      localStorage.setItem("goldmart_token", data.token);
+      localStorage.setItem(
+        "goldmart_token",
+        data.token
+      );
 
       setUser(data.user);
 
       window.location.href =
-        data.user.role === "seller" ? "/seller" : "/";
+        data.user.role === "seller"
+          ? "/seller"
+          : "/";
     } catch (err) {
       setError(
         err instanceof Error
@@ -196,7 +240,7 @@ export default function AccountPage() {
 
       setSwitching(false);
     }
-  };
+  }
 
   if (checking) {
     return (
@@ -262,16 +306,20 @@ export default function AccountPage() {
 
   const isSeller = user.role === "seller";
 
-  // Keep the existing reports shortcut.
-  // The reports backend must enforce permissions.
+  // Preserve existing reports shortcut.
+  // Actual report permissions must be checked by backend.
   const isLegacyReportsAdmin =
-    Number(user.id) === 1 || Number(user.id) === 3;
+    Number(user.id) === 1 ||
+    Number(user.id) === 3;
 
   const showAdminSection =
-    isLegacyReportsAdmin || isRefundAdmin;
+    isLegacyReportsAdmin ||
+    isRefundAdmin ||
+    isSupportAdmin;
 
   const displayName =
-    user.name?.trim() || "GoldMart Member";
+    user.name?.trim() ||
+    "GoldMart Member";
 
   return (
     <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
@@ -501,8 +549,8 @@ export default function AccountPage() {
                 </h2>
 
                 <p className="mt-2 text-sm leading-6 text-[#74716B]">
-                  Manage marketplace reports and
-                  refund requests.
+                  Manage marketplace reports, refunds and
+                  customer support.
                 </p>
 
                 <div className="mt-5 flex flex-wrap gap-3">
@@ -521,6 +569,15 @@ export default function AccountPage() {
                       className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#96713D]"
                     >
                       💳 Manage Refunds
+                    </Link>
+                  )}
+
+                  {isSupportAdmin && (
+                    <Link
+                      href="/admin/support"
+                      className="rounded-full border border-[#D7BF97] bg-[#FAF8F3] px-5 py-3 text-sm font-bold transition hover:border-[#C5A46D] hover:bg-[#F3E9D7]"
+                    >
+                      🎧 Support Inbox
                     </Link>
                   )}
                 </div>
