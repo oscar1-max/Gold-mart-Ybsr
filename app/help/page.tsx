@@ -32,186 +32,206 @@ const questions = [
     answer:
       "Only confirm delivery after you have actually received and checked your order.",
   },
+  {
+    question: "How can I contact GoldMart Support?",
+    answer:
+      "Select Contact Support to create a private support ticket. You can view your ticket status and send follow-up messages.",
+  },
+];
+
+const quickHelp = [
+  {
+    icon: "🎫",
+    title: "Contact Support",
+    description:
+      "Create a ticket and get help from GoldMart Support.",
+    href: "/support",
+  },
+  {
+    icon: "📦",
+    title: "Track Order",
+    description:
+      "Check the current status of your purchases.",
+    href: "/track-order",
+  },
+  {
+    icon: "🛡️",
+    title: "Buyer Protection",
+    description:
+      "Request cancellations, returns and refunds.",
+    href: "/order-protection",
+  },
+  {
+    icon: "🛍️",
+    title: "My Orders",
+    description:
+      "View your purchase history.",
+    href: "/orders",
+  },
+  {
+    icon: "💬",
+    title: "Messages",
+    description:
+      "Open your conversations with sellers.",
+    href: "/chat",
+  },
 ];
 
 export default function HelpPage() {
   return (
-    <main className="min-h-screen bg-[#f7f7f7] text-black">
+    <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
+      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
-      <header className="border-b bg-white p-5">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
+      <header className="border-b border-[#E8E1D5] bg-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-5">
           <Link
             href="/"
-            className="text-2xl font-black"
+            className="text-2xl font-black tracking-tight"
           >
             Gold
-            <span className="text-[#C49A29]">
+            <span className="text-[#B08A50]">
               Mart
             </span>
           </Link>
 
           <Link
             href="/account"
-            className="text-sm font-bold"
+            className="rounded-full border border-[#E8E1D5] px-4 py-2 text-sm font-bold transition hover:border-[#C5A46D]"
           >
             My Account
           </Link>
         </div>
       </header>
 
-      <section className="mx-auto max-w-5xl px-4 py-10">
-
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <Link
           href="/"
-          className="text-sm font-bold text-[#9A7617]"
+          className="text-sm font-bold text-[#96713D] hover:underline"
         >
           ← Back to Home
         </Link>
 
-        <h1 className="mt-6 text-3xl font-black">
-          🎧 Help Centre
-        </h1>
+        {/* HELP CENTRE HERO */}
 
-        <p className="mt-3 text-gray-600">
-          Welcome to GoldMart Support.
-          How can we help you?
-        </p>
+        <section className="mt-6 overflow-hidden rounded-[28px] bg-[#17191D] px-6 py-9 text-white sm:px-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+            GoldMart Customer Care
+          </p>
+
+          <h1 className="mt-3 text-3xl font-black sm:text-4xl">
+            🎧 Help & Support
+          </h1>
+
+          <p className="mt-3 max-w-xl text-sm leading-7 text-[#E5DDD1]">
+            Need assistance with shopping, orders,
+            payments, deliveries or your seller account?
+            We're here to help.
+          </p>
+
+          <Link
+            href="/support"
+            className="mt-7 inline-flex items-center justify-center rounded-full bg-[#C5A46D] px-7 py-3 text-sm font-extrabold text-[#17191D] transition hover:bg-[#E9D9BB]"
+          >
+            🎫 Contact GoldMart Support →
+          </Link>
+        </section>
 
         {/* QUICK HELP */}
 
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <section className="mt-10">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+            How can we help?
+          </p>
 
-          <Link
-            href="/track-order"
-            className="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md"
-          >
-            <div className="text-3xl">
-              📦
-            </div>
+          <h2 className="mt-2 text-2xl font-black">
+            Support Services
+          </h2>
 
-            <h2 className="mt-3 text-xl font-black">
-              Track Order
-            </h2>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {quickHelp.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group rounded-[22px] border border-[#E8E1D5] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[#C5A46D] hover:shadow-md"
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F5F1E9] text-2xl">
+                  {item.icon}
+                </span>
 
-            <p className="mt-2 text-sm text-gray-500">
-              Check the current status
-              of your purchases.
-            </p>
-          </Link>
+                <h3 className="mt-4 text-lg font-black">
+                  {item.title}
+                </h3>
 
-          <Link
-            href="/order-protection"
-            className="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md"
-          >
-            <div className="text-3xl">
-              🛡️
-            </div>
+                <p className="mt-2 text-sm leading-6 text-[#716B62]">
+                  {item.description}
+                </p>
 
-            <h2 className="mt-3 text-xl font-black">
-              Buyer Protection
-            </h2>
+                <span className="mt-4 inline-block text-sm font-bold text-[#96713D]">
+                  Open →
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
 
-            <p className="mt-2 text-sm text-gray-500">
-              Request cancellations,
-              returns and refunds.
-            </p>
-          </Link>
-
-          <Link
-            href="/orders"
-            className="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md"
-          >
-            <div className="text-3xl">
-              🛍️
-            </div>
-
-            <h2 className="mt-3 text-xl font-black">
-              My Orders
-            </h2>
-
-            <p className="mt-2 text-sm text-gray-500">
-              View your purchase history.
-            </p>
-          </Link>
-
-          <Link
-            href="/chat"
-            className="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md"
-          >
-            <div className="text-3xl">
-              💬
-            </div>
-
-            <h2 className="mt-3 text-xl font-black">
-              Messages
-            </h2>
-
-            <p className="mt-2 text-sm text-gray-500">
-              Open your conversations
-              with sellers.
-            </p>
-          </Link>
-
-        </div>
-
-        {/* FREQUENTLY ASKED QUESTIONS */}
+        {/* FAQ */}
 
         <section className="mt-12">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+            Common Questions
+          </p>
 
-          <h2 className="text-2xl font-black">
+          <h2 className="mt-2 text-2xl font-black">
             Frequently Asked Questions
           </h2>
 
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-[#716B62]">
             Tap a question to see the answer.
           </p>
 
-          <div className="mt-5 space-y-3">
-
+          <div className="mt-6 space-y-3">
             {questions.map((item) => (
               <details
                 key={item.question}
-                className="rounded-2xl bg-white p-5 shadow-sm"
+                className="group rounded-2xl border border-[#E8E1D5] bg-white p-5 shadow-sm"
               >
                 <summary className="cursor-pointer font-bold">
                   {item.question}
                 </summary>
 
-                <p className="mt-4 text-sm leading-6 text-gray-600">
+                <p className="mt-4 text-sm leading-7 text-[#716B62]">
                   {item.answer}
                 </p>
               </details>
             ))}
-
           </div>
         </section>
 
-        {/* SUPPORT INFORMATION */}
+        {/* CONTACT SUPPORT */}
 
-        <section className="mt-10 rounded-2xl bg-[#FFF6DB] p-6">
+        <section className="mt-12 rounded-[26px] bg-[#17191D] p-7 text-white sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#E9D9BB]">
+            Need More Assistance?
+          </p>
 
-          <h2 className="text-xl font-black">
-            Need More Help?
+          <h2 className="mt-3 text-2xl font-black">
+            We're Here to Help
           </h2>
 
-          <p className="mt-3 text-sm leading-6 text-gray-700">
-            If you have a problem with an order,
-            use Buyer Protection to submit a
-            request for review. A dedicated
-            support-ticket system will be added
-            later.
+          <p className="mt-3 max-w-xl text-sm leading-7 text-[#E5DDD1]">
+            Can't find the answer you're looking for?
+            Create a private support ticket, track its
+            progress and communicate with GoldMart Support.
           </p>
 
           <Link
-            href="/order-protection"
-            className="mt-5 inline-block rounded-xl bg-black px-6 py-3 text-sm font-bold text-white"
+            href="/support"
+            className="mt-6 inline-flex rounded-full bg-[#C5A46D] px-7 py-3 text-sm font-bold text-[#17191D] transition hover:bg-[#E9D9BB]"
           >
-            Request Order Support →
+            Open Support Ticket →
           </Link>
-
         </section>
-
-      </section>
+      </div>
     </main>
   );
 }
