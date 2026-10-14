@@ -2,9 +2,17 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
-const API = "https://goldmart-backend-yoxc.onrender.com/api";
+const API =
+  "https://goldmart-backend-yoxc.onrender.com/api";
+
 const PAGE_SIZE = 20;
 
 type RefundStatus =
@@ -34,6 +42,24 @@ type RefundRequest = {
   updated_at: string;
 };
 
+type RefundAttempt = {
+  id: number;
+  request_id: number;
+  status: string;
+  provider_status?: string | null;
+  paystack_refund_id?: string | null;
+};
+
+type ApiResult = {
+  success: boolean;
+  message?: string;
+  requests?: RefundRequest[];
+  attempt?: RefundAttempt | null;
+  status?: string;
+  test_mode?: boolean;
+  requires_manual_review?: boolean;
+};
+
 const filters = [
   { value: "", label: "All Requests" },
   { value: "requested", label: "New Requests" },
@@ -45,13 +71,15 @@ const filters = [
   { value: "refund_failed", label: "Refund Failed" },
 ];
 
-function formatStatus(value: string) {
+function nice(value: string) {
   return String(value || "Unknown")
     .replace(/_/g, " ")
-    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+    .replace(/\b\w/g, (letter) =>
+      letter.toUpperCase()
+    );
 }
 
-function formatDate(value: string) {
+function dateText(value: string) {
   const date = new Date(value);
 
   return Number.isNaN(date.getTime())
@@ -65,52 +93,83 @@ function formatDate(value: string) {
       });
 }
 
-function statusStyle(status: RefundStatus) {
-  switch (status) {
-    case "approved":
-    case "refunded":
-      return "bg-emerald-50 text-emerald-800";
+function amountText(value: string | number) {
+  const amount = Number(value);
 
-    case "rejected":
-    case "refund_failed":
-      return "bg-red-50 text-red-800";
-
-    case "requested":
-    case "under_review":
-      return "bg-amber-50 text-amber-800";
-
-    default:
-      return "bg-blue-50 text-blue-800";
-  }
-}
-
-function formatAmount(amount: string | number) {
-  const value = Number(amount);
-
-  return Number.isFinite(value)
-    ? value.toLocaleString("en-NG", {
+  return Number.isFinite(amount)
+    ? amount.toLocaleString("en-NG", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })
     : "Unavailable";
 }
 
-async function readResponse(response: Response) {
-  const data = await response.json().catch(() => null);
+function statusStyle(status: RefundStatus) {
+  if (status === "refunded") {
+    return "bg-green-50 text-green-800";
+  }
+
+  if (
+    status === "rejected" ||
+    status === "refund_failed"
+  ) {
+    return "bg-red-50 text-red-800";
+  }
+
+  if (status === "refund_pending") {
+    return "bg-blue-50 text-blue-800";
+  }
+
+  return "bg-amber-50 text-amber-800";
+}
+
+function errorText(error: unknown) {
+  return error instanceof Error
+    ? error.message
+    : "Something went wrong.";
+}
+
+// =============================================
+// BACKEND REQUEST HELPER
+// =============================================
+
+async function apiRequest(
+  path: string,
+  options: RequestInit = {}
+): Promise<ApiResult> {
+  const token = localStorage.getItem(
+    "goldmart_token"
+  );
+
+  if (!token) {
+    throw new Error(
+      "Please sign in with your admin account."
+    );
+  }
+
+  const response = await fetch(
+    `${API}${path}`,
+    {
+      ...options,
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+        ...(options.body
+          ? {
+              "Content-Type":
+                "application/json",
+            }
+          : {}),
+        ...(options.headers || {}),
+      },
+      cache: "no-store",
+    }
+  );
+
+  const data: ApiResult | null =
+    await response.json().catch(() => null);
 
   if (!response.ok || !data?.success) {
-    if (response.status === 401) {
-      throw new Error(
-        "Your session expired. Please sign in again."
-      );
-    }
-
-    if (response.status === 403) {
-      throw new Error(
-        "Administrator permission is required."
-      );
-    }
-
     throw new Error(
       data?.message ||
         `Request failed (${response.status}).`
@@ -120,42 +179,58 @@ async function readResponse(response: Response) {
   return data;
 }
 
-function errorText(error: unknown) {
-  return error instanceof Error
-    ? error.message
-    : "Something went wrong.";
-}
+// =============================================
+// ADMIN REFUND PAGE
+// =============================================
 
 export default function AdminRefundsPage() {
-  const [requests, setRequests] = useState<RefundRequest[]>([]);
-  const [statusFilter, setStatusFilter] = useState("");
+  const [requests, setRequests] = useState<
+    RefundRequest[]
+  >([]);
+
+  const [statusFilter, setStatusFilter] =
+    useState("");
+
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [savingId, setSavingId] = useState<number | null>(null);
-  const [accessDenied, setAccessDenied] = useState(false);
-  const [error, setError] = useState("");
+
+  const [busyId, setBusyId] = useState<
+    number | null
+  >(null);
+
+  const [notes, setNotes] = useState<
+    Record<number, string>
+  >({});
+
   const [message, setMessage] = useState("");
-  const [notes, setNotes] = useState<Record<number, string>>({});
+  const [warning, setWarning] = useState("");
+  const [error, setError] = useState("");
+
+  const [accessDenied, setAccessDenied] =
+    useState(false);
+
+  // Prevent a second click while an action
+  // is running, even before React re-renders.
+  const busyRef = useRef(false);
+
+  // After an uncertain response, require
+  // investigation rather than another click.
+  const [uncertainIds, setUncertainIds] =
+    useState<Record<number, boolean>>({});
+
   const requestSequence = useRef(0);
 
-  const loadRequests = useCallback(async () => {
-    const sequence = ++requestSequence.current;
-    const token = localStorage.getItem("goldmart_token");
+  // =============================================
+  // LOAD REQUESTS
+  // =============================================
 
-    if (!token) {
-      setRequests([]);
-      setAccessDenied(true);
-      setError(
-        "Please sign in with your administrator account."
-      );
-      setLoading(false);
-      return;
-    }
+  const loadRequests = useCallback(async () => {
+    const sequence =
+      ++requestSequence.current;
 
     setLoading(true);
     setError("");
-    setAccessDenied(false);
 
     try {
       const params = new URLSearchParams({
@@ -166,47 +241,76 @@ export default function AdminRefundsPage() {
         params.set("status", statusFilter);
       }
 
-      const response = await fetch(
-        `${API}/admin/refunds?${params}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-          cache: "no-store",
-        }
+      const path =
+        `/admin/refunds?${params.toString()}`;
+
+      const data = await apiRequest(path);
+
+      const found = Array.isArray(data.requests)
+        ? data.requests
+        : [];
+
+      // Reconcile existing pending refunds.
+      // This only checks statuses; it never
+      // starts a new refund.
+
+      const pending = found.filter(
+        (request) =>
+          request.status === "refund_pending"
       );
 
-      if (sequence !== requestSequence.current) {
-        return;
+      if (pending.length > 0) {
+        await Promise.allSettled(
+          pending.map((request) =>
+            apiRequest(
+              `/admin/refund-processing/${request.id}/status`
+            )
+          )
+        );
+
+        const refreshed =
+          await apiRequest(path);
+
+        if (
+          sequence ===
+          requestSequence.current
+        ) {
+          setRequests(
+            Array.isArray(refreshed.requests)
+              ? refreshed.requests
+              : []
+          );
+        }
+      } else if (
+        sequence === requestSequence.current
+      ) {
+        setRequests(found);
       }
 
       if (
-        response.status === 401 ||
-        response.status === 403
+        sequence === requestSequence.current
       ) {
-        setAccessDenied(true);
-        setRequests([]);
+        setAccessDenied(false);
       }
-
-      const data = await readResponse(response);
-
-      if (sequence !== requestSequence.current) {
-        return;
-      }
-
-      setRequests(
-        Array.isArray(data.requests)
-          ? data.requests
-          : []
-      );
     } catch (err) {
-      if (sequence === requestSequence.current) {
+      if (
+        sequence === requestSequence.current
+      ) {
+        const text = errorText(err);
+
         setRequests([]);
-        setError(errorText(err));
+        setError(text);
+
+        setAccessDenied(
+          /sign in|administrator|authorized|session/i.test(
+            text
+          )
+        );
       }
     } finally {
-      if (sequence === requestSequence.current) {
+      if (
+        sequence === requestSequence.current
+      ) {
         setLoading(false);
       }
     }
@@ -220,107 +324,259 @@ export default function AdminRefundsPage() {
     };
   }, [loadRequests]);
 
-  async function reviewRequest(
-    request: RefundRequest,
-    decision: "approved" | "rejected"
+  // =============================================
+  // ONE BUTTON: APPROVE AND START TEST REFUND
+  // =============================================
+
+  async function approveAndRefund(
+    request: RefundRequest
   ) {
-    if (savingId !== null || loading) {
-      return;
-    }
-
     if (
-      request.status !== "requested" &&
-      request.status !== "under_review"
+      busyRef.current ||
+      loading ||
+      uncertainIds[request.id]
     ) {
-      setError(
-        "This request is not awaiting an admin decision."
-      );
       return;
     }
 
-    const note = (notes[request.id] || "").trim();
+    const newRequest = [
+      "requested",
+      "under_review",
+    ].includes(request.status);
 
-    if (
-      decision === "rejected" &&
-      note.length < 10
-    ) {
-      setError(
-        "Write at least 10 characters to explain a rejection."
-      );
-      return;
-    }
+    const alreadyApproved =
+      request.status === "approved";
 
-    if (note.length > 2000) {
-      setError(
-        "Review notes cannot exceed 2000 characters."
-      );
+    if (!newRequest && !alreadyApproved) {
       return;
     }
 
     const confirmed = window.confirm(
-      decision === "approved"
-        ? `Approve request #${request.id} for processing? This records a review decision only; it does NOT transfer money or issue a Paystack refund.`
-        : `Reject refund request #${request.id}? Make sure the reason is clear.`
+      `GoldMart TEST refund for request #${request.id}?\n\n` +
+        `This will approve the request if needed, then ask Paystack to process ONE sandbox refund.\n\n` +
+        `Approval does not guarantee that Paystack has completed the refund.`
     );
 
     if (!confirmed) {
       return;
     }
 
-    const token = localStorage.getItem(
-      "goldmart_token"
-    );
+    busyRef.current = true;
+    setBusyId(request.id);
 
-    if (!token) {
-      setError(
-        "Please sign in with your administrator account."
-      );
-      return;
-    }
-
-    setSavingId(request.id);
-    setMessage("");
     setError("");
+    setWarning("");
+    setMessage("");
+
+    let approvalRecorded = alreadyApproved;
+    let refundSubmissionAttempted = false;
 
     try {
-      const response = await fetch(
-        `${API}/admin/refunds/${request.id}/review`,
+      // ===========================================
+      // STEP 1: REQUIRE PAYSTACK TEST MODE
+      // ===========================================
+
+      const config = await apiRequest(
+        "/payments/config"
+      );
+
+      if (config.test_mode !== true) {
+        throw new Error(
+          "Paystack sandbox mode is not configured. No new refund was submitted."
+        );
+      }
+
+      // ===========================================
+      // STEP 2: APPROVE REQUEST
+      // ===========================================
+
+      if (newRequest) {
+        const note = (
+          notes[request.id] || ""
+        ).trim();
+
+        if (note.length > 2000) {
+          throw new Error(
+            "Review note cannot exceed 2000 characters."
+          );
+        }
+
+        await apiRequest(
+          `/admin/refunds/${request.id}/review`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({
+              decision: "approved",
+              note,
+            }),
+          }
+        );
+
+        approvalRecorded = true;
+      }
+
+      // ===========================================
+      // STEP 3: CHECK FOR EXISTING REFUND
+      // ===========================================
+
+      const existing = await apiRequest(
+        `/admin/refund-processing/${request.id}/status`
+      );
+
+      if (
+        existing.attempt ||
+        existing.status
+      ) {
+        setMessage(
+          `Request #${request.id} is approved. ` +
+            `An existing refund attempt was found. ` +
+            `Status: ${nice(
+              existing.attempt?.status ||
+                existing.status ||
+                "unknown"
+            )}. ` +
+            `No second refund was submitted.`
+        );
+
+        return;
+      }
+
+      // ===========================================
+      // STEP 4: START ONE PAYSTACK TEST REFUND
+      // ===========================================
+
+      refundSubmissionAttempted = true;
+
+      const result = await apiRequest(
+        `/admin/refund-processing/${request.id}/start`,
         {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            decision,
-            note,
-          }),
+          method: "POST",
         }
       );
 
-      const data = await readResponse(response);
+      if (result.requires_manual_review) {
+        setUncertainIds((old) => ({
+          ...old,
+          [request.id]: true,
+        }));
 
-      setMessage(
-        data.message ||
-          `Request #${request.id} reviewed successfully.`
-      );
+        setWarning(
+          result.message ||
+            "The Paystack refund outcome is uncertain. Do not repeat it. Investigate the existing attempt."
+        );
+      } else {
+        setMessage(
+          result.message ||
+            "Paystack test refund was submitted. Final status is pending provider confirmation."
+        );
+      }
+    } catch (err) {
+      const details = errorText(err);
 
+      if (refundSubmissionAttempted) {
+        setUncertainIds((old) => ({
+          ...old,
+          [request.id]: true,
+        }));
+
+        setWarning(
+          `Refund submission was not confirmed. ${details} ` +
+            `Do not click again until the existing attempt is investigated.`
+        );
+      } else if (approvalRecorded) {
+        setWarning(
+          `The request is approved, but no refund was confirmed. ${details} ` +
+            `Check the processing status before taking further action.`
+        );
+      } else {
+        setError(details);
+      }
+    } finally {
       setNotes((old) => ({
         ...old,
         [request.id]: "",
       }));
 
       await loadRequests();
-    } catch (err) {
-      setError(errorText(err));
-    } finally {
-      setSavingId(null);
+
+      busyRef.current = false;
+      setBusyId(null);
     }
   }
 
-  // Statistics and search apply to the current
-  // loaded page, not the entire database.
+  // =============================================
+  // REJECT REFUND
+  // =============================================
+
+  async function rejectRequest(
+    request: RefundRequest
+  ) {
+    if (busyRef.current || loading) {
+      return;
+    }
+
+    const note = (
+      notes[request.id] || ""
+    ).trim();
+
+    if (note.length < 10) {
+      setError(
+        "Explain the rejection in at least 10 characters."
+      );
+      return;
+    }
+
+    if (note.length > 2000) {
+      setError(
+        "Review note cannot exceed 2000 characters."
+      );
+      return;
+    }
+
+    if (
+      !window.confirm(
+        `Reject refund request #${request.id}?`
+      )
+    ) {
+      return;
+    }
+
+    busyRef.current = true;
+    setBusyId(request.id);
+
+    setError("");
+    setWarning("");
+    setMessage("");
+
+    try {
+      const result = await apiRequest(
+        `/admin/refunds/${request.id}/review`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            decision: "rejected",
+            note,
+          }),
+        }
+      );
+
+      setMessage(
+        result.message ||
+          "Request rejected."
+      );
+    } catch (err) {
+      setError(errorText(err));
+    } finally {
+      await loadRequests();
+
+      busyRef.current = false;
+      setBusyId(null);
+    }
+  }
+
+  // =============================================
+  // PAGE STATISTICS
+  // =============================================
 
   const stats = useMemo(
     () => ({
@@ -343,12 +599,14 @@ export default function AdminRefundsPage() {
     [requests]
   );
 
+  // =============================================
+  // SEARCH
+  // =============================================
+
   const visibleRequests = useMemo(() => {
     const term = search.trim().toLowerCase();
 
-    if (!term) {
-      return requests;
-    }
+    if (!term) return requests;
 
     return requests.filter((r) =>
       [
@@ -358,7 +616,6 @@ export default function AdminRefundsPage() {
         r.buyer_name,
         r.buyer_email,
         r.reason,
-        r.request_type,
         r.status,
       ]
         .join(" ")
@@ -367,17 +624,19 @@ export default function AdminRefundsPage() {
     );
   }, [requests, search]);
 
+  // =============================================
+  // PAGE LAYOUT
+  // =============================================
+
   return (
     <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
       <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
-      {/* HEADER */}
-
       <header className="border-b border-[#E8E1D5] bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
           <Link
             href="/"
-            className="text-2xl font-black tracking-tight"
+            className="text-2xl font-black"
           >
             Gold
             <span className="text-[#B08A50]">
@@ -387,452 +646,327 @@ export default function AdminRefundsPage() {
 
           <Link
             href="/account"
-            className="rounded-full border border-[#D7BF97] px-4 py-2 text-xs font-bold hover:bg-[#FAF8F3] sm:text-sm"
+            className="rounded-full border border-[#D7BF97] px-4 py-2 text-sm font-bold"
           >
-            ← Admin Dashboard
+            ← Dashboard
           </Link>
         </div>
       </header>
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
 
-        {/* PREMIUM HERO */}
+        {/* HEADER */}
 
-        <section className="relative overflow-hidden rounded-[28px] bg-[#17191D] p-7 text-white sm:p-10">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-12 -top-14 h-52 w-52 rounded-full border border-[#C5A46D]/30"
-          />
+        <section className="rounded-[28px] bg-[#17191D] p-7 text-white sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+            GoldMart Administration
+          </p>
 
-          <div className="relative">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
-              GoldMart Administration
-            </p>
+          <h1 className="mt-3 text-3xl font-black sm:text-4xl">
+            Refund Management
+          </h1>
 
-            <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-              Refund Management
-            </h1>
-
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#E5DDD1]">
-              Review cancellation and refund requests,
-              record decisions, and track processing
-              statuses.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/admin/reports"
-                className="rounded-full border border-[#C5A46D]/60 px-5 py-2.5 text-sm font-bold hover:bg-white/10"
-              >
-                📋 Reports & Users
-              </Link>
-
-              <Link
-                href="/admin/support"
-                className="rounded-full bg-[#C5A46D] px-5 py-2.5 text-sm font-bold text-[#17191D] hover:bg-[#E9D9BB]"
-              >
-                🎧 Support Inbox
-              </Link>
-            </div>
-          </div>
+          <p className="mt-3 text-sm leading-7 text-[#E5DDD1]">
+            Review requests and manage Paystack
+            sandbox refunds from one simple page.
+          </p>
         </section>
 
-        {/* FINANCIAL SAFETY NOTE */}
+        {/* SIMPLE SAFETY NOTICE */}
 
-        <div className="mt-6 rounded-2xl border border-[#E2D5BE] bg-[#FFF9EE] p-4 text-sm leading-6 text-[#67502C]">
-          <strong>Financial safety:</strong>{" "}
-          Approving here records a review decision only.
-          This page does not issue Paystack refunds,
-          transfer money, or release seller payouts.
-          "Approved" is not the same as "Refunded".
+        <div className="mt-6 rounded-2xl border border-[#E2D5BE] bg-[#FFF9EE] p-4 text-sm text-[#67502C]">
+          <strong>Test mode:</strong>{" "}
+          Approve & Refund submits a sandbox
+          refund request when authorized.
+          GoldMart shows "Refunded" only when
+          Paystack reports it processed.
+          Seller payouts remain disabled.
         </div>
 
-        {/* FEEDBACK */}
+        {/* MESSAGES */}
 
         {message && (
           <div
             role="status"
-            className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800"
+            className="mt-5 rounded-2xl bg-green-50 p-4 text-sm font-semibold text-green-800"
           >
             {message}
+          </div>
+        )}
+
+        {warning && (
+          <div
+            role="alert"
+            className="mt-5 rounded-2xl bg-amber-50 p-4 text-sm font-semibold text-amber-900"
+          >
+            {warning}
           </div>
         )}
 
         {error && (
           <div
             role="alert"
-            className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"
+            className="mt-5 rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-800"
           >
             {error}
           </div>
         )}
 
-        {/* ADMIN ACCESS */}
-
         {accessDenied ? (
-          <section className="mt-8 rounded-3xl border border-[#E8E1D5] bg-white p-8 text-center shadow-sm">
-            <div className="text-4xl">🔒</div>
-
-            <h2 className="mt-4 text-xl font-black">
-              Administrator Access Required
+          <div className="mt-8 rounded-3xl bg-white p-8 text-center">
+            <h2 className="text-xl font-black">
+              Admin Access Required
             </h2>
-
-            <p className="mt-3 text-sm text-[#716B62]">
-              Sign in with an account authorized by
-              GoldMart's backend to manage refund
-              requests.
-            </p>
 
             <Link
               href="/login"
-              className="mt-6 inline-block rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white"
+              className="mt-5 inline-block rounded-full bg-black px-6 py-3 text-sm font-bold text-white"
             >
               Sign In
             </Link>
-          </section>
+          </div>
         ) : (
           <>
-            {/* OVERVIEW */}
+            {/* STATS */}
 
-            <section className="mt-9">
-              <div className="flex flex-wrap items-end justify-between gap-3">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
-                    Refund Operations
+            <section className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+              {[
+                ["Requests", stats.shown, "📋"],
+                ["Awaiting Review", stats.awaiting, "⏳"],
+                ["Approved", stats.approved, "✅"],
+                ["Refunded", stats.refunded, "💳"],
+              ].map(([label, count, icon]) => (
+                <div
+                  key={String(label)}
+                  className="rounded-2xl border border-[#E8E1D5] bg-white p-5"
+                >
+                  <div className="text-2xl">
+                    {icon}
+                  </div>
+
+                  <p className="mt-3 text-xs text-gray-500">
+                    {label}
                   </p>
 
-                  <h2 className="mt-1 text-2xl font-black">
-                    Page {page} Overview
-                  </h2>
+                  <p className="mt-1 text-3xl font-black">
+                    {loading ? "—" : count}
+                  </p>
                 </div>
-
-                <button
-                  type="button"
-                  onClick={() => void loadRequests()}
-                  disabled={
-                    loading ||
-                    savingId !== null
-                  }
-                  className="rounded-full border border-[#D7BF97] bg-white px-5 py-2.5 text-sm font-bold hover:bg-[#F5F1E9] disabled:opacity-50"
-                >
-                  {loading
-                    ? "Loading..."
-                    : "↻ Refresh Requests"}
-                </button>
-              </div>
-
-              {/* STATS */}
-
-              <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
-                {[
-                  {
-                    label: "Requests on Page",
-                    value: stats.shown,
-                    icon: "📋",
-                  },
-                  {
-                    label: "Awaiting Review",
-                    value: stats.awaiting,
-                    icon: "⏳",
-                  },
-                  {
-                    label: "Approved",
-                    value: stats.approved,
-                    icon: "✅",
-                  },
-                  {
-                    label: "Refunded",
-                    value: stats.refunded,
-                    icon: "💳",
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-[22px] border border-[#E8E1D5] bg-white p-4 shadow-sm sm:p-5"
-                  >
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F5F1E9] text-xl">
-                      {item.icon}
-                    </span>
-
-                    <p className="mt-4 text-xs font-semibold text-[#716B62]">
-                      {item.label}
-                    </p>
-
-                    <p className="mt-1 text-3xl font-black">
-                      {loading || error
-                        ? "—"
-                        : item.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <p className="mt-3 text-xs leading-5 text-[#716B62]">
-                Counts show the currently loaded page
-                only. They are not marketplace-wide totals.
-              </p>
+              ))}
             </section>
 
             {/* SEARCH AND FILTER */}
 
-            <section className="mt-8 rounded-3xl border border-[#E8E1D5] bg-white p-5 shadow-sm sm:p-6">
-              <h2 className="text-xl font-black">
-                Find Refund Requests
-              </h2>
+            <section className="mt-7 rounded-3xl border border-[#E8E1D5] bg-white p-5">
+              <div className="grid gap-3 md:grid-cols-2">
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(e) =>
+                    setSearch(e.target.value)
+                  }
+                  placeholder="Search refund requests..."
+                  className="rounded-xl border p-3 text-sm"
+                />
 
-              <div className="mt-5 grid gap-4 md:grid-cols-[minmax(0,1fr)_240px]">
-                <div>
-                  <label
-                    htmlFor="refund-search"
-                    className="mb-2 block text-xs font-bold text-[#716B62]"
-                  >
-                    Search this page
-                  </label>
-
-                  <input
-                    id="refund-search"
-                    type="search"
-                    value={search}
-                    onChange={(e) =>
-                      setSearch(e.target.value)
-                    }
-                    placeholder="Request ID, order, buyer, reason..."
-                    className="w-full rounded-xl border border-[#DDD5C8] px-4 py-3 text-sm outline-none focus:border-[#B08A50]"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="refund-filter"
-                    className="mb-2 block text-xs font-bold text-[#716B62]"
-                  >
-                    Filter by status
-                  </label>
-
-                  <select
-                    id="refund-filter"
-                    value={statusFilter}
-                    onChange={(e) => {
-                      setStatusFilter(e.target.value);
-                      setPage(1);
-                      setSearch("");
-                      setMessage("");
-                    }}
-                    disabled={
-                      savingId !== null
-                    }
-                    className="w-full rounded-xl border border-[#DDD5C8] bg-white px-4 py-3 text-sm outline-none focus:border-[#B08A50] disabled:opacity-50"
-                  >
-                    {filters.map((filter) => (
-                      <option
-                        key={filter.value}
-                        value={filter.value}
-                      >
-                        {filter.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => {
+                    setStatusFilter(e.target.value);
+                    setPage(1);
+                    setSearch("");
+                  }}
+                  className="rounded-xl border p-3 text-sm"
+                >
+                  {filters.map((filter) => (
+                    <option
+                      key={filter.value}
+                      value={filter.value}
+                    >
+                      {filter.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              <p className="mt-3 text-xs text-[#716B62]">
-                Search checks the currently loaded page.
-                Change pages to inspect older requests.
-              </p>
+              <button
+                type="button"
+                onClick={() =>
+                  void loadRequests()
+                }
+                disabled={
+                  loading ||
+                  busyId !== null
+                }
+                className="mt-4 rounded-full border border-[#D7BF97] px-5 py-2 text-sm font-bold disabled:opacity-50"
+              >
+                ↻ Refresh
+              </button>
             </section>
 
             {/* LOADING */}
 
             {loading && (
-              <div className="mt-6 rounded-3xl border border-[#E8E1D5] bg-white p-10 text-center text-sm text-[#716B62]">
+              <p className="mt-6 text-center text-sm text-gray-500">
                 Loading refund requests...
-              </div>
+              </p>
             )}
 
-            {/* NO REQUESTS */}
+            {/* EMPTY */}
 
             {!loading &&
               !error &&
               visibleRequests.length === 0 && (
-                <div className="mt-6 rounded-3xl border border-[#E8E1D5] bg-white p-10 text-center">
-                  <p className="text-4xl">
+                <div className="mt-6 rounded-3xl bg-white p-10 text-center">
+                  <div className="text-4xl">
                     📭
-                  </p>
+                  </div>
 
-                  <h3 className="mt-4 text-xl font-black">
-                    {requests.length === 0
-                      ? "No refund requests found"
-                      : "No matching requests"}
-                  </h3>
-
-                  <p className="mt-2 text-sm text-[#716B62]">
-                    {requests.length === 0
-                      ? "Buyer refund or cancellation requests will appear here when available."
-                      : "Try a different search, or browse another page."}
-                  </p>
+                  <h2 className="mt-4 text-xl font-black">
+                    No matching refund requests
+                  </h2>
                 </div>
               )}
 
-            {/* REFUND REQUESTS */}
+            {/* REQUEST LIST */}
 
-            {!loading &&
-              !error && (
-                <section className="mt-6 space-y-5">
-                  {visibleRequests.map((request) => {
-                    const canReview =
-                      request.status ===
-                        "requested" ||
-                      request.status ===
-                        "under_review";
+            {!loading && !error && (
+              <section className="mt-6 space-y-5">
+                {visibleRequests.map((request) => {
+                  const waiting = [
+                    "requested",
+                    "under_review",
+                  ].includes(request.status);
 
-                    const saving =
-                      savingId === request.id;
+                  const approved =
+                    request.status === "approved";
 
-                    return (
-                      <article
-                        key={request.id}
-                        className="overflow-hidden rounded-[24px] border border-[#E8E1D5] bg-white shadow-sm"
-                      >
-                        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#E8E1D5] p-5 sm:p-7">
-                          <div>
-                            <p className="text-xs font-bold uppercase tracking-wide text-[#96713D]">
-                              Refund Request #
-                              {request.id}
-                            </p>
+                  const canApprove =
+                    waiting || approved;
 
-                            <h3 className="mt-2 text-xl font-black">
-                              Order #
-                              {request.order_id}
-                            </h3>
+                  const blocked =
+                    Boolean(
+                      uncertainIds[request.id]
+                    );
 
-                            <p className="mt-2 text-xs text-[#716B62]">
-                              Requested{" "}
-                              {formatDate(
-                                request.created_at
-                              )}
-                            </p>
-                          </div>
+                  const busy =
+                    busyId === request.id;
 
-                          <span
-                            className={`rounded-full px-4 py-2 text-xs font-bold ${statusStyle(
-                              request.status
-                            )}`}
-                          >
-                            {formatStatus(
-                              request.status
-                            )}
-                          </span>
-                        </div>
+                  return (
+                    <article
+                      key={request.id}
+                      className="overflow-hidden rounded-3xl border border-[#E8E1D5] bg-white shadow-sm"
+                    >
+                      {/* REQUEST HEADER */}
 
-                        {/* BUYER AND ORDER */}
-
-                        <div className="grid gap-4 p-5 sm:grid-cols-2 sm:p-7">
-                          <div className="rounded-2xl bg-[#FAF8F3] p-4">
-                            <p className="text-xs font-bold uppercase tracking-wide text-[#96713D]">
-                              Buyer
-                            </p>
-
-                            <p className="mt-2 break-words font-black">
-                              {request.buyer_name ||
-                                `User #${request.buyer_id}`}
-                            </p>
-
-                            <p className="mt-1 break-all text-sm text-[#716B62]">
-                              {request.buyer_email ||
-                                "Email unavailable"}
-                            </p>
-
-                            <p className="mt-1 text-xs text-[#716B62]">
-                              Buyer ID:{" "}
-                              {request.buyer_id}
-                            </p>
-                          </div>
-
-                          <div className="rounded-2xl bg-[#FAF8F3] p-4">
-                            <p className="text-xs font-bold uppercase tracking-wide text-[#96713D]">
-                              Request Details
-                            </p>
-
-                            <p className="mt-2 font-black">
-                              {formatStatus(
-                                request.request_type
-                              )}
-                            </p>
-
-                            <p className="mt-1 text-sm text-[#716B62]">
-                              Order:{" "}
-                              {formatStatus(
-                                request.order_status
-                              )}
-                            </p>
-
-                            <p className="mt-1 text-sm text-[#716B62]">
-                              Order total:{" "}
-                              {formatAmount(
-                                request.total_amount
-                              )}{" "}
-                              <span className="text-xs">
-                                (currency not verified)
-                              </span>
-                            </p>
-
-                            {request.provider_status && (
-                              <p className="mt-1 text-sm text-[#716B62]">
-                                Provider status:{" "}
-                                {formatStatus(
-                                  request.provider_status
-                                )}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* CUSTOMER REASON */}
-
-                        <div className="mx-5 rounded-2xl border border-[#E8E1D5] p-4 sm:mx-7">
-                          <p className="text-xs font-bold uppercase tracking-wide text-[#96713D]">
-                            Buyer's Explanation
+                      <div className="flex flex-wrap items-center justify-between gap-3 border-b p-5 sm:p-7">
+                        <div>
+                          <p className="text-xs font-bold text-[#96713D]">
+                            Refund Request #{request.id}
                           </p>
 
-                          <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-[#514C45]">
-                            {request.reason ||
-                              "No reason provided."}
+                          <h3 className="mt-2 text-xl font-black">
+                            Order #{request.order_id}
+                          </h3>
+
+                          <p className="mt-2 text-xs text-gray-500">
+                            {dateText(
+                              request.created_at
+                            )}
                           </p>
                         </div>
 
-                        {/* PREVIOUS ADMIN NOTE */}
+                        <span
+                          className={`rounded-full px-4 py-2 text-xs font-bold ${statusStyle(
+                            request.status
+                          )}`}
+                        >
+                          {nice(request.status)}
+                        </span>
+                      </div>
 
-                        {request.review_note && (
-                          <div className="mx-5 mt-4 rounded-2xl border border-[#E8E1D5] bg-[#FFFDF8] p-4 sm:mx-7">
-                            <p className="text-xs font-bold uppercase tracking-wide text-[#96713D]">
-                              Previous Admin Review
+                      {/* DETAILS */}
+
+                      <div className="grid gap-4 p-5 sm:grid-cols-2 sm:p-7">
+                        <div className="rounded-2xl bg-[#FAF8F3] p-4">
+                          <p className="text-xs font-bold text-[#96713D]">
+                            Buyer
+                          </p>
+
+                          <p className="mt-2 font-bold">
+                            {request.buyer_name ||
+                              `User #${request.buyer_id}`}
+                          </p>
+
+                          <p className="mt-1 break-all text-sm text-gray-500">
+                            {request.buyer_email ||
+                              "Email unavailable"}
+                          </p>
+                        </div>
+
+                        <div className="rounded-2xl bg-[#FAF8F3] p-4">
+                          <p className="text-xs font-bold text-[#96713D]">
+                            Request Details
+                          </p>
+
+                          <p className="mt-2 text-sm">
+                            {nice(
+                              request.request_type
+                            )}
+                          </p>
+
+                          <p className="mt-1 text-sm text-gray-500">
+                            Order:{" "}
+                            {nice(
+                              request.order_status
+                            )}
+                          </p>
+
+                          <p className="mt-1 text-sm text-gray-500">
+                            Total:{" "}
+                            {amountText(
+                              request.total_amount
+                            )}
+                            {" "} (currency not verified)
+                          </p>
+
+                          {request.provider_status && (
+                            <p className="mt-1 text-sm text-gray-500">
+                              Paystack:{" "}
+                              {nice(
+                                request.provider_status
+                              )}
                             </p>
+                          )}
+                        </div>
+                      </div>
 
-                            <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-[#514C45]">
-                              {request.review_note}
-                            </p>
-                          </div>
-                        )}
+                      {/* REASON */}
 
-                        {/* REVIEW ACTIONS */}
+                      <div className="mx-5 rounded-2xl border p-4 sm:mx-7">
+                        <p className="text-xs font-bold text-[#96713D]">
+                          Buyer's Reason
+                        </p>
 
-                        {canReview ? (
-                          <div className="mt-6 border-t border-[#E8E1D5] p-5 sm:p-7">
-                            <label
-                              htmlFor={`note-${request.id}`}
-                              className="block text-sm font-bold"
-                            >
-                              Admin Review Note
-                            </label>
+                        <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7">
+                          {request.reason}
+                        </p>
+                      </div>
 
-                            <p className="mt-1 text-xs leading-5 text-[#716B62]">
-                              Explain your decision.
-                              Rejections require at least
-                              10 characters.
-                            </p>
+                      {request.review_note && (
+                        <div className="mx-5 mt-4 rounded-2xl bg-[#FAF8F3] p-4 text-sm sm:mx-7">
+                          <strong>Admin Note:</strong>{" "}
+                          {request.review_note}
+                        </div>
+                      )}
 
+                      {/* ACTIONS */}
+
+                      {canApprove && (
+                        <div className="mt-6 border-t p-5 sm:p-7">
+
+                          {waiting && (
                             <textarea
-                              id={`note-${request.id}`}
                               value={
                                 notes[
                                   request.id
@@ -843,130 +977,146 @@ export default function AdminRefundsPage() {
                                   (old) => ({
                                     ...old,
                                     [request.id]:
-                                      e.target
-                                        .value,
+                                      e.target.value,
                                   })
                                 )
                               }
-                              maxLength={2000}
                               rows={3}
+                              maxLength={2000}
+                              placeholder="Optional approval note, or rejection reason..."
                               disabled={
-                                savingId !== null
+                                busyId !== null
                               }
-                              placeholder="Write your review note..."
-                              className="mt-3 w-full resize-y rounded-xl border border-[#DDD5C8] p-4 text-sm outline-none focus:border-[#B08A50] disabled:opacity-50"
+                              className="w-full rounded-xl border p-4 text-sm disabled:opacity-50"
                             />
+                          )}
 
-                            <div className="mt-4 flex flex-wrap gap-3">
+                          <div className="mt-4 flex flex-wrap gap-3">
+
+                            <button
+                              type="button"
+                              onClick={() =>
+                                void approveAndRefund(
+                                  request
+                                )
+                              }
+                              disabled={
+                                busyId !== null ||
+                                blocked
+                              }
+                              className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
+                            >
+                              {busy
+                                ? "Processing..."
+                                : approved
+                                  ? "Complete Approved Refund (Test)"
+                                  : "Approve & Refund (Test)"}
+                            </button>
+
+                            {waiting && (
                               <button
                                 type="button"
                                 onClick={() =>
-                                  void reviewRequest(
-                                    request,
-                                    "approved"
+                                  void rejectRequest(
+                                    request
                                   )
                                 }
                                 disabled={
-                                  savingId !== null
+                                  busyId !== null
                                 }
-                                className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white hover:bg-[#96713D] disabled:opacity-50"
-                              >
-                                {saving
-                                  ? "Saving..."
-                                  : "Approve for Processing"}
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  void reviewRequest(
-                                    request,
-                                    "rejected"
-                                  )
-                                }
-                                disabled={
-                                  savingId !== null
-                                }
-                                className="rounded-full border border-red-200 bg-red-50 px-5 py-3 text-sm font-bold text-red-800 hover:bg-red-100 disabled:opacity-50"
+                                className="rounded-full border border-red-200 bg-red-50 px-5 py-3 text-sm font-bold text-red-800 disabled:opacity-50"
                               >
                                 Reject Request
                               </button>
-                            </div>
+                            )}
                           </div>
-                        ) : (
-                          <div className="mt-6 border-t border-[#E8E1D5] px-5 py-4 text-xs leading-6 text-[#716B62] sm:px-7">
-                            This request is not awaiting
-                            an admin decision. Financial
-                            processing, when applicable,
-                            is handled separately.
-                          </div>
-                        )}
-                      </article>
-                    );
-                  })}
-                </section>
-              )}
+
+                          {blocked && (
+                            <p className="mt-3 text-xs text-amber-800">
+                              Refund outcome requires
+                              investigation. Further
+                              submission is disabled
+                              in this session.
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      {request.status ===
+                        "refund_pending" && (
+                        <p className="border-t px-5 py-4 text-sm text-blue-800 sm:px-7">
+                          Paystack refund is pending.
+                          Refresh to check its status.
+                          Do not submit another refund.
+                        </p>
+                      )}
+
+                      {request.status ===
+                        "refunded" && (
+                        <p className="border-t px-5 py-4 text-sm text-green-800 sm:px-7">
+                          Paystack reports that the
+                          refund was processed.
+                        </p>
+                      )}
+
+                      {request.status ===
+                        "refund_failed" && (
+                        <p className="border-t px-5 py-4 text-sm text-red-800 sm:px-7">
+                          Refund processing needs
+                          investigation. Do not
+                          repeat the transaction.
+                        </p>
+                      )}
+
+                    </article>
+                  );
+                })}
+              </section>
+            )}
 
             {/* PAGINATION */}
 
-            {!loading &&
-              !error && (
-                <nav
-                  aria-label="Refund request pages"
-                  className="mt-8 flex flex-wrap items-center justify-center gap-4"
+            {!loading && (
+              <nav className="mt-8 flex flex-wrap items-center justify-center gap-4">
+                <button
+                  type="button"
+                  disabled={
+                    page === 1 ||
+                    busyId !== null
+                  }
+                  onClick={() => {
+                    setPage((p) =>
+                      Math.max(1, p - 1)
+                    );
+                    setSearch("");
+                  }}
+                  className="rounded-full border px-5 py-3 text-sm font-bold disabled:opacity-40"
                 >
-                  <button
-                    type="button"
-                    disabled={
-                      page === 1 ||
-                      savingId !== null
-                    }
-                    onClick={() => {
-                      setPage((old) =>
-                        Math.max(
-                          1,
-                          old - 1
-                        )
-                      );
-                      setSearch("");
-                    }}
-                    className="rounded-full border border-[#D7BF97] bg-white px-5 py-3 text-sm font-bold disabled:opacity-40"
-                  >
-                    ← Previous
-                  </button>
+                  ← Previous
+                </button>
 
-                  <span className="text-sm font-bold">
-                    Page {page}
-                  </span>
+                <span className="font-bold">
+                  Page {page}
+                </span>
 
-                  <button
-                    type="button"
-                    disabled={
-                      requests.length <
-                        PAGE_SIZE ||
-                      savingId !== null
-                    }
-                    onClick={() => {
-                      setPage(
-                        (old) =>
-                          old + 1
-                      );
-                      setSearch("");
-                    }}
-                    className="rounded-full border border-[#D7BF97] bg-white px-5 py-3 text-sm font-bold disabled:opacity-40"
-                  >
-                    Next →
-                  </button>
-                </nav>
-              )}
+                <button
+                  type="button"
+                  disabled={
+                    requests.length < PAGE_SIZE ||
+                    busyId !== null
+                  }
+                  onClick={() => {
+                    setPage((p) => p + 1);
+                    setSearch("");
+                  }}
+                  className="rounded-full border px-5 py-3 text-sm font-bold disabled:opacity-40"
+                >
+                  Next →
+                </button>
+              </nav>
+            )}
           </>
         )}
-
-        <p className="mt-9 text-center text-xs leading-6 text-[#716B62]">
-          GoldMart Refund Administration ·
-          Review decisions only ·
-          No direct refunds or transfers
-        </p>
       </div>
     </main>
   );
