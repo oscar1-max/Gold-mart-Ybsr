@@ -25,6 +25,18 @@ type OrderResponse = {
   };
 };
 
+async function readResponse<T>(
+  response: Response
+): Promise<T> {
+  try {
+    return (await response.json()) as T;
+  } catch {
+    throw new Error(
+      "GoldMart could not read the server response. Please retry confirmation. Do not make another payment."
+    );
+  }
+}
+
 export default function OrderSuccessPage() {
   const { clearCart } = useCart();
 
@@ -33,9 +45,11 @@ export default function OrderSuccessPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
   const [step, setStep] = useState(
     "Preparing payment confirmation..."
   );
+
   const [orderId, setOrderId] =
     useState<number | null>(null);
 
@@ -47,28 +61,41 @@ export default function OrderSuccessPage() {
         setLoading(true);
         setError("");
 
-        // 1. Read the Paystack reference.
+        // ============================================
+        // 1. FIND PAYSTACK REFERENCE
+        // ============================================
+
         const params = new URLSearchParams(
           window.location.search
         );
 
-        const reference =
+        const reference = (
           params.get("reference") ||
           params.get("trxref") ||
           sessionStorage.getItem(
             "goldmart-payment-reference"
-          );
+          ) ||
+          ""
+        ).trim();
 
         if (!reference) {
           throw new Error(
-            "Payment reference was not found. Please check your payment history before trying again."
+            "Payment reference was not found. Check your payment history before trying again."
           );
         }
 
-        // 2. Authenticate the buyer.
-        const token = localStorage.getItem(
-          "goldmart_token"
+        // Keep reference available for retries.
+        sessionStorage.setItem(
+          "goldmart-payment-reference",
+          reference
         );
+
+        // ============================================
+        // 2. CHECK BUYER AUTHENTICATION
+        // ============================================
+
+        const token =
+          localStorage.getItem("goldmart_token");
 
         if (!token) {
           throw new Error(
@@ -76,9 +103,16 @@ export default function OrderSuccessPage() {
           );
         }
 
-        setStep("Verifying payment with Paystack...");
+        if (cancelled) return;
 
-        // 3. Verify the actual payment.
+        setStep(
+          "Verifying payment with Paystack..."
+        );
+
+        // ============================================
+        // 3. VERIFY PAYMENT WITH BACKEND
+        // ============================================
+
         const verifyResponse = await fetch(
           `${API_URL}/api/payments/verify/${encodeURIComponent(
             reference
@@ -93,8 +127,10 @@ export default function OrderSuccessPage() {
           }
         );
 
-        const verifyData: PaymentResponse =
-          await verifyResponse.json();
+        const verifyData =
+          await readResponse<PaymentResponse>(
+            verifyResponse
+          );
 
         if (
           !verifyResponse.ok ||
@@ -107,15 +143,23 @@ export default function OrderSuccessPage() {
         }
 
         if (
-          verifyData.payment?.status !== "success"
+          verifyData.payment?.status !==
+          "success"
         ) {
           throw new Error(
-            "Payment has not been confirmed. Do not make another payment while verification is pending."
+            "Payment is not yet confirmed. Do not make another payment while confirmation is pending."
           );
         }
 
-        // 4. Create or recover the order.
-        setStep("Finalizing your GoldMart order...");
+        if (cancelled) return;
+
+        // ============================================
+        // 4. CREATE OR RECOVER EXISTING ORDER
+        // ============================================
+
+        setStep(
+          "Finalizing your GoldMart order..."
+        );
 
         const orderResponse = await fetch(
           `${API_URL}/api/orders`,
@@ -133,8 +177,10 @@ export default function OrderSuccessPage() {
           }
         );
 
-        const orderData: OrderResponse =
-          await orderResponse.json();
+        const orderData =
+          await readResponse<OrderResponse>(
+            orderResponse
+          );
 
         if (
           !orderResponse.ok ||
@@ -146,11 +192,17 @@ export default function OrderSuccessPage() {
           );
         }
 
-        const confirmedOrderId =
-          Number(orderData.order?.id);
+        // Existing orders are also valid.
+        // The backend prevents duplicate orders.
+
+        const confirmedOrderId = Number(
+          orderData.order?.id
+        );
 
         if (
-          !Number.isInteger(confirmedOrderId) ||
+          !Number.isSafeInteger(
+            confirmedOrderId
+          ) ||
           confirmedOrderId <= 0
         ) {
           throw new Error(
@@ -160,20 +212,35 @@ export default function OrderSuccessPage() {
 
         if (cancelled) return;
 
-        // 5. Only clear cart after an order exists.
-        setStep("Completing your order...");
+        // ============================================
+        // 5. CONFIRM ORDER SUCCESS
+        // ============================================
 
+        setStep("Completing your order...");
         setOrderId(confirmedOrderId);
 
-        clearCartRef.current();
+        // The order is saved on the backend.
+        // A local cart error must not turn a
+        // successful order into a payment error.
+
+        try {
+          clearCartRef.current();
+        } catch (cartError) {
+          console.error(
+            "Local cart clear error:",
+            cartError
+          );
+        }
 
         sessionStorage.removeItem(
           "goldmart-payment-reference"
         );
+
         sessionStorage.removeItem(
           "goldmart-delivery"
         );
 
+        setError("");
         setLoading(false);
       } catch (err) {
         if (cancelled) return;
@@ -200,9 +267,9 @@ export default function OrderSuccessPage() {
     };
   }, []);
 
-  // ===============================================
-  // LOADING
-  // ===============================================
+  // ================================================
+  // LOADING SCREEN
+  // ================================================
 
   if (loading) {
     return (
@@ -231,9 +298,9 @@ export default function OrderSuccessPage() {
     );
   }
 
-  // ===============================================
-  // ERROR
-  // ===============================================
+  // ================================================
+  // ERROR SCREEN
+  // ================================================
 
   if (error) {
     return (
@@ -285,9 +352,9 @@ export default function OrderSuccessPage() {
     );
   }
 
-  // ===============================================
-  // SUCCESS
-  // ===============================================
+  // ================================================
+  // SUCCESS SCREEN
+  // ================================================
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 text-black">
