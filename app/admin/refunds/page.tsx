@@ -56,7 +56,8 @@ type ApiResult = {
   requests?: RefundRequest[];
   attempt?: RefundAttempt | null;
   status?: string;
-  test_mode?: boolean;
+  provider_status?: string;
+  refund_id?: string | number;
   requires_manual_review?: boolean;
 };
 
@@ -93,7 +94,9 @@ function dateText(value: string) {
       });
 }
 
-function amountText(value: string | number) {
+function amountText(
+  value: string | number
+) {
   const amount = Number(value);
 
   return Number.isFinite(amount)
@@ -104,7 +107,9 @@ function amountText(value: string | number) {
     : "Unavailable";
 }
 
-function statusStyle(status: RefundStatus) {
+function statusStyle(
+  status: RefundStatus
+) {
   if (status === "refunded") {
     return "bg-green-50 text-green-800";
   }
@@ -143,7 +148,7 @@ async function apiRequest(
 
   if (!token) {
     throw new Error(
-      "Please sign in with your admin account."
+      "Please sign in with your administrator account."
     );
   }
 
@@ -167,154 +172,182 @@ async function apiRequest(
   );
 
   const data: ApiResult | null =
-    await response.json().catch(() => null);
+    await response.json().catch(
+      () => null
+    );
 
   if (!response.ok || !data?.success) {
+    if (response.status === 401) {
+      throw new Error(
+        "Your login session has expired. Please sign in again."
+      );
+    }
+
     throw new Error(
       data?.message ||
-        `Request failed (${response.status}).`
+        `Server request failed (${response.status}).`
     );
   }
 
   return data;
 }
 
-// =============================================
-// ADMIN REFUND PAGE
-// =============================================
-
 export default function AdminRefundsPage() {
-  const [requests, setRequests] = useState<
-    RefundRequest[]
-  >([]);
+  const [requests, setRequests] =
+    useState<RefundRequest[]>([]);
 
   const [statusFilter, setStatusFilter] =
     useState("");
 
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [search, setSearch] =
+    useState("");
 
-  const [busyId, setBusyId] = useState<
-    number | null
-  >(null);
+  const [page, setPage] =
+    useState(1);
 
-  const [notes, setNotes] = useState<
-    Record<number, string>
-  >({});
+  const [loading, setLoading] =
+    useState(true);
 
-  const [message, setMessage] = useState("");
-  const [warning, setWarning] = useState("");
-  const [error, setError] = useState("");
+  const [busyId, setBusyId] =
+    useState<number | null>(null);
+
+  const [notes, setNotes] =
+    useState<Record<number, string>>({});
+
+  const [message, setMessage] =
+    useState("");
+
+  const [warning, setWarning] =
+    useState("");
+
+  const [actionError, setActionError] =
+    useState("");
+
+  const [loadError, setLoadError] =
+    useState("");
 
   const [accessDenied, setAccessDenied] =
     useState(false);
 
-  // Prevent a second click while an action
-  // is running, even before React re-renders.
   const busyRef = useRef(false);
+  const requestSequence = useRef(0);
 
-  // After an uncertain response, require
-  // investigation rather than another click.
+  // Block a second submission if a
+  // previous response was uncertain.
   const [uncertainIds, setUncertainIds] =
     useState<Record<number, boolean>>({});
 
-  const requestSequence = useRef(0);
-
   // =============================================
-  // LOAD REQUESTS
+  // LOAD REFUND REQUESTS
   // =============================================
 
-  const loadRequests = useCallback(async () => {
-    const sequence =
-      ++requestSequence.current;
+  const loadRequests = useCallback(
+    async () => {
+      const sequence =
+        ++requestSequence.current;
 
-    setLoading(true);
-    setError("");
+      setLoading(true);
+      setLoadError("");
 
-    try {
-      const params = new URLSearchParams({
-        page: String(page),
-      });
+      try {
+        const params =
+          new URLSearchParams({
+            page: String(page),
+          });
 
-      if (statusFilter) {
-        params.set("status", statusFilter);
-      }
+        if (statusFilter) {
+          params.set(
+            "status",
+            statusFilter
+          );
+        }
 
-      const path =
-        `/admin/refunds?${params.toString()}`;
+        const path =
+          `/admin/refunds?${params.toString()}`;
 
-      const data = await apiRequest(path);
-
-      const found = Array.isArray(data.requests)
-        ? data.requests
-        : [];
-
-      // Reconcile existing pending refunds.
-      // This only checks statuses; it never
-      // starts a new refund.
-
-      const pending = found.filter(
-        (request) =>
-          request.status === "refund_pending"
-      );
-
-      if (pending.length > 0) {
-        await Promise.allSettled(
-          pending.map((request) =>
-            apiRequest(
-              `/admin/refund-processing/${request.id}/status`
-            )
-          )
-        );
-
-        const refreshed =
+        const data =
           await apiRequest(path);
+
+        const found =
+          Array.isArray(data.requests)
+            ? data.requests
+            : [];
+
+        // Checking pending refunds is
+        // read-only at the provider level.
+        // This does NOT create a refund.
+        const pending =
+          found.filter(
+            (request) =>
+              request.status ===
+              "refund_pending"
+          );
+
+        if (pending.length > 0) {
+          await Promise.allSettled(
+            pending.map(
+              (request) =>
+                apiRequest(
+                  `/admin/refund-processing/${request.id}/status`
+                )
+            )
+          );
+
+          const refreshed =
+            await apiRequest(path);
+
+          if (
+            sequence ===
+            requestSequence.current
+          ) {
+            setRequests(
+              Array.isArray(
+                refreshed.requests
+              )
+                ? refreshed.requests
+                : []
+            );
+          }
+        } else if (
+          sequence ===
+          requestSequence.current
+        ) {
+          setRequests(found);
+        }
 
         if (
           sequence ===
           requestSequence.current
         ) {
-          setRequests(
-            Array.isArray(refreshed.requests)
-              ? refreshed.requests
-              : []
+          setAccessDenied(false);
+        }
+      } catch (error) {
+        if (
+          sequence ===
+          requestSequence.current
+        ) {
+          const text =
+            errorText(error);
+
+          setLoadError(text);
+
+          setAccessDenied(
+            /sign in|administrator|authorized|session|permission/i.test(
+              text
+            )
           );
         }
-      } else if (
-        sequence === requestSequence.current
-      ) {
-        setRequests(found);
+      } finally {
+        if (
+          sequence ===
+          requestSequence.current
+        ) {
+          setLoading(false);
+        }
       }
-
-      if (
-        sequence === requestSequence.current
-      ) {
-        setAccessDenied(false);
-      }
-    } catch (err) {
-      if (
-        sequence === requestSequence.current
-      ) {
-        const text = errorText(err);
-
-        setRequests([]);
-        setError(text);
-
-        setAccessDenied(
-          /sign in|administrator|authorized|session/i.test(
-            text
-          )
-        );
-      }
-    } finally {
-      if (
-        sequence === requestSequence.current
-      ) {
-        setLoading(false);
-      }
-    }
-  }, [page, statusFilter]);
+    },
+    [page, statusFilter]
+  );
 
   useEffect(() => {
     void loadRequests();
@@ -324,8 +357,14 @@ export default function AdminRefundsPage() {
     };
   }, [loadRequests]);
 
+  function clearFeedback() {
+    setMessage("");
+    setWarning("");
+    setActionError("");
+  }
+
   // =============================================
-  // ONE BUTTON: APPROVE AND START TEST REFUND
+  // APPROVE + ONE TEST REFUND
   // =============================================
 
   async function approveAndRefund(
@@ -339,22 +378,37 @@ export default function AdminRefundsPage() {
       return;
     }
 
-    const newRequest = [
-      "requested",
-      "under_review",
-    ].includes(request.status);
+    const waiting =
+      request.status === "requested" ||
+      request.status === "under_review";
 
     const alreadyApproved =
       request.status === "approved";
 
-    if (!newRequest && !alreadyApproved) {
+    if (
+      !waiting &&
+      !alreadyApproved
+    ) {
+      return;
+    }
+
+    const note = (
+      notes[request.id] || ""
+    ).trim();
+
+    if (note.length > 2000) {
+      setActionError(
+        "Admin note cannot exceed 2000 characters."
+      );
       return;
     }
 
     const confirmed = window.confirm(
-      `GoldMart TEST refund for request #${request.id}?\n\n` +
-        `This will approve the request if needed, then ask Paystack to process ONE sandbox refund.\n\n` +
-        `Approval does not guarantee that Paystack has completed the refund.`
+      `Approve & Refund (TEST)\n\n` +
+        `Refund request #${request.id}\n` +
+        `Order #${request.order_id}\n\n` +
+        `GoldMart will approve the request and, if eligible, submit ONE Paystack sandbox refund.\n\n` +
+        `This action does not enable real-money refunds or seller payouts.`
     );
 
     if (!confirmed) {
@@ -363,44 +417,28 @@ export default function AdminRefundsPage() {
 
     busyRef.current = true;
     setBusyId(request.id);
+    clearFeedback();
 
-    setError("");
-    setWarning("");
-    setMessage("");
+    let approvalRecorded =
+      alreadyApproved;
 
-    let approvalRecorded = alreadyApproved;
-    let refundSubmissionAttempted = false;
+    let refundSubmissionAttempted =
+      false;
 
     try {
       // ===========================================
-      // STEP 1: REQUIRE PAYSTACK TEST MODE
+      // STEP 1: APPROVE THE REQUEST
       // ===========================================
+      //
+      // IMPORTANT FIX:
+      //
+      // We DO NOT check config.test_mode
+      // in the frontend before approving.
+      //
+      // The backend decides whether test
+      // refund processing is permitted.
 
-      const config = await apiRequest(
-        "/payments/config"
-      );
-
-      if (config.test_mode !== true) {
-        throw new Error(
-          "Paystack sandbox mode is not configured. No new refund was submitted."
-        );
-      }
-
-      // ===========================================
-      // STEP 2: APPROVE REQUEST
-      // ===========================================
-
-      if (newRequest) {
-        const note = (
-          notes[request.id] || ""
-        ).trim();
-
-        if (note.length > 2000) {
-          throw new Error(
-            "Review note cannot exceed 2000 characters."
-          );
-        }
-
+      if (waiting) {
         await apiRequest(
           `/admin/refunds/${request.id}/review`,
           {
@@ -416,25 +454,29 @@ export default function AdminRefundsPage() {
       }
 
       // ===========================================
-      // STEP 3: CHECK FOR EXISTING REFUND
+      // STEP 2: CHECK FOR EXISTING ATTEMPT
       // ===========================================
+      //
+      // Never submit a duplicate refund.
 
-      const existing = await apiRequest(
-        `/admin/refund-processing/${request.id}/status`
-      );
+      const existing =
+        await apiRequest(
+          `/admin/refund-processing/${request.id}/status`
+        );
 
       if (
         existing.attempt ||
         existing.status
       ) {
+        const status =
+          existing.attempt?.status ||
+          existing.status ||
+          "unknown";
+
         setMessage(
           `Request #${request.id} is approved. ` +
-            `An existing refund attempt was found. ` +
-            `Status: ${nice(
-              existing.attempt?.status ||
-                existing.status ||
-                "unknown"
-            )}. ` +
+            `A refund attempt already exists. ` +
+            `Current status: ${nice(status)}. ` +
             `No second refund was submitted.`
         );
 
@@ -442,61 +484,95 @@ export default function AdminRefundsPage() {
       }
 
       // ===========================================
-      // STEP 4: START ONE PAYSTACK TEST REFUND
+      // STEP 3: START ONE PAYSTACK TEST REFUND
       // ===========================================
+      //
+      // Backend enforces:
+      // - Authorized admin
+      // - sk_test_ secret key
+      // - ENABLE_PAYSTACK_REFUNDS_TEST
+      // - Verified original transaction
+      // - No duplicate refund attempt
+      // - No started seller payout
 
       refundSubmissionAttempted = true;
 
-      const result = await apiRequest(
-        `/admin/refund-processing/${request.id}/start`,
-        {
-          method: "POST",
-        }
-      );
+      const result =
+        await apiRequest(
+          `/admin/refund-processing/${request.id}/start`,
+          {
+            method: "POST",
+          }
+        );
 
-      if (result.requires_manual_review) {
-        setUncertainIds((old) => ({
-          ...old,
-          [request.id]: true,
-        }));
+      if (
+        result.requires_manual_review
+      ) {
+        setUncertainIds(
+          (previous) => ({
+            ...previous,
+            [request.id]: true,
+          })
+        );
 
         setWarning(
           result.message ||
-            "The Paystack refund outcome is uncertain. Do not repeat it. Investigate the existing attempt."
+            "Refund outcome is uncertain. Do not submit again. Check the existing attempt."
         );
       } else {
         setMessage(
           result.message ||
-            "Paystack test refund was submitted. Final status is pending provider confirmation."
+            "Paystack sandbox refund was submitted. Waiting for provider confirmation."
         );
       }
-    } catch (err) {
-      const details = errorText(err);
+    } catch (error) {
+      const details =
+        errorText(error);
 
-      if (refundSubmissionAttempted) {
-        setUncertainIds((old) => ({
-          ...old,
-          [request.id]: true,
-        }));
+      if (
+        refundSubmissionAttempted
+      ) {
+        // A network failure after POST
+        // does not prove that the provider
+        // failed to receive the request.
 
-        setWarning(
-          `Refund submission was not confirmed. ${details} ` +
-            `Do not click again until the existing attempt is investigated.`
+        setUncertainIds(
+          (previous) => ({
+            ...previous,
+            [request.id]: true,
+          })
         );
-      } else if (approvalRecorded) {
+
         setWarning(
-          `The request is approved, but no refund was confirmed. ${details} ` +
-            `Check the processing status before taking further action.`
+          `Refund outcome requires checking. ${details} ` +
+            `Do not submit again until the existing attempt has been investigated.`
+        );
+      } else if (
+        approvalRecorded
+      ) {
+        setWarning(
+          `Admin approval was recorded, but refund processing was not completed. ` +
+            `${details} ` +
+            `Check the existing attempt before taking further action.`
         );
       } else {
-        setError(details);
+        // The approval itself was not
+        // confirmed. No refund start was sent.
+
+        setActionError(
+          `Approval could not be confirmed. ${details}`
+        );
       }
     } finally {
-      setNotes((old) => ({
-        ...old,
-        [request.id]: "",
-      }));
+      setNotes(
+        (previous) => ({
+          ...previous,
+          [request.id]: "",
+        })
+      );
 
+      // Reload the status from Neon,
+      // without clearing feedback messages.
       await loadRequests();
 
       busyRef.current = false;
@@ -505,13 +581,16 @@ export default function AdminRefundsPage() {
   }
 
   // =============================================
-  // REJECT REFUND
+  // REJECT REQUEST
   // =============================================
 
   async function rejectRequest(
     request: RefundRequest
   ) {
-    if (busyRef.current || loading) {
+    if (
+      busyRef.current ||
+      loading
+    ) {
       return;
     }
 
@@ -519,16 +598,20 @@ export default function AdminRefundsPage() {
       notes[request.id] || ""
     ).trim();
 
-    if (note.length < 10) {
-      setError(
-        "Explain the rejection in at least 10 characters."
+    if (
+      note.length < 10
+    ) {
+      setActionError(
+        "Please explain the rejection in at least 10 characters."
       );
       return;
     }
 
-    if (note.length > 2000) {
-      setError(
-        "Review note cannot exceed 2000 characters."
+    if (
+      note.length > 2000
+    ) {
+      setActionError(
+        "Admin note cannot exceed 2000 characters."
       );
       return;
     }
@@ -543,29 +626,29 @@ export default function AdminRefundsPage() {
 
     busyRef.current = true;
     setBusyId(request.id);
-
-    setError("");
-    setWarning("");
-    setMessage("");
+    clearFeedback();
 
     try {
-      const result = await apiRequest(
-        `/admin/refunds/${request.id}/review`,
-        {
-          method: "PATCH",
-          body: JSON.stringify({
-            decision: "rejected",
-            note,
-          }),
-        }
-      );
+      const result =
+        await apiRequest(
+          `/admin/refunds/${request.id}/review`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({
+              decision: "rejected",
+              note,
+            }),
+          }
+        );
 
       setMessage(
         result.message ||
-          "Request rejected."
+          "Refund request rejected."
       );
-    } catch (err) {
-      setError(errorText(err));
+    } catch (error) {
+      setActionError(
+        errorText(error)
+      );
     } finally {
       await loadRequests();
 
@@ -582,19 +665,28 @@ export default function AdminRefundsPage() {
     () => ({
       shown: requests.length,
 
-      awaiting: requests.filter(
-        (r) =>
-          r.status === "requested" ||
-          r.status === "under_review"
-      ).length,
+      awaiting:
+        requests.filter(
+          (request) =>
+            request.status ===
+              "requested" ||
+            request.status ===
+              "under_review"
+        ).length,
 
-      approved: requests.filter(
-        (r) => r.status === "approved"
-      ).length,
+      approved:
+        requests.filter(
+          (request) =>
+            request.status ===
+            "approved"
+        ).length,
 
-      refunded: requests.filter(
-        (r) => r.status === "refunded"
-      ).length,
+      refunded:
+        requests.filter(
+          (request) =>
+            request.status ===
+            "refunded"
+        ).length,
     }),
     [requests]
   );
@@ -603,26 +695,32 @@ export default function AdminRefundsPage() {
   // SEARCH
   // =============================================
 
-  const visibleRequests = useMemo(() => {
-    const term = search.trim().toLowerCase();
+  const visibleRequests =
+    useMemo(() => {
+      const term =
+        search.trim().toLowerCase();
 
-    if (!term) return requests;
+      if (!term) {
+        return requests;
+      }
 
-    return requests.filter((r) =>
-      [
-        r.id,
-        r.order_id,
-        r.buyer_id,
-        r.buyer_name,
-        r.buyer_email,
-        r.reason,
-        r.status,
-      ]
-        .join(" ")
-        .toLowerCase()
-        .includes(term)
-    );
-  }, [requests, search]);
+      return requests.filter(
+        (request) =>
+          [
+            request.id,
+            request.order_id,
+            request.buyer_id,
+            request.buyer_name,
+            request.buyer_email,
+            request.reason,
+            request.request_type,
+            request.status,
+          ]
+            .join(" ")
+            .toLowerCase()
+            .includes(term)
+      );
+    }, [requests, search]);
 
   // =============================================
   // PAGE LAYOUT
@@ -632,8 +730,10 @@ export default function AdminRefundsPage() {
     <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
       <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
+      {/* HEADER */}
+
       <header className="border-b border-[#E8E1D5] bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
           <Link
             href="/"
             className="text-2xl font-black"
@@ -655,7 +755,7 @@ export default function AdminRefundsPage() {
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
 
-        {/* HEADER */}
+        {/* HERO */}
 
         <section className="rounded-[28px] bg-[#17191D] p-7 text-white sm:p-10">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
@@ -667,28 +767,31 @@ export default function AdminRefundsPage() {
           </h1>
 
           <p className="mt-3 text-sm leading-7 text-[#E5DDD1]">
-            Review requests and manage Paystack
-            sandbox refunds from one simple page.
+            Review customer refund requests and
+            manage Paystack sandbox refunds.
           </p>
         </section>
 
-        {/* SIMPLE SAFETY NOTICE */}
+        {/* SAFETY NOTICE */}
 
-        <div className="mt-6 rounded-2xl border border-[#E2D5BE] bg-[#FFF9EE] p-4 text-sm text-[#67502C]">
-          <strong>Test mode:</strong>{" "}
-          Approve & Refund submits a sandbox
-          refund request when authorized.
-          GoldMart shows "Refunded" only when
-          Paystack reports it processed.
-          Seller payouts remain disabled.
+        <div className="mt-6 rounded-2xl border border-[#E2D5BE] bg-[#FFF9EE] p-4 text-sm leading-6 text-[#67502C]">
+          <strong>
+            Paystack Test Mode:
+          </strong>{" "}
+          Approve & Refund can approve a request
+          and submit one authorized sandbox
+          refund. GoldMart only displays
+          Refunded after Paystack reports
+          processing complete. Seller payouts
+          remain disabled.
         </div>
 
-        {/* MESSAGES */}
+        {/* ACTION MESSAGES */}
 
         {message && (
           <div
             role="status"
-            className="mt-5 rounded-2xl bg-green-50 p-4 text-sm font-semibold text-green-800"
+            className="mt-5 rounded-2xl border border-green-200 bg-green-50 p-4 text-sm font-semibold text-green-800"
           >
             {message}
           </div>
@@ -697,26 +800,42 @@ export default function AdminRefundsPage() {
         {warning && (
           <div
             role="alert"
-            className="mt-5 rounded-2xl bg-amber-50 p-4 text-sm font-semibold text-amber-900"
+            className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold text-amber-900"
           >
             {warning}
           </div>
         )}
 
-        {error && (
+        {actionError && (
           <div
             role="alert"
-            className="mt-5 rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-800"
+            className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-800"
           >
-            {error}
+            {actionError}
           </div>
         )}
+
+        {loadError && (
+          <div
+            role="alert"
+            className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"
+          >
+            {loadError}
+          </div>
+        )}
+
+        {/* ACCESS */}
 
         {accessDenied ? (
           <div className="mt-8 rounded-3xl bg-white p-8 text-center">
             <h2 className="text-xl font-black">
               Admin Access Required
             </h2>
+
+            <p className="mt-3 text-sm text-gray-500">
+              Sign in with your authorized
+              administrator account.
+            </p>
 
             <Link
               href="/login"
@@ -727,29 +846,47 @@ export default function AdminRefundsPage() {
           </div>
         ) : (
           <>
-            {/* STATS */}
+            {/* STATISTICS */}
 
             <section className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
               {[
-                ["Requests", stats.shown, "📋"],
-                ["Awaiting Review", stats.awaiting, "⏳"],
-                ["Approved", stats.approved, "✅"],
-                ["Refunded", stats.refunded, "💳"],
-              ].map(([label, count, icon]) => (
+                {
+                  label: "Requests",
+                  count: stats.shown,
+                  icon: "📋",
+                },
+                {
+                  label: "Awaiting Review",
+                  count: stats.awaiting,
+                  icon: "⏳",
+                },
+                {
+                  label: "Approved",
+                  count: stats.approved,
+                  icon: "✅",
+                },
+                {
+                  label: "Refunded",
+                  count: stats.refunded,
+                  icon: "💳",
+                },
+              ].map((stat) => (
                 <div
-                  key={String(label)}
+                  key={stat.label}
                   className="rounded-2xl border border-[#E8E1D5] bg-white p-5"
                 >
                   <div className="text-2xl">
-                    {icon}
+                    {stat.icon}
                   </div>
 
                   <p className="mt-3 text-xs text-gray-500">
-                    {label}
+                    {stat.label}
                   </p>
 
                   <p className="mt-1 text-3xl font-black">
-                    {loading ? "—" : count}
+                    {loading
+                      ? "—"
+                      : stat.count}
                   </p>
                 </div>
               ))}
@@ -762,30 +899,41 @@ export default function AdminRefundsPage() {
                 <input
                   type="search"
                   value={search}
-                  onChange={(e) =>
-                    setSearch(e.target.value)
+                  onChange={(event) =>
+                    setSearch(
+                      event.target.value
+                    )
                   }
                   placeholder="Search refund requests..."
+                  aria-label="Search refund requests"
                   className="rounded-xl border p-3 text-sm"
                 />
 
                 <select
                   value={statusFilter}
-                  onChange={(e) => {
-                    setStatusFilter(e.target.value);
+                  onChange={(event) => {
+                    setStatusFilter(
+                      event.target.value
+                    );
                     setPage(1);
                     setSearch("");
                   }}
-                  className="rounded-xl border p-3 text-sm"
+                  aria-label="Filter refund requests"
+                  disabled={
+                    busyId !== null
+                  }
+                  className="rounded-xl border p-3 text-sm disabled:opacity-50"
                 >
-                  {filters.map((filter) => (
-                    <option
-                      key={filter.value}
-                      value={filter.value}
-                    >
-                      {filter.label}
-                    </option>
-                  ))}
+                  {filters.map(
+                    (filter) => (
+                      <option
+                        key={filter.value}
+                        value={filter.value}
+                      >
+                        {filter.label}
+                      </option>
+                    )
+                  )}
                 </select>
               </div>
 
@@ -812,12 +960,12 @@ export default function AdminRefundsPage() {
               </p>
             )}
 
-            {/* EMPTY */}
+            {/* EMPTY STATE */}
 
             {!loading &&
-              !error &&
+              !loadError &&
               visibleRequests.length === 0 && (
-                <div className="mt-6 rounded-3xl bg-white p-10 text-center">
+                <div className="mt-6 rounded-3xl border border-[#E8E1D5] bg-white p-10 text-center">
                   <div className="text-4xl">
                     📭
                   </div>
@@ -828,251 +976,283 @@ export default function AdminRefundsPage() {
                 </div>
               )}
 
-            {/* REQUEST LIST */}
+            {/* REFUND CARDS */}
 
-            {!loading && !error && (
-              <section className="mt-6 space-y-5">
-                {visibleRequests.map((request) => {
-                  const waiting = [
-                    "requested",
-                    "under_review",
-                  ].includes(request.status);
+            {!loading &&
+              !loadError && (
+                <section className="mt-6 space-y-5">
+                  {visibleRequests.map(
+                    (request) => {
+                      const waiting =
+                        request.status ===
+                          "requested" ||
+                        request.status ===
+                          "under_review";
 
-                  const approved =
-                    request.status === "approved";
+                      const approved =
+                        request.status ===
+                        "approved";
 
-                  const canApprove =
-                    waiting || approved;
+                      const canApprove =
+                        waiting || approved;
 
-                  const blocked =
-                    Boolean(
-                      uncertainIds[request.id]
-                    );
+                      const busy =
+                        busyId === request.id;
 
-                  const busy =
-                    busyId === request.id;
+                      const blocked =
+                        Boolean(
+                          uncertainIds[
+                            request.id
+                          ]
+                        );
 
-                  return (
-                    <article
-                      key={request.id}
-                      className="overflow-hidden rounded-3xl border border-[#E8E1D5] bg-white shadow-sm"
-                    >
-                      {/* REQUEST HEADER */}
-
-                      <div className="flex flex-wrap items-center justify-between gap-3 border-b p-5 sm:p-7">
-                        <div>
-                          <p className="text-xs font-bold text-[#96713D]">
-                            Refund Request #{request.id}
-                          </p>
-
-                          <h3 className="mt-2 text-xl font-black">
-                            Order #{request.order_id}
-                          </h3>
-
-                          <p className="mt-2 text-xs text-gray-500">
-                            {dateText(
-                              request.created_at
-                            )}
-                          </p>
-                        </div>
-
-                        <span
-                          className={`rounded-full px-4 py-2 text-xs font-bold ${statusStyle(
-                            request.status
-                          )}`}
+                      return (
+                        <article
+                          key={request.id}
+                          className="overflow-hidden rounded-3xl border border-[#E8E1D5] bg-white shadow-sm"
                         >
-                          {nice(request.status)}
-                        </span>
-                      </div>
+                          {/* CARD HEADER */}
 
-                      {/* DETAILS */}
+                          <div className="flex flex-wrap items-center justify-between gap-3 border-b p-5 sm:p-7">
+                            <div>
+                              <p className="text-xs font-bold text-[#96713D]">
+                                Refund Request #
+                                {request.id}
+                              </p>
 
-                      <div className="grid gap-4 p-5 sm:grid-cols-2 sm:p-7">
-                        <div className="rounded-2xl bg-[#FAF8F3] p-4">
-                          <p className="text-xs font-bold text-[#96713D]">
-                            Buyer
-                          </p>
+                              <h3 className="mt-2 text-xl font-black">
+                                Order #
+                                {request.order_id}
+                              </h3>
 
-                          <p className="mt-2 font-bold">
-                            {request.buyer_name ||
-                              `User #${request.buyer_id}`}
-                          </p>
+                              <p className="mt-2 text-xs text-gray-500">
+                                {dateText(
+                                  request.created_at
+                                )}
+                              </p>
+                            </div>
 
-                          <p className="mt-1 break-all text-sm text-gray-500">
-                            {request.buyer_email ||
-                              "Email unavailable"}
-                          </p>
-                        </div>
-
-                        <div className="rounded-2xl bg-[#FAF8F3] p-4">
-                          <p className="text-xs font-bold text-[#96713D]">
-                            Request Details
-                          </p>
-
-                          <p className="mt-2 text-sm">
-                            {nice(
-                              request.request_type
-                            )}
-                          </p>
-
-                          <p className="mt-1 text-sm text-gray-500">
-                            Order:{" "}
-                            {nice(
-                              request.order_status
-                            )}
-                          </p>
-
-                          <p className="mt-1 text-sm text-gray-500">
-                            Total:{" "}
-                            {amountText(
-                              request.total_amount
-                            )}
-                            {" "} (currency not verified)
-                          </p>
-
-                          {request.provider_status && (
-                            <p className="mt-1 text-sm text-gray-500">
-                              Paystack:{" "}
-                              {nice(
-                                request.provider_status
-                              )}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* REASON */}
-
-                      <div className="mx-5 rounded-2xl border p-4 sm:mx-7">
-                        <p className="text-xs font-bold text-[#96713D]">
-                          Buyer's Reason
-                        </p>
-
-                        <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7">
-                          {request.reason}
-                        </p>
-                      </div>
-
-                      {request.review_note && (
-                        <div className="mx-5 mt-4 rounded-2xl bg-[#FAF8F3] p-4 text-sm sm:mx-7">
-                          <strong>Admin Note:</strong>{" "}
-                          {request.review_note}
-                        </div>
-                      )}
-
-                      {/* ACTIONS */}
-
-                      {canApprove && (
-                        <div className="mt-6 border-t p-5 sm:p-7">
-
-                          {waiting && (
-                            <textarea
-                              value={
-                                notes[
-                                  request.id
-                                ] || ""
-                              }
-                              onChange={(e) =>
-                                setNotes(
-                                  (old) => ({
-                                    ...old,
-                                    [request.id]:
-                                      e.target.value,
-                                  })
-                                )
-                              }
-                              rows={3}
-                              maxLength={2000}
-                              placeholder="Optional approval note, or rejection reason..."
-                              disabled={
-                                busyId !== null
-                              }
-                              className="w-full rounded-xl border p-4 text-sm disabled:opacity-50"
-                            />
-                          )}
-
-                          <div className="mt-4 flex flex-wrap gap-3">
-
-                            <button
-                              type="button"
-                              onClick={() =>
-                                void approveAndRefund(
-                                  request
-                                )
-                              }
-                              disabled={
-                                busyId !== null ||
-                                blocked
-                              }
-                              className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
+                            <span
+                              className={`rounded-full px-4 py-2 text-xs font-bold ${statusStyle(
+                                request.status
+                              )}`}
                             >
-                              {busy
-                                ? "Processing..."
-                                : approved
-                                  ? "Complete Approved Refund (Test)"
-                                  : "Approve & Refund (Test)"}
-                            </button>
-
-                            {waiting && (
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  void rejectRequest(
-                                    request
-                                  )
-                                }
-                                disabled={
-                                  busyId !== null
-                                }
-                                className="rounded-full border border-red-200 bg-red-50 px-5 py-3 text-sm font-bold text-red-800 disabled:opacity-50"
-                              >
-                                Reject Request
-                              </button>
-                            )}
+                              {nice(
+                                request.status
+                              )}
+                            </span>
                           </div>
 
-                          {blocked && (
-                            <p className="mt-3 text-xs text-amber-800">
-                              Refund outcome requires
-                              investigation. Further
-                              submission is disabled
-                              in this session.
+                          {/* BUYER DETAILS */}
+
+                          <div className="grid gap-4 p-5 sm:grid-cols-2 sm:p-7">
+                            <div className="rounded-2xl bg-[#FAF8F3] p-4">
+                              <p className="text-xs font-bold text-[#96713D]">
+                                Buyer
+                              </p>
+
+                              <p className="mt-2 font-bold">
+                                {request.buyer_name ||
+                                  `User #${request.buyer_id}`}
+                              </p>
+
+                              <p className="mt-1 break-all text-sm text-gray-500">
+                                {request.buyer_email ||
+                                  "Email unavailable"}
+                              </p>
+                            </div>
+
+                            <div className="rounded-2xl bg-[#FAF8F3] p-4">
+                              <p className="text-xs font-bold text-[#96713D]">
+                                Request Details
+                              </p>
+
+                              <p className="mt-2 text-sm">
+                                {nice(
+                                  request.request_type
+                                )}
+                              </p>
+
+                              <p className="mt-1 text-sm text-gray-500">
+                                Order:{" "}
+                                {nice(
+                                  request.order_status
+                                )}
+                              </p>
+
+                              <p className="mt-1 text-sm text-gray-500">
+                                Order total:{" "}
+                                {amountText(
+                                  request.total_amount
+                                )}{" "}
+                                <span className="text-xs">
+                                  (currency not verified)
+                                </span>
+                              </p>
+
+                              {request.provider_status && (
+                                <p className="mt-1 text-sm text-gray-500">
+                                  Paystack:{" "}
+                                  {nice(
+                                    request.provider_status
+                                  )}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* BUYER'S REASON */}
+
+                          <div className="mx-5 rounded-2xl border p-4 sm:mx-7">
+                            <p className="text-xs font-bold text-[#96713D]">
+                              Buyer's Reason
+                            </p>
+
+                            <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7">
+                              {request.reason ||
+                                "No reason provided."}
+                            </p>
+                          </div>
+
+                          {/* REVIEW NOTE */}
+
+                          {request.review_note && (
+                            <div className="mx-5 mt-4 rounded-2xl bg-[#FAF8F3] p-4 text-sm sm:mx-7">
+                              <strong>
+                                Admin Note:
+                              </strong>{" "}
+                              {request.review_note}
+                            </div>
+                          )}
+
+                          {/* ACTION BUTTONS */}
+
+                          {canApprove && (
+                            <div className="mt-6 border-t p-5 sm:p-7">
+
+                              {waiting && (
+                                <textarea
+                                  value={
+                                    notes[
+                                      request.id
+                                    ] || ""
+                                  }
+                                  onChange={(
+                                    event
+                                  ) =>
+                                    setNotes(
+                                      (old) => ({
+                                        ...old,
+                                        [request.id]:
+                                          event
+                                            .target
+                                            .value,
+                                      })
+                                    )
+                                  }
+                                  rows={3}
+                                  maxLength={2000}
+                                  placeholder="Optional approval note or rejection reason..."
+                                  disabled={
+                                    busyId !== null
+                                  }
+                                  className="w-full rounded-xl border p-4 text-sm disabled:opacity-50"
+                                />
+                              )}
+
+                              <div className="mt-4 flex flex-wrap gap-3">
+
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    void approveAndRefund(
+                                      request
+                                    )
+                                  }
+                                  disabled={
+                                    busyId !== null ||
+                                    blocked
+                                  }
+                                  className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
+                                >
+                                  {busy
+                                    ? "Processing..."
+                                    : approved
+                                      ? "Complete Approved Refund (Test)"
+                                      : "Approve & Refund (Test)"}
+                                </button>
+
+                                {waiting && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      void rejectRequest(
+                                        request
+                                      )
+                                    }
+                                    disabled={
+                                      busyId !== null
+                                    }
+                                    className="rounded-full border border-red-200 bg-red-50 px-5 py-3 text-sm font-bold text-red-800 disabled:opacity-50"
+                                  >
+                                    Reject Request
+                                  </button>
+                                )}
+                              </div>
+
+                              {blocked && (
+                                <p className="mt-3 text-xs text-amber-800">
+                                  Refund outcome needs
+                                  investigation.
+                                  Another submission
+                                  is blocked in
+                                  this session.
+                                </p>
+                              )}
+                            </div>
+                          )}
+
+                          {/* PENDING STATUS */}
+
+                          {request.status ===
+                            "refund_pending" && (
+                            <p className="border-t px-5 py-4 text-sm text-blue-800 sm:px-7">
+                              Paystack test refund
+                              is pending. Refresh
+                              to check its status.
+                              Do not submit another
+                              refund.
                             </p>
                           )}
-                        </div>
-                      )}
 
-                      {request.status ===
-                        "refund_pending" && (
-                        <p className="border-t px-5 py-4 text-sm text-blue-800 sm:px-7">
-                          Paystack refund is pending.
-                          Refresh to check its status.
-                          Do not submit another refund.
-                        </p>
-                      )}
+                          {/* REFUNDED STATUS */}
 
-                      {request.status ===
-                        "refunded" && (
-                        <p className="border-t px-5 py-4 text-sm text-green-800 sm:px-7">
-                          Paystack reports that the
-                          refund was processed.
-                        </p>
-                      )}
+                          {request.status ===
+                            "refunded" && (
+                            <p className="border-t px-5 py-4 text-sm text-green-800 sm:px-7">
+                              Paystack reports the
+                              refund as processed.
+                            </p>
+                          )}
 
-                      {request.status ===
-                        "refund_failed" && (
-                        <p className="border-t px-5 py-4 text-sm text-red-800 sm:px-7">
-                          Refund processing needs
-                          investigation. Do not
-                          repeat the transaction.
-                        </p>
-                      )}
+                          {/* FAILED STATUS */}
 
-                    </article>
-                  );
-                })}
-              </section>
-            )}
+                          {request.status ===
+                            "refund_failed" && (
+                            <p className="border-t px-5 py-4 text-sm text-red-800 sm:px-7">
+                              Refund processing
+                              requires investigation.
+                              Do not submit another
+                              transaction.
+                            </p>
+                          )}
+
+                        </article>
+                      );
+                    }
+                  )}
+                </section>
+              )}
 
             {/* PAGINATION */}
 
@@ -1085,8 +1265,12 @@ export default function AdminRefundsPage() {
                     busyId !== null
                   }
                   onClick={() => {
-                    setPage((p) =>
-                      Math.max(1, p - 1)
+                    setPage(
+                      (current) =>
+                        Math.max(
+                          1,
+                          current - 1
+                        )
                     );
                     setSearch("");
                   }}
@@ -1102,11 +1286,15 @@ export default function AdminRefundsPage() {
                 <button
                   type="button"
                   disabled={
-                    requests.length < PAGE_SIZE ||
+                    requests.length <
+                      PAGE_SIZE ||
                     busyId !== null
                   }
                   onClick={() => {
-                    setPage((p) => p + 1);
+                    setPage(
+                      (current) =>
+                        current + 1
+                    );
                     setSearch("");
                   }}
                   className="rounded-full border px-5 py-3 text-sm font-bold disabled:opacity-40"
