@@ -1,7 +1,9 @@
 
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
 import { CartProvider } from "../components/CartProvider";
+import GlobalNavigation from "../components/GlobalNavigation";
 
 export const metadata: Metadata = {
   title: {
@@ -39,6 +41,8 @@ export default function RootLayout({
       <body>
         <CartProvider>
           {children}
+
+          <GlobalNavigation />
         </CartProvider>
       </body>
     </html>
