@@ -1,11 +1,18 @@
 
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 const STORAGE_KEY = "goldmart_navigation_history_v2";
+
+const API_URL =
+  "https://goldmart-backend-yoxc.onrender.com";
+
+// ==========================================
+// PAGE HISTORY
+// ==========================================
 
 function readHistory(): string[] {
   try {
@@ -37,9 +44,13 @@ function saveHistory(history: string[]) {
       JSON.stringify(history.slice(-30))
     );
   } catch {
-    // Navigation can still fall back to Home.
+    // Navigation still works without history.
   }
 }
+
+// ==========================================
+// BUTTON STYLES
+// ==========================================
 
 const navigationStyle: CSSProperties = {
   position: "fixed",
@@ -48,9 +59,11 @@ const navigationStyle: CSSProperties = {
     "calc(100px + env(safe-area-inset-bottom, 0px))",
   zIndex: 2147483000,
   display: "flex",
+  flexWrap: "wrap",
   alignItems: "center",
   justifyContent: "flex-end",
   gap: "8px",
+  maxWidth: "calc(100vw - 24px)",
   pointerEvents: "auto",
 };
 
@@ -73,13 +86,31 @@ const buttonStyle: CSSProperties = {
   cursor: "pointer",
   opacity: 1,
   visibility: "visible",
+  whiteSpace: "nowrap",
 };
+
+const aiButtonStyle: CSSProperties = {
+  ...buttonStyle,
+  backgroundColor: "#B38A25",
+  color: "#FFFFFF",
+  border: "1px solid #896716",
+};
+
+// ==========================================
+// GLOBAL NAVIGATION
+// ==========================================
 
 export default function GlobalNavigation() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Remember visited GoldMart pages.
+  const [isAiAdmin, setIsAiAdmin] =
+    useState(false);
+
+  // ========================================
+  // REMEMBER VISITED GOLDMART PAGES
+  // ========================================
+
   useEffect(() => {
     if (!pathname) return;
 
@@ -89,10 +120,14 @@ export default function GlobalNavigation() {
       return;
     }
 
-    const existingIndex = history.lastIndexOf(pathname);
+    const existingIndex =
+      history.lastIndexOf(pathname);
 
     if (existingIndex !== -1) {
-      history = history.slice(0, existingIndex + 1);
+      history = history.slice(
+        0,
+        existingIndex + 1
+      );
     } else {
       history.push(pathname);
     }
@@ -100,14 +135,147 @@ export default function GlobalNavigation() {
     saveHistory(history);
   }, [pathname]);
 
+  // ========================================
+  // VERIFY GOLDMART ADMINISTRATOR
+  // ========================================
+  //
+  // IMPORTANT:
+  // Do not rely on the user's role in
+  // localStorage to grant admin access.
+  //
+  // Only show the AI button when the
+  // protected backend endpoint confirms
+  // the current account is authorized.
+  //
+  // ========================================
+
+  useEffect(() => {
+    let mounted = true;
+
+    let activeController:
+      | AbortController
+      | null = null;
+
+    async function verifyAiAdmin() {
+      activeController?.abort();
+
+      const controller =
+        new AbortController();
+
+      activeController = controller;
+
+      setIsAiAdmin(false);
+
+      const token =
+        localStorage.getItem(
+          "goldmart_token"
+        );
+
+      if (!token) {
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${API_URL}/api/ai-admin`,
+          {
+            method: "GET",
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+              Accept: "application/json",
+            },
+            cache: "no-store",
+            signal: controller.signal,
+          }
+        );
+
+        if (
+          mounted &&
+          !controller.signal.aborted
+        ) {
+          setIsAiAdmin(response.ok);
+        }
+      } catch {
+        if (
+          mounted &&
+          !controller.signal.aborted
+        ) {
+          setIsAiAdmin(false);
+        }
+      }
+    }
+
+    function onWindowFocus() {
+      void verifyAiAdmin();
+    }
+
+    function onStorageChange() {
+      void verifyAiAdmin();
+    }
+
+    function onVisibilityChange() {
+      if (
+        document.visibilityState ===
+        "visible"
+      ) {
+        void verifyAiAdmin();
+      }
+    }
+
+    void verifyAiAdmin();
+
+    window.addEventListener(
+      "focus",
+      onWindowFocus
+    );
+
+    window.addEventListener(
+      "storage",
+      onStorageChange
+    );
+
+    document.addEventListener(
+      "visibilitychange",
+      onVisibilityChange
+    );
+
+    return () => {
+      mounted = false;
+
+      activeController?.abort();
+
+      window.removeEventListener(
+        "focus",
+        onWindowFocus
+      );
+
+      window.removeEventListener(
+        "storage",
+        onStorageChange
+      );
+
+      document.removeEventListener(
+        "visibilitychange",
+        onVisibilityChange
+      );
+    };
+  }, [pathname]);
+
+  // ========================================
+  // BACK BUTTON
+  // ========================================
+
   function goBack() {
-    const currentPath = pathname || "/";
+    const currentPath =
+      pathname || "/";
+
     const history = readHistory();
 
     if (history.length > 1) {
-      // Remove the current page from the stack.
       if (
-        history[history.length - 1] === currentPath
+        history[history.length - 1] ===
+        currentPath
       ) {
         history.pop();
       }
@@ -125,20 +293,35 @@ export default function GlobalNavigation() {
       }
     }
 
-    // Someone who opened a page directly
-    // should remain inside GoldMart.
     router.push("/");
   }
+
+  // ========================================
+  // HOME BUTTON
+  // ========================================
 
   function goHome() {
     router.push("/");
   }
+
+  // ========================================
+  // AI ADMIN BUTTON
+  // ========================================
+
+  function goToAiAdmin() {
+    router.push("/admin/ai");
+  }
+
+  // ========================================
+  // INTERFACE
+  // ========================================
 
   return (
     <nav
       aria-label="GoldMart page navigation"
       style={navigationStyle}
     >
+      {/* BACK BUTTON */}
       <button
         type="button"
         onClick={goBack}
@@ -164,6 +347,7 @@ export default function GlobalNavigation() {
         Back
       </button>
 
+      {/* HOME BUTTON */}
       <button
         type="button"
         onClick={goHome}
@@ -189,6 +373,19 @@ export default function GlobalNavigation() {
 
         Home
       </button>
+
+      {/* VERIFIED AI ADMIN BUTTON */}
+      {isAiAdmin && (
+        <button
+          type="button"
+          onClick={goToAiAdmin}
+          style={aiButtonStyle}
+          aria-label="Open GoldMart AI Admin"
+          title="GoldMart AI Admin"
+        >
+          🤖 AI Admin
+        </button>
+      )}
     </nav>
   );
 }
