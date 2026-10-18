@@ -1,8 +1,13 @@
+
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+
+const API_URL =
+  "https://goldmart-backend-yoxc.onrender.com";
 
 type User = {
   id?: number;
@@ -12,9 +17,17 @@ type User = {
 };
 
 export default function Navbar() {
+  const pathname = usePathname();
+
   const [user, setUser] = useState<User | null>(null);
 
+  // Only the backend can confirm administrator access.
+  const [isAiAdmin, setIsAiAdmin] = useState(false);
+
   useEffect(() => {
+    let mounted = true;
+    let activeRequest: AbortController | null = null;
+
     function loadUser() {
       const savedUser = localStorage.getItem("goldmart_user");
 
@@ -24,7 +37,7 @@ export default function Navbar() {
       }
 
       try {
-        const parsedUser = JSON.parse(savedUser);
+        const parsedUser: User = JSON.parse(savedUser);
         setUser(parsedUser);
       } catch {
         localStorage.removeItem("goldmart_user");
@@ -32,14 +45,86 @@ export default function Navbar() {
       }
     }
 
-    loadUser();
+    async function checkAiAdmin() {
+      // Never trust localStorage role or ID as proof
+      // that a user is an authorized administrator.
+      activeRequest?.abort();
 
-    window.addEventListener("focus", loadUser);
+      const controller = new AbortController();
+      activeRequest = controller;
+
+      setIsAiAdmin(false);
+
+      const token = localStorage.getItem("goldmart_token");
+
+      if (!token) {
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${API_URL}/api/ai-admin`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+            cache: "no-store",
+            signal: controller.signal,
+          }
+        );
+
+        if (mounted && !controller.signal.aborted) {
+          setIsAiAdmin(response.ok);
+        }
+      } catch {
+        if (mounted && !controller.signal.aborted) {
+          setIsAiAdmin(false);
+        }
+      }
+    }
+
+    function refreshNavbar() {
+      loadUser();
+      void checkAiAdmin();
+    }
+
+    // Check when the page loads or the route changes.
+    refreshNavbar();
+
+    // Refresh after switching browser tabs.
+    window.addEventListener("focus", refreshNavbar);
+
+    // Refresh when authentication changes in another tab.
+    window.addEventListener("storage", refreshNavbar);
 
     return () => {
-      window.removeEventListener("focus", loadUser);
+      mounted = false;
+      activeRequest?.abort();
+
+      window.removeEventListener("focus", refreshNavbar);
+      window.removeEventListener("storage", refreshNavbar);
     };
-  }, []);
+  }, [pathname]);
+
+  const aiAdminDesktopLink = isAiAdmin ? (
+    <Link
+      href="/admin/ai"
+      className="whitespace-nowrap rounded-full bg-[#B38A25] px-5 py-2 font-bold text-white transition hover:bg-[#896716]"
+    >
+      🤖 AI Admin
+    </Link>
+  ) : null;
+
+  const aiAdminMobileLink = isAiAdmin ? (
+    <Link
+      href="/admin/ai"
+      className="whitespace-nowrap rounded-full bg-[#B38A25] px-4 py-2 text-sm font-bold text-white"
+    >
+      🤖 AI Admin
+    </Link>
+  ) : null;
 
   return (
     <nav className="sticky top-0 z-50 border-b bg-white">
@@ -58,7 +143,7 @@ export default function Navbar() {
         </Link>
 
         {/* DESKTOP NAVIGATION */}
-        <div className="hidden items-center gap-7 md:flex">
+        <div className="hidden items-center gap-5 md:flex">
 
           <Link
             href="/"
@@ -90,12 +175,16 @@ export default function Navbar() {
             </Link>
           )}
 
+          {/* VERIFIED GOLDMART ADMIN ONLY */}
+          {aiAdminDesktopLink}
+
           <Link
             href="/contact"
             className="font-medium hover:text-yellow-600"
           >
             Contact
           </Link>
+
         </div>
 
         {/* ACTIONS */}
@@ -174,6 +263,9 @@ export default function Navbar() {
               Sell on GoldMart
             </Link>
           )}
+
+          {/* VERIFIED GOLDMART ADMIN ONLY */}
+          {aiAdminMobileLink}
 
           {user ? (
             <Link
