@@ -9,8 +9,26 @@ import {
   type FormEvent,
 } from "react";
 
+// =====================================================
+// GOLDMART FREE ADMIN ASSISTANT
+// =====================================================
+//
+// Free, rule-based marketplace assistant.
+//
+// - No OpenAI API calls
+// - No paid AI credits required
+// - Administrator-only backend access
+// - Read-only database reports
+// - No refunds, payouts, bans or account changes
+//
+// =====================================================
+
 const API_URL =
   "https://goldmart-backend-yoxc.onrender.com";
+
+// =====================================================
+// TYPES
+// =====================================================
 
 type OrdersSummary = {
   total: number;
@@ -36,7 +54,7 @@ type RefundsSummary = {
   rejected: number;
 };
 
-type AllocationsSummary = {
+type SellerAllocationsSummary = {
   total: number;
   pending_review: number;
   blocked: number;
@@ -60,7 +78,7 @@ type AdminOverview = {
     orders: OrdersSummary;
     payments: PaymentsSummary;
     refunds: RefundsSummary;
-    seller_allocations: AllocationsSummary;
+    seller_allocations: SellerAllocationsSummary;
   };
   alerts: AdminAlert[];
   security: {
@@ -73,20 +91,53 @@ type AdminOverview = {
 };
 
 type ChatMessage = {
+  id: number;
   role: "user" | "assistant";
   content: string;
 };
 
-type ChatApiResponse = {
+type ChatResponse = {
   success?: boolean;
   answer?: string;
   message?: string;
-  model?: string;
+  mode?: string;
+  requires_paid_ai?: boolean;
 };
 
-// ============================================
-// REUSABLE DASHBOARD COMPONENTS
-// ============================================
+// =====================================================
+// SUGGESTED QUESTIONS
+// =====================================================
+
+const SUGGESTED_QUESTIONS = [
+  "What needs my attention today?",
+  "Check my orders.",
+  "How many refund requests are pending?",
+  "Check seller allocations.",
+  "Show payment statistics.",
+  "Give me a marketplace report.",
+];
+
+// =====================================================
+// HELPERS
+// =====================================================
+
+function getAuthToken() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return localStorage.getItem("goldmart_token");
+}
+
+function formatNumber(value: number | undefined) {
+  const number = Number(value);
+
+  if (!Number.isFinite(number)) {
+    return "—";
+  }
+
+  return number.toLocaleString();
+}
 
 function MetricCard({
   title,
@@ -97,22 +148,18 @@ function MetricCard({
   value: number;
   detail?: string;
 }) {
-  const number = Number(value);
-
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
       <p className="text-sm font-semibold text-gray-500">
         {title}
       </p>
 
       <p className="mt-2 text-3xl font-black text-[#98721B]">
-        {Number.isFinite(number)
-          ? number.toLocaleString()
-          : "—"}
+        {formatNumber(value)}
       </p>
 
       {detail && (
-        <p className="mt-2 text-xs text-gray-500">
+        <p className="mt-2 text-xs leading-5 text-gray-500">
           {detail}
         </p>
       )}
@@ -120,7 +167,7 @@ function MetricCard({
   );
 }
 
-function SectionTitle({
+function SectionHeading({
   title,
   description,
 }: {
@@ -142,9 +189,9 @@ function SectionTitle({
   );
 }
 
-// ============================================
-// GOLDMART AI ADMIN PAGE
-// ============================================
+// =====================================================
+// MAIN PAGE
+// =====================================================
 
 export default function AiAdminPage() {
   const [data, setData] =
@@ -156,15 +203,15 @@ export default function AiAdminPage() {
   const [refreshing, setRefreshing] =
     useState(false);
 
-  const [error, setError] =
+  const [pageError, setPageError] =
     useState("");
 
   const [accessDenied, setAccessDenied] =
     useState(false);
 
-  // ==========================================
-  // AI CHAT STATE
-  // ==========================================
+  // ===================================================
+  // FREE ASSISTANT STATE
+  // ===================================================
 
   const [question, setQuestion] =
     useState("");
@@ -178,9 +225,9 @@ export default function AiAdminPage() {
   const [chatError, setChatError] =
     useState("");
 
-  // ==========================================
-  // LOAD ADMIN DASHBOARD
-  // ==========================================
+  // ===================================================
+  // FETCH DASHBOARD DATA
+  // ===================================================
 
   const loadOverview = useCallback(
     async (isRefresh = false) => {
@@ -190,12 +237,11 @@ export default function AiAdminPage() {
         setLoading(true);
       }
 
-      setError("");
+      setPageError("");
       setAccessDenied(false);
 
       try {
-        const token =
-          localStorage.getItem("goldmart_token");
+        const token = getAuthToken();
 
         if (!token) {
           setData(null);
@@ -221,20 +267,20 @@ export default function AiAdminPage() {
           .json()
           .catch(() => null);
 
-        if (response.status === 403) {
-          setData(null);
-          setAccessDenied(true);
-
-          throw new Error(
-            "Access denied. This page is restricted to authorized GoldMart administrators."
-          );
-        }
-
         if (response.status === 401) {
           setData(null);
 
           throw new Error(
             "Your session has expired. Please sign in again."
+          );
+        }
+
+        if (response.status === 403) {
+          setData(null);
+          setAccessDenied(true);
+
+          throw new Error(
+            "Only authorized GoldMart administrators can access this page."
           );
         }
 
@@ -245,18 +291,20 @@ export default function AiAdminPage() {
           !result.security ||
           !Array.isArray(result.alerts)
         ) {
+          setData(null);
+
           throw new Error(
             result?.message ||
-            "Unable to load AI Admin data."
+              "Unable to load the admin dashboard."
           );
         }
 
         setData(result as AdminOverview);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to load dashboard."
+      } catch (error) {
+        setPageError(
+          error instanceof Error
+            ? error.message
+            : "Unable to load the dashboard."
         );
       } finally {
         setLoading(false);
@@ -270,9 +318,9 @@ export default function AiAdminPage() {
     void loadOverview();
   }, [loadOverview]);
 
-  // ==========================================
-  // SEND A QUESTION TO THE REAL AI MODEL
-  // ==========================================
+  // ===================================================
+  // SEND MESSAGE TO FREE ASSISTANT
+  // ===================================================
 
   async function sendMessage(
     event: FormEvent<HTMLFormElement>
@@ -289,31 +337,36 @@ export default function AiAdminPage() {
       return;
     }
 
-    const token =
-      localStorage.getItem("goldmart_token");
+    const token = getAuthToken();
 
     if (!token) {
       setChatError(
-        "Please sign in to use GoldMart AI."
+        "Please sign in to your administrator account."
       );
       return;
     }
 
-    setSending(true);
     setChatError("");
+    setSending(true);
     setQuestion("");
+
+    const messageId = Date.now();
 
     setMessages((current) => [
       ...current,
       {
+        id: messageId,
         role: "user",
         content: message,
       },
     ]);
 
     try {
+      // IMPORTANT:
+      // This is the FREE backend endpoint.
+      // We do NOT call /api/ai-admin/chat here.
       const response = await fetch(
-        `${API_URL}/api/ai-admin/chat`,
+        `${API_URL}/api/ai-admin/free-chat`,
         {
           method: "POST",
           headers: {
@@ -329,48 +382,76 @@ export default function AiAdminPage() {
 
       const result = (await response
         .json()
-        .catch(() => ({}))) as ChatApiResponse;
+        .catch(() => ({}))) as ChatResponse;
 
       if (
         !response.ok ||
         !result.success ||
-        !result.answer
+        typeof result.answer !== "string"
       ) {
+        if (response.status === 401) {
+          throw new Error(
+            "Your session has expired. Please sign in again."
+          );
+        }
+
+        if (response.status === 403) {
+          throw new Error(
+            "Administrator access was denied."
+          );
+        }
+
         throw new Error(
           result.message ||
-          `AI request failed (${response.status}).`
+            `Assistant request failed (${response.status}).`
         );
       }
 
       setMessages((current) => [
         ...current,
         {
+          id: messageId + 1,
           role: "assistant",
           content: result.answer || "",
         },
       ]);
-    } catch (err) {
+    } catch (error) {
       setChatError(
-        err instanceof Error
-          ? err.message
-          : "GoldMart AI could not answer your question."
+        error instanceof Error
+          ? error.message
+          : "The free assistant couldn't answer your question."
       );
     } finally {
       setSending(false);
     }
   }
 
+  // ===================================================
+  // CLEAR LOCAL CHAT
+  // ===================================================
+
+  function clearChat() {
+    if (sending) return;
+
+    setMessages([]);
+    setChatError("");
+    setQuestion("");
+  }
+
   const overview = data?.overview;
 
-  // ==========================================
-  // PAGE INTERFACE
-  // ==========================================
+  // ===================================================
+  // RENDER
+  // ===================================================
 
   return (
     <main className="min-h-screen bg-[#F8F7F3] text-gray-900">
-      {/* HEADER */}
+      {/* ============================================
+          HEADER
+          ============================================ */}
+
       <header className="border-b border-[#E9DEBE] bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-5">
           <Link
             href="/"
             className="text-2xl font-black"
@@ -383,38 +464,39 @@ export default function AiAdminPage() {
 
           <Link
             href="/admin/refunds"
-            className="rounded-full border px-4 py-2 text-sm font-bold hover:bg-gray-50"
+            className="rounded-full border border-gray-200 px-4 py-2 text-sm font-bold hover:bg-gray-50"
           >
             Admin Refunds
           </Link>
         </div>
       </header>
 
-      <div className="mx-auto max-w-7xl px-4 py-8 pb-36">
-        {/* TITLE */}
+      <div className="mx-auto max-w-7xl px-4 py-8 pb-40">
+        {/* ==========================================
+            PAGE TITLE
+            ========================================== */}
+
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm font-bold uppercase tracking-wider text-[#A17B1F]">
-              Task 10
+              GoldMart Administration
             </p>
 
             <h1 className="mt-2 text-3xl font-black sm:text-4xl">
-              🤖 GoldMart AI Admin
+              🤖 GoldMart Admin Assistant
             </h1>
 
-            <p className="mt-3 max-w-2xl text-sm text-gray-600">
-              Your secure marketplace assistant for
-              orders, refunds, seller activity and
-              operational reports.
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-600">
+              Ask questions about orders, refunds,
+              payments and seller allocation records.
+              No paid AI API is required.
             </p>
           </div>
 
           <button
             type="button"
             disabled={loading || refreshing}
-            onClick={() =>
-              void loadOverview(true)
-            }
+            onClick={() => void loadOverview(true)}
             className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
           >
             {refreshing
@@ -423,44 +505,53 @@ export default function AiAdminPage() {
           </button>
         </div>
 
-        {/* SECURITY NOTICE */}
+        {/* ==========================================
+            SECURITY NOTICE
+            ========================================== */}
+
         <div className="mt-6 rounded-2xl border border-[#E7D9AA] bg-white p-5">
           <p className="font-black">
-            🔒 Security-first AI Assistant
+            🔒 Free, Read-Only Assistant
           </p>
 
           <p className="mt-2 text-sm leading-6 text-gray-600">
-            GoldMart AI can analyze available
-            marketplace statistics and recommend
-            actions. It cannot approve refunds,
-            transfer money, ban accounts, or change
-            payment settings.
+            This assistant uses predefined rules and
+            current GoldMart database summaries. It is
+            not a generative AI model. It cannot approve
+            refunds, transfer money, ban users or
+            change marketplace records.
           </p>
         </div>
 
-        {/* LOADING */}
+        {/* ==========================================
+            LOADING
+            ========================================== */}
+
         {loading && (
           <div className="mt-8 rounded-2xl border bg-white p-8 text-center">
             <p className="font-bold">
-              Loading GoldMart AI Admin...
+              Loading GoldMart Admin...
             </p>
           </div>
         )}
 
-        {/* ERROR */}
-        {error && (
+        {/* ==========================================
+            DASHBOARD ERROR
+            ========================================== */}
+
+        {pageError && (
           <div
             role="alert"
             className="mt-8 rounded-2xl border border-red-200 bg-red-50 p-6"
           >
             <h2 className="font-black text-red-700">
               {accessDenied
-                ? "Administrator access denied"
-                : "Unable to load dashboard"}
+                ? "Administrator Access Denied"
+                : "Unable to Load Dashboard"}
             </h2>
 
             <p className="mt-2 text-sm text-red-700">
-              {error}
+              {pageError}
             </p>
 
             <div className="mt-4 flex flex-wrap gap-3">
@@ -486,415 +577,486 @@ export default function AiAdminPage() {
           </div>
         )}
 
-        {/* AUTHORIZED ADMIN CONTENT */}
-        {!loading && !error && overview && data && (
-          <div className="mt-8 space-y-10">
-            {/* ==================================
-                REAL AI CHAT
-                ================================== */}
+        {/* ==========================================
+            AUTHORIZED ADMIN CONTENT
+            ========================================== */}
 
-            <section
-              aria-label="GoldMart AI chat"
-              className="overflow-hidden rounded-3xl border border-[#E7D9AA] bg-white shadow-sm"
-            >
-              <div className="border-b bg-[#FFF9EA] px-5 py-5 sm:px-6">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#17191D] text-2xl">
-                    🤖
-                  </div>
+        {!loading &&
+          !pageError &&
+          overview &&
+          data && (
+            <div className="mt-8 space-y-10">
+              {/* ====================================
+                  FREE ASSISTANT CHAT
+                  ==================================== */}
 
-                  <div>
-                    <h2 className="text-xl font-black">
-                      Chat with GoldMart AI
-                    </h2>
+              <section className="overflow-hidden rounded-3xl border border-[#E7D9AA] bg-white shadow-sm">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b bg-[#FFF9EA] px-5 py-5 sm:px-6">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#17191D] text-2xl">
+                      🤖
+                    </div>
 
-                    <p className="mt-1 text-xs text-gray-600">
-                      Real AI model • Admin-only •
-                      Read-only
-                    </p>
-                  </div>
-                </div>
-              </div>
+                    <div>
+                      <h2 className="text-xl font-black">
+                        Chat with GoldMart Assistant
+                      </h2>
 
-              {/* CHAT MESSAGES */}
-              <div
-                aria-live="polite"
-                className="max-h-[520px] min-h-[260px] space-y-4 overflow-y-auto bg-[#FCFBF8] p-4 sm:p-6"
-              >
-                {messages.length === 0 && (
-                  <div className="rounded-2xl border bg-white p-5">
-                    <p className="font-black">
-                      Welcome to GoldMart AI!
-                    </p>
-
-                    <p className="mt-2 text-sm leading-6 text-gray-600">
-                      Ask me about your marketplace.
-                      I can review available order
-                      statistics, explain refund alerts,
-                      and recommend what needs attention.
-                    </p>
-
-                    <p className="mt-4 text-sm font-semibold text-[#98721B]">
-                      Example questions:
-                    </p>
-
-                    <div className="mt-2 space-y-2 text-sm text-gray-600">
-                      <p>
-                        “How many orders are processing?”
-                      </p>
-                      <p>
-                        “What problems should I check today?”
-                      </p>
-                      <p>
-                        “Are there refund requests waiting
-                        for review?”
+                      <p className="mt-1 text-xs text-gray-600">
+                        Free • Rule-based • Admin-only
                       </p>
                     </div>
                   </div>
-                )}
-
-                {messages.map((message, index) => (
-                  <div
-                    key={index}
-                    className={`flex ${
-                      message.role === "user"
-                        ? "justify-end"
-                        : "justify-start"
-                    }`}
-                  >
-                    <div
-                      className={`max-w-[92%] rounded-2xl p-4 text-sm leading-7 sm:max-w-[85%] ${
-                        message.role === "user"
-                          ? "bg-[#17191D] text-white"
-                          : "border bg-white text-gray-900"
-                      }`}
-                    >
-                      <p className="mb-1 text-xs font-black opacity-70">
-                        {message.role === "user"
-                          ? "You"
-                          : "GoldMart AI"}
-                      </p>
-
-                      <p className="whitespace-pre-wrap break-words">
-                        {message.content}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-
-                {sending && (
-                  <div className="max-w-[85%] rounded-2xl border bg-white p-4 text-sm text-gray-600">
-                    🤖 GoldMart AI is analyzing...
-                  </div>
-                )}
-              </div>
-
-              {/* CHAT ERROR */}
-              {chatError && (
-                <div
-                  role="alert"
-                  className="border-t border-red-200 bg-red-50 px-5 py-3 text-sm text-red-700"
-                >
-                  {chatError}
-                </div>
-              )}
-
-              {/* CHAT FORM */}
-              <form
-                onSubmit={sendMessage}
-                className="border-t bg-white p-4 sm:p-5"
-              >
-                <label
-                  htmlFor="goldmart-ai-question"
-                  className="block text-sm font-bold"
-                >
-                  Ask GoldMart AI
-                </label>
-
-                <textarea
-                  id="goldmart-ai-question"
-                  value={question}
-                  maxLength={500}
-                  rows={3}
-                  onChange={(event) =>
-                    setQuestion(event.target.value)
-                  }
-                  placeholder="Ask about orders, refunds, seller allocations or marketplace risks..."
-                  className="mt-2 w-full resize-y rounded-2xl border border-gray-300 p-4 text-sm outline-none focus:border-[#B38A25]"
-                />
-
-                <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-xs text-gray-500">
-                    {question.length}/500 characters
-                  </p>
 
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={clearChat}
                     disabled={
                       sending ||
-                      question.trim().length < 2
+                      messages.length === 0
                     }
-                    className="rounded-full bg-[#17191D] px-7 py-3 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-full border bg-white px-4 py-2 text-xs font-bold disabled:opacity-50"
                   >
-                    {sending
-                      ? "Thinking..."
-                      : "Send to AI →"}
+                    Clear Chat
                   </button>
                 </div>
 
-                <p className="mt-3 text-xs leading-5 text-gray-500">
-                  Each question is analyzed using a
-                  fresh marketplace summary. Earlier
-                  chat messages are displayed here
-                  but are not sent as conversation
-                  history. AI responses may be
-                  inaccurate; verify important
-                  conclusions against the records.
-                </p>
-              </form>
-            </section>
+                {/* CHAT CONVERSATION */}
+                <div
+                  aria-live="polite"
+                  className="max-h-[540px] min-h-[280px] space-y-4 overflow-y-auto bg-[#FCFBF8] p-4 sm:p-6"
+                >
+                  {messages.length === 0 && (
+                    <div className="rounded-2xl border bg-white p-5">
+                      <h3 className="text-lg font-black">
+                        Welcome to GoldMart!
+                      </h3>
 
-            {/* REPORT TIME */}
-            <p className="text-xs text-gray-500">
-              Dashboard report:{" "}
-              {data.generated_at
-                ? new Date(
-                    data.generated_at
-                  ).toLocaleString()
-                : "Unknown"}
-              {" • "}Read-only
-            </p>
+                      <p className="mt-2 text-sm leading-6 text-gray-600">
+                        I'm your free administrator
+                        assistant. I can check trusted
+                        database statistics and explain
+                        which operational issues need
+                        attention.
+                      </p>
 
-            {/* MARKETPLACE OVERVIEW */}
-            <section>
-              <SectionTitle
-                title="Marketplace Overview"
-                description="Counts retrieved from your GoldMart database."
-              />
+                      <p className="mt-4 text-sm font-bold text-[#98721B]">
+                        Try one of these questions:
+                      </p>
 
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-                <MetricCard
-                  title="Total Orders"
-                  value={overview.orders.total}
-                />
-
-                <MetricCard
-                  title="New Orders (24h)"
-                  value={
-                    overview.orders.last_24_hours
-                  }
-                />
-
-                <MetricCard
-                  title="Verified Payment Records"
-                  value={
-                    overview.payments.successful_records
-                  }
-                  detail="Database records, not bank settlements."
-                />
-
-                <MetricCard
-                  title="Refund Requests"
-                  value={overview.refunds.total}
-                />
-              </div>
-            </section>
-
-            {/* ORDER MONITORING */}
-            <section>
-              <SectionTitle
-                title="📦 Order Monitoring"
-                description="Check fulfillment activity without modifying orders."
-              />
-
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-                <MetricCard
-                  title="Processing"
-                  value={overview.orders.processing}
-                />
-
-                <MetricCard
-                  title="Shipped"
-                  value={overview.orders.shipped}
-                />
-
-                <MetricCard
-                  title="Delivered"
-                  value={overview.orders.delivered}
-                />
-
-                <MetricCard
-                  title="Delayed (72h+)"
-                  value={
-                    overview.orders
-                      .processing_over_72_hours
-                  }
-                />
-              </div>
-            </section>
-
-            {/* REFUND MONITORING */}
-            <section>
-              <SectionTitle
-                title="🛡️ Refund Monitoring"
-                description="Review refund statuses and identify cases needing attention."
-              />
-
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-                <MetricCard
-                  title="Awaiting Review"
-                  value={
-                    overview.refunds.awaiting_review
-                  }
-                />
-
-                <MetricCard
-                  title="Approved"
-                  value={overview.refunds.approved}
-                />
-
-                <MetricCard
-                  title="Refund Pending"
-                  value={
-                    overview.refunds.refund_pending
-                  }
-                />
-
-                <MetricCard
-                  title="Rejected"
-                  value={overview.refunds.rejected}
-                />
-              </div>
-
-              <Link
-                href="/admin/refunds"
-                className="mt-4 inline-block rounded-full border border-[#B38A25] bg-white px-5 py-2 text-sm font-bold text-[#896716]"
-              >
-                Open Refund Management →
-              </Link>
-            </section>
-
-            {/* SELLER ALLOCATIONS */}
-            <section>
-              <SectionTitle
-                title="🏪 Seller Allocations"
-                description="Accounting records, not withdrawable balances."
-              />
-
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-                <MetricCard
-                  title="Total Allocations"
-                  value={
-                    overview.seller_allocations.total
-                  }
-                />
-
-                <MetricCard
-                  title="Pending Review"
-                  value={
-                    overview.seller_allocations
-                      .pending_review
-                  }
-                />
-
-                <MetricCard
-                  title="Blocked"
-                  value={
-                    overview.seller_allocations.blocked
-                  }
-                />
-
-                <MetricCard
-                  title="Settled Records"
-                  value={
-                    overview.seller_allocations
-                      .settled_records
-                  }
-                  detail="Not proof of bank transfer."
-                />
-              </div>
-            </section>
-
-            {/* OPERATIONAL ALERTS */}
-            <section>
-              <SectionTitle
-                title="⚠️ Operational Alerts"
-                description="Alerts signal possible problems, not proven wrongdoing."
-              />
-
-              {data.alerts.length === 0 ? (
-                <div className="rounded-2xl border bg-white p-6">
-                  <p className="font-bold">
-                    No alerts from the current checks.
-                  </p>
-
-                  <p className="mt-2 text-sm text-gray-500">
-                    This does not guarantee that every
-                    order or account is risk-free.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {data.alerts.map(
-                    (alert, index) => (
-                      <div
-                        key={`${alert.type}-${index}`}
-                        className="rounded-2xl border border-amber-200 bg-white p-5"
-                      >
-                        <h3 className="font-black">
-                          ⚠️ {alert.title}
-                        </h3>
-
-                        <p className="mt-2 text-sm leading-6 text-gray-600">
-                          {alert.message}
-                        </p>
-
-                        {alert.human_review_required && (
-                          <p className="mt-3 text-xs font-bold text-[#987216]">
-                            Human review required
-                          </p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {SUGGESTED_QUESTIONS.map(
+                          (suggestion) => (
+                            <button
+                              key={suggestion}
+                              type="button"
+                              onClick={() =>
+                                setQuestion(suggestion)
+                              }
+                              className="rounded-xl border border-gray-200 bg-[#FFFDF8] px-3 py-2 text-left text-xs font-medium hover:border-[#B38A25]"
+                            >
+                              {suggestion}
+                            </button>
+                          )
                         )}
                       </div>
-                    )
+                    </div>
+                  )}
+
+                  {messages.map((item) => (
+                    <div
+                      key={item.id}
+                      className={`flex ${
+                        item.role === "user"
+                          ? "justify-end"
+                          : "justify-start"
+                      }`}
+                    >
+                      <div
+                        className={`max-w-[92%] rounded-2xl p-4 text-sm leading-7 sm:max-w-[85%] ${
+                          item.role === "user"
+                            ? "bg-[#17191D] text-white"
+                            : "border bg-white text-gray-900"
+                        }`}
+                      >
+                        <p className="mb-1 text-xs font-black opacity-70">
+                          {item.role === "user"
+                            ? "You"
+                            : "GoldMart Assistant"}
+                        </p>
+
+                        <p className="whitespace-pre-wrap break-words">
+                          {item.content}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+
+                  {sending && (
+                    <div className="max-w-[90%] rounded-2xl border bg-white p-4 text-sm text-gray-600">
+                      🤖 Checking marketplace
+                      statistics...
+                    </div>
                   )}
                 </div>
-              )}
-            </section>
 
-            {/* SECURITY DETAILS */}
-            <section className="rounded-2xl border bg-white p-6">
-              <h2 className="text-lg font-black">
-                🔐 Administrator Security
-              </h2>
+                {/* CHAT ERRORS */}
+                {chatError && (
+                  <div
+                    role="alert"
+                    className="border-t border-red-200 bg-red-50 px-5 py-3 text-sm text-red-700"
+                  >
+                    {chatError}
+                  </div>
+                )}
 
-              <div className="mt-4 space-y-2 text-sm text-gray-600">
-                <p>
-                  Administrator ID:{" "}
-                  <strong>
-                    {data.security.administrator_id}
-                  </strong>
-                </p>
+                {/* MESSAGE FORM */}
+                <form
+                  onSubmit={sendMessage}
+                  className="border-t bg-white p-4 sm:p-5"
+                >
+                  <label
+                    htmlFor="goldmart-free-question"
+                    className="block text-sm font-bold"
+                  >
+                    Ask the Free Admin Assistant
+                  </label>
 
-                <p>
-                  Monitoring:{" "}
-                  <strong>Read-only</strong>
-                </p>
+                  <textarea
+                    id="goldmart-free-question"
+                    value={question}
+                    rows={3}
+                    maxLength={500}
+                    onChange={(event) =>
+                      setQuestion(
+                        event.target.value
+                      )
+                    }
+                    placeholder="Example: What needs my attention today?"
+                    className="mt-2 w-full resize-y rounded-2xl border border-gray-300 p-4 text-sm outline-none focus:border-[#B38A25]"
+                  />
 
-                <p>
-                  Financial actions:{" "}
-                  <strong>Disabled</strong>
-                </p>
+                  <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                    <p className="text-xs text-gray-500">
+                      {question.length}/500 characters
+                    </p>
 
-                <p>
-                  Sensitive decisions:{" "}
-                  <strong>
-                    Human approval required
-                  </strong>
-                </p>
-              </div>
-            </section>
-          </div>
-        )}
+                    <button
+                      type="submit"
+                      disabled={
+                        sending ||
+                        question.trim().length < 2
+                      }
+                      className="rounded-full bg-[#17191D] px-7 py-3 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {sending
+                        ? "Checking..."
+                        : "Ask Assistant →"}
+                    </button>
+                  </div>
+
+                  <p className="mt-3 text-xs leading-5 text-gray-500">
+                    Each request reads a fresh
+                    marketplace summary. The chat
+                    history stays on this page and
+                    is not saved as an AI
+                    conversation. Always verify
+                    important decisions against
+                    individual records.
+                  </p>
+                </form>
+              </section>
+
+              {/* ====================================
+                  REPORT TIMESTAMP
+                  ==================================== */}
+
+              <p className="text-xs text-gray-500">
+                Dashboard last generated:{" "}
+                {data.generated_at
+                  ? new Date(
+                      data.generated_at
+                    ).toLocaleString()
+                  : "Unknown"}
+                {" • "}Read-only monitoring
+              </p>
+
+              {/* ====================================
+                  MARKETPLACE OVERVIEW
+                  ==================================== */}
+
+              <section>
+                <SectionHeading
+                  title="📊 Marketplace Overview"
+                  description="Statistics from your GoldMart database."
+                />
+
+                <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+                  <MetricCard
+                    title="Total Orders"
+                    value={overview.orders.total}
+                  />
+
+                  <MetricCard
+                    title="Orders Created (24h)"
+                    value={
+                      overview.orders
+                        .last_24_hours
+                    }
+                  />
+
+                  <MetricCard
+                    title="Successful Payment Records"
+                    value={
+                      overview.payments
+                        .successful_records
+                    }
+                    detail="Not proof of bank settlement."
+                  />
+
+                  <MetricCard
+                    title="Refund Requests"
+                    value={overview.refunds.total}
+                  />
+                </div>
+              </section>
+
+              {/* ====================================
+                  ORDERS
+                  ==================================== */}
+
+              <section>
+                <SectionHeading
+                  title="📦 Order Monitoring"
+                  description="Monitor fulfillment and identify possible delays."
+                />
+
+                <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+                  <MetricCard
+                    title="Processing"
+                    value={
+                      overview.orders.processing
+                    }
+                  />
+
+                  <MetricCard
+                    title="Shipped"
+                    value={
+                      overview.orders.shipped
+                    }
+                  />
+
+                  <MetricCard
+                    title="Delivered"
+                    value={
+                      overview.orders.delivered
+                    }
+                  />
+
+                  <MetricCard
+                    title="Processing Over 72h"
+                    value={
+                      overview.orders
+                        .processing_over_72_hours
+                    }
+                  />
+                </div>
+              </section>
+
+              {/* ====================================
+                  REFUNDS
+                  ==================================== */}
+
+              <section>
+                <SectionHeading
+                  title="🛡️ Refund Monitoring"
+                  description="Statuses requiring administrator attention."
+                />
+
+                <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+                  <MetricCard
+                    title="Awaiting Review"
+                    value={
+                      overview.refunds
+                        .awaiting_review
+                    }
+                  />
+
+                  <MetricCard
+                    title="Approved Records"
+                    value={
+                      overview.refunds.approved
+                    }
+                  />
+
+                  <MetricCard
+                    title="Refund Pending"
+                    value={
+                      overview.refunds
+                        .refund_pending
+                    }
+                  />
+
+                  <MetricCard
+                    title="Rejected Records"
+                    value={
+                      overview.refunds.rejected
+                    }
+                  />
+                </div>
+
+                <Link
+                  href="/admin/refunds"
+                  className="mt-4 inline-block rounded-full border border-[#B38A25] bg-white px-5 py-2 text-sm font-bold text-[#896716]"
+                >
+                  Open Refund Management →
+                </Link>
+              </section>
+
+              {/* ====================================
+                  SELLER ALLOCATIONS
+                  ==================================== */}
+
+              <section>
+                <SectionHeading
+                  title="🏪 Seller Allocations"
+                  description="Internal accounting records, not withdrawable seller balances."
+                />
+
+                <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+                  <MetricCard
+                    title="Total Allocations"
+                    value={
+                      overview.seller_allocations
+                        .total
+                    }
+                  />
+
+                  <MetricCard
+                    title="Pending Review"
+                    value={
+                      overview.seller_allocations
+                        .pending_review
+                    }
+                  />
+
+                  <MetricCard
+                    title="Blocked"
+                    value={
+                      overview.seller_allocations
+                        .blocked
+                    }
+                  />
+
+                  <MetricCard
+                    title="Settled Records"
+                    value={
+                      overview.seller_allocations
+                        .settled_records
+                    }
+                    detail="Not proof of a bank transfer."
+                  />
+                </div>
+              </section>
+
+              {/* ====================================
+                  OPERATIONAL ALERTS
+                  ==================================== */}
+
+              <section>
+                <SectionHeading
+                  title="⚠️ Operational Alerts"
+                  description="Rule-based warnings, not evidence of misconduct."
+                />
+
+                {data.alerts.length === 0 ? (
+                  <div className="rounded-2xl border bg-white p-6">
+                    <p className="font-bold">
+                      No alerts from the current
+                      monitoring rules.
+                    </p>
+
+                    <p className="mt-2 text-sm text-gray-500">
+                      This does not guarantee that
+                      every order, payment or account
+                      is problem-free.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {data.alerts.map(
+                      (alert, index) => (
+                        <div
+                          key={`${alert.type}-${index}`}
+                          className="rounded-2xl border border-amber-200 bg-white p-5"
+                        >
+                          <h3 className="font-black">
+                            ⚠️ {alert.title}
+                          </h3>
+
+                          <p className="mt-2 text-sm leading-6 text-gray-600">
+                            {alert.message}
+                          </p>
+
+                          {alert.human_review_required && (
+                            <p className="mt-3 text-xs font-bold text-[#987216]">
+                              Human review required
+                            </p>
+                          )}
+                        </div>
+                      )
+                    )}
+                  </div>
+                )}
+              </section>
+
+              {/* ====================================
+                  SECURITY
+                  ==================================== */}
+
+              <section className="rounded-2xl border bg-white p-6">
+                <h2 className="text-lg font-black">
+                  🔐 Administrator Security
+                </h2>
+
+                <div className="mt-4 space-y-2 text-sm text-gray-600">
+                  <p>
+                    Administrator ID:{" "}
+                    <strong>
+                      {
+                        data.security
+                          .administrator_id
+                      }
+                    </strong>
+                  </p>
+
+                  <p>
+                    Assistant type:{" "}
+                    <strong>
+                      Free rule-based assistant
+                    </strong>
+                  </p>
+
+                  <p>
+                    Database access:{" "}
+                    <strong>Read-only</strong>
+                  </p>
+
+                  <p>
+                    Financial actions:{" "}
+                    <strong>Disabled</strong>
+                  </p>
+
+                  <p>
+                    Sensitive decisions:{" "}
+                    <strong>
+                      Human approval required
+                    </strong>
+                  </p>
+                </div>
+              </section>
+            </div>
+          )}
       </div>
     </main>
   );
