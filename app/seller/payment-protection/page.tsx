@@ -255,10 +255,28 @@ export default function SellerPaymentProtectionPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FAF8F3] pb-20 text-[#17191D]">
+    <main className="min-h-screen bg-[#F1F5F5] pb-28 text-[#20313B] md:pb-14">
+      <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(120deg,#173C43,#376E6B 56%,#87A499)"}}>
+          <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
+          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#BDECE4]">GOLDMART SELLER STUDIO · Finance Ledger</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Clarity for your records.</h2>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Review recorded allocations and their review status. Withdrawals remain unavailable.</p></div>
+        </section>
+        <nav aria-label="Seller Studio navigation" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
+          <Link href="/seller" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Dashboard</Link>
+          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Catalogue</Link>
+          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Add Product</Link>
+          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Orders</Link>
+          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Finance</Link>
+          <Link href="/chat" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Messages</Link>
+          <Link href="/account" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Account</Link>
+        </nav>
+      </div>
+
       <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
-      <header className="border-b border-[#E8E1D5] bg-white">
+      <header className="border-b border-[#DAE5E5] bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
           <Link
             href="/seller"
@@ -277,7 +295,7 @@ export default function SellerPaymentProtectionPage() {
       </header>
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <section className="rounded-[28px] bg-[#17191D] px-6 py-8 text-white sm:px-8">
+        <section className="rounded-[28px] bg-[#164555] px-6 py-8 text-white sm:px-8">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
             Seller Finance
           </p>
@@ -322,7 +340,7 @@ export default function SellerPaymentProtectionPage() {
         </div>
 
         {needsLogin && (
-          <section className="mt-6 rounded-2xl border border-[#E8E1D5] bg-white p-6">
+          <section className="mt-6 rounded-2xl border border-[#DAE5E5] bg-white p-6">
             <p className="font-semibold">
               Please sign in to see your seller records.
             </p>
@@ -348,7 +366,7 @@ export default function SellerPaymentProtectionPage() {
         {!needsLogin && !error && (
           <>
             <section className="mt-6 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-[#E8E1D5] bg-white p-6">
+              <div className="rounded-2xl border border-[#DAE5E5] bg-white p-6">
                 <p className="text-sm text-[#74716B]">
                   Allocation Records
                 </p>
@@ -358,7 +376,7 @@ export default function SellerPaymentProtectionPage() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-[#E8E1D5] bg-white p-6">
+              <div className="rounded-2xl border border-[#DAE5E5] bg-white p-6">
                 <p className="text-sm text-[#74716B]">
                   Withdrawal Availability
                 </p>
@@ -380,7 +398,7 @@ export default function SellerPaymentProtectionPage() {
               </p>
 
               {summaryRows.length === 0 ? (
-                <div className="mt-4 rounded-2xl border border-[#E8E1D5] bg-white p-6 text-sm text-[#74716B]">
+                <div className="mt-4 rounded-2xl border border-[#DAE5E5] bg-white p-6 text-sm text-[#74716B]">
                   {loading
                     ? "Loading totals..."
                     : "No allocations recorded yet."}
@@ -390,7 +408,7 @@ export default function SellerPaymentProtectionPage() {
                   {summaryRows.map((row, index) => (
                     <div
                       key={`${row.currency}-${row.status}-${index}`}
-                      className="rounded-2xl border border-[#E8E1D5] bg-white p-5"
+                      className="rounded-2xl border border-[#DAE5E5] bg-white p-5"
                     >
                       <StatusBadge status={row.status} />
 
@@ -423,11 +441,11 @@ export default function SellerPaymentProtectionPage() {
               </div>
 
               {loading ? (
-                <div className="mt-4 rounded-2xl border border-[#E8E1D5] bg-white p-8 text-center text-sm text-[#74716B]">
+                <div className="mt-4 rounded-2xl border border-[#DAE5E5] bg-white p-8 text-center text-sm text-[#74716B]">
                   Loading seller allocation records...
                 </div>
               ) : allocations.length === 0 ? (
-                <div className="mt-4 rounded-2xl border border-[#E8E1D5] bg-white p-8 text-center">
+                <div className="mt-4 rounded-2xl border border-[#DAE5E5] bg-white p-8 text-center">
                   <div className="text-3xl">
                     📋
                   </div>
@@ -449,7 +467,7 @@ export default function SellerPaymentProtectionPage() {
                   {allocations.map((allocation) => (
                     <article
                       key={allocation.id}
-                      className="rounded-2xl border border-[#E8E1D5] bg-white p-5 shadow-sm sm:p-6"
+                      className="rounded-2xl border border-[#DAE5E5] bg-white p-5 shadow-sm sm:p-6"
                     >
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div>
