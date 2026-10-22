@@ -24,9 +24,46 @@ type WishlistItem = {
   product: WishlistProduct;
 };
 
+// The API currently returns a flat SQL JOIN row (wishlist_id + products.*).
+// Accept that shape as well as the older nested { id, product } format.
+type WishlistApiRow = Partial<WishlistProduct> & {
+  wishlist_id?: number | string;
+  product_id?: number | string;
+  product?: WishlistProduct;
+};
+
+function normalizeWishlistRow(row: WishlistApiRow): WishlistItem | null {
+  if (!row || typeof row !== "object") return null;
+
+  const product = row.product || row;
+  const productId = Number(row.product_id ?? product.id);
+  const wishlistId = Number(
+    row.wishlist_id ?? (row.product ? row.id : undefined)
+  );
+
+  if (
+    !Number.isSafeInteger(productId) || productId <= 0 ||
+    !Number.isSafeInteger(wishlistId) || wishlistId <= 0
+  ) return null;
+
+  return {
+    id: wishlistId,
+    product_id: productId,
+    product: {
+      id: productId,
+      name: String(product.name || "Product"),
+      price: product.price ?? "0",
+      currency: product.currency || "USD",
+      image_url: product.image_url,
+      stock: Number(product.stock || 0),
+      category_name: product.category_name,
+    },
+  };
+}
+
 function formatPrice(
   price: string | number,
-  currency = "NGN"
+  currency = "USD"
 ) {
   const amount = Number(price);
   const code = currency.toUpperCase();
@@ -83,7 +120,16 @@ export default function WishlistPage() {
           );
         }
 
-        setItems(data.items || data.wishlist || []);
+        const rows = data.wishlist ?? data.items;
+        if (!Array.isArray(rows)) {
+          throw new Error("Unexpected wishlist response from server.");
+        }
+
+        setItems(
+          rows
+            .map((row: WishlistApiRow) => normalizeWishlistRow(row))
+            .filter((item: WishlistItem | null): item is WishlistItem => item !== null)
+        );
       } catch (err) {
         console.error("Wishlist error:", err);
 
@@ -220,9 +266,9 @@ export default function WishlistPage() {
       price: String(product.price),
       image:
         product.image_url ||
-        "/images/headphones.jpg",
+        "/images/icon-512.png",
       currency:
-        product.currency || "NGN",
+        product.currency || "USD",
     });
   }
 
@@ -371,7 +417,7 @@ export default function WishlistPage() {
                       <Image
                         src={
                           product.image_url ||
-                          "/images/headphones.jpg"
+                          "/images/icon-512.png"
                         }
                         alt={product.name}
                         fill
