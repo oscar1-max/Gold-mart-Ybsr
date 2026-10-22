@@ -251,7 +251,25 @@ export default function EditProductPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gray-50">
+      <main className="min-h-screen bg-[#F1F5F5] pb-28 text-[#20313B] md:pb-14">
+      <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(120deg,#293750,#506889 55%,#88A6BA)"}}>
+          <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
+          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#BDECE4]">GOLDMART SELLER STUDIO · Product Editor</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Fine-tune your listing.</h2>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Update product details and inventory without losing your place.</p></div>
+        </section>
+        <nav aria-label="Seller Studio navigation" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
+          <Link href="/seller" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Dashboard</Link>
+          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Catalogue</Link>
+          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Add Product</Link>
+          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Orders</Link>
+          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Finance</Link>
+          <Link href="/chat" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Messages</Link>
+          <Link href="/account" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Account</Link>
+        </nav>
+      </div>
+
         <div className="text-center">
           <div className="text-5xl">📦</div>
 
@@ -360,7 +378,7 @@ export default function EditProductPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="mt-8 rounded-3xl border bg-white p-6 shadow-sm sm:p-8"
+          className="mt-8 rounded-[25px] border border-[#DAE5E5] bg-white shadow-[0_9px_26px_rgba(24,51,62,0.05)] p-6 shadow-sm sm:p-8"
         >
 
           {/* PRODUCT NAME */}
