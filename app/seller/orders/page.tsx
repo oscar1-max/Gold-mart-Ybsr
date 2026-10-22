@@ -12,12 +12,14 @@ type OrderItem = {
   quantity: number;
   price: string | number;
   image_url?: string | null;
+  currency?: string | null;
 };
 
 type SellerOrder = {
   id: number;
   user_id: number;
   total_amount: string | number;
+  currency?: string | null;
   status: string;
   created_at: string;
   customer_name: string;
@@ -68,12 +70,16 @@ function badgeClass(status: string) {
   return "border-amber-200 bg-amber-50 text-amber-800";
 }
 
-function money(value: string | number) {
+function money(value: string | number, currency = "USD") {
   const amount = Number(value);
-  return `$${(Number.isFinite(amount) ? amount : 0).toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+  if (!Number.isFinite(amount)) return "Amount unavailable";
+  const code = String(currency || "USD").toUpperCase();
+  try {
+    return new Intl.NumberFormat("en-US", { style: "currency", currency: code,
+      minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
+  } catch {
+    return code + " " + amount.toFixed(2);
+  }
 }
 
 function dateLabel(value: string) {
@@ -308,13 +314,13 @@ export default function SellerOrdersPage() {
                             <p className="text-sm font-bold">{item.product_name}</p>
                             <p className="mt-1 text-xs text-[#74716B]">Qty: {item.quantity}</p>
                           </div>
-                          <p className="text-right text-sm font-black text-[#96713D]">{money(item.price)}</p>
+                          <p className="text-right text-sm font-black text-[#96713D]">{money(item.price, item.currency || order.currency || "USD")}</p>
                         </div>
                       ))}
                     </div>
                     <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#E8E1D5] pt-5">
                       <p className="text-sm font-bold text-[#74716B]">Order total</p>
-                      <p className="text-xl font-black text-[#96713D]">{money(order.total_amount)}</p>
+                      <p className="text-xl font-black text-[#96713D]">{money(order.total_amount, order.currency || order.items?.[0]?.currency || "USD")}</p>
                     </div>
                     <p className="mt-1 text-right text-xs text-[#74716B]">As reported by the orders API; not a seller payout balance.</p>
                     <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#E8E1D5] bg-[#FAF8F3] p-4">
