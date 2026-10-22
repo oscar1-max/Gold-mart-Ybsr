@@ -25,6 +25,9 @@ type Product = {
   stock: number;
   rating?: number;
   sold_count?: number;
+  original_price?: string|number;
+  is_deal?: boolean;
+  deal_end_at?: string;
 };
 
 const categories = [
@@ -38,7 +41,7 @@ const categories = [
   { icon: "💎", name: "Jewelry", value: "Jewelry & Accessories" },
 ];
 
-const discoveryTabs = ["All", "5-Star Rated", "Best Selling", "New Arrivals"];
+const discoveryTabs = ["All", "⚡ Deals", "5-Star Rated", "Best Selling", "New Arrivals"];
 
 const quickLinks = [
   { href: "/shop", icon: "🛍️", label: "Shop All", sub: "Browse every department", tone: "from-[#DDEDF0] to-[#F2FAF9] text-[#285965]", border: "border-[#C5DEE3]" },
@@ -204,7 +207,9 @@ export default function Home() {
   const displayedProducts = useMemo(() => {
     let result = [...products];
 
-    if (activeTab === "5-Star Rated") {
+    if (activeTab === "⚡ Deals") {
+      result = result.filter(product => product.is_deal === true);
+    } else if (activeTab === "5-Star Rated") {
       result = result.filter((product) => Number(product.rating || 0) >= 5);
     } else if (activeTab === "Best Selling") {
       result.sort((a, b) => Number(b.sold_count || 0) - Number(a.sold_count || 0));
