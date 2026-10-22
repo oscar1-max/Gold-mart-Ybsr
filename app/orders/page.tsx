@@ -14,11 +14,13 @@ type OrderItem = {
   name?: string | null;
   image_url?: string | null;
   seller_id?: number | null;
+  currency?: string | null;
 };
 
 type Order = {
   id: number;
   total_amount: string | number;
+  currency?: string | null;
   status: string;
   created_at: string;
   items: OrderItem[];
@@ -101,15 +103,16 @@ async function api(
 // FORMATTING HELPERS
 // ==============================================
 
-function formatPrice(value: string | number) {
+function formatPrice(value: string | number, currency = "USD") {
   const amount = Number(value);
-
-  return `$${(
-    Number.isFinite(amount) ? amount : 0
-  ).toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+  if (!Number.isFinite(amount)) return "Amount unavailable";
+  const code = String(currency || "USD").toUpperCase();
+  try {
+    return new Intl.NumberFormat("en-US", { style: "currency", currency: code,
+      minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
+  } catch {
+    return code + " " + amount.toFixed(2);
+  }
 }
 
 function formatDate(value: string) {
@@ -683,7 +686,8 @@ export default function OrdersPage() {
                         <p className="font-black text-[#A67C00]">
                           {formatPrice(
                             Number(item.price) *
-                            Number(item.quantity)
+                            Number(item.quantity),
+                            item.currency || order.currency || "USD"
                           )}
                         </p>
                       </div>
@@ -697,7 +701,7 @@ export default function OrdersPage() {
                     </p>
 
                     <p className="text-2xl font-black text-[#A67C00]">
-                      {formatPrice(order.total_amount)}
+                      {formatPrice(order.total_amount, order.currency || order.items?.[0]?.currency || "USD")}
                     </p>
                   </div>
 
