@@ -13,6 +13,9 @@ type Product = {
   name: string;
   description?: string;
   price: number | string;
+  original_price?: number | string;
+  is_deal?: boolean;
+  deal_end_at?: string;
   stock: number;
   image_url?: string;
   category_name?: string;
