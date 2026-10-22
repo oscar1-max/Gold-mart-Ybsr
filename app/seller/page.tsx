@@ -532,12 +532,30 @@ export default function SellerDashboard() {
   })}`;
 
   return (
-    <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
+    <main className="min-h-screen bg-[#F1F5F5] pb-28 text-[#20313B] md:pb-14">
+      <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(120deg,#102A3C,#1C5563 54%,#3C8B87)"}}>
+          <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
+          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#BDECE4]">GOLDMART SELLER STUDIO · Seller Studio</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Your store, your command.</h2>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Manage your catalogue, customer orders and growth in one professional workspace.</p></div>
+        </section>
+        <nav aria-label="Seller Studio navigation" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
+          <Link href="/seller" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Dashboard</Link>
+          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Catalogue</Link>
+          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Add Product</Link>
+          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Orders</Link>
+          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Finance</Link>
+          <Link href="/chat" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Messages</Link>
+          <Link href="/account" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Account</Link>
+        </nav>
+      </div>
+
       <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#E8E1D5] bg-white/95">
+      <header className="border-b border-[#DAE5E5] bg-white/95">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link
             href="/"
@@ -591,7 +609,7 @@ export default function SellerDashboard() {
       <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10">
         {/* SELLER HERO */}
 
-        <section className="relative overflow-hidden rounded-[28px] bg-[#17191D] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.12)] sm:px-9 sm:py-10">
+        <section className="relative overflow-hidden rounded-[28px] bg-[#164555] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.12)] sm:px-9 sm:py-10">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-10 -top-16 h-60 w-60 rounded-full border border-[#C5A46D]/25"
@@ -729,7 +747,7 @@ export default function SellerDashboard() {
           <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
             <Link
               href="/seller/products"
-              className="rounded-[22px] border border-[#E8E1D5] bg-white p-4 shadow-sm transition hover:border-[#C5A46D] hover:shadow-md sm:p-6"
+              className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm transition hover:border-[#C5A46D] hover:shadow-md sm:p-6"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
                 📦
@@ -752,7 +770,7 @@ export default function SellerDashboard() {
 
             <Link
               href="/seller/orders"
-              className="rounded-[22px] border border-[#E8E1D5] bg-white p-4 shadow-sm transition hover:border-[#C5A46D] hover:shadow-md sm:p-6"
+              className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm transition hover:border-[#C5A46D] hover:shadow-md sm:p-6"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
                 🚚
@@ -773,7 +791,7 @@ export default function SellerDashboard() {
               </p>
             </Link>
 
-            <div className="rounded-[22px] border border-[#E8E1D5] bg-white p-4 shadow-sm sm:p-6">
+            <div className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm sm:p-6">
               <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
                 💰
               </span>
@@ -793,7 +811,7 @@ export default function SellerDashboard() {
               </p>
             </div>
 
-            <div className="rounded-[22px] border border-[#E8E1D5] bg-white p-4 shadow-sm sm:p-6">
+            <div className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm sm:p-6">
               <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
                 ⭐
               </span>
@@ -870,7 +888,7 @@ export default function SellerDashboard() {
           ) : (
             <>
               <div className="mt-5 grid grid-cols-3 gap-3">
-                <div className="rounded-[20px] border border-[#E8E1D5] bg-white p-4 sm:p-5">
+                <div className="rounded-[20px] border border-[#DAE5E5] bg-white p-4 sm:p-5">
                   <p className="text-xs font-semibold text-[#74716B]">
                     In stock
                   </p>
@@ -882,7 +900,7 @@ export default function SellerDashboard() {
                   </p>
                 </div>
 
-                <div className="rounded-[20px] border border-[#E8E1D5] bg-white p-4 sm:p-5">
+                <div className="rounded-[20px] border border-[#DAE5E5] bg-white p-4 sm:p-5">
                   <p className="text-xs font-semibold text-[#74716B]">
                     Low stock
                   </p>
@@ -894,7 +912,7 @@ export default function SellerDashboard() {
                   </p>
                 </div>
 
-                <div className="rounded-[20px] border border-[#E8E1D5] bg-white p-4 sm:p-5">
+                <div className="rounded-[20px] border border-[#DAE5E5] bg-white p-4 sm:p-5">
                   <p className="text-xs font-semibold text-[#74716B]">
                     Out of stock
                   </p>
@@ -959,7 +977,7 @@ export default function SellerDashboard() {
               {showProducts &&
                 products.length > 0 &&
                 inventoryWarnings.length === 0 && (
-                  <p className="mt-4 rounded-xl border border-[#E8E1D5] bg-white p-4 text-sm text-[#57534C]">
+                  <p className="mt-4 rounded-xl border border-[#DAE5E5] bg-white p-4 text-sm text-[#57534C]">
                     ✓ No products are currently low
                     or out of stock.
                   </p>
@@ -967,7 +985,7 @@ export default function SellerDashboard() {
 
               {showProducts &&
                 products.length === 0 && (
-                  <div className="mt-4 rounded-[22px] border border-[#E8E1D5] bg-white p-6 text-center">
+                  <div className="mt-4 rounded-[22px] border border-[#DAE5E5] bg-white p-6 text-center">
                     <p className="text-sm text-[#74716B]">
                       No products listed yet.
                     </p>
@@ -1006,7 +1024,7 @@ export default function SellerDashboard() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="group flex items-start gap-4 rounded-[22px] border border-[#E8E1D5] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#C5A46D] hover:shadow-md sm:p-6"
+                className="group flex items-start gap-4 rounded-[22px] border border-[#DAE5E5] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#C5A46D] hover:shadow-md sm:p-6"
               >
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#F5F1E9] text-2xl">
                   {item.emoji}
@@ -1063,7 +1081,7 @@ export default function SellerDashboard() {
               {[1, 2, 3, 4].map((n) => (
                 <div
                   key={n}
-                  className="animate-pulse overflow-hidden rounded-2xl border border-[#E8E1D5] bg-white"
+                  className="animate-pulse overflow-hidden rounded-2xl border border-[#DAE5E5] bg-white"
                 >
                   <div className="aspect-square bg-[#EFEAE1]" />
 
@@ -1080,7 +1098,7 @@ export default function SellerDashboard() {
               now. Tap Refresh dashboard to try again.
             </p>
           ) : products.length === 0 ? (
-            <div className="mt-5 rounded-[22px] border border-[#E8E1D5] bg-white px-5 py-10 text-center">
+            <div className="mt-5 rounded-[22px] border border-[#DAE5E5] bg-white px-5 py-10 text-center">
               <p className="text-4xl">
                 📦
               </p>
@@ -1109,7 +1127,7 @@ export default function SellerDashboard() {
                 .map((product) => (
                   <article
                     key={product.id}
-                    className="overflow-hidden rounded-[22px] border border-[#E8E1D5] bg-white shadow-sm transition hover:border-[#C5A46D] hover:shadow-md"
+                    className="overflow-hidden rounded-[22px] border border-[#DAE5E5] bg-white shadow-sm transition hover:border-[#C5A46D] hover:shadow-md"
                   >
                     {product.image_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -1189,7 +1207,7 @@ export default function SellerDashboard() {
             Feedback left by customers of your store.
           </p>
 
-          <div className="mt-5 flex flex-wrap items-center gap-6 rounded-[22px] border border-[#E8E1D5] bg-white p-5 sm:p-6">
+          <div className="mt-5 flex flex-wrap items-center gap-6 rounded-[22px] border border-[#DAE5E5] bg-white p-5 sm:p-6">
             <div>
               <p className="text-xs text-[#74716B]">
                 Average rating
@@ -1219,14 +1237,14 @@ export default function SellerDashboard() {
           </div>
 
           {!loading && reviewError && (
-            <p className="mt-4 rounded-xl border border-[#E8E1D5] bg-white p-4 text-sm text-[#74716B]">
+            <p className="mt-4 rounded-xl border border-[#DAE5E5] bg-white p-4 text-sm text-[#74716B]">
               {reviewError}
             </p>
           )}
 
           {showReviews &&
             reviews.length === 0 && (
-              <div className="mt-4 rounded-[22px] border border-[#E8E1D5] bg-white p-8 text-center">
+              <div className="mt-4 rounded-[22px] border border-[#DAE5E5] bg-white p-8 text-center">
                 <p className="text-3xl">
                   ⭐
                 </p>
@@ -1250,7 +1268,7 @@ export default function SellerDashboard() {
                   .map((review) => (
                     <article
                       key={review.id}
-                      className="rounded-[22px] border border-[#E8E1D5] bg-white p-5 shadow-sm sm:p-6"
+                      className="rounded-[22px] border border-[#DAE5E5] bg-white p-5 shadow-sm sm:p-6"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
@@ -1306,7 +1324,7 @@ export default function SellerDashboard() {
 
         {/* FOOTER CARD */}
 
-        <section className="mt-10 overflow-hidden rounded-[26px] bg-[#17191D] p-6 text-white sm:p-9">
+        <section className="mt-10 overflow-hidden rounded-[26px] bg-[#164555] p-6 text-white sm:p-9">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#E9D9BB]">
             Keep growing with GoldMart
           </p>
