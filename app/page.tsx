@@ -40,12 +40,11 @@ const categories = [
 const discoveryTabs = ["All", "Deals", "5-Star Rated", "Best Selling", "New Arrivals"];
 
 const quickLinks = [
-  { href: "/categories", icon: "▦", label: "Categories" },
-  { href: "/shop", icon: "🛍️", label: "Shop All" },
-  { href: "/track-order", icon: "📦", label: "Track Order" },
-  { href: "/order-protection", icon: "🛡️", label: "Buyer Protection" },
-  { href: "/help", icon: "❔", label: "Help Centre" },
-  { href: "/chat", icon: "💬", label: "Messages" },
+  { href: "/shop", icon: "🛍️", label: "Shop All", sub: "Browse every department", tone: "from-[#DDEDF0] to-[#F2FAF9] text-[#285965]", border: "border-[#C5DEE3]" },
+  { href: "/track-order", icon: "📦", label: "Track Order", sub: "Follow your purchases", tone: "from-[#E1EFE7] to-[#F3FBF6] text-[#34634B]", border: "border-[#C7E2D2]" },
+  { href: "/order-protection", icon: "🛡️", label: "Buyer Protection", sub: "Get help with an order", tone: "from-[#EEE4F3] to-[#FAF6FC] text-[#715287]", border: "border-[#DDCDE8]" },
+  { href: "/help", icon: "🎧", label: "Help Centre", sub: "Answers and support", tone: "from-[#F8E7D9] to-[#FFF8F0] text-[#92613C]", border: "border-[#EED6BF]" },
+  { href: "/chat", icon: "💬", label: "Messages", sub: "Connect with sellers", tone: "from-[#E1E7F8] to-[#F4F6FC] text-[#465E94]", border: "border-[#CEDAF1]" },
 ];
 
 const cardClass =
@@ -263,16 +262,22 @@ export default function Home() {
         </div>
       </header>
 
-      {/* QUICK ACCESS - LINKS TO EXISTING PAGES */}
-      <nav aria-label="Quick links" className="border-b border-[#E9E1D4] bg-[#EAF0EE]">
-        <div className="og-scrollbar mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto px-4 py-3 sm:px-6 lg:px-8">
-          {quickLinks.map((item) => (
-            <Link key={item.href} href={item.href} className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#E6DCCD] bg-white px-3.5 py-2 text-xs font-bold text-[#51473C] transition hover:border-[#C5A46D] hover:text-[#96713D]">
-              <span aria-hidden="true">{item.icon}</span>{item.label}
+      {/* Premium service shortcuts — all link to the original working pages */}
+      <section aria-label="GoldMart shopping shortcuts" className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 lg:px-8">
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+          <div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#9B7951]">Everything at your fingertips</p><h2 className="mt-1 text-lg font-black sm:text-xl">Explore GoldMart</h2></div>
+          <Link href="/categories" className="text-xs font-bold text-[#81633C] hover:underline">All categories ↗</Link>
+        </div>
+        <nav className="og-scrollbar flex gap-3 overflow-x-auto pb-3 lg:grid lg:grid-cols-5" aria-label="Shopping and support">
+          {quickLinks.map(item => (
+            <Link key={item.href} href={item.href}
+              className={`group flex min-w-[177px] flex-1 flex-col justify-between overflow-hidden rounded-[22px] border bg-gradient-to-br p-4 shadow-[0_7px_20px_rgba(20,40,50,0.035)] transition duration-200 hover:-translate-y-1 hover:shadow-lg sm:min-w-[194px] ${item.tone} ${item.border}`}>
+              <span className="flex items-center justify-between"><span className="text-[29px]" aria-hidden="true">{item.icon}</span><span className="text-lg transition group-hover:translate-x-1" aria-hidden="true">↗</span></span>
+              <span className="mt-6"><span className="block text-sm font-black">{item.label}</span><span className="mt-1 block text-[11px] font-medium opacity-75">{item.sub}</span></span>
             </Link>
           ))}
-        </div>
-      </nav>
+        </nav>
+      </section>
 
       {/* INTRO BANNER */}
       <section className="border-b border-[#EFE7DA] bg-white">
