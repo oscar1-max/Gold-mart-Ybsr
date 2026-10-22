@@ -699,6 +699,11 @@ export default function AdminMonitoringPage() {
                         </span>
                       </div>
 
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {alert.alert_key?.startsWith("refund")&&<Link href="/admin/refunds" className="rounded-xl bg-[#E7F1EA] px-4 py-2 text-xs font-black text-[#28604F]">Open Refund Records →</Link>}
+                        {alert.alert_key?.startsWith("orders")&&<Link href="/admin/reports" className="rounded-xl bg-[#EBF1FA] px-4 py-2 text-xs font-black text-[#375E85]">Review Order Reports →</Link>}
+                        {alert.alert_key?.startsWith("allocations")&&<Link href="/admin/ai" className="rounded-xl bg-[#EFEAF9] px-4 py-2 text-xs font-black text-[#655288]">Open Allocation Insights →</Link>}
+                      </div>
                       <h3 className="mt-4 text-lg font-black">
                         {alert.title}
                       </h3>
