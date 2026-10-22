@@ -19,36 +19,42 @@ const shoppingLinks = [
     icon: "📦",
     title: "My Orders",
     detail: "Purchases & history",
+    tone: "from-[#E5F0E8] to-[#F5FBF6]",
   },
   {
     href: "/track-order",
     icon: "🚚",
     title: "Track Orders",
     detail: "Delivery updates",
+    tone: "from-[#DFEEF3] to-[#F4FAFC]",
   },
   {
     href: "/order-protection",
     icon: "🛡️",
     title: "Buyer Protection",
     detail: "Returns & requests",
+    tone: "from-[#EEE6F7] to-[#FCF8FF]",
   },
   {
     href: "/cart",
     icon: "🛒",
     title: "Shopping Cart",
     detail: "Items saved to buy",
+    tone: "from-[#F6EBD9] to-[#FFF9F1]",
   },
   {
     href: "/chat",
     icon: "💬",
     title: "Messages",
     detail: "Conversations",
+    tone: "from-[#E4EAF9] to-[#F8F9FF]",
   },
   {
     href: "/wishlist",
     icon: "🤍",
     title: "Wishlist",
     detail: "Your favourites",
+    tone: "from-[#F9E7EE] to-[#FFF8FB]",
   },
 ];
 
@@ -337,7 +343,7 @@ export default function AccountPage() {
     "GoldMart Member";
 
   return (
-    <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
+    <main className="min-h-screen bg-[#F8F9F7] pb-28 text-[#202A31] md:pb-12">
       <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
       {/* HEADER */}
@@ -396,13 +402,13 @@ export default function AccountPage() {
 
         {/* PREMIUM PROFILE HEADER */}
 
-        <section className="relative overflow-hidden rounded-[28px] bg-[#17191D] px-5 py-7 text-white shadow-[0_16px_45px_rgba(23,25,29,0.14)] sm:px-8 sm:py-9">
+        <section className="relative overflow-hidden rounded-[29px] bg-[linear-gradient(115deg,#1D3440_0%,#376C6A_58%,#8B745C_100%)] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.14)] sm:px-8 sm:py-11">
           <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#C5A46D]/25" />
 
           <div className="pointer-events-none absolute -right-8 -top-12 h-40 w-40 rounded-full bg-[#C5A46D]/10 blur-xl" />
 
           <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-[#E9D9BB]/50 bg-[#C5A46D] text-2xl font-black text-[#17191D]">
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[24px] border border-white/40 bg-[linear-gradient(135deg,#F2D7A9,#F8EEE0)] text-2xl font-black text-[#1C3A40] shadow-lg">
               {initials(displayName)}
             </div>
 
@@ -429,7 +435,7 @@ export default function AccountPage() {
 
           <div className="relative mt-7 border-t border-white/15 pt-5 text-xs text-[#D8D1C4]">
             Your shopping, orders and account tools
-            in one place.
+            in one place. Choose a shortcut below to get started.
           </div>
         </section>
 
@@ -471,10 +477,10 @@ export default function AccountPage() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="group min-w-0 rounded-2xl border border-[#E8E1D5] bg-white p-4 shadow-[0_5px_16px_rgba(23,25,29,0.035)] transition duration-200 hover:-translate-y-0.5 hover:border-[#C5A46D] hover:shadow-[0_12px_28px_rgba(23,25,29,0.08)] sm:p-5"
+                className={`group min-w-0 rounded-[23px] border border-[#E7E9E6] bg-gradient-to-br ${item.tone} p-4 shadow-[0_6px_18px_rgba(23,25,29,0.04)] transition duration-200 hover:-translate-y-1 hover:border-[#BDB49F] hover:shadow-[0_12px_28px_rgba(23,25,29,0.09)] sm:p-5`}
               >
                 <div className="flex items-start justify-between gap-2">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/60 bg-white/80 text-2xl shadow-sm">
                     {item.icon}
                   </span>
 
@@ -497,7 +503,7 @@ export default function AccountPage() {
 
         {/* BUYER / SELLER SWITCH */}
 
-        <section className="mt-8 overflow-hidden rounded-[24px] border border-[#E4D4B9] bg-gradient-to-br from-[#FFFDF8] to-[#F3E9D7] p-5 sm:p-7">
+        <section className="mt-8 overflow-hidden rounded-[24px] border border-[#B9D9D1] bg-gradient-to-br from-[#ECF7F2] via-[#F8FBF5] to-[#F4E7D8] p-5 shadow-[0_7px_26px_rgba(23,25,29,0.04)] sm:p-7">
           <div className="flex items-start gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-2xl shadow-sm">
               {isSeller ? "🛍️" : "🏪"}
@@ -524,7 +530,7 @@ export default function AccountPage() {
                 type="button"
                 onClick={handleSwitchRole}
                 disabled={switching}
-                className="mt-5 rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#96713D] disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-5 rounded-full bg-[#274D50] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#36746F] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {switching
                   ? "Switching..."
@@ -548,7 +554,7 @@ export default function AccountPage() {
         {/* ADMIN DASHBOARD */}
 
         {showAdminSection && (
-          <section className="mt-8 rounded-[24px] border border-[#D7BF97] bg-white p-5 shadow-sm sm:p-7">
+          <section className="mt-8 rounded-[24px] border border-[#D5C7A9] bg-[linear-gradient(140deg,#FFFFFF,#FBF8EF)] p-5 shadow-[0_7px_24px_rgba(23,25,29,0.045)] sm:p-7">
             <div className="flex items-start gap-3">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#17191D] text-2xl text-white">
                 🛡️
@@ -632,7 +638,7 @@ export default function AccountPage() {
             More from GoldMart
           </h2>
 
-          <div className="mt-4 overflow-hidden rounded-[24px] border border-[#E8E1D5] bg-white">
+          <div className="mt-4 overflow-hidden rounded-[24px] border border-[#DFE6DF] bg-white shadow-[0_7px_20px_rgba(23,25,29,0.035)]">
             <Link
               href="/notifications"
               className="flex items-center justify-between gap-4 border-b border-[#F0ECE5] px-5 py-4 text-sm font-bold transition hover:bg-[#FAF8F3]"
@@ -664,7 +670,7 @@ export default function AccountPage() {
         <button
           type="button"
           onClick={handleLogout}
-          className="mt-8 w-full rounded-full border border-[#D7BF97] bg-white px-6 py-4 text-sm font-extrabold text-[#17191D] transition hover:border-[#96713D] hover:bg-[#F5F1E9]"
+          className="mt-8 w-full rounded-full border border-[#E6C9CA] bg-[#FFF8F8] px-6 py-4 text-sm font-extrabold text-[#8F555A] transition hover:border-[#CC999A] hover:bg-[#FCEDEE]"
         >
           🚪 Log Out
         </button>
