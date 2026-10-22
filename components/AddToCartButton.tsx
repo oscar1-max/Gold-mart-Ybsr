@@ -60,7 +60,7 @@ export default function AddToCartButton({
           price: String(product.price),
           image:
             product.image_url ||
-            "/images/headphones.jpg",
+            "/images/icon-512.png",
           currency:
             product.currency ||
             "USD",
