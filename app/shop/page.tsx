@@ -158,7 +158,7 @@ export default function ShopPage() {
 
                   image:
                     product.image_url ||
-                    "/images/headphones.jpg",
+                    "/images/icon-512.png",
 
                   description:
                     product.description ||
