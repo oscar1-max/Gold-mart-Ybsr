@@ -27,6 +27,9 @@ type Product = {
   price: number;
   currency?: string | null;
   rating: number;
+  is_deal?: boolean;
+  original_price?: number;
+  deal_end_at?: string;
   image: string;
   description: string;
   category: string;
@@ -138,6 +141,9 @@ export default function ShopPage() {
             ? data.products.map(
                 (product: any) => ({
                   id: product.id,
+                  is_deal: Boolean(product.is_deal),
+                  original_price: Number(product.original_price || product.price),
+                  deal_end_at: product.deal_end_at,
 
                   name:
                     product.name,
