@@ -201,9 +201,27 @@ export default function SellerOrdersPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FAF8F3] pb-20 text-[#17191D]">
+    <main className="min-h-screen bg-[#F1F5F5] pb-28 text-[#20313B] md:pb-14">
+      <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(120deg,#183A48,#30677D 57%,#6AADB0)"}}>
+          <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
+          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#BDECE4]">GOLDMART SELLER STUDIO · Order Desk</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Every order in focus.</h2>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Keep customer orders organized and manage fulfillment with confidence.</p></div>
+        </section>
+        <nav aria-label="Seller Studio navigation" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
+          <Link href="/seller" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Dashboard</Link>
+          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Catalogue</Link>
+          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Add Product</Link>
+          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Orders</Link>
+          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Finance</Link>
+          <Link href="/chat" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Messages</Link>
+          <Link href="/account" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Account</Link>
+        </nav>
+      </div>
+
       <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
-      <header className="border-b border-[#E8E1D5] bg-white">
+      <header className="border-b border-[#DAE5E5] bg-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link href="/" className="text-2xl font-black tracking-tight">Gold<span className="text-[#B08A50]">Mart</span></Link>
           <Link href="/seller" className="rounded-full border border-[#E8E1D5] px-4 py-2.5 text-sm font-bold hover:border-[#C5A46D]">← Seller Dashboard</Link>
@@ -211,7 +229,7 @@ export default function SellerOrdersPage() {
       </header>
 
       <div className="mx-auto max-w-7xl px-4 pt-7 sm:px-6 sm:pt-10">
-        <section className="relative overflow-hidden rounded-[28px] bg-[#17191D] p-6 text-white sm:p-9">
+        <section className="relative overflow-hidden rounded-[28px] bg-[#164555] p-6 text-white sm:p-9">
           <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-24 h-60 w-60 rounded-full border border-[#C5A46D]/25" />
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">GoldMart · Seller Centre</p>
           <h1 className="mt-3 text-3xl font-black sm:text-4xl">Customer Orders</h1>
@@ -229,7 +247,7 @@ export default function SellerOrdersPage() {
               { label: "In fulfilment", value: counts.active },
               { label: "Delivered", value: counts.delivered },
             ].map((item) => (
-              <div key={item.label} className="rounded-[22px] border border-[#E8E1D5] bg-white p-5 shadow-sm">
+              <div key={item.label} className="rounded-[22px] border border-[#DAE5E5] bg-white p-5 shadow-sm">
                 <p className="text-xs font-semibold text-[#74716B]">{item.label}</p>
                 <p className="mt-2 text-3xl font-black">{item.value}</p>
               </div>
@@ -241,7 +259,7 @@ export default function SellerOrdersPage() {
         {actionError && <div role="alert" className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-sm text-red-800">{actionError}</div>}
 
         {!loading && !error && orders.length > 0 && (
-          <section className="mt-8 rounded-[22px] border border-[#E8E1D5] bg-white p-4 sm:p-5" aria-label="Find orders">
+          <section className="mt-8 rounded-[22px] border border-[#DAE5E5] bg-white p-4 sm:p-5" aria-label="Find orders">
             <div className="grid gap-3 sm:grid-cols-[1fr_220px]">
               <div>
                 <label htmlFor="order-search" className="mb-2 block text-xs font-bold text-[#74716B]">Find an order</label>
@@ -258,10 +276,10 @@ export default function SellerOrdersPage() {
           </section>
         )}
 
-        {loading && <div className="mt-8 animate-pulse rounded-[22px] border border-[#E8E1D5] bg-white p-10 text-center font-semibold text-[#74716B]">Loading your customer orders...</div>}
+        {loading && <div className="mt-8 animate-pulse rounded-[22px] border border-[#DAE5E5] bg-white p-10 text-center font-semibold text-[#74716B]">Loading your customer orders...</div>}
 
         {!loading && !error && orders.length === 0 && (
-          <section className="mt-8 rounded-[26px] border border-[#E8E1D5] bg-white px-5 py-14 text-center">
+          <section className="mt-8 rounded-[26px] border border-[#DAE5E5] bg-white px-5 py-14 text-center">
             <p className="text-5xl">📭</p>
             <h2 className="mt-4 text-2xl font-black">No customer orders yet</h2>
             <p className="mx-auto mt-2 max-w-lg text-sm text-[#74716B]">Orders containing your products will appear here when customers purchase them.</p>
@@ -270,7 +288,7 @@ export default function SellerOrdersPage() {
         )}
 
         {!loading && !error && orders.length > 0 && visibleOrders.length === 0 && (
-          <div className="mt-6 rounded-2xl border border-[#E8E1D5] bg-white p-8 text-center text-sm text-[#74716B]">No orders match your search or filter.</div>
+          <div className="mt-6 rounded-2xl border border-[#DAE5E5] bg-white p-8 text-center text-sm text-[#74716B]">No orders match your search or filter.</div>
         )}
 
         {!loading && !error && visibleOrders.length > 0 && (
@@ -279,7 +297,7 @@ export default function SellerOrdersPage() {
               const next = nextStatus(order.status);
               const busy = updatingId === order.id;
               return (
-                <article key={order.id} className="overflow-hidden rounded-[24px] border border-[#E8E1D5] bg-white shadow-[0_5px_20px_rgba(23,25,29,0.035)]">
+                <article key={order.id} className="overflow-hidden rounded-[24px] border border-[#DAE5E5] bg-white shadow-[0_5px_20px_rgba(23,25,29,0.035)]">
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E8E1D5] p-5 sm:p-6">
                     <div>
                       <p className="text-lg font-black">Order #{order.id}</p>
