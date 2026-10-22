@@ -13,6 +13,10 @@ type Product = {
   name: string;
   description?: string;
   price: number | string;
+  currency?:string;
+  original_price?: number | string;
+  is_deal?: boolean;
+  deal_end_at?: string;
   stock: number;
   image_url?: string;
   category_name?: string;
@@ -366,8 +370,9 @@ export default function ProductPage() {
               {product.name}
             </h1>
 
+            {product.is_deal&&<div className="mt-4"><span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-black text-orange-800">⚡ Flash Deal</span><p className="mt-2 text-sm text-gray-500 line-through">{product.currency==="NGN"?"₦":"$"}{Number(product.original_price||price).toFixed(2)}</p>{product.deal_end_at&&<p className="mt-1 text-xs text-orange-700">Ends {new Date(product.deal_end_at).toLocaleString()}</p>}</div>}
             <p className="mt-4 text-2xl font-black">
-              ${price.toFixed(2)}
+              {product.currency==="NGN"?"₦":"$"}{price.toFixed(2)}
             </p>
 
             <p className="mt-3 text-sm text-gray-600">
@@ -449,7 +454,7 @@ export default function ProductPage() {
             </div>
 
             <p className="mt-6 text-xl font-black">
-              Total: ${total.toFixed(2)}
+              Total: {product.currency==="NGN"?"₦":"$"}{total.toFixed(2)}
             </p>
                         <div className="mt-6 grid gap-3 sm:grid-cols-2">
               <button

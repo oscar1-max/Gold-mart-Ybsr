@@ -132,6 +132,10 @@ export default function AdminMonitoringPage() {
   const [notice, setNotice] =
     useState("");
 
+  const [evidence,setEvidence] = useState<Record<string, {id:number;order_id?:number;status:string;created_at:string}[]>>({});
+  const [evidenceBusy,setEvidenceBusy]=useState<string|null>(null);
+  const [evidenceError,setEvidenceError]=useState("");
+
   const [lastScan, setLastScan] =
     useState<string | null>(null);
 
@@ -354,6 +358,17 @@ export default function AdminMonitoringPage() {
     } finally {
       setActiveAlertId(null);
     }
+  }
+
+  async function showEvidence(id:string|number) {
+    const key=String(id); if(evidenceBusy)return;
+    if(evidence[key]){setEvidence(current=>{const next={...current};delete next[key];return next;});return;}
+    setEvidenceBusy(key);setEvidenceError("");
+    try{
+      const result=await apiRequest<{success:boolean;records:{id:number;order_id?:number;status:string;created_at:string}[]}>(`/api/admin-monitoring/alerts/${encodeURIComponent(key)}/evidence`);
+      setEvidence(current=>({...current,[key]:result.records||[]}));
+    } catch(err){setEvidenceError(err instanceof Error?err.message:"Could not load related records.");}
+    finally{setEvidenceBusy(null);}
   }
 
   // =========================================
@@ -699,6 +714,11 @@ export default function AdminMonitoringPage() {
                         </span>
                       </div>
 
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {alert.alert_key?.startsWith("refund")&&<Link href="/admin/refunds" className="rounded-xl bg-[#E7F1EA] px-4 py-2 text-xs font-black text-[#28604F]">Open Refund Records →</Link>}
+                        {alert.alert_key?.startsWith("orders")&&<Link href="/admin/reports" className="rounded-xl bg-[#EBF1FA] px-4 py-2 text-xs font-black text-[#375E85]">Review Order Reports →</Link>}
+                        {alert.alert_key?.startsWith("allocations")&&<Link href="/admin/ai" className="rounded-xl bg-[#EFEAF9] px-4 py-2 text-xs font-black text-[#655288]">Open Allocation Insights →</Link>}
+                      </div>
                       <h3 className="mt-4 text-lg font-black">
                         {alert.title}
                       </h3>
@@ -741,6 +761,9 @@ export default function AdminMonitoringPage() {
                         )}
                       </div>
 
+                      <button type="button" onClick={()=>void showEvidence(alert.id)} disabled={evidenceBusy!==null} className="mt-4 rounded-xl border border-[#BAD9D2] bg-[#E9F5F0] px-4 py-2.5 text-xs font-black text-[#2F685A] disabled:opacity-50">{evidenceBusy===String(alert.id)?"Loading records...":evidence[String(alert.id)]?"Hide Related Records":"View Related Records →"}</button>
+                      {evidence[String(alert.id)] && <div className="mt-3 rounded-xl border border-[#DDEAE5] bg-[#F8FBFA] p-4"><p className="text-xs font-black">Matching records (up to 30, newest or oldest by issue)</p>{evidence[String(alert.id)].length===0?<p className="mt-2 text-xs text-[#58736A]">No records currently match this rule. Run a new scan.</p>:<div className="mt-3 space-y-2">{evidence[String(alert.id)].map(record=><p key={record.id} className="rounded-lg bg-white px-3 py-2 text-xs">Record #{record.id}{record.order_id? ` · Order #${record.order_id}`:""} · {record.status} · {formatDate(record.created_at)}</p>)}</div>}</div>}
+                      {evidenceError&&<p role="alert" className="mt-3 text-xs text-red-700">{evidenceError}</p>}
                       {/* ADMIN ACTIONS */}
 
                       <div className="mt-5 flex flex-wrap gap-2">
