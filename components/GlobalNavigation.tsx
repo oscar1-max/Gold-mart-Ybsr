@@ -148,8 +148,8 @@ export default function GlobalNavigation() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [isAdmin, setIsAdmin] =
-    useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminMenuOpen, setAdminMenuOpen] = useState(false);
 
   // ===================================================
   // TRACK GOLDMART PAGE HISTORY
@@ -340,97 +340,61 @@ export default function GlobalNavigation() {
     router.push("/admin/support-assistant");
   }
 
-  // ===================================================
-  // INTERFACE
-  // ===================================================
+  // Keep the mobile dock consistent on every page; the homepage no longer
+  // renders a competing bottom bar. AI Admin remains backend-authorized.
+  const mobileTabs = [
+    { href: "/", icon: "⌂", label: "Home" },
+    { href: "/categories", icon: "▦", label: "Categories" },
+    { href: "/orders", icon: "▤", label: "Orders" },
+    { href: "/cart", icon: "🛒", label: "Cart" },
+    { href: "/account", icon: "◉", label: "You" },
+  ];
 
   return (
-    <nav
-      aria-label="GoldMart page navigation"
-      style={navigationStyle}
-    >
-      {/* BACK */}
+    <>
+      <nav aria-label="GoldMart mobile navigation" className="fixed inset-x-0 bottom-0 z-[90] border-t border-[#E5DED2] bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_35px_rgba(23,25,29,0.07)] backdrop-blur-xl md:hidden">
+        <div className="mx-auto grid h-[66px] max-w-xl grid-cols-5 items-center px-2">
+          {mobileTabs.map((tab) => {
+            const active = pathname === tab.href || (tab.href !== "/" && pathname?.startsWith(tab.href + "/"));
+            return (
+              <button key={tab.href} type="button" onClick={() => router.push(tab.href)}
+                aria-current={active ? "page" : undefined}
+                className={`flex h-[58px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl text-center transition ${active ? "bg-[#F5EEE2] text-[#8F6934]" : "text-[#5B5A55] hover:bg-[#FAF8F3]"}`}>
+                <span aria-hidden="true" className="text-[22px] leading-6">{tab.icon}</span>
+                <span className="text-[10px] font-bold">{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
 
-      <button
-        type="button"
-        onClick={goBack}
-        style={buttonStyle}
-        aria-label="Go back"
-      >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M19 12H5" />
-          <path d="m12 19-7-7 7-7" />
-        </svg>
-
-        Back
+      {pathname !== "/" && (
+        <button type="button" onClick={goBack} aria-label="Go back to the previous page"
+          className="fixed bottom-[calc(82px+env(safe-area-inset-bottom))] left-3 z-[80] flex h-11 items-center gap-2 rounded-full border border-[#DCCBAE] bg-white/95 px-4 text-xs font-bold text-[#17191D] shadow-lg backdrop-blur hover:border-[#96713D] md:bottom-6 md:left-6">
+          ← Back
+        </button>
+      )}
+      <button type="button" onClick={goHome} aria-label="Go to GoldMart homepage"
+        className="fixed bottom-6 right-4 z-[80] hidden h-11 items-center gap-2 rounded-full border border-[#DCCBAE] bg-white/95 px-4 text-xs font-bold text-[#17191D] shadow-lg backdrop-blur hover:border-[#96713D] md:flex">
+        ⌂ Home
       </button>
-
-      {/* HOME */}
-
-      <button
-        type="button"
-        onClick={goHome}
-        style={buttonStyle}
-        aria-label="Go to homepage"
-      >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="m3 10 9-7 9 7" />
-          <path d="M5 9v12h14V9" />
-          <path d="M9 21v-8h6v8" />
-        </svg>
-
-        Home
-      </button>
-
-      {/* ADMIN-ONLY BUTTONS */}
 
       {isAdmin && (
-        <>
-          <button
-            type="button"
-            onClick={goAiAdmin}
-            style={aiButtonStyle}
-          >
-            🤖 AI Admin
+        <div className="fixed bottom-[calc(82px+env(safe-area-inset-bottom))] right-3 z-[85] flex flex-col items-end gap-2 md:bottom-6 md:right-28">
+          {adminMenuOpen && (
+            <div className="flex flex-col gap-1.5 rounded-2xl border border-[#E6DCCD] bg-white p-2 shadow-xl" aria-label="Administrator shortcuts">
+              <button type="button" onClick={() => { setAdminMenuOpen(false); goAiAdmin(); }} className="rounded-xl px-4 py-2.5 text-left text-xs font-bold hover:bg-[#FAF8F3]">🤖 AI Admin</button>
+              <button type="button" onClick={() => { setAdminMenuOpen(false); goMonitoring(); }} className="rounded-xl px-4 py-2.5 text-left text-xs font-bold hover:bg-[#FAF8F3]">🛡️ Monitoring</button>
+              <button type="button" onClick={() => { setAdminMenuOpen(false); goSupportAssistant(); }} className="rounded-xl px-4 py-2.5 text-left text-xs font-bold hover:bg-[#FAF8F3]">💬 Support Assistant</button>
+            </div>
+          )}
+          <button type="button" aria-expanded={adminMenuOpen} aria-label="Toggle administrator tools"
+            onClick={() => setAdminMenuOpen(value => !value)}
+            className="rounded-full border border-[#96713D] bg-[#17191D] px-4 py-3 text-xs font-extrabold text-[#F0DEBD] shadow-xl">
+            {adminMenuOpen ? "✕ Close" : "✦ Admin Tools"}
           </button>
-
-          <button
-            type="button"
-            onClick={goMonitoring}
-            style={monitoringButtonStyle}
-          >
-            🛡️ Monitoring
-          </button>
-
-          <button
-            type="button"
-            onClick={goSupportAssistant}
-            style={supportButtonStyle}
-          >
-            💬 Support Assistant
-          </button>
-        </>
+        </div>
       )}
-    </nav>
+    </>
   );
 }

@@ -18,6 +18,7 @@ const categories = [
   "Beauty & Cosmetics",
   "Groceries",
   "Home & Kitchen",
+  "Jewelry & Accessories",
 ];
 
 type Product = {

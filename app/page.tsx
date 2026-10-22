@@ -41,9 +41,11 @@ const discoveryTabs = ["All", "Deals", "5-Star Rated", "Best Selling", "New Arri
 
 const quickLinks = [
   { href: "/categories", icon: "▦", label: "Categories" },
+  { href: "/shop", icon: "🛍️", label: "Shop All" },
   { href: "/track-order", icon: "📦", label: "Track Order" },
   { href: "/order-protection", icon: "🛡️", label: "Buyer Protection" },
   { href: "/help", icon: "❔", label: "Help Centre" },
+  { href: "/chat", icon: "💬", label: "Messages" },
 ];
 
 const cardClass =
@@ -129,6 +131,7 @@ function ProductCard({ product, compact = false }: { product: Product; compact?:
                 price: product.price,
                 image_url: product.image_url,
                 stock: product.stock,
+                currency: product.currency || "USD",
               }}
               disabled={!available}
             />
@@ -284,7 +287,7 @@ export default function Home() {
 
       {/* LUXURY HERO */}
       <section className="mx-auto max-w-7xl px-4 pb-5 pt-5 sm:px-6 sm:pt-7 lg:px-8">
-        <div className="relative isolate overflow-hidden rounded-[28px] bg-[#17191D] px-6 pb-7 pt-9 text-white shadow-[0_18px_42px_rgba(23,25,29,0.14)] sm:px-10 sm:py-12 lg:px-16 lg:py-16">
+        <div className="relative isolate overflow-hidden rounded-[30px] bg-[linear-gradient(125deg,#17191D_0%,#262623_58%,#5E4A32_100%)] px-6 pb-8 pt-10 text-white shadow-[0_18px_42px_rgba(23,25,29,0.14)] sm:px-10 sm:py-14 lg:px-16 lg:py-20">
           <div className="pointer-events-none absolute -right-20 -top-32 h-[340px] w-[340px] rounded-full border border-[#C5A46D]/25 sm:right-0" />
           <div className="pointer-events-none absolute -right-10 -top-20 h-[230px] w-[230px] rounded-full border border-[#C5A46D]/30" />
           <div className="pointer-events-none absolute bottom-[-110px] right-[-85px] h-[290px] w-[290px] rounded-full bg-[#C5A46D]/15 blur-3xl" />
@@ -292,14 +295,15 @@ export default function Home() {
           <div className="relative z-10 max-w-2xl">
             <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#E9D9BB] sm:text-xs">The GoldMart Collection</p>
             <h1 className="mt-3 max-w-xl text-[34px] font-black leading-[1.08] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
-              Everyday finds.<br /><span className="text-[#D6B780]">Elevated shopping.</span>
+              A better way to shop.<br /><span className="text-[#E2C28C]">Made for your everyday.</span>
             </h1>
             <p className="mt-4 max-w-md text-sm leading-6 text-[#DED8CE] sm:text-base">
-              Explore phones, fashion, electronics and more, all in one place.
+              Find products you'll love, browse by department, and keep your orders, messages and account together in one easy place.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link href="/shop" className="inline-flex items-center justify-center rounded-full bg-[#C5A46D] px-6 py-3 text-sm font-extrabold text-[#17191D] transition hover:bg-[#E9D9BB]">Explore the Shop →</Link>
               <Link href="/categories" className="inline-flex items-center justify-center rounded-full border border-[#8D816D] px-6 py-3 text-sm font-bold text-white transition hover:border-[#E9D9BB]">Browse Categories</Link>
+              <Link href="/orders" className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/20">My Orders ↗</Link>
             </div>
           </div>
         </div>
@@ -315,10 +319,10 @@ export default function Home() {
             </div>
             <Link href="/categories" className="shrink-0 text-xs font-bold text-[#96713D] hover:underline sm:text-sm">View All →</Link>
           </div>
-          <div className="og-scrollbar mt-5 flex gap-4 overflow-x-auto pb-1 sm:gap-6">
+          <div className="og-scrollbar mt-5 grid grid-cols-4 gap-3 sm:grid-cols-8 sm:gap-4">
             {categories.map((category) => (
-              <Link key={category.name} href={`/shop?category=${encodeURIComponent(category.value)}`} className="group flex min-w-[78px] flex-col items-center gap-2 text-center sm:min-w-[96px]">
-                <span className="flex h-[68px] w-[68px] items-center justify-center rounded-[22px] border border-[#EAE3D9] bg-[#F8F4EC] text-[29px] transition group-hover:-translate-y-0.5 group-hover:border-[#C5A46D] group-hover:bg-[#F3E8D5] sm:h-20 sm:w-20">{category.icon}</span>
+              <Link key={category.name} href={`/shop?category=${encodeURIComponent(category.value)}`} className="group flex min-w-0 flex-col items-center gap-2 text-center">
+                <span className="flex h-[64px] w-full max-w-20 items-center justify-center rounded-[20px] border border-[#EAE3D9] bg-[#F8F4EC] text-[29px] transition group-hover:-translate-y-0.5 group-hover:border-[#C5A46D] group-hover:bg-[#F3E8D5] sm:h-20">{category.icon}</span>
                 <span className="text-[11px] font-bold text-[#47433E] sm:text-xs">{category.name}</span>
               </Link>
             ))}
@@ -468,23 +472,7 @@ export default function Home() {
         <p className="mt-6 border-t border-[#F0ECE5] pt-5 text-[11px] text-[#8A847A]">© {new Date().getFullYear()} GoldMart. All rights reserved.</p>
       </footer>
 
-      {/* MOBILE TAB BAR */}
-      <nav aria-label="Mobile navigation" className="fixed inset-x-0 bottom-0 z-50 border-t border-[#EAE2D7] bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_25px_rgba(23,25,29,0.05)] backdrop-blur-xl md:hidden">
-        <div className="mx-auto grid h-[66px] max-w-lg grid-cols-5 items-center px-1">
-          {[
-            { href: "/", icon: "⌂", label: "Home", active: true },
-            { href: "/categories", icon: "▦", label: "Categories", active: false },
-            { href: "/orders", icon: "📦", label: "Orders", active: false },
-            { href: "/cart", icon: "🛒", label: "Cart", active: false },
-            { href: user ? "/account" : "/login", icon: "👤", label: "You", active: false },
-          ].map((item) => (
-            <Link key={item.label} href={item.href} className="flex min-w-0 flex-col items-center justify-center gap-0.5 px-1 text-center" aria-current={item.active ? "page" : undefined}>
-              <span className={`text-xl leading-6 ${item.active ? "text-[#96713D]" : "text-[#514B43]"}`}>{item.icon}</span>
-              <span className={`text-[10px] font-bold ${item.active ? "text-[#96713D]" : "text-[#6D665E]"}`}>{item.label}</span>
-            </Link>
-          ))}
-        </div>
-      </nav>
+
     </main>
   );
 }
