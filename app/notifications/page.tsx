@@ -51,6 +51,7 @@ export default function NotificationsPage() {
   const [error, setError] =
     useState("");
 
+  const [filter, setFilter] = useState<"all" | "unread" | "read">("all");
   const [expandedId, setExpandedId] =
     useState<number | null>(null);
 
@@ -385,19 +386,29 @@ export default function NotificationsPage() {
   // COUNTERS
   // ===================================================
 
-  const unreadCount = notifications.filter(
-    (item) => !item.is_read
-  ).length;
+  const unreadCount = notifications.filter((item) => !item.is_read).length;
+  const visibleNotifications = notifications.filter((item) => filter === "all" || (filter === "unread" ? !item.is_read : item.is_read));
+  const readCount = notifications.length - unreadCount;
+  function notificationTone(type?: string | null) {
+    switch(type) {
+      case "message": return "bg-[#E5EDFA] text-[#46618D]";
+      case "order": return "bg-[#E1F1E8] text-[#38745C]";
+      case "seller": return "bg-[#F9EED8] text-[#946A32]";
+      case "payment": return "bg-[#E6F3F1] text-[#377F77]";
+      case "review": return "bg-[#FAE9E9] text-[#A45A62]";
+      default: return "bg-[#EFE9F8] text-[#786397]";
+    }
+  }
 
   // ===================================================
   // PAGE
   // ===================================================
 
   return (
-    <main className="min-h-screen bg-[#F7F6F2] text-black">
+    <main className="min-h-screen bg-[#F8F9F7] pb-28 text-[#202A31] md:pb-8">
 
       {/* HEADER */}
-      <header className="border-b border-black/10 bg-white">
+      <header className="border-b border-[#E6E8E5] bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link
             href="/"
@@ -418,7 +429,17 @@ export default function NotificationsPage() {
         </div>
       </header>
 
-      <section className="mx-auto max-w-5xl px-4 py-8 sm:py-12">
+      <section className="mx-auto max-w-5xl px-4 py-6 sm:py-10">
+        <div className="relative mb-7 overflow-hidden rounded-[28px] px-6 py-9 text-white shadow-[0_16px_35px_rgba(20,39,44,0.13)] sm:px-9 sm:py-11" style={{background:"linear-gradient(115deg,#1F3542,#376F70 58%,#9B8065)"}}>
+          <span className="pointer-events-none absolute -right-8 -top-16 text-[180px] opacity-10" aria-hidden="true">✦</span>
+          <p className="relative text-[10px] font-bold uppercase tracking-[0.2em] text-[#F2DDBD]">Your GoldMart updates</p>
+          <h2 className="relative mt-3 text-3xl font-black tracking-tight sm:text-4xl">Stay in the know.</h2>
+          <p className="relative mt-3 max-w-lg text-sm leading-6 text-white/85">Messages, orders, payments and important activity — thoughtfully organized in one place.</p>
+          <div className="relative mt-6 flex flex-wrap gap-2">
+            <Link href="/orders" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white hover:bg-white/25">My Orders ↗</Link>
+            <Link href="/chat" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white hover:bg-white/25">Messages ↗</Link>
+          </div>
+        </div>
 
         {/* TITLE */}
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -466,7 +487,30 @@ export default function NotificationsPage() {
           </div>
         </div>
 
-        {/* NOT LOGGED IN */}
+        {token && !loading && !error && (
+          <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3" aria-label="Notification counts">
+            {[
+              {value:notifications.length,label:"Total",tone:"bg-white text-[#273B43]"},
+              {value:unreadCount,label:"Unread",tone:"bg-[#E5F4ED] text-[#326A55]"},
+              {value:readCount,label:"Read",tone:"bg-[#E9EFF8] text-[#4D6489]"},
+            ].map((item) => (
+              <div key={item.label} className={`rounded-2xl border border-[#E5EAE6] p-4 shadow-sm ${item.tone}`}>
+                <p className="text-2xl font-black">{item.value}</p><p className="mt-1 text-[11px] font-bold">{item.label}</p>
+              </div>
+            ))}
+          </div>
+        )}
+        {token && !loading && notifications.length > 0 && (
+          <div role="group" aria-label="Filter notifications" className="mt-6 flex gap-2 overflow-x-auto pb-1">
+            {([{key:"all",label:"All updates"},{key:"unread",label:"Unread"},{key:"read",label:"Read"}] as const).map(item => (
+              <button key={item.key} type="button" onClick={() => setFilter(item.key)} aria-pressed={filter === item.key}
+                className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition ${filter === item.key ? "border-[#25464C] bg-[#25464C] text-white" : "border-[#E0E4E0] bg-white text-[#53605E] hover:border-[#B9CFC9]"}`}>
+                {item.label}
+              </button>
+            ))}
+          </div>
+        )}
+        {/* NOT LOGGED IN */
         {ready && !token && (
           <div className="mt-8 rounded-3xl bg-white p-10 text-center shadow-sm">
             <div className="text-5xl">👤</div>
@@ -528,7 +572,7 @@ export default function NotificationsPage() {
           token &&
           notifications.length > 0 && (
             <div className="mt-8 space-y-3">
-              {notifications.map((notification) => {
+              {visibleNotifications.map((notification) => {
                 const isExpanded =
                   expandedId === notification.id;
 
@@ -541,10 +585,10 @@ export default function NotificationsPage() {
                 return (
                   <article
                     key={notification.id}
-                    className={`overflow-hidden rounded-2xl border bg-white shadow-sm ${
+                    className={`overflow-hidden rounded-[22px] border bg-white shadow-[0_5px_20px_rgba(25,43,45,0.04)] transition hover:shadow-lg ${
                       notification.is_read
-                        ? "border-gray-100"
-                        : "border-[#C9A227] bg-[#FFFDF5]"
+                        ? "border-[#E6EAE7]"
+                        : "border-[#A5C9BA] bg-[#F5FBF7]"
                     }`}
                   >
                     {/* NOTIFICATION HEADER */}
@@ -557,10 +601,10 @@ export default function NotificationsPage() {
                             : notification.id
                         );
                       }}
-                      className="w-full p-5 text-left"
+                      className="w-full p-5 text-left sm:p-6" aria-expanded={isExpanded}
                     >
                       <div className="flex items-start gap-3">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-black text-xl">
+                        <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-xl ${notificationTone(notification.type)}`}>
                           {notificationIcon(
                             notification.type
                           )}
@@ -569,7 +613,7 @@ export default function NotificationsPage() {
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
                             {!notification.is_read && (
-                              <span className="h-2 w-2 rounded-full bg-[#C9A227]" />
+                              <span className="h-2 w-2 rounded-full bg-[#3B987E]" />
                             )}
 
                             <h2 className="font-black">
@@ -601,7 +645,7 @@ export default function NotificationsPage() {
                     </button>
 
                     {/* ACTIONS */}
-                    <div className="flex flex-wrap items-center gap-2 border-t bg-gray-50 p-4">
+                    <div className="flex flex-wrap items-center gap-2 border-t border-[#E6EAE6] bg-[#FAFBF9] p-4">
 
                       {/* OPEN CHAT / ORDER */}
                       {destination && (
@@ -615,7 +659,7 @@ export default function NotificationsPage() {
                               );
                             }
                           }}
-                          className="rounded-full bg-black px-4 py-2 text-xs font-black text-white hover:bg-[#C9A227] hover:text-black"
+                          className="rounded-full bg-[#25464C] px-4 py-2 text-xs font-black text-white hover:bg-[#36756F]"
                         >
                           {notification.type === "message"
                             ? "💬 Open Chat"
@@ -633,7 +677,7 @@ export default function NotificationsPage() {
                             !notification.is_read
                           )
                         }
-                        className="rounded-full border bg-white px-4 py-2 text-xs font-bold disabled:opacity-50"
+                        className="rounded-full border border-[#D4DEDB] bg-white px-4 py-2 text-xs font-bold text-[#355952] hover:bg-[#F0F7F4] disabled:opacity-50"
                       >
                         {isBusy
                           ? "Working..."
@@ -683,7 +727,7 @@ export default function NotificationsPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t bg-black px-4 py-8 text-center text-white">
+      <footer className="border-t border-[#E3E7E3] bg-[#243941] px-4 py-8 text-center text-white">
         <p className="text-2xl font-black">
           Gold<span className="text-[#D4AF37]">Mart</span>
         </p>
