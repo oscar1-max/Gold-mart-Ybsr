@@ -13,12 +13,26 @@ type Product = {
   name: string;
   description?: string;
   price: number | string;
+  currency?: string | null;
   stock: number;
   image_url?: string;
   category_name?: string;
   seller_id?: number;
   seller_name?: string;
 };
+
+function formatPrice(amount: number, currency?: string | null) {
+  const code = String(currency || "USD").toUpperCase();
+  if (!Number.isFinite(amount)) return "Price unavailable";
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency", currency: code,
+      minimumFractionDigits: 2, maximumFractionDigits: 2,
+    }).format(amount);
+  } catch {
+    return `${code} ${amount.toFixed(2)}`;
+  }
+}
 
 export default function ProductPage() {
   const params = useParams();
@@ -201,12 +215,14 @@ export default function ProductPage() {
   const handleAddToCart = () => {
     if (!product) return;
 
+    if (product.stock <= 0 || quantity > product.stock) return;
     addToCart({
-  id: product.id,
-  name: product.name,
-  price: String(product.price),
-  image: product.image_url || "",
-});
+      id: product.id,
+      name: product.name,
+      price: String(product.price),
+      image: product.image_url || "",
+      currency: product.currency || "USD",
+    }, quantity);
 
     alert("Product added to cart!");
   };
@@ -214,12 +230,14 @@ export default function ProductPage() {
   const handleBuyNow = () => {
     if (!product) return;
 
+    if (product.stock <= 0 || quantity > product.stock) return;
     addToCart({
-  id: product.id,
-  name: product.name,
-  price: String(product.price),
-  image: product.image_url || "",
-});
+      id: product.id,
+      name: product.name,
+      price: String(product.price),
+      image: product.image_url || "",
+      currency: product.currency || "USD",
+    }, quantity);
 
     router.push("/checkout");
   };
@@ -367,7 +385,7 @@ export default function ProductPage() {
             </h1>
 
             <p className="mt-4 text-2xl font-black">
-              ${price.toFixed(2)}
+              {formatPrice(price, product.currency)}
             </p>
 
             <p className="mt-3 text-sm text-gray-600">
@@ -449,7 +467,7 @@ export default function ProductPage() {
             </div>
 
             <p className="mt-6 text-xl font-black">
-              Total: ${total.toFixed(2)}
+              Total: {formatPrice(total, product.currency)}
             </p>
                         <div className="mt-6 grid gap-3 sm:grid-cols-2">
               <button
