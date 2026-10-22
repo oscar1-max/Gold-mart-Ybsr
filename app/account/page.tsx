@@ -554,7 +554,7 @@ export default function AccountPage() {
         {/* ADMIN DASHBOARD */}
 
         {showAdminSection && (
-          <section className="mt-8 rounded-[24px] border border-[#D5C7A9] bg-[linear-gradient(140deg,#FFFFFF,#FBF8EF)] p-5 shadow-[0_7px_24px_rgba(23,25,29,0.045)] sm:p-7">
+          <section className="mt-8 rounded-[26px] border border-[#C5D8D3] bg-[linear-gradient(135deg,#F0F8F5,#F8F5F0,#F3F0FA)] p-5 shadow-[0_10px_30px_rgba(22,42,46,0.06)] sm:p-7">
             <div className="flex items-start gap-3">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#17191D] text-2xl text-white">
                 🛡️
@@ -579,22 +579,22 @@ export default function AccountPage() {
                 <div className="mt-5 flex flex-wrap gap-3">
                   <Link
                     href="/admin"
-                    className="rounded-full bg-[#C5A46D] px-5 py-3 text-sm font-black text-[#17191D] transition hover:bg-[#E9D9BB]"
+                    className="rounded-2xl bg-[#274E52] px-5 py-3 text-sm font-black text-white transition hover:bg-[#36756E]"
                   >
                     🛡️ Admin Overview →
                   </Link>
 
                   {isAiAdmin && (
                     <>
-                      <Link href="/admin/ai" className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white">🤖 AI Admin</Link>
-                      <Link href="/admin/monitoring" className="rounded-full border border-[#D7BF97] px-5 py-3 text-sm font-bold">AI Monitoring</Link>
-                      <Link href="/admin/support-assistant" className="rounded-full border border-[#D7BF97] px-5 py-3 text-sm font-bold">Support Assistant</Link>
+                      <Link href="/admin/ai" className="rounded-2xl bg-[#463D78] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#5E52A0]">🤖 AI Admin</Link>
+                      <Link href="/admin/monitoring" className="rounded-2xl border border-[#B8D8D2] bg-[#E5F5EF] px-5 py-3 text-sm font-bold text-[#265D59] transition hover:bg-[#D3EDE5]">◎ AI Monitoring</Link>
+                      <Link href="/admin/support-assistant" className="rounded-2xl border border-[#E9D0DD] bg-[#FAEAF1] px-5 py-3 text-sm font-bold text-[#86526A] transition hover:bg-[#F5DDE9]">✎ Support Assistant</Link>
                     </>
                   )}
                   {isLegacyReportsAdmin && (
                     <Link
                       href="/admin/reports"
-                      className="rounded-full border border-[#D7BF97] px-5 py-3 text-sm font-bold transition hover:bg-[#FAF8F3]"
+                      className="rounded-2xl border border-[#CCDCEE] bg-[#E9F2FC] px-5 py-3 text-sm font-bold text-[#3F6289] transition hover:bg-[#D9EAF9]"
                     >
                       📩 Reports & Users
                     </Link>
@@ -603,7 +603,7 @@ export default function AccountPage() {
                   {isRefundAdmin && (
                     <Link
                       href="/admin/refunds"
-                      className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#96713D]"
+                      className="rounded-2xl bg-[#715436] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#946E47]"
                     >
                       💳 Manage Refunds
                     </Link>
@@ -612,7 +612,7 @@ export default function AccountPage() {
                   {isSupportAdmin && (
                     <Link
                       href="/admin/support"
-                      className="rounded-full border border-[#D7BF97] bg-[#FAF8F3] px-5 py-3 text-sm font-bold transition hover:border-[#C5A46D] hover:bg-[#F3E9D7]"
+                      className="rounded-2xl border border-[#C5E2E7] bg-[#E7F5F8] px-5 py-3 text-sm font-bold text-[#306879] transition hover:bg-[#D9F0F5]"
                     >
                       🎧 Support Inbox
                     </Link>

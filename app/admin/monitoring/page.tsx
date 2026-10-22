@@ -396,7 +396,29 @@ export default function AdminMonitoringPage() {
   // =========================================
 
   return (
-    <main className="min-h-screen bg-[#F8F7F3] text-gray-900">
+    <main className="min-h-screen bg-[#F7F9F8] pb-32 text-[#202A31] md:pb-12">
+      {/* Admin visual identity: existing permissions and actions remain authoritative */}
+      <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(115deg,#153B43,#26777A 55%,#518F83)"}}>
+          <span aria-hidden="true" className="pointer-events-none absolute -right-6 -top-12 text-[150px] leading-none opacity-10">◎</span>
+          <div className="relative">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#BDE8E0"}}>GOLDMART PRIVATE ADMIN · OPERATIONS RADAR</p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">AI Monitoring</h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Track alerts and keep your marketplace in view.</p>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#B7EDCF]"/>Authorized access required</div>
+          </div>
+        </div>
+        <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#284F55] bg-[#284F55] text-white">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Support</Link>
+        </nav>
+      </div>
+
       <header className="border-b border-[#E9DEBE] bg-white">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-5">
           <Link
@@ -438,7 +460,7 @@ export default function AdminMonitoringPage() {
 
         {/* SECURITY NOTICE */}
 
-        <section className="rounded-2xl border border-[#E7D9AA] bg-white p-5">
+        <section className="rounded-2xl border border-[#BFDCD8] bg-white p-5">
           <p className="font-black">
             🔒 Administrator-only monitoring
           </p>
@@ -478,7 +500,7 @@ export default function AdminMonitoringPage() {
         {/* LOADING */}
 
         {loading && (
-          <div className="rounded-2xl border bg-white p-8 text-center">
+          <div className="rounded-[21px] border border-[#E3EAE6] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-8 text-center">
             Loading monitoring alerts...
           </div>
         )}
@@ -489,7 +511,7 @@ export default function AdminMonitoringPage() {
           <>
             {/* ACTION BAR */}
 
-            <section className="rounded-2xl border bg-white p-5 shadow-sm">
+            <section className="rounded-[21px] border border-[#E3EAE6] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-black">
@@ -509,7 +531,7 @@ export default function AdminMonitoringPage() {
                     onClick={() =>
                       void scanMarketplace()
                     }
-                    className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
+                    className="rounded-full bg-[#254F54] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
                   >
                     {scanning
                       ? "Scanning..."
@@ -616,7 +638,7 @@ export default function AdminMonitoringPage() {
               ].map((metric) => (
                 <div
                   key={metric.label}
-                  className="rounded-2xl border bg-white p-4"
+                  className="rounded-[21px] border border-[#E3EAE6] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-4"
                 >
                   <p className="text-xs font-semibold text-gray-500">
                     {metric.label}
@@ -639,7 +661,7 @@ export default function AdminMonitoringPage() {
             {/* ALERT CARDS */}
 
             {sortedAlerts.length === 0 ? (
-              <div className="rounded-2xl border bg-white p-8 text-center">
+              <div className="rounded-[21px] border border-[#E3EAE6] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-8 text-center">
                 <p className="font-black">
                   No saved alerts in this view.
                 </p>
@@ -659,7 +681,7 @@ export default function AdminMonitoringPage() {
                   return (
                     <article
                       key={String(alert.id)}
-                      className="rounded-2xl border border-[#E7D9AA] bg-white p-5 shadow-sm"
+                      className="rounded-2xl border border-[#BFDCD8] bg-white p-5 shadow-sm"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex flex-wrap items-center gap-2">
