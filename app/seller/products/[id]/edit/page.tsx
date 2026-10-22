@@ -43,6 +43,10 @@ export default function EditProductPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [dealPrice,setDealPrice]=useState("");
+  const [dealEnd,setDealEnd]=useState("");
+  const [dealBusy,setDealBusy]=useState(false);
+  const [dealMessage,setDealMessage]=useState("");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -136,6 +140,24 @@ export default function EditProductPage() {
     loadProduct();
     loadCategories();
   }, [productId, router]);
+
+  async function saveDeal(clear=false) {
+    if (!productId || dealBusy) return;
+    setDealBusy(true);setDealMessage("");
+    try {
+      const token=localStorage.getItem("goldmart_token");
+      if (!token) throw new Error("Seller login required.");
+      const response=await fetch(`${API_URL}/api/seller/products/${productId}/deal`,{
+        method:"PATCH",headers:{"Content-Type":"application/json",Authorization:`Bearer ${token}`},
+        body:JSON.stringify(clear?{clear:true}:{deal_price:Number(dealPrice),start_at:new Date().toISOString(),end_at:new Date(dealEnd).toISOString()})
+      });
+      const data=await response.json();
+      if(!response.ok||!data.success) throw new Error(data.message||"Could not save deal.");
+      setDealMessage(data.message||"Updated.");
+      if(clear){setDealPrice("");setDealEnd("");}
+    } catch(err){setDealMessage(err instanceof Error?err.message:"Could not save deal.");}
+    finally{setDealBusy(false);}
+  }
 
   async function handleSubmit(
     event: React.FormEvent<HTMLFormElement>
@@ -362,6 +384,15 @@ export default function EditProductPage() {
 
         </div>
 
+
+        <section className="mt-7 rounded-[24px] border border-[#C9DAD6] bg-[#EAF4F1] p-5 sm:p-7">
+          <p className="text-xs font-extrabold uppercase tracking-wider text-[#32665D]">Seller promotion tools</p>
+          <h2 className="mt-2 text-xl font-black">⚡ Flash Deal</h2>
+          <p className="mt-2 text-sm text-[#526B67]">Offer a lower price until your selected end time. Checkout uses the active price automatically. Only USD and NGN supported.</p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2"><label className="text-sm font-bold">Deal price<input type="number" min="0.01" step="0.01" value={dealPrice} onChange={e=>setDealPrice(e.target.value)} placeholder="Lower than regular price" className="mt-2 w-full rounded-xl border border-[#ABC9C0] bg-white px-4 py-3"/></label><label className="text-sm font-bold">Ends at<input type="datetime-local" value={dealEnd} onChange={e=>setDealEnd(e.target.value)} className="mt-2 w-full rounded-xl border border-[#ABC9C0] bg-white px-4 py-3"/></label></div>
+          <div className="mt-4 flex flex-wrap gap-2"><button type="button" disabled={dealBusy||!dealPrice||!dealEnd} onClick={()=>void saveDeal()} className="rounded-full bg-[#205B59] px-5 py-3 text-sm font-bold text-white disabled:opacity-40">Start Flash Deal</button><button type="button" disabled={dealBusy} onClick={()=>void saveDeal(true)} className="rounded-full border border-[#B3CEC5] bg-white px-5 py-3 text-sm font-bold disabled:opacity-40">Clear Deal</button></div>
+          {dealMessage&&<p role="status" className="mt-3 text-sm font-semibold">{dealMessage}</p>}
+        </section>
         {/* ERROR */}
         {error && (
           <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
