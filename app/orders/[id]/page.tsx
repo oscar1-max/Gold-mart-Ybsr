@@ -1,241 +1,198 @@
-import Link from "next/link";
+"use client";
 
-const order = {
-  id: "#GM-1001",
-  product: "Wireless Headphones",
-  quantity: 1,
-  total: "₦91,500",
-  status: "Processing",
-  deliveryAddress: "Customer delivery address",
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+
+const API_URL = "https://goldmart-backend-yoxc.onrender.com/api";
+
+type OrderItem = {
+  id: number;
+  product_id: number;
+  name?: string | null;
+  quantity: number;
+  price: number | string;
+  currency?: string | null;
+  seller_id?: number | null;
 };
 
-const steps = [
-  {
-    title: "Order Placed",
-    description: "Your order has been received.",
-    completed: true,
-  },
-  {
-    title: "Order Confirmed",
-    description: "The seller has confirmed your order.",
-    completed: true,
-  },
-  {
-    title: "Preparing Order",
-    description: "The seller is preparing your package.",
-    completed: true,
-  },
-  {
-    title: "Shipped",
-    description: "Your package is on its way.",
-    completed: false,
-  },
-  {
-    title: "Delivered",
-    description: "Your package has been delivered.",
-    completed: false,
-  },
-];
+type BuyerOrder = {
+  id: number;
+  status: string;
+  total_amount: number | string;
+  created_at: string;
+  currency?: string | null;
+};
 
-export default function OrderTrackingPage() {
+type OrderResult = {
+  success?: boolean;
+  message?: string;
+  order?: BuyerOrder;
+  items?: OrderItem[];
+};
+
+const stages = ["pending", "processing", "shipped", "delivered"];
+
+function money(amount: number, currency: string) {
+  if (!Number.isFinite(amount)) return "Amount unavailable";
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  } catch {
+    return currency + " " + amount.toFixed(2);
+  }
+}
+
+function formatDate(value: string) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? "Date unavailable"
+    : date.toLocaleString("en-NG", { dateStyle: "medium", timeStyle: "short" });
+}
+
+export default function OrderDetailsPage() {
+  const params = useParams();
+  const id = String(params?.id || "");
+  const [order, setOrder] = useState<BuyerOrder | null>(null);
+  const [items, setItems] = useState<OrderItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [reload, setReload] = useState(0);
+
+  const retry = useCallback(() => setReload(value => value + 1), []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    async function load() {
+      const token = localStorage.getItem("goldmart_token");
+      if (!token) {
+        window.location.assign("/login");
+        return;
+      }
+      if (!/^[1-9][0-9]*$/.test(id)) {
+        setError("Invalid order number.");
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      setError("");
+      try {
+        const response = await fetch(API_URL + "/orders/" + encodeURIComponent(id), {
+          headers: { Authorization: "Bearer " + token, Accept: "application/json" },
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        const data = (await response.json()) as OrderResult;
+        if (!response.ok || !data.success || !data.order) {
+          throw new Error(data.message || "Could not load this order.");
+        }
+        if (!controller.signal.aborted) {
+          setOrder(data.order);
+          setItems(Array.isArray(data.items) ? data.items : []);
+        }
+      } catch (err) {
+        if (!controller.signal.aborted) {
+          setOrder(null);
+          setError(err instanceof Error ? err.message : "Order details are unavailable.");
+        }
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    }
+    void load();
+    return () => controller.abort();
+  }, [id, reload]);
+
+  const currency = String(order?.currency || items[0]?.currency || "USD").toUpperCase();
+  const status = String(order?.status || "").toLowerCase();
+  const currentIndex = stages.indexOf(status);
+  const interrupted = ["cancelled", "refunded", "refund_pending"].includes(status);
+
   return (
-    <main className="min-h-screen bg-gray-50 text-black">
-
-      {/* HEADER */}
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
-
-          <Link href="/" className="text-2xl font-black">
-            Gold<span className="text-[#D4AF37]">Mart</span>
-          </Link>
-
-          <Link
-            href="/orders"
-            className="rounded-full border px-5 py-2 text-sm font-bold"
-          >
-            ← My Orders
-          </Link>
-
+    <main className="min-h-screen bg-[#FAF8F3] px-4 py-8 text-[#17191D]">
+      <div className="mx-auto max-w-4xl">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link href="/orders" className="text-sm font-bold text-[#96713D]">← All Orders</Link>
+          <Link href="/" className="text-xl font-black">Gold<span className="text-[#B08A50]">Mart</span></Link>
         </div>
-      </header>
-
-      {/* CONTENT */}
-      <div className="mx-auto max-w-4xl px-4 py-10">
-
-        <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
-          GoldMart Delivery
-        </p>
-
-        <div className="mt-1 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-
-          <div>
-            <h1 className="text-3xl font-black sm:text-4xl">
-              Track Your Order
-            </h1>
-
-            <p className="mt-2 text-gray-500">
-              Order {order.id}
-            </p>
-          </div>
-
-          <span className="w-fit rounded-full bg-blue-100 px-4 py-2 text-sm font-bold text-blue-700">
-            {order.status}
-          </span>
-
-        </div>
-
-        {/* ORDER SUMMARY */}
-        <section className="mt-8 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
-
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-
-            <div className="flex items-center gap-4">
-
-              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gray-100 text-4xl">
-                🎧
-              </div>
-
+        {loading ? (
+          <p className="mt-12 rounded-2xl bg-white p-8" role="status">Loading your order...</p>
+        ) : error ? (
+          <section className="mt-8 rounded-2xl border border-red-200 bg-white p-8">
+            <h1 className="text-2xl font-bold">Order unavailable</h1>
+            <p className="mt-3 text-red-700" role="alert">{error}</p>
+            <button type="button" onClick={retry} className="mt-5 rounded-full bg-black px-5 py-3 font-bold text-white">Retry</button>
+          </section>
+        ) : order ? (
+          <>
+            <div className="mt-8 flex flex-wrap items-start justify-between gap-4">
               <div>
-                <h2 className="text-lg font-black">
-                  {order.product}
-                </h2>
-
-                <p className="mt-1 text-sm text-gray-500">
-                  Quantity: {order.quantity}
+                <p className="text-sm font-bold text-[#96713D]">Your purchase</p>
+                <h1 className="mt-2 text-3xl font-black">Order #{order.id}</h1>
+                <p className="mt-2 text-sm text-gray-600">Placed {formatDate(order.created_at)}</p>
+              </div>
+              <span className="rounded-full bg-white px-5 py-2 text-sm font-bold capitalize shadow-sm">
+                {status.replace(/_/g, " ")}
+              </span>
+            </div>
+            <section className="mt-8 rounded-2xl bg-white p-5 shadow-sm sm:p-8">
+              <h2 className="text-xl font-bold">Delivery progress</h2>
+              {interrupted ? (
+                <p className="mt-4 rounded-xl bg-amber-50 p-4 text-amber-900">
+                  This order is {status.replace(/_/g, " ")}. Check buyer protection for the latest request status.
                 </p>
+              ) : (
+                <ol className="mt-6 grid gap-3 sm:grid-cols-4">
+                  {stages.map((stage, index) => (
+                    <li key={stage} className={"rounded-xl border p-4 " + (currentIndex >= index ? "border-[#B08A50] bg-[#FAF4E7]" : "border-gray-200")}>
+                      <span className="text-lg" aria-hidden="true">{currentIndex >= index ? "✓" : "○"}</span>
+                      <p className="mt-1 text-sm font-bold capitalize">{stage === "pending" ? "Order placed" : stage}</p>
+                    </li>
+                  ))}
+                </ol>
+              )}
+              <p className="mt-5 text-sm text-gray-600">
+                These updates are based on seller-reported order status. Courier location and delivery estimates are not yet provided.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link href="/track-order" className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white">Track orders</Link>
+                <Link href="/order-protection" className="rounded-full border px-5 py-3 text-sm font-bold">Buyer protection</Link>
+                <button type="button" onClick={retry} className="rounded-full border px-5 py-3 text-sm font-bold">Refresh status</button>
               </div>
-
-            </div>
-
-            <div>
-              <p className="text-xs font-bold uppercase text-gray-400">
-                Order Total
-              </p>
-
-              <p className="mt-1 text-xl font-black text-[#A67C00]">
-                {order.total}
-              </p>
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* TRACKING */}
-        <section className="mt-6 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
-
-          <h2 className="text-xl font-black">
-            Delivery Progress
-          </h2>
-
-          <div className="mt-8">
-
-            {steps.map((step, index) => (
-              <div
-                key={step.title}
-                className="relative flex gap-4"
-              >
-
-                {/* LINE */}
-                {index < steps.length - 1 && (
-                  <div
-                    className={`absolute left-4 top-9 h-full w-0.5 ${
-                      step.completed
-                        ? "bg-green-500"
-                        : "bg-gray-200"
-                    }`}
-                  />
-                )}
-
-                {/* ICON */}
-                <div
-                  className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
-                    step.completed
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-200 text-gray-500"
-                  }`}
-                >
-                  {step.completed ? "✓" : index + 1}
-                </div>
-
-                {/* TEXT */}
-                <div className="pb-8">
-
-                  <h3
-                    className={`font-black ${
-                      step.completed
-                        ? "text-black"
-                        : "text-gray-400"
-                    }`}
-                  >
-                    {step.title}
-                  </h3>
-
-                  <p className="mt-1 text-sm text-gray-500">
-                    {step.description}
-                  </p>
-
-                </div>
-
+            </section>
+            <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm sm:p-8">
+              <h2 className="text-xl font-bold">Items purchased</h2>
+              {items.length === 0 ? (
+                <p className="mt-4 text-gray-600">No item details were returned for this order.</p>
+              ) : (
+                <ul className="mt-4 divide-y">
+                  {items.map(item => (
+                    <li key={item.id} className="flex items-center justify-between gap-4 py-5">
+                      <div>
+                        <Link href={"/product/" + item.product_id} className="font-bold hover:underline">
+                          {item.name || "Product #" + item.product_id}
+                        </Link>
+                        <p className="mt-1 text-sm text-gray-600">Qty {item.quantity}</p>
+                      </div>
+                      <p className="font-bold">
+                        {money(Number(item.price) * Number(item.quantity), String(item.currency || currency).toUpperCase())}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="mt-4 flex justify-between border-t pt-5 text-lg font-black">
+                <span>Order total</span>
+                <span>{money(Number(order.total_amount), currency)}</span>
               </div>
-            ))}
-
-          </div>
-
-        </section>
-
-        {/* DELIVERY INFORMATION */}
-        <section className="mt-6 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
-
-          <h2 className="text-xl font-black">
-            Delivery Information
-          </h2>
-
-          <div className="mt-5 grid gap-5 sm:grid-cols-2">
-
-            <div className="rounded-2xl bg-gray-50 p-5">
-              <p className="text-xs font-bold uppercase text-gray-400">
-                Delivery Address
-              </p>
-
-              <p className="mt-2 font-bold">
-                {order.deliveryAddress}
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-gray-50 p-5">
-              <p className="text-xs font-bold uppercase text-gray-400">
-                Estimated Delivery
-              </p>
-
-              <p className="mt-2 font-bold">
-                3–7 business days
-              </p>
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* NOTICE */}
-        <section className="mt-6 rounded-3xl bg-black p-8 text-white">
-
-          <p className="text-sm font-bold uppercase tracking-widest text-[#D4AF37]">
-            Live Tracking
-          </p>
-
-          <h2 className="mt-3 text-2xl font-black">
-            Real-time delivery updates
-          </h2>
-
-          <p className="mt-3 text-gray-400">
-            Live tracking and automatic status updates will be
-            connected to the GoldMart backend and delivery system.
-          </p>
-
-        </section>
-
+            </section>
+          </>
+        ) : null}
       </div>
     </main>
   );
-                }
+}
