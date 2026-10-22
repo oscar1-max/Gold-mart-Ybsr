@@ -25,6 +25,7 @@ type Product = {
   id: number;
   name: string;
   price: number;
+  stock: number;
   currency?: string | null;
   rating: number;
   is_deal?: boolean;
@@ -141,6 +142,7 @@ export default function ShopPage() {
             ? data.products.map(
                 (product: any) => ({
                   id: product.id,
+                  stock: Number(product.stock||0),
                   is_deal: Boolean(product.is_deal),
                   original_price: Number(product.original_price || product.price),
                   deal_end_at: product.deal_end_at,
@@ -661,6 +663,7 @@ export default function ShopPage() {
                             }
                           </p>
 
+                          {product.is_deal && <div className="mt-3"><span className="rounded-full bg-[#FFEADA] px-3 py-1 text-xs font-black text-[#925032]">⚡ Flash Deal</span><p className="mt-2 text-xs text-gray-500 line-through">{formatPrice(product.original_price||product.price,product.currency)}</p></div>}
                           <div className="mt-3 flex items-center justify-between">
 
                             <span className="font-black text-[#A67C00]">
@@ -690,7 +693,8 @@ export default function ShopPage() {
     name: product.name,
     price: product.price,
     image_url: product.image,
-    stock: 1,
+    stock: product.stock,
+    currency: product.currency||"USD",
   }}
 />
 
