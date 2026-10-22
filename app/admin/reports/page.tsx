@@ -378,7 +378,29 @@ export default function AdminReportsPage() {
     loading || busyAction !== null;
 
   return (
-    <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
+    <main className="min-h-screen bg-[#F7F9F8] pb-32 text-[#202A31] md:pb-12">
+      {/* Admin visual identity: existing permissions and actions remain authoritative */}
+      <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(115deg,#23364B,#456A8D 56%,#A7AFC1)"}}>
+          <span aria-hidden="true" className="pointer-events-none absolute -right-6 -top-12 text-[150px] leading-none opacity-10">▤</span>
+          <div className="relative">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#D6E6FC"}}>GOLDMART PRIVATE ADMIN · SAFETY & TRUST</p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Reports & Users</h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Manage reviews, reports and account safeguards.</p>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#B7EDCF]"/>Authorized access required</div>
+          </div>
+        </div>
+        <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#284F55] bg-[#284F55] text-white">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Support</Link>
+        </nav>
+      </div>
+
       <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
       {/* HEADER */}
@@ -408,7 +430,7 @@ export default function AdminReportsPage() {
 
         {/* HERO */}
 
-        <section className="relative overflow-hidden rounded-[28px] bg-[#17191D] p-7 text-white sm:p-10">
+        <section className="relative overflow-hidden rounded-[28px] bg-[#253F48] p-7 text-white sm:p-10">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full border border-[#C5A46D]/25"
