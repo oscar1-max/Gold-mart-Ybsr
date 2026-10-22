@@ -510,7 +510,7 @@ export default function NotificationsPage() {
             ))}
           </div>
         )}
-        {/* NOT LOGGED IN */
+        {/* NOT LOGGED IN */}
         {ready && !token && (
           <div className="mt-8 rounded-3xl bg-white p-10 text-center shadow-sm">
             <div className="text-5xl">👤</div>
