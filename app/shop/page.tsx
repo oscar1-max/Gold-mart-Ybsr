@@ -347,7 +347,21 @@ export default function ShopPage() {
     );
 
   return (
-    <main className="min-h-screen bg-gray-50 text-black">
+    <main className="min-h-screen bg-[#F7F8F6] pb-28 text-[#202A31] md:pb-14">
+      <section aria-label="Shop everything introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(120deg,#1E3546,#326B73,#C09A63)" }}>
+        <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🛍️</div>
+        <div className="relative">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F2DEC0]">GoldMart · Shop everything</p>
+          <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">Find your next favorite.</h2>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Browse inspiring products from every GoldMart department.</p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <Link href="/shop" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Shop All ↗</Link>
+            <Link href="/track-order" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Track Order ↗</Link>
+            <Link href="/help" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Help Centre ↗</Link>
+          </div>
+        </div>
+      </section>
+
 
       {/* HEADER */}
 
@@ -499,7 +513,7 @@ export default function ShopPage() {
         {/* LOADING */}
 
         {loading && (
-          <div className="mt-10 rounded-2xl bg-white p-10 text-center">
+          <div className="mt-10 rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
 
             <div className="text-4xl">
               ⏳
@@ -517,7 +531,7 @@ export default function ShopPage() {
 
         {!loading &&
           error && (
-            <div className="mt-10 rounded-2xl bg-white p-10 text-center">
+            <div className="mt-10 rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
 
               <div className="text-4xl">
                 ⚠️
@@ -553,7 +567,7 @@ export default function ShopPage() {
 
               {filteredProducts.length ===
               0 ? (
-                <div className="mt-10 rounded-2xl bg-white p-10 text-center">
+                <div className="mt-10 rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
 
                   <div className="text-5xl">
                     🔎

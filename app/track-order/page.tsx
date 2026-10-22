@@ -295,7 +295,21 @@ export default function TrackOrderPage() {
   // ===================================================
 
   return (
-    <main className="min-h-screen bg-[#F7F6F2] text-black">
+    <main className="min-h-screen bg-[#F7F8F6] pb-28 text-[#202A31] md:pb-14">
+      <section aria-label="Track your order introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(120deg,#173D44,#347D78,#A5CFCA)" }}>
+        <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">📦</div>
+        <div className="relative">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F2DEC0]">GoldMart · Track your order</p>
+          <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">Every step, made clearer.</h2>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">See the latest recorded status of your GoldMart orders.</p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <Link href="/shop" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Shop All ↗</Link>
+            <Link href="/track-order" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Track Order ↗</Link>
+            <Link href="/help" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Help Centre ↗</Link>
+          </div>
+        </div>
+      </section>
+
 
       {/* HEADER */}
 
@@ -340,7 +354,7 @@ export default function TrackOrderPage() {
         {/* NOT LOGGED IN */}
 
         {!loggedIn && (
-          <div className="mt-8 rounded-3xl bg-white p-8 text-center shadow-sm">
+          <div className="mt-8 rounded-3xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-8 text-center shadow-sm">
             <div className="text-5xl">
               🔐
             </div>
@@ -366,7 +380,7 @@ export default function TrackOrderPage() {
         {/* LOADING */}
 
         {loggedIn && loading && (
-          <div className="mt-8 rounded-3xl bg-white p-10 text-center shadow-sm">
+          <div className="mt-8 rounded-3xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center shadow-sm">
             <div className="text-5xl">
               ⏳
             </div>
@@ -403,7 +417,7 @@ export default function TrackOrderPage() {
           !loading &&
           !error &&
           orders.length === 0 && (
-            <div className="mt-8 rounded-3xl bg-white p-10 text-center shadow-sm">
+            <div className="mt-8 rounded-3xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center shadow-sm">
               <div className="text-5xl">
                 🛒
               </div>
@@ -436,7 +450,7 @@ export default function TrackOrderPage() {
 
               {/* SELECT ORDER */}
 
-              <div className="rounded-3xl bg-white p-6 shadow-sm">
+              <div className="rounded-3xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-3">
 
                   <label
@@ -484,7 +498,7 @@ export default function TrackOrderPage() {
 
               {/* ORDER DETAILS */}
 
-              <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
+              <div className="rounded-3xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm sm:p-8">
 
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
@@ -536,7 +550,7 @@ export default function TrackOrderPage() {
 
               {/* STATUS TIMELINE */}
 
-              <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
+              <div className="rounded-3xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm sm:p-8">
 
                 <h2 className="text-xl font-black">
                   Delivery Progress
@@ -648,7 +662,7 @@ export default function TrackOrderPage() {
 
               {/* PURCHASED PRODUCTS */}
 
-              <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
+              <div className="rounded-3xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm sm:p-8">
 
                 <h2 className="text-xl font-black">
                   Products in This Order

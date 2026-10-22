@@ -79,7 +79,21 @@ const quickHelp = [
 
 export default function HelpPage() {
   return (
-    <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
+    <main className="min-h-screen bg-[#F7F8F6] pb-28 text-[#202A31] md:pb-14">
+      <section aria-label="Help centre introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(120deg,#273C50,#4D7188,#D1AB7A)" }}>
+        <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🎧</div>
+        <div className="relative">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F2DEC0]">GoldMart · Help centre</p>
+          <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">We're here to help.</h2>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Find answers, contact support, and get help with orders or your account.</p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <Link href="/shop" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Shop All ↗</Link>
+            <Link href="/track-order" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Track Order ↗</Link>
+            <Link href="/help" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Help Centre ↗</Link>
+          </div>
+        </div>
+      </section>
+
       <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
       <header className="border-b border-[#E8E1D5] bg-white">
