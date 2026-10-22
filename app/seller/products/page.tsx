@@ -15,6 +15,7 @@ type Product = {
   image_url?: string | null;
   category_name?: string | null;
   stock: number;
+  is_active?: boolean;
 };
 
 type StockFilter = "all" | "in-stock" | "low-stock" | "out-of-stock";
@@ -58,6 +59,9 @@ export default function SellerProductsPage() {
   const [stockFilter, setStockFilter] = useState<StockFilter>("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
+  const [listingFilter, setListingFilter] = useState<"active" | "removed">("active");
+  const [busyId, setBusyId] = useState<number | null>(null);
+  const [actionError, setActionError] = useState("");
   const requestController = useRef<AbortController | null>(null);
 
   const loadProducts = useCallback(async () => {
@@ -104,34 +108,54 @@ export default function SellerProductsPage() {
     return () => requestController.current?.abort();
   }, [loadProducts]);
 
+  const activeProducts = useMemo(() => products.filter(p => p.is_active !== false), [products]);
+  const removedProducts = useMemo(() => products.filter(p => p.is_active === false), [products]);
+  const listedProducts = listingFilter === "active" ? activeProducts : removedProducts;
+
+  async function setListing(product: Product, restore: boolean) {
+    if (busyId !== null) return;
+    if (!restore && !window.confirm(`Remove ${product.name} from the public GoldMart shop? Past orders will remain saved.`)) return;
+    setBusyId(product.id);
+    setActionError("");
+    try {
+      const token = localStorage.getItem("goldmart_token");
+      if (!token) throw new Error("Sign in to manage products.");
+      const response = await fetch(`${API_URL}/api/seller/products/${product.id}${restore ? "/restore" : ""}`, {method: restore ? "PATCH" : "DELETE",headers:{Authorization:`Bearer ${token}`,Accept:"application/json"}});
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.message || "Unable to update listing.");
+      setProducts(previous => previous.map(p => p.id === product.id ? {...p,is_active:restore} : p));
+    } catch (err) {setActionError(err instanceof Error ? err.message : "Unable to update listing.");}
+    finally {setBusyId(null);}
+  }
+
   const categories = useMemo(
     () =>
       Array.from(
         new Set(
-          products
+          listedProducts
             .map((product) => product.category_name?.trim())
             .filter((name): name is string => Boolean(name))
         )
       ).sort((a, b) => a.localeCompare(b)),
-    [products]
+    [listedProducts]
   );
 
   const summary = useMemo(() => {
     let inStock = 0;
     let lowStock = 0;
     let outOfStock = 0;
-    for (const product of products) {
+    for (const product of activeProducts) {
       const status = stockStatus(product);
       if (status === "in-stock") inStock++;
       if (status === "low-stock") lowStock++;
       if (status === "out-of-stock") outOfStock++;
     }
     return { inStock, lowStock, outOfStock };
-  }, [products]);
+  }, [activeProducts]);
 
   const visibleProducts = useMemo(() => {
     const term = search.trim().toLowerCase();
-    const filtered = products.filter((product) => {
+    const filtered = listedProducts.filter((product) => {
       const matchesSearch =
         !term ||
         [product.name, product.description, product.category_name]
@@ -149,10 +173,10 @@ export default function SellerProductsPage() {
       const comparison = a.name.localeCompare(b.name);
       return sortBy === "name-desc" ? -comparison : comparison;
     });
-  }, [products, search, categoryFilter, stockFilter, sortBy]);
+  }, [listedProducts, search, categoryFilter, stockFilter, sortBy]);
 
   const filterOptions: { value: StockFilter; title: string; count: number }[] = [
-    { value: "all", title: "All products", count: products.length },
+    { value: "all", title: "All products", count: listedProducts.length },
     { value: "in-stock", title: "In stock", count: summary.inStock },
     { value: "low-stock", title: "Low stock", count: summary.lowStock },
     { value: "out-of-stock", title: "Out of stock", count: summary.outOfStock },
@@ -166,7 +190,7 @@ export default function SellerProductsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
+    <main className="min-h-screen bg-[#F1F5F5] pb-28 text-[#20313B]">
       <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
 
       <header className="border-b border-[#E8E1D5] bg-white/95">
@@ -186,7 +210,7 @@ export default function SellerProductsPage() {
       </header>
 
       <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10">
-        <section className="relative overflow-hidden rounded-[28px] bg-[#17191D] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.12)] sm:px-9 sm:py-10">
+        <section className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(115deg,#132F41,#1B5C67,#588E8B)] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.12)] sm:px-9 sm:py-10">
           <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-20 h-60 w-60 rounded-full border border-[#C5A46D]/25" />
           <div className="relative flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end">
             <div>
@@ -276,12 +300,15 @@ export default function SellerProductsPage() {
             </div>
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[#E8E1D5] pt-4">
               <p className="text-sm text-[#74716B]" aria-live="polite">
-                {loading ? "Loading products..." : error ? "Products unavailable" : `Showing ${visibleProducts.length} of ${products.length} products`}
+                {loading ? "Loading products..." : error ? "Products unavailable" : `Showing ${visibleProducts.length} of ${listedProducts.length} products`}
               </p>
               <button type="button" onClick={resetFilters} className="text-sm font-bold text-[#96713D] hover:underline">Clear Filters</button>
             </div>
           </section>
         )}
+
+        {!loading && !error && <div className="mt-6 flex flex-wrap items-center gap-3 rounded-[22px] border border-[#D8E4E5] bg-white p-3"><button type="button" onClick={() => {setListingFilter("active");resetFilters();}} className={`rounded-xl px-5 py-3 text-sm font-black ${listingFilter==="active"?"bg-[#173F4D] text-white":"bg-[#EDF3F4] text-[#47616A]"}`}>Live products ({activeProducts.length})</button><button type="button" onClick={() => {setListingFilter("removed");resetFilters();}} className={`rounded-xl px-5 py-3 text-sm font-black ${listingFilter==="removed"?"bg-[#173F4D] text-white":"bg-[#EDF3F4] text-[#47616A]"}`}>Removed ({removedProducts.length})</button></div>}
+        {actionError && <p role="alert" className="mt-3 rounded-xl bg-red-50 p-4 text-sm text-red-700">{actionError}</p>}
 
         {loading && (
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Loading products">
@@ -294,7 +321,7 @@ export default function SellerProductsPage() {
           </div>
         )}
 
-        {!loading && !error && products.length === 0 && (
+        {!loading && !error && listedProducts.length === 0 && (
           <section className="mt-6 rounded-[24px] border border-[#E8E1D5] bg-white px-5 py-12 text-center">
             <p className="text-5xl">📦</p>
             <h2 className="mt-4 text-xl font-black">Your store is ready for its first product</h2>
@@ -303,7 +330,7 @@ export default function SellerProductsPage() {
           </section>
         )}
 
-        {!loading && !error && products.length > 0 && visibleProducts.length === 0 && (
+        {!loading && !error && listedProducts.length > 0 && visibleProducts.length === 0 && (
           <section className="mt-6 rounded-[24px] border border-[#E8E1D5] bg-white px-5 py-12 text-center">
             <h2 className="text-xl font-black">No matching products</h2>
             <p className="mt-2 text-sm text-[#74716B]">Try another search or clear your filters.</p>
@@ -351,7 +378,8 @@ export default function SellerProductsPage() {
                         <p className="mt-1 text-xl font-black">{getStock(product)}</p>
                       </div>
                     </div>
-                    <div className="mt-5 flex gap-3">
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      <button type="button" disabled={busyId !== null} onClick={() => void setListing(product, product.is_active === false)} className={`rounded-full px-4 py-3 text-sm font-bold disabled:opacity-50 ${product.is_active === false ? "bg-[#DDEFE9] text-[#276454]" : "bg-[#FFF0EA] text-[#9A503F]"}`}>{busyId===product.id ? "Saving..." : product.is_active===false ? "Restore listing" : "Remove from store"}</button>
                       <Link href={`/seller/products/${product.id}/edit`} className="flex-1 rounded-full border border-[#D7BF97] px-4 py-3 text-center text-sm font-bold hover:bg-[#FAF8F3]">Edit Product</Link>
                       <Link href="/shop" className="flex-1 rounded-full bg-[#17191D] px-4 py-3 text-center text-sm font-bold text-white hover:bg-[#96713D]">View Store</Link>
                     </div>
