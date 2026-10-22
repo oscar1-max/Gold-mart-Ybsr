@@ -20,6 +20,7 @@ type SellerStats = {
   products: number;
   orders: number;
   sales: number;
+  sales_by_currency?: {currency:string;amount:string}[];
 };
 
 type SellerReview = {
@@ -174,6 +175,7 @@ export default function SellerDashboard() {
   const [products, setProducts] =
     useState<Product[]>([]);
 
+  const [salesByCurrency, setSalesByCurrency] = useState<{currency:string;amount:string}[]>([]);
   const [stats, setStats] =
     useState<SellerStats>({
       products: 0,
@@ -334,6 +336,7 @@ export default function SellerDashboard() {
           const incoming =
             statsResult.value.stats;
 
+          setSalesByCurrency(Array.isArray(incoming?.sales_by_currency) ? incoming.sales_by_currency : []);
           setStats({
             products:
               Number(incoming?.products) || 0,
@@ -524,12 +527,7 @@ export default function SellerDashboard() {
   // Preserve the dashboard's existing
   // sales display pending currency review.
 
-  const salesDisplay = `₦${Number(
-    stats.sales
-  ).toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+  const salesDisplay = salesByCurrency.length === 0 ? "No verified sales yet" : salesByCurrency.map(item => formatPrice(item.amount,item.currency)).join(" · ");
 
   return (
     <main className="min-h-screen bg-[#F1F5F5] pb-28 text-[#20313B] md:pb-14">

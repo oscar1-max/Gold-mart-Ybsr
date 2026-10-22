@@ -372,6 +372,7 @@ export default function NotificationsPage() {
       return "/chat";
     }
 
+    if (notification.type === "admin_alert") return "/admin/monitoring";
     if (
       notification.type === "order" ||
       notification.type === "seller"

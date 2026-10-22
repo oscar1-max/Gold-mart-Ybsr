@@ -162,7 +162,7 @@ export default function ChatPage() {
       can see new messages without manually refreshing.
     */
     const interval = window.setInterval(() => {
-      loadConversation(false);
+      if (document.visibilityState === "visible") loadConversation(false);
     }, 4000);
 
     return () => {

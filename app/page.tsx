@@ -24,6 +24,7 @@ type Product = {
   category_name?: string | null;
   stock: number;
   rating?: number;
+  sold_count?: number;
 };
 
 const categories = [
@@ -37,7 +38,7 @@ const categories = [
   { icon: "💎", name: "Jewelry", value: "Jewelry & Accessories" },
 ];
 
-const discoveryTabs = ["All", "Deals", "5-Star Rated", "Best Selling", "New Arrivals"];
+const discoveryTabs = ["All", "5-Star Rated", "Best Selling", "New Arrivals"];
 
 const quickLinks = [
   { href: "/shop", icon: "🛍️", label: "Shop All", sub: "Browse every department", tone: "from-[#DDEDF0] to-[#F2FAF9] text-[#285965]", border: "border-[#C5DEE3]" },
@@ -206,14 +207,10 @@ export default function Home() {
     if (activeTab === "5-Star Rated") {
       result = result.filter((product) => Number(product.rating || 0) >= 5);
     } else if (activeTab === "Best Selling") {
-      // Sales counts are not provided by this endpoint; rank by rating for now.
-      result.sort((a, b) => Number(b.rating || 0) - Number(a.rating || 0));
+      result.sort((a, b) => Number(b.sold_count || 0) - Number(a.sold_count || 0));
     } else if (activeTab === "New Arrivals") {
       // Product IDs are used as a provisional recency signal.
       result.sort((a, b) => Number(b.id) - Number(a.id));
-    } else if (activeTab === "Deals") {
-      // There is no discount field in the current API; don't invent markdown prices.
-      result = result.filter((product) => Number(product.price) > 0);
     }
     return result;
   }, [products, activeTab]);
