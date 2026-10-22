@@ -75,6 +75,7 @@ export default function AccountPage() {
 
   const [isSupportAdmin, setIsSupportAdmin] =
     useState(false);
+  const [isAiAdmin, setIsAiAdmin] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -158,8 +159,20 @@ export default function AccountPage() {
       }
     }
 
+    async function checkAiAdmin() {
+      try {
+        const response = await fetch(`${API_URL}/api/ai-admin`, {
+          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+          cache: "no-store", signal: controller.signal,
+        });
+        if (!controller.signal.aborted) setIsAiAdmin(response.ok);
+      } catch {
+        if (!controller.signal.aborted) setIsAiAdmin(false);
+      }
+    }
     void checkRefundAdmin();
     void checkSupportAdmin();
+    void checkAiAdmin();
 
     return () => controller.abort();
   }, []);
@@ -171,6 +184,7 @@ export default function AccountPage() {
     setUser(null);
     setIsRefundAdmin(false);
     setIsSupportAdmin(false);
+    setIsAiAdmin(false);
 
     window.location.href = "/";
   }
@@ -315,7 +329,8 @@ export default function AccountPage() {
   const showAdminSection =
     isLegacyReportsAdmin ||
     isRefundAdmin ||
-    isSupportAdmin;
+    isSupportAdmin ||
+    isAiAdmin;
 
   const displayName =
     user.name?.trim() ||
@@ -563,6 +578,13 @@ export default function AccountPage() {
                     🛡️ Admin Overview →
                   </Link>
 
+                  {isAiAdmin && (
+                    <>
+                      <Link href="/admin/ai" className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white">🤖 AI Admin</Link>
+                      <Link href="/admin/monitoring" className="rounded-full border border-[#D7BF97] px-5 py-3 text-sm font-bold">AI Monitoring</Link>
+                      <Link href="/admin/support-assistant" className="rounded-full border border-[#D7BF97] px-5 py-3 text-sm font-bold">Support Assistant</Link>
+                    </>
+                  )}
                   {isLegacyReportsAdmin && (
                     <Link
                       href="/admin/reports"
