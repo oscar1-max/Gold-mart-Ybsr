@@ -314,7 +314,7 @@ export default function SellerOrdersPage() {
                             <p className="text-sm font-bold">{item.product_name}</p>
                             <p className="mt-1 text-xs text-[#74716B]">Qty: {item.quantity}</p>
                           </div>
-                          <p className="text-right text-sm font-black text-[#96713D]">{money(item.price, item.currency || order.currency || "USD")}</p>
+                          <p className="text-right text-sm font-black text-[#96713D]">{money(Number(item.price) * Number(item.quantity), item.currency || order.currency || "USD")}</p>
                         </div>
                       ))}
                     </div>
