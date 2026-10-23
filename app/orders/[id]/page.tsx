@@ -46,7 +46,7 @@ export default function OrderTrackingPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
 
           <Link href="/" className="text-2xl font-black">
-            Gold<span className="text-[#D4AF37]">Mart</span>
+            Gold<span className="text-[#FF6B00]">Mart</span>
           </Link>
 
           <Link
@@ -62,7 +62,7 @@ export default function OrderTrackingPage() {
       {/* CONTENT */}
       <div className="mx-auto max-w-4xl px-4 py-10">
 
-        <p className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
+        <p className="text-sm font-bold uppercase tracking-wider text-[#FF6B00]">
           GoldMart Delivery
         </p>
 
@@ -112,7 +112,7 @@ export default function OrderTrackingPage() {
                 Order Total
               </p>
 
-              <p className="mt-1 text-xl font-black text-[#D4AF37]">
+              <p className="mt-1 text-xl font-black text-[#FF6B00]">
                 {order.total}
               </p>
             </div>
@@ -141,7 +141,7 @@ export default function OrderTrackingPage() {
                   <div
                     className={`absolute left-4 top-9 h-full w-0.5 ${
                       step.completed
-                        ? "bg-green-500"
+                        ? "bg-orange-500"
                         : "bg-gray-200"
                     }`}
                   />
@@ -151,7 +151,7 @@ export default function OrderTrackingPage() {
                 <div
                   className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
                     step.completed
-                      ? "bg-green-500 text-white"
+                      ? "bg-orange-500 text-white"
                       : "bg-gray-200 text-gray-500"
                   }`}
                 >
@@ -220,7 +220,7 @@ export default function OrderTrackingPage() {
         {/* NOTICE */}
         <section className="mt-6 rounded-3xl bg-black p-8 text-white">
 
-          <p className="text-sm font-bold uppercase tracking-widest text-[#D4AF37]">
+          <p className="text-sm font-bold uppercase tracking-widest text-[#FF6B00]">
             Live Tracking
           </p>
 

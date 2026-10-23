@@ -41,7 +41,7 @@ export default function Categories() {
   return (
     <section className="px-6 py-16">
       <div className="mx-auto max-w-6xl">
-        <p className="text-center text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
+        <p className="text-center text-sm font-bold uppercase tracking-wider text-[#FF6B00]">
           Explore GoldMart
         </p>
 
@@ -58,13 +58,13 @@ export default function Categories() {
             <Link
               key={category.name}
               href={`/shop?category=${encodeURIComponent(category.name)}`}
-              className="group rounded-2xl border bg-white p-6 text-center transition duration-200 hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-lg"
+              className="group rounded-2xl border bg-white p-6 text-center transition duration-200 hover:-translate-y-1 hover:border-[#FF6B00] hover:shadow-lg"
             >
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-2xl transition group-hover:bg-[#D4AF37]">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-2xl transition group-hover:bg-[#FF6B00]">
                 🛍️
               </div>
 
-              <h3 className="mt-5 text-lg font-black transition group-hover:text-[#D4AF37]">
+              <h3 className="mt-5 text-lg font-black transition group-hover:text-[#FF6B00]">
                 {category.name}
               </h3>
 
@@ -72,7 +72,7 @@ export default function Categories() {
                 {category.description}
               </p>
 
-              <span className="mt-4 inline-block text-sm font-bold text-[#D4AF37]">
+              <span className="mt-4 inline-block text-sm font-bold text-[#FF6B00]">
                 Shop Now →
               </span>
             </Link>

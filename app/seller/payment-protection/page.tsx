@@ -108,10 +108,10 @@ function statusStyle(status: string) {
     status === "success" ||
     status === "delivered"
   ) {
-    return "border-emerald-200 bg-emerald-50 text-emerald-800";
+    return "border-orange-200 bg-orange-50 text-orange-800";
   }
 
-  return "border-[#F7F7F5] bg-[#FFFFFF] text-[#1A3C32]";
+  return "border-[#FFF8F2] bg-[#FFFFFF] text-[#243B53]";
 }
 
 function StatusBadge({
@@ -255,39 +255,39 @@ export default function SellerPaymentProtectionPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F7F7F5] pb-28 text-[#1A3C32] md:pb-14">
+    <main className="min-h-screen bg-[#FFF8F2] pb-28 text-[#243B53] md:pb-14">
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
+        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
           <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
-          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#F5E6A3]">GOLDMART SELLER STUDIO · Finance Ledger</p>
+          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#FFE9CC]">GOLDMART SELLER STUDIO · Finance Ledger</p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Clarity for your records.</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Review recorded allocations and their review status. Withdrawals remain unavailable.</p></div>
         </section>
         <nav aria-label="Seller Studio navigation" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/seller" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Dashboard</Link>
-          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Catalogue</Link>
-          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Add Product</Link>
-          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Orders</Link>
-          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Finance</Link>
-          <Link href="/chat" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Messages</Link>
-          <Link href="/account" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Account</Link>
+          <Link href="/seller" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Dashboard</Link>
+          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Catalogue</Link>
+          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Add Product</Link>
+          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Orders</Link>
+          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Finance</Link>
+          <Link href="/chat" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Messages</Link>
+          <Link href="/account" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Account</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#1A3C32] via-[#F7F7F5] to-[#D4AF37]" />
+      <div className="h-1 bg-gradient-to-r from-[#243B53] via-[#FFF8F2] to-[#FF6B00]" />
 
-      <header className="border-b border-[#F7F7F5] bg-white">
+      <header className="border-b border-[#FFF8F2] bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
           <Link
             href="/seller"
-            className="text-sm font-bold text-[#1A3C32] hover:underline"
+            className="text-sm font-bold text-[#243B53] hover:underline"
           >
             ← Seller Dashboard
           </Link>
 
           <span className="text-lg font-black">
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#FF6B00]">
               Mart
             </span>
           </span>
@@ -295,8 +295,8 @@ export default function SellerPaymentProtectionPage() {
       </header>
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <section className="rounded-[28px] bg-[#1A3C32] px-6 py-8 text-white sm:px-8">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F7F7F5]">
+        <section className="rounded-[28px] bg-[#243B53] px-6 py-8 text-white sm:px-8">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFF8F2]">
             Seller Finance
           </p>
 
@@ -304,13 +304,13 @@ export default function SellerPaymentProtectionPage() {
             🛡️ Payment Protection
           </h1>
 
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#F7F7F5]">
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#FFF8F2]">
             View your recorded portions of verified
             GoldMart orders and their current review
             status. This page is for tracking only.
           </p>
 
-          <div className="mt-6 rounded-2xl border border-[#D4AF37]/40 bg-white/10 p-4 text-sm leading-6 text-[#F7F7F5]">
+          <div className="mt-6 rounded-2xl border border-[#FF6B00]/40 bg-white/10 p-4 text-sm leading-6 text-[#FFF8F2]">
             These figures are not available balances,
             money held in escrow, or proof of Paystack
             settlement. Payouts and withdrawals are
@@ -320,7 +320,7 @@ export default function SellerPaymentProtectionPage() {
 
         <div className="mt-7 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#1A3C32]">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#243B53]">
               Payment Records
             </p>
 
@@ -333,21 +333,21 @@ export default function SellerPaymentProtectionPage() {
             type="button"
             onClick={refresh}
             disabled={loading}
-            className="rounded-full border border-[#F5E6A3] bg-white px-5 py-3 text-sm font-bold transition hover:bg-[#F7F7F5] disabled:opacity-60"
+            className="rounded-full border border-[#FFE9CC] bg-white px-5 py-3 text-sm font-bold transition hover:bg-[#FFF8F2] disabled:opacity-60"
           >
             {loading ? "Loading..." : "↻ Refresh"}
           </button>
         </div>
 
         {needsLogin && (
-          <section className="mt-6 rounded-2xl border border-[#F7F7F5] bg-white p-6">
+          <section className="mt-6 rounded-2xl border border-[#FFF8F2] bg-white p-6">
             <p className="font-semibold">
               Please sign in to see your seller records.
             </p>
 
             <Link
               href="/login"
-              className="mt-4 inline-flex rounded-full bg-[#0A1F1A] px-5 py-3 text-sm font-bold text-white"
+              className="mt-4 inline-flex rounded-full bg-[#14263D] px-5 py-3 text-sm font-bold text-white"
             >
               Sign In →
             </Link>
@@ -366,8 +366,8 @@ export default function SellerPaymentProtectionPage() {
         {!needsLogin && !error && (
           <>
             <section className="mt-6 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-[#F7F7F5] bg-white p-6">
-                <p className="text-sm text-[#D4AF37]">
+              <div className="rounded-2xl border border-[#FFF8F2] bg-white p-6">
+                <p className="text-sm text-[#FF6B00]">
                   Allocation Records
                 </p>
 
@@ -376,12 +376,12 @@ export default function SellerPaymentProtectionPage() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-[#F7F7F5] bg-white p-6">
-                <p className="text-sm text-[#D4AF37]">
+              <div className="rounded-2xl border border-[#FFF8F2] bg-white p-6">
+                <p className="text-sm text-[#FF6B00]">
                   Withdrawal Availability
                 </p>
 
-                <p className="mt-2 text-xl font-black text-[#1A3C32]">
+                <p className="mt-2 text-xl font-black text-[#243B53]">
                   Not Enabled
                 </p>
               </div>
@@ -392,13 +392,13 @@ export default function SellerPaymentProtectionPage() {
                 Recorded Totals
               </h2>
 
-              <p className="mt-1 text-sm text-[#D4AF37]">
+              <p className="mt-1 text-sm text-[#FF6B00]">
                 Amounts are separated by currency
                 and review status.
               </p>
 
               {summaryRows.length === 0 ? (
-                <div className="mt-4 rounded-2xl border border-[#F7F7F5] bg-white p-6 text-sm text-[#D4AF37]">
+                <div className="mt-4 rounded-2xl border border-[#FFF8F2] bg-white p-6 text-sm text-[#FF6B00]">
                   {loading
                     ? "Loading totals..."
                     : "No allocations recorded yet."}
@@ -408,7 +408,7 @@ export default function SellerPaymentProtectionPage() {
                   {summaryRows.map((row, index) => (
                     <div
                       key={`${row.currency}-${row.status}-${index}`}
-                      className="rounded-2xl border border-[#F7F7F5] bg-white p-5"
+                      className="rounded-2xl border border-[#FFF8F2] bg-white p-5"
                     >
                       <StatusBadge status={row.status} />
 
@@ -419,7 +419,7 @@ export default function SellerPaymentProtectionPage() {
                         )}
                       </p>
 
-                      <p className="mt-2 text-xs text-[#D4AF37]">
+                      <p className="mt-2 text-xs text-[#FF6B00]">
                         {row.allocation_count} recorded
                         allocation(s)
                       </p>
@@ -435,17 +435,17 @@ export default function SellerPaymentProtectionPage() {
                   Allocation History
                 </h2>
 
-                <p className="text-xs font-medium text-[#D4AF37]">
+                <p className="text-xs font-medium text-[#FF6B00]">
                   Page {page}
                 </p>
               </div>
 
               {loading ? (
-                <div className="mt-4 rounded-2xl border border-[#F7F7F5] bg-white p-8 text-center text-sm text-[#D4AF37]">
+                <div className="mt-4 rounded-2xl border border-[#FFF8F2] bg-white p-8 text-center text-sm text-[#FF6B00]">
                   Loading seller allocation records...
                 </div>
               ) : allocations.length === 0 ? (
-                <div className="mt-4 rounded-2xl border border-[#F7F7F5] bg-white p-8 text-center">
+                <div className="mt-4 rounded-2xl border border-[#FFF8F2] bg-white p-8 text-center">
                   <div className="text-3xl">
                     📋
                   </div>
@@ -454,7 +454,7 @@ export default function SellerPaymentProtectionPage() {
                     No records on this page
                   </h3>
 
-                  <p className="mt-2 text-sm leading-6 text-[#D4AF37]">
+                  <p className="mt-2 text-sm leading-6 text-[#FF6B00]">
                     New allocation records are created
                     when eligible verified payments
                     become completed order records.
@@ -467,11 +467,11 @@ export default function SellerPaymentProtectionPage() {
                   {allocations.map((allocation) => (
                     <article
                       key={allocation.id}
-                      className="rounded-2xl border border-[#F7F7F5] bg-white p-5 shadow-sm sm:p-6"
+                      className="rounded-2xl border border-[#FFF8F2] bg-white p-5 shadow-sm sm:p-6"
                     >
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#1A3C32]">
+                          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#243B53]">
                             Order #{allocation.order_id}
                           </p>
 
@@ -488,9 +488,9 @@ export default function SellerPaymentProtectionPage() {
                         />
                       </div>
 
-                      <div className="mt-5 grid gap-4 border-t border-[#F7F7F5] pt-4 sm:grid-cols-3">
+                      <div className="mt-5 grid gap-4 border-t border-[#FFF8F2] pt-4 sm:grid-cols-3">
                         <div>
-                          <p className="text-xs text-[#D4AF37]">
+                          <p className="text-xs text-[#FF6B00]">
                             Order Status
                           </p>
 
@@ -504,7 +504,7 @@ export default function SellerPaymentProtectionPage() {
                         </div>
 
                         <div>
-                          <p className="text-xs text-[#D4AF37]">
+                          <p className="text-xs text-[#FF6B00]">
                             Payment Record
                           </p>
 
@@ -518,7 +518,7 @@ export default function SellerPaymentProtectionPage() {
                         </div>
 
                         <div>
-                          <p className="text-xs text-[#D4AF37]">
+                          <p className="text-xs text-[#FF6B00]">
                             Recorded
                           </p>
 
@@ -530,7 +530,7 @@ export default function SellerPaymentProtectionPage() {
                         </div>
                       </div>
 
-                      <p className="mt-5 text-xs leading-5 text-[#D4AF37]">
+                      <p className="mt-5 text-xs leading-5 text-[#FF6B00]">
                         This amount is a gross order
                         allocation before commissions,
                         fees, refunds and settlement
@@ -550,7 +550,7 @@ export default function SellerPaymentProtectionPage() {
                     )
                   }
                   disabled={loading || page === 1}
-                  className="rounded-full border border-[#F5E6A3] bg-white px-5 py-3 text-sm font-bold disabled:opacity-40"
+                  className="rounded-full border border-[#FFE9CC] bg-white px-5 py-3 text-sm font-bold disabled:opacity-40"
                 >
                   ← Previous
                 </button>
@@ -565,7 +565,7 @@ export default function SellerPaymentProtectionPage() {
                     setPage((value) => value + 1)
                   }
                   disabled={loading || !hasNextPage}
-                  className="rounded-full bg-[#0A1F1A] px-5 py-3 text-sm font-bold text-white disabled:opacity-40"
+                  className="rounded-full bg-[#14263D] px-5 py-3 text-sm font-bold text-white disabled:opacity-40"
                 >
                   Next →
                 </button>
@@ -574,12 +574,12 @@ export default function SellerPaymentProtectionPage() {
           </>
         )}
 
-        <section className="mt-10 rounded-2xl border border-[#F5E6A3] bg-[#FFFFFF] p-5 sm:p-7">
+        <section className="mt-10 rounded-2xl border border-[#FFE9CC] bg-[#FFFFFF] p-5 sm:p-7">
           <h2 className="text-lg font-black">
             What does Pending Review mean?
           </h2>
 
-          <p className="mt-3 text-sm leading-7 text-[#1A3C32]">
+          <p className="mt-3 text-sm leading-7 text-[#243B53]">
             GoldMart has recorded the seller portion
             of an order, but it has not confirmed
             that the amount is eligible for payout.
@@ -590,7 +590,7 @@ export default function SellerPaymentProtectionPage() {
 
           <Link
             href="/seller"
-            className="mt-5 inline-flex rounded-full bg-[#0A1F1A] px-5 py-3 text-sm font-bold text-white"
+            className="mt-5 inline-flex rounded-full bg-[#14263D] px-5 py-3 text-sm font-bold text-white"
           >
             Back to Seller Dashboard →
           </Link>

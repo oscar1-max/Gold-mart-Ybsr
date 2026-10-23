@@ -286,7 +286,7 @@ export default function OrderSuccessPage() {
           </p>
 
           <div className="mt-6 h-2 overflow-hidden rounded-full bg-gray-100">
-            <div className="h-full w-1/2 animate-pulse rounded-full bg-[#D4AF37]" />
+            <div className="h-full w-1/2 animate-pulse rounded-full bg-[#FF6B00]" />
           </div>
 
           <p className="mt-5 text-sm text-gray-500">
@@ -359,11 +359,11 @@ export default function OrderSuccessPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 text-black">
       <div className="w-full max-w-lg rounded-3xl bg-white p-8 text-center shadow-sm">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-4xl text-green-700">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-orange-100 text-4xl text-orange-700">
           ✓
         </div>
 
-        <p className="mt-6 font-bold uppercase tracking-wider text-[#D4AF37]">
+        <p className="mt-6 font-bold uppercase tracking-wider text-[#FF6B00]">
           GoldMart
         </p>
 

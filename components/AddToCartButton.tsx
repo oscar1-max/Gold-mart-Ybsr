@@ -108,7 +108,7 @@ export default function AddToCartButton({
           : adding
           ? "bg-gray-800 text-white"
           : message === "Added ✓"
-          ? "bg-green-600 text-white"
+          ? "bg-orange-600 text-white"
           : "bg-black text-white active:scale-95"
       }`}
     >

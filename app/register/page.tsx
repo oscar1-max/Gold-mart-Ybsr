@@ -87,7 +87,7 @@ export default function RegisterPage() {
           href="/"
           className="gm-auth-brand mb-8 block text-center text-3xl font-black"
         >
-          Gold<span className="text-[#D4AF37]">Mart</span>
+          Gold<span className="text-[#FF6B00]">Mart</span>
         </Link>
 
         <div className="gm-auth-panel rounded-3xl bg-white p-6 shadow-sm sm:p-8">
@@ -124,8 +124,8 @@ export default function RegisterPage() {
                   onClick={() => setRole("customer")}
                   className={`rounded-xl border p-4 text-left transition ${
                     role === "customer"
-                      ? "border-[#D4AF37] bg-yellow-50 ring-2 ring-[#D4AF37]"
-                      : "border-gray-200 hover:border-[#D4AF37]"
+                      ? "border-[#FF6B00] bg-yellow-50 ring-2 ring-[#FF6B00]"
+                      : "border-gray-200 hover:border-[#FF6B00]"
                   }`}
                 >
                   <div className="text-2xl">🛒</div>
@@ -144,8 +144,8 @@ export default function RegisterPage() {
                   onClick={() => setRole("seller")}
                   className={`rounded-xl border p-4 text-left transition ${
                     role === "seller"
-                      ? "border-[#D4AF37] bg-yellow-50 ring-2 ring-[#D4AF37]"
-                      : "border-gray-200 hover:border-[#D4AF37]"
+                      ? "border-[#FF6B00] bg-yellow-50 ring-2 ring-[#FF6B00]"
+                      : "border-gray-200 hover:border-[#FF6B00]"
                   }`}
                 >
                   <div className="text-2xl">🏪</div>
@@ -176,7 +176,7 @@ export default function RegisterPage() {
                   setName(event.target.value)
                 }
                 placeholder="Your full name"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
               />
             </div>
 
@@ -194,7 +194,7 @@ export default function RegisterPage() {
                   setEmail(event.target.value)
                 }
                 placeholder="you@example.com"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
               />
             </div>
 
@@ -213,7 +213,7 @@ export default function RegisterPage() {
                   setPassword(event.target.value)
                 }
                 placeholder="At least 6 characters"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
               />
             </div>
 
@@ -232,7 +232,7 @@ export default function RegisterPage() {
                   setConfirmPassword(event.target.value)
                 }
                 placeholder="Enter password again"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
               />
             </div>
 
@@ -240,7 +240,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-black py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-xl bg-black py-3 font-bold text-white transition hover:bg-[#FF6B00] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading
                 ? "Creating Account..."
@@ -255,7 +255,7 @@ export default function RegisterPage() {
             Already have an account?{" "}
             <Link
               href="/login"
-              className="font-bold text-[#D4AF37]"
+              className="font-bold text-[#FF6B00]"
             >
               Sign In
             </Link>

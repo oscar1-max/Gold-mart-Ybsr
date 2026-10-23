@@ -61,7 +61,7 @@ function isClosed(status: string) {
 
 function badgeClass(status: string) {
   const normalized = normalizeStatus(status);
-  if (normalized === "delivered") return "border-emerald-200 bg-emerald-50 text-emerald-800";
+  if (normalized === "delivered") return "border-orange-200 bg-orange-50 text-orange-800";
   if (normalized === "shipped") return "border-violet-200 bg-violet-50 text-violet-800";
   if (normalized === "processing") return "border-sky-200 bg-sky-50 text-sky-800";
   if (isClosed(normalized)) return "border-rose-200 bg-rose-50 text-rose-800";
@@ -201,40 +201,40 @@ export default function SellerOrdersPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F7F7F5] pb-28 text-[#1A3C32] md:pb-14">
+    <main className="min-h-screen bg-[#FFF8F2] pb-28 text-[#243B53] md:pb-14">
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
+        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
           <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
-          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#F5E6A3]">GOLDMART SELLER STUDIO · Order Desk</p>
+          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#FFE9CC]">GOLDMART SELLER STUDIO · Order Desk</p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Every order in focus.</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Keep customer orders organized and manage fulfillment with confidence.</p></div>
         </section>
         <nav aria-label="Seller Studio navigation" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/seller" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Dashboard</Link>
-          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Catalogue</Link>
-          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Add Product</Link>
-          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Orders</Link>
-          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Finance</Link>
-          <Link href="/chat" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Messages</Link>
-          <Link href="/account" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Account</Link>
+          <Link href="/seller" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Dashboard</Link>
+          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Catalogue</Link>
+          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Add Product</Link>
+          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Orders</Link>
+          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Finance</Link>
+          <Link href="/chat" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Messages</Link>
+          <Link href="/account" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Account</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#1A3C32] via-[#F7F7F5] to-[#D4AF37]" />
-      <header className="border-b border-[#F7F7F5] bg-white">
+      <div className="h-1 bg-gradient-to-r from-[#243B53] via-[#FFF8F2] to-[#FF6B00]" />
+      <header className="border-b border-[#FFF8F2] bg-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
-          <Link href="/" className="text-2xl font-black tracking-tight">Gold<span className="text-[#D4AF37]">Mart</span></Link>
-          <Link href="/seller" className="rounded-full border border-[#F7F7F5] px-4 py-2.5 text-sm font-bold hover:border-[#D4AF37]">← Seller Dashboard</Link>
+          <Link href="/" className="text-2xl font-black tracking-tight">Gold<span className="text-[#FF6B00]">Mart</span></Link>
+          <Link href="/seller" className="rounded-full border border-[#FFF8F2] px-4 py-2.5 text-sm font-bold hover:border-[#FF6B00]">← Seller Dashboard</Link>
         </div>
       </header>
 
       <div className="mx-auto max-w-7xl px-4 pt-7 sm:px-6 sm:pt-10">
-        <section className="relative overflow-hidden rounded-[28px] bg-[#1A3C32] p-6 text-white sm:p-9">
-          <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-24 h-60 w-60 rounded-full border border-[#D4AF37]/25" />
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F7F7F5]">GoldMart · Seller Centre</p>
+        <section className="relative overflow-hidden rounded-[28px] bg-[#243B53] p-6 text-white sm:p-9">
+          <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-24 h-60 w-60 rounded-full border border-[#FF6B00]/25" />
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFF8F2]">GoldMart · Seller Centre</p>
           <h1 className="mt-3 text-3xl font-black sm:text-4xl">Customer Orders</h1>
-          <p className="mt-3 max-w-xl text-sm leading-6 text-[#F7F7F5]">Manage fulfilment, see customers and review the products in each order.</p>
-          <button type="button" onClick={() => void loadOrders(true)} disabled={loading || refreshing || updatingId !== null} className="mt-6 rounded-full bg-[#D4AF37] px-5 py-3 text-sm font-extrabold text-[#0A1F1A] disabled:opacity-60">
+          <p className="mt-3 max-w-xl text-sm leading-6 text-[#FFF8F2]">Manage fulfilment, see customers and review the products in each order.</p>
+          <button type="button" onClick={() => void loadOrders(true)} disabled={loading || refreshing || updatingId !== null} className="mt-6 rounded-full bg-[#FF6B00] px-5 py-3 text-sm font-extrabold text-[#14263D] disabled:opacity-60">
             {refreshing ? "Refreshing..." : "↻ Refresh Orders"}
           </button>
         </section>
@@ -247,48 +247,48 @@ export default function SellerOrdersPage() {
               { label: "In fulfilment", value: counts.active },
               { label: "Delivered", value: counts.delivered },
             ].map((item) => (
-              <div key={item.label} className="rounded-[22px] border border-[#F7F7F5] bg-white p-5 shadow-sm">
-                <p className="text-xs font-semibold text-[#D4AF37]">{item.label}</p>
+              <div key={item.label} className="rounded-[22px] border border-[#FFF8F2] bg-white p-5 shadow-sm">
+                <p className="text-xs font-semibold text-[#FF6B00]">{item.label}</p>
                 <p className="mt-2 text-3xl font-black">{item.value}</p>
               </div>
             ))}
           </section>
         )}
 
-        {error && <div role="alert" className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-sm text-red-800"><p className="font-bold">Unable to load orders</p><p className="mt-1">{error}</p><button type="button" className="mt-3 rounded-full bg-[#0A1F1A] px-4 py-2 font-bold text-white" onClick={() => void loadOrders()}>Try Again</button></div>}
+        {error && <div role="alert" className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-sm text-red-800"><p className="font-bold">Unable to load orders</p><p className="mt-1">{error}</p><button type="button" className="mt-3 rounded-full bg-[#14263D] px-4 py-2 font-bold text-white" onClick={() => void loadOrders()}>Try Again</button></div>}
         {actionError && <div role="alert" className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-sm text-red-800">{actionError}</div>}
 
         {!loading && !error && orders.length > 0 && (
-          <section className="mt-8 rounded-[22px] border border-[#F7F7F5] bg-white p-4 sm:p-5" aria-label="Find orders">
+          <section className="mt-8 rounded-[22px] border border-[#FFF8F2] bg-white p-4 sm:p-5" aria-label="Find orders">
             <div className="grid gap-3 sm:grid-cols-[1fr_220px]">
               <div>
-                <label htmlFor="order-search" className="mb-2 block text-xs font-bold text-[#D4AF37]">Find an order</label>
-                <input id="order-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Order number, customer or product" className="w-full rounded-xl border border-[#F7F7F5] bg-[#FFFFFF] px-4 py-3 text-sm outline-none focus:border-[#1A3C32]" />
+                <label htmlFor="order-search" className="mb-2 block text-xs font-bold text-[#FF6B00]">Find an order</label>
+                <input id="order-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Order number, customer or product" className="w-full rounded-xl border border-[#FFF8F2] bg-[#FFFFFF] px-4 py-3 text-sm outline-none focus:border-[#243B53]" />
               </div>
               <div>
-                <label htmlFor="order-filter" className="mb-2 block text-xs font-bold text-[#D4AF37]">Filter status</label>
-                <select id="order-filter" value={filter} onChange={(event) => setFilter(event.target.value as StatusFilter)} className="w-full rounded-xl border border-[#F7F7F5] bg-[#FFFFFF] px-4 py-3 text-sm outline-none focus:border-[#1A3C32]">
+                <label htmlFor="order-filter" className="mb-2 block text-xs font-bold text-[#FF6B00]">Filter status</label>
+                <select id="order-filter" value={filter} onChange={(event) => setFilter(event.target.value as StatusFilter)} className="w-full rounded-xl border border-[#FFF8F2] bg-[#FFFFFF] px-4 py-3 text-sm outline-none focus:border-[#243B53]">
                   {STATUS_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
                 </select>
               </div>
             </div>
-            <p className="mt-3 text-xs text-[#D4AF37]">Showing {visibleOrders.length} of {orders.length} orders · Newest first</p>
+            <p className="mt-3 text-xs text-[#FF6B00]">Showing {visibleOrders.length} of {orders.length} orders · Newest first</p>
           </section>
         )}
 
-        {loading && <div className="mt-8 animate-pulse rounded-[22px] border border-[#F7F7F5] bg-white p-10 text-center font-semibold text-[#D4AF37]">Loading your customer orders...</div>}
+        {loading && <div className="mt-8 animate-pulse rounded-[22px] border border-[#FFF8F2] bg-white p-10 text-center font-semibold text-[#FF6B00]">Loading your customer orders...</div>}
 
         {!loading && !error && orders.length === 0 && (
-          <section className="mt-8 rounded-[26px] border border-[#F7F7F5] bg-white px-5 py-14 text-center">
+          <section className="mt-8 rounded-[26px] border border-[#FFF8F2] bg-white px-5 py-14 text-center">
             <p className="text-5xl">📭</p>
             <h2 className="mt-4 text-2xl font-black">No customer orders yet</h2>
-            <p className="mx-auto mt-2 max-w-lg text-sm text-[#D4AF37]">Orders containing your products will appear here when customers purchase them.</p>
-            <Link href="/seller/products" className="mt-6 inline-flex rounded-full bg-[#0A1F1A] px-6 py-3 text-sm font-bold text-white">Manage Products →</Link>
+            <p className="mx-auto mt-2 max-w-lg text-sm text-[#FF6B00]">Orders containing your products will appear here when customers purchase them.</p>
+            <Link href="/seller/products" className="mt-6 inline-flex rounded-full bg-[#14263D] px-6 py-3 text-sm font-bold text-white">Manage Products →</Link>
           </section>
         )}
 
         {!loading && !error && orders.length > 0 && visibleOrders.length === 0 && (
-          <div className="mt-6 rounded-2xl border border-[#F7F7F5] bg-white p-8 text-center text-sm text-[#D4AF37]">No orders match your search or filter.</div>
+          <div className="mt-6 rounded-2xl border border-[#FFF8F2] bg-white p-8 text-center text-sm text-[#FF6B00]">No orders match your search or filter.</div>
         )}
 
         {!loading && !error && visibleOrders.length > 0 && (
@@ -297,55 +297,55 @@ export default function SellerOrdersPage() {
               const next = nextStatus(order.status);
               const busy = updatingId === order.id;
               return (
-                <article key={order.id} className="overflow-hidden rounded-[24px] border border-[#F7F7F5] bg-white shadow-[0_5px_20px_rgba(23,25,29,0.035)]">
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#F7F7F5] p-5 sm:p-6">
+                <article key={order.id} className="overflow-hidden rounded-[24px] border border-[#FFF8F2] bg-white shadow-[0_5px_20px_rgba(23,25,29,0.035)]">
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#FFF8F2] p-5 sm:p-6">
                     <div>
                       <p className="text-lg font-black">Order #{order.id}</p>
-                      <p className="mt-1 text-xs text-[#D4AF37]">{dateLabel(order.created_at)}</p>
+                      <p className="mt-1 text-xs text-[#FF6B00]">{dateLabel(order.created_at)}</p>
                     </div>
                     <span className={`rounded-full border px-3 py-1.5 text-xs font-extrabold capitalize ${badgeClass(order.status)}`}>{normalizeStatus(order.status).replace(/_/g, " ")}</span>
                   </div>
                   <div className="p-5 sm:p-6">
                     <div className="rounded-2xl bg-[#FFFFFF] p-4">
-                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#1A3C32]">Customer</p>
+                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#243B53]">Customer</p>
                       <p className="mt-2 font-bold">{order.customer_name || "GoldMart Customer"}</p>
-                      <p className="mt-1 break-all text-sm text-[#D4AF37]">{order.customer_email || "No email provided"}</p>
+                      <p className="mt-1 break-all text-sm text-[#FF6B00]">{order.customer_email || "No email provided"}</p>
                     </div>
 
                     <h3 className="mt-6 text-base font-black">Products in this order</h3>
                     <div className="mt-3 space-y-3">
                       {(Array.isArray(order.items) ? order.items : []).map((item) => (
-                        <div key={item.id} className="flex items-center gap-3 rounded-2xl border border-[#F7F7F5] p-3 sm:gap-4">
+                        <div key={item.id} className="flex items-center gap-3 rounded-2xl border border-[#FFF8F2] p-3 sm:gap-4">
                           {item.image_url ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={item.image_url} alt={item.product_name} className="h-16 w-16 shrink-0 rounded-xl bg-[#F7F7F5] object-cover" loading="lazy" />
+                            <img src={item.image_url} alt={item.product_name} className="h-16 w-16 shrink-0 rounded-xl bg-[#FFF8F2] object-cover" loading="lazy" />
                           ) : (
-                            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-[#F7F7F5] text-2xl">📦</div>
+                            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-[#FFF8F2] text-2xl">📦</div>
                           )}
                           <div className="min-w-0 flex-1">
                             <p className="text-sm font-bold">{item.product_name}</p>
-                            <p className="mt-1 text-xs text-[#D4AF37]">Qty: {item.quantity}</p>
+                            <p className="mt-1 text-xs text-[#FF6B00]">Qty: {item.quantity}</p>
                           </div>
-                          <p className="text-right text-sm font-black text-[#1A3C32]">{money(item.price)}</p>
+                          <p className="text-right text-sm font-black text-[#243B53]">{money(item.price)}</p>
                         </div>
                       ))}
                     </div>
-                    <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#F7F7F5] pt-5">
-                      <p className="text-sm font-bold text-[#D4AF37]">Order total</p>
-                      <p className="text-xl font-black text-[#1A3C32]">{money(order.total_amount)}</p>
+                    <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#FFF8F2] pt-5">
+                      <p className="text-sm font-bold text-[#FF6B00]">Order total</p>
+                      <p className="text-xl font-black text-[#243B53]">{money(order.total_amount)}</p>
                     </div>
-                    <p className="mt-1 text-right text-xs text-[#D4AF37]">As reported by the orders API; not a seller payout balance.</p>
-                    <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#F7F7F5] bg-[#FFFFFF] p-4">
+                    <p className="mt-1 text-right text-xs text-[#FF6B00]">As reported by the orders API; not a seller payout balance.</p>
+                    <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#FFF8F2] bg-[#FFFFFF] p-4">
                       <div>
                         <p className="text-sm font-bold">Order fulfilment</p>
-                        <p className="mt-1 text-xs text-[#D4AF37]">Progress is saved through GoldMart's backend.</p>
+                        <p className="mt-1 text-xs text-[#FF6B00]">Progress is saved through GoldMart's backend.</p>
                       </div>
                       {next ? (
-                        <button type="button" disabled={updatingId !== null || refreshing} onClick={() => void advanceStatus(order)} className="rounded-full bg-[#0A1F1A] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#1A3C32] disabled:cursor-not-allowed disabled:opacity-50">
+                        <button type="button" disabled={updatingId !== null || refreshing} onClick={() => void advanceStatus(order)} className="rounded-full bg-[#14263D] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#243B53] disabled:cursor-not-allowed disabled:opacity-50">
                           {busy ? "Saving..." : `${next.label} →`}
                         </button>
                       ) : (
-                        <span className="rounded-full border border-[#F7F7F5] px-4 py-2 text-xs font-bold text-[#D4AF37]">{normalizeStatus(order.status) === "delivered" ? "Delivered" : isClosed(order.status) ? "No fulfilment changes" : "Contact support for status changes"}</span>
+                        <span className="rounded-full border border-[#FFF8F2] px-4 py-2 text-xs font-bold text-[#FF6B00]">{normalizeStatus(order.status) === "delivered" ? "Delivered" : isClosed(order.status) ? "No fulfilment changes" : "Contact support for status changes"}</span>
                       )}
                     </div>
                   </div>
@@ -354,7 +354,7 @@ export default function SellerOrdersPage() {
             })}
           </section>
         )}
-        <p className="mt-8 text-center text-xs text-[#D4AF37]">GoldMart Seller Centre · Status changes remain subject to backend validation and refund protection.</p>
+        <p className="mt-8 text-center text-xs text-[#FF6B00]">GoldMart Seller Centre · Status changes remain subject to backend validation and refund protection.</p>
       </div>
     </main>
   );

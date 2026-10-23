@@ -111,7 +111,7 @@ function statusStyle(
   status: RefundStatus
 ) {
   if (status === "refunded") {
-    return "bg-green-50 text-green-800";
+    return "bg-orange-50 text-orange-800";
   }
 
   if (
@@ -727,48 +727,48 @@ export default function AdminRefundsPage() {
   // =============================================
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#0A1F1A] md:pb-12">
+    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#14263D] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
+        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
           <span aria-hidden="true" className="pointer-events-none absolute -right-6 -top-12 text-[150px] leading-none opacity-10">◇</span>
           <div className="relative">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#F5E6A3"}}>GOLDMART PRIVATE ADMIN · FINANCIAL REVIEW</p>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#FFE9CC"}}>GOLDMART PRIVATE ADMIN · FINANCIAL REVIEW</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Manage Refunds</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Clear, careful visibility into refund requests.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#F7F7F5]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#FFF8F2]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#1A3C32] bg-[#1A3C32] text-white">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Support</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#243B53] bg-[#243B53] text-white">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Support</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#1A3C32] via-[#F7F7F5] to-[#D4AF37]" />
+      <div className="h-1 bg-gradient-to-r from-[#243B53] via-[#FFF8F2] to-[#FF6B00]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#F7F7F5] bg-white">
+      <header className="border-b border-[#FFF8F2] bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
           <Link
             href="/"
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#FF6B00]">
               Mart
             </span>
           </Link>
 
           <Link
             href="/account"
-            className="rounded-full border border-[#F5E6A3] px-4 py-2 text-sm font-bold"
+            className="rounded-full border border-[#FFE9CC] px-4 py-2 text-sm font-bold"
           >
             ← Dashboard
           </Link>
@@ -779,8 +779,8 @@ export default function AdminRefundsPage() {
 
         {/* HERO */}
 
-        <section className="rounded-[28px] bg-[#1A3C32] p-7 text-white sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F7F7F5]">
+        <section className="rounded-[28px] bg-[#243B53] p-7 text-white sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFF8F2]">
             GoldMart Administration
           </p>
 
@@ -788,7 +788,7 @@ export default function AdminRefundsPage() {
             Refund Management
           </h1>
 
-          <p className="mt-3 text-sm leading-7 text-[#F7F7F5]">
+          <p className="mt-3 text-sm leading-7 text-[#FFF8F2]">
             Review customer refund requests and
             manage Paystack sandbox refunds.
           </p>
@@ -796,7 +796,7 @@ export default function AdminRefundsPage() {
 
         {/* SAFETY NOTICE */}
 
-        <div className="mt-6 rounded-2xl border border-[#F5E6A3] bg-[#F7F7F5] p-4 text-sm leading-6 text-[#1A3C32]">
+        <div className="mt-6 rounded-2xl border border-[#FFE9CC] bg-[#FFF8F2] p-4 text-sm leading-6 text-[#243B53]">
           <strong>
             Paystack Test Mode:
           </strong>{" "}
@@ -813,7 +813,7 @@ export default function AdminRefundsPage() {
         {message && (
           <div
             role="status"
-            className="mt-5 rounded-2xl border border-green-200 bg-green-50 p-4 text-sm font-semibold text-green-800"
+            className="mt-5 rounded-2xl border border-orange-200 bg-orange-50 p-4 text-sm font-semibold text-orange-800"
           >
             {message}
           </div>
@@ -895,7 +895,7 @@ export default function AdminRefundsPage() {
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-2xl border border-[#F7F7F5] bg-white p-5"
+                  className="rounded-2xl border border-[#FFF8F2] bg-white p-5"
                 >
                   <div className="text-2xl">
                     {stat.icon}
@@ -916,7 +916,7 @@ export default function AdminRefundsPage() {
 
             {/* SEARCH AND FILTER */}
 
-            <section className="mt-7 rounded-[26px] border border-[#F7F7F5] bg-white shadow-[0_7px_24px_rgba(28,35,36,0.045)] p-5">
+            <section className="mt-7 rounded-[26px] border border-[#FFF8F2] bg-white shadow-[0_7px_24px_rgba(28,35,36,0.045)] p-5">
               <div className="grid gap-3 md:grid-cols-2">
                 <input
                   type="search"
@@ -968,7 +968,7 @@ export default function AdminRefundsPage() {
                   loading ||
                   busyId !== null
                 }
-                className="mt-4 rounded-full border border-[#F5E6A3] px-5 py-2 text-sm font-bold disabled:opacity-50"
+                className="mt-4 rounded-full border border-[#FFE9CC] px-5 py-2 text-sm font-bold disabled:opacity-50"
               >
                 ↻ Refresh
               </button>
@@ -987,7 +987,7 @@ export default function AdminRefundsPage() {
             {!loading &&
               !loadError &&
               visibleRequests.length === 0 && (
-                <div className="mt-6 rounded-3xl border border-[#F7F7F5] bg-white p-10 text-center">
+                <div className="mt-6 rounded-3xl border border-[#FFF8F2] bg-white p-10 text-center">
                   <div className="text-4xl">
                     📭
                   </div>
@@ -1031,13 +1031,13 @@ export default function AdminRefundsPage() {
                       return (
                         <article
                           key={request.id}
-                          className="overflow-hidden rounded-3xl border border-[#F7F7F5] bg-white shadow-sm"
+                          className="overflow-hidden rounded-3xl border border-[#FFF8F2] bg-white shadow-sm"
                         >
                           {/* CARD HEADER */}
 
                           <div className="flex flex-wrap items-center justify-between gap-3 border-b p-5 sm:p-7">
                             <div>
-                              <p className="text-xs font-bold text-[#1A3C32]">
+                              <p className="text-xs font-bold text-[#243B53]">
                                 Refund Request #
                                 {request.id}
                               </p>
@@ -1069,7 +1069,7 @@ export default function AdminRefundsPage() {
 
                           <div className="grid gap-4 p-5 sm:grid-cols-2 sm:p-7">
                             <div className="rounded-2xl bg-[#FFFFFF] p-4">
-                              <p className="text-xs font-bold text-[#1A3C32]">
+                              <p className="text-xs font-bold text-[#243B53]">
                                 Buyer
                               </p>
 
@@ -1085,7 +1085,7 @@ export default function AdminRefundsPage() {
                             </div>
 
                             <div className="rounded-2xl bg-[#FFFFFF] p-4">
-                              <p className="text-xs font-bold text-[#1A3C32]">
+                              <p className="text-xs font-bold text-[#243B53]">
                                 Request Details
                               </p>
 
@@ -1126,7 +1126,7 @@ export default function AdminRefundsPage() {
                           {/* BUYER'S REASON */}
 
                           <div className="mx-5 rounded-2xl border p-4 sm:mx-7">
-                            <p className="text-xs font-bold text-[#1A3C32]">
+                            <p className="text-xs font-bold text-[#243B53]">
                               Buyer's Reason
                             </p>
 
@@ -1195,7 +1195,7 @@ export default function AdminRefundsPage() {
                                     busyId !== null ||
                                     blocked
                                   }
-                                  className="rounded-full bg-[#1A3C32] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
+                                  className="rounded-full bg-[#243B53] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
                                 >
                                   {busy
                                     ? "Processing..."
@@ -1251,7 +1251,7 @@ export default function AdminRefundsPage() {
 
                           {request.status ===
                             "refunded" && (
-                            <p className="border-t px-5 py-4 text-sm text-green-800 sm:px-7">
+                            <p className="border-t px-5 py-4 text-sm text-orange-800 sm:px-7">
                               Paystack reports the
                               refund as processed.
                             </p>
