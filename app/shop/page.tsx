@@ -355,7 +355,7 @@ export default function ShopPage() {
     );
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-28 text-[#0A1F1A] md:pb-14">
+    <main className="gm-shop-page min-h-screen bg-[#FFFFFF] pb-28 text-[#0A1F1A] md:pb-14">
       <section aria-label="Shop everything introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)" }}>
         <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🛍️</div>
         <div className="relative">

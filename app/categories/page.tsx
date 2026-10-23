@@ -100,7 +100,7 @@ export default function CategoriesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#0A1F1A] md:pb-14">
+    <main className="gm-categories-page min-h-screen bg-[#FFFFFF] pb-32 text-[#0A1F1A] md:pb-14">
       <header className="border-b border-[#F7F7F5] bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link href="/" className="shrink-0 text-[23px] font-black tracking-[-0.055em]">

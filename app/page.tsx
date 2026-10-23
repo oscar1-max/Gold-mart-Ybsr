@@ -221,9 +221,9 @@ export default function Home() {
   }, [products, activeTab]);
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#FFFFFF] pb-24 text-[#0A1F1A] md:pb-0">
+    <main className="gm-marketplace-home min-h-screen overflow-x-hidden bg-[#FFFFFF] pb-24 text-[#0A1F1A] md:pb-0">
       {/* TOP BAR + MOBILE SEARCH */}
-      <header className="sticky top-0 z-50 border-b border-[#F7F7F5] bg-white/95 shadow-[0_3px_16px_rgba(23,25,29,0.035)] backdrop-blur-xl">
+      <header className="gm-shop-header sticky top-0 z-50 border-b border-[#F7F7F5] bg-white/95 shadow-[0_3px_16px_rgba(23,25,29,0.035)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
           <Link href="/" className="shrink-0 text-[23px] font-black tracking-[-0.055em]" aria-label="GoldMart home">
             Gold<span className="text-[#D4AF37]">Mart</span><span className="ml-1 align-top text-[10px] text-[#D4AF37]">✦</span>
@@ -270,7 +270,7 @@ export default function Home() {
           <div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#D4AF37]">Everything at your fingertips</p><h2 className="mt-1 text-lg font-black sm:text-xl">Explore GoldMart</h2></div>
           <Link href="/categories" className="text-xs font-bold text-[#D4AF37] hover:underline">All categories ↗</Link>
         </div>
-        <nav className="og-scrollbar flex gap-3 overflow-x-auto pb-3 lg:grid lg:grid-cols-5" aria-label="Shopping and support">
+        <nav className="gm-shortcut-rail og-scrollbar flex gap-3 overflow-x-auto pb-3 lg:grid lg:grid-cols-5" aria-label="Shopping and support">
           {quickLinks.map(item => (
             <Link key={item.href} href={item.href}
               className={`group flex min-w-[177px] flex-1 flex-col justify-between overflow-hidden rounded-[22px] border bg-gradient-to-br p-4 shadow-[0_7px_20px_rgba(20,40,50,0.035)] transition duration-200 hover:-translate-y-1 hover:shadow-lg sm:min-w-[194px] ${item.tone} ${item.border}`}>
@@ -294,7 +294,7 @@ export default function Home() {
 
       {/* LUXURY HERO */}
       <section className="mx-auto max-w-7xl px-4 pb-5 pt-5 sm:px-6 sm:pt-7 lg:px-8">
-        <div className="relative isolate overflow-hidden rounded-[30px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] px-6 pb-8 pt-10 text-white shadow-[0_18px_42px_rgba(23,25,29,0.14)] sm:px-10 sm:py-14 lg:px-16 lg:py-20">
+        <div className="gm-home-banner relative isolate overflow-hidden rounded-[30px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] px-6 pb-8 pt-10 text-white shadow-[0_18px_42px_rgba(23,25,29,0.14)] sm:px-10 sm:py-14 lg:px-16 lg:py-20">
           <div className="pointer-events-none absolute -right-20 -top-32 h-[340px] w-[340px] rounded-full border border-[#D4AF37]/25 sm:right-0" />
           <div className="pointer-events-none absolute -right-10 -top-20 h-[230px] w-[230px] rounded-full border border-[#D4AF37]/30" />
           <div className="pointer-events-none absolute bottom-[-110px] right-[-85px] h-[290px] w-[290px] rounded-full bg-[#D4AF37]/15 blur-3xl" />
@@ -317,7 +317,7 @@ export default function Home() {
       </section>
 
       {/* CATEGORY RAIL */}
-      <section className="mx-auto max-w-7xl px-4 pb-5 sm:px-6 lg:px-8">
+      <section className="gm-category-rail mx-auto max-w-7xl px-4 pb-5 sm:px-6 lg:px-8">
         <div className="rounded-[24px] border border-[#F7F7F5] bg-white px-4 pb-5 pt-5 sm:px-6">
           <div className="flex items-center justify-between gap-3">
             <div>
@@ -329,7 +329,7 @@ export default function Home() {
           <div className="og-scrollbar mt-5 grid grid-cols-4 gap-3 sm:grid-cols-8 sm:gap-4">
             {categories.map((category) => (
               <Link key={category.name} href={`/shop?category=${encodeURIComponent(category.value)}`} className="group flex min-w-0 flex-col items-center gap-2 text-center">
-                <span className="flex h-[64px] w-full max-w-20 items-center justify-center rounded-[20px] border border-[#F7F7F5] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-[29px] transition group-hover:-translate-y-0.5 group-hover:border-[#D4AF37] group-hover:bg-[#F7F7F5] sm:h-20">{category.icon}</span>
+                <span className="flex h-[64px] w-full max-w-20 items-center justify-center rounded-[20px] border border-[#F0E6C0] bg-[#F7F7F5] text-[29px] transition group-hover:-translate-y-0.5 group-hover:border-[#D4AF37] group-hover:bg-[#F7F7F5] sm:h-20">{category.icon}</span>
                 <span className="text-[11px] font-bold text-[#1A3C32] sm:text-xs">{category.name}</span>
               </Link>
             ))}
@@ -339,7 +339,7 @@ export default function Home() {
 
       {/* EDITORIAL DISCOVERY CARDS */}
       <section className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 pb-6 sm:gap-5 sm:px-6 lg:px-8">
-        <Link href="/shop?sort=new" className="group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] border border-[#F5E6A3] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] p-4 transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
+        <Link href="/shop?sort=new" className="gm-editorial-banner group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] border border-[#F5E6A3] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] p-4 transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
           <span className="pointer-events-none absolute -right-8 -top-9 h-32 w-32 rounded-full border-[20px] border-white/40" />
           <span className="relative text-2xl" aria-hidden="true">✦</span>
           <div className="relative">
@@ -348,7 +348,7 @@ export default function Home() {
             <span className="mt-2 inline-block text-xs font-bold text-[#D4AF37]">Explore products →</span>
           </div>
         </Link>
-        <Link href="/shop" className="group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] p-4 text-white transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
+        <Link href="/shop" className="gm-editorial-banner group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] p-4 text-white transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
           <span className="pointer-events-none absolute -right-6 -top-11 h-36 w-36 rounded-full border-[20px] border-[#D4AF37]/15" />
           <span className="relative text-2xl" aria-hidden="true">◈</span>
           <div className="relative">
@@ -360,17 +360,17 @@ export default function Home() {
       </section>
 
       {/* Curated category tiles link to existing filters; no fabricated offers */}
-      <section aria-label="Featured departments" className="mx-auto max-w-7xl px-4 pb-6 sm:px-6 lg:px-8">
+      <section aria-label="Featured departments" className="gm-featured-departments mx-auto max-w-7xl px-4 pb-6 sm:px-6 lg:px-8">
         <div className="mb-4 flex items-end justify-between gap-3">
           <div><p className="text-[10px] font-bold uppercase tracking-[0.17em] text-[#D4AF37]">Curated for you</p><h2 className="mt-1 text-xl font-black tracking-tight sm:text-2xl">Discover your next favorite</h2></div>
           <Link href="/categories" className="text-xs font-bold text-[#D4AF37] hover:underline">All categories ↗</Link>
         </div>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           {[
-            {name:"Fashion finds",category:"Fashion",icon:"✿",tone:"bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-[#1A3C32]"},
-            {name:"Tech essentials",category:"Electronics",icon:"◈",tone:"bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-[#1A3C32]"},
-            {name:"Home favorites",category:"Home & Kitchen",icon:"⌂",tone:"bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-[#1A3C32]"},
-            {name:"Beauty edits",category:"Beauty & Cosmetics",icon:"✦",tone:"bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-[#D4AF37]"},
+            {name:"Fashion finds",category:"Fashion",icon:"✿",tone:"bg-white text-[#0F0F0F]"},
+            {name:"Tech essentials",category:"Electronics",icon:"◈",tone:"bg-white text-[#0F0F0F]"},
+            {name:"Home favorites",category:"Home & Kitchen",icon:"⌂",tone:"bg-white text-[#0F0F0F]"},
+            {name:"Beauty edits",category:"Beauty & Cosmetics",icon:"✦",tone:"bg-white text-[#0F0F0F]"},
           ].map((item) => (
             <Link key={item.category} href={`/shop?category=${encodeURIComponent(item.category)}`}
               className={`group relative flex min-h-[145px] flex-col justify-between overflow-hidden rounded-[22px] border border-white/70 p-4 shadow-[0_7px_20px_rgba(23,25,29,0.035)] transition hover:-translate-y-1 hover:shadow-md sm:p-5 ${item.tone}`}>
