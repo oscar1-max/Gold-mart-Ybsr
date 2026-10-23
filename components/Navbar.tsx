@@ -111,7 +111,7 @@ export default function Navbar() {
   const aiAdminDesktopLink = isAiAdmin ? (
     <Link
       href="/admin/ai"
-      className="whitespace-nowrap rounded-full bg-[#D4AF37] px-5 py-2 font-bold text-white transition hover:bg-[#D4AF37]"
+      className="whitespace-nowrap rounded-full bg-[#FF6B00] px-5 py-2 font-bold text-white transition hover:bg-[#FF6B00]"
     >
       🤖 AI Admin
     </Link>
@@ -120,7 +120,7 @@ export default function Navbar() {
   const aiAdminMobileLink = isAiAdmin ? (
     <Link
       href="/admin/ai"
-      className="whitespace-nowrap rounded-full bg-[#D4AF37] px-4 py-2 text-sm font-bold text-white"
+      className="whitespace-nowrap rounded-full bg-[#FF6B00] px-4 py-2 text-sm font-bold text-white"
     >
       🤖 AI Admin
     </Link>
@@ -162,7 +162,7 @@ export default function Navbar() {
           {user?.role === "seller" ? (
             <Link
               href="/seller"
-              className="rounded-full bg-black px-5 py-2 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+              className="rounded-full bg-black px-5 py-2 font-bold text-white transition hover:bg-[#FF6B00] hover:text-black"
             >
               🏪 Seller Dashboard
             </Link>
