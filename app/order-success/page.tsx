@@ -286,7 +286,7 @@ export default function OrderSuccessPage() {
           </p>
 
           <div className="mt-6 h-2 overflow-hidden rounded-full bg-gray-100">
-            <div className="h-full w-1/2 animate-pulse rounded-full bg-[#D4AF37]" />
+            <div className="h-full w-1/2 animate-pulse rounded-full bg-[#128563]" />
           </div>
 
           <p className="mt-5 text-sm text-gray-500">
@@ -363,7 +363,7 @@ export default function OrderSuccessPage() {
           ✓
         </div>
 
-        <p className="mt-6 font-bold uppercase tracking-wider text-[#A67C00]">
+        <p className="mt-6 font-bold uppercase tracking-wider text-[#127256]">
           GoldMart
         </p>
 
