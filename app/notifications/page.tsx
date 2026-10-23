@@ -406,7 +406,7 @@ export default function NotificationsPage() {
   // ===================================================
 
   return (
-    <main className="min-h-screen bg-[#F8F9F7] pb-28 text-[#202A31] md:pb-8">
+    <main className="min-h-screen bg-[#f6f8f6] pb-28 text-[#1b3329] md:pb-8">
 
       {/* HEADER */}
       <header className="border-b border-[#E6E8E5] bg-white">
@@ -730,7 +730,7 @@ export default function NotificationsPage() {
       {/* FOOTER */}
       <footer className="border-t border-[#E3E7E3] bg-[#243941] px-4 py-8 text-center text-white">
         <p className="text-2xl font-black">
-          Gold<span className="text-[#D4AF37]">Mart</span>
+          Gold<span className="text-[#128563]">Mart</span>
         </p>
 
         <p className="mt-2 text-xs text-gray-400">
