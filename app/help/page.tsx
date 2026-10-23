@@ -79,11 +79,11 @@ const quickHelp = [
 
 export default function HelpPage() {
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-28 text-[#0A1F1A] md:pb-14">
-      <section aria-label="Help centre introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)" }}>
+    <main className="min-h-screen bg-[#FFFFFF] pb-28 text-[#14263D] md:pb-14">
+      <section aria-label="Help centre introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)" }}>
         <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🎧</div>
         <div className="relative">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F5E6A3]">GoldMart · Help centre</p>
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#FFE9CC]">GoldMart · Help centre</p>
           <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">We're here to help.</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Find answers, contact support, and get help with orders or your account.</p>
           <div className="mt-5 flex flex-wrap gap-2">
@@ -94,23 +94,23 @@ export default function HelpPage() {
         </div>
       </section>
 
-      <div className="h-1 bg-gradient-to-r from-[#1A3C32] via-[#F7F7F5] to-[#D4AF37]" />
+      <div className="h-1 bg-gradient-to-r from-[#243B53] via-[#FFF8F2] to-[#FF6B00]" />
 
-      <header className="border-b border-[#F7F7F5] bg-white">
+      <header className="border-b border-[#FFF8F2] bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-5">
           <Link
             href="/"
             className="text-2xl font-black tracking-tight"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#FF6B00]">
               Mart
             </span>
           </Link>
 
           <Link
             href="/account"
-            className="rounded-full border border-[#F7F7F5] px-4 py-2 text-sm font-bold transition hover:border-[#D4AF37]"
+            className="rounded-full border border-[#FFF8F2] px-4 py-2 text-sm font-bold transition hover:border-[#FF6B00]"
           >
             My Account
           </Link>
@@ -120,15 +120,15 @@ export default function HelpPage() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <Link
           href="/"
-          className="text-sm font-bold text-[#1A3C32] hover:underline"
+          className="text-sm font-bold text-[#243B53] hover:underline"
         >
           ← Back to Home
         </Link>
 
         {/* HELP CENTRE HERO */}
 
-        <section className="mt-6 overflow-hidden rounded-[28px] bg-[#0A1F1A] px-6 py-9 text-white sm:px-10">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F7F7F5]">
+        <section className="mt-6 overflow-hidden rounded-[28px] bg-[#14263D] px-6 py-9 text-white sm:px-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFF8F2]">
             GoldMart Customer Care
           </p>
 
@@ -136,7 +136,7 @@ export default function HelpPage() {
             🎧 Help & Support
           </h1>
 
-          <p className="mt-3 max-w-xl text-sm leading-7 text-[#F7F7F5]">
+          <p className="mt-3 max-w-xl text-sm leading-7 text-[#FFF8F2]">
             Need assistance with shopping, orders,
             payments, deliveries or your seller account?
             We're here to help.
@@ -144,7 +144,7 @@ export default function HelpPage() {
 
           <Link
             href="/support"
-            className="mt-7 inline-flex items-center justify-center rounded-full bg-[#D4AF37] px-7 py-3 text-sm font-extrabold text-[#0A1F1A] transition hover:bg-[#F7F7F5]"
+            className="mt-7 inline-flex items-center justify-center rounded-full bg-[#FF6B00] px-7 py-3 text-sm font-extrabold text-[#14263D] transition hover:bg-[#FFF8F2]"
           >
             🎫 Contact GoldMart Support →
           </Link>
@@ -153,7 +153,7 @@ export default function HelpPage() {
         {/* QUICK HELP */}
 
         <section className="mt-10">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1A3C32]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#243B53]">
             How can we help?
           </p>
 
@@ -166,9 +166,9 @@ export default function HelpPage() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="group rounded-[22px] border border-[#F7F7F5] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[#D4AF37] hover:shadow-md"
+                className="group rounded-[22px] border border-[#FFF8F2] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[#FF6B00] hover:shadow-md"
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F7F7F5] text-2xl">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFF8F2] text-2xl">
                   {item.icon}
                 </span>
 
@@ -176,11 +176,11 @@ export default function HelpPage() {
                   {item.title}
                 </h3>
 
-                <p className="mt-2 text-sm leading-6 text-[#D4AF37]">
+                <p className="mt-2 text-sm leading-6 text-[#FF6B00]">
                   {item.description}
                 </p>
 
-                <span className="mt-4 inline-block text-sm font-bold text-[#1A3C32]">
+                <span className="mt-4 inline-block text-sm font-bold text-[#243B53]">
                   Open →
                 </span>
               </Link>
@@ -191,7 +191,7 @@ export default function HelpPage() {
         {/* FAQ */}
 
         <section className="mt-12">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1A3C32]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#243B53]">
             Common Questions
           </p>
 
@@ -199,7 +199,7 @@ export default function HelpPage() {
             Frequently Asked Questions
           </h2>
 
-          <p className="mt-2 text-sm text-[#D4AF37]">
+          <p className="mt-2 text-sm text-[#FF6B00]">
             Tap a question to see the answer.
           </p>
 
@@ -207,13 +207,13 @@ export default function HelpPage() {
             {questions.map((item) => (
               <details
                 key={item.question}
-                className="group rounded-2xl border border-[#F7F7F5] bg-white p-5 shadow-sm"
+                className="group rounded-2xl border border-[#FFF8F2] bg-white p-5 shadow-sm"
               >
                 <summary className="cursor-pointer font-bold">
                   {item.question}
                 </summary>
 
-                <p className="mt-4 text-sm leading-7 text-[#D4AF37]">
+                <p className="mt-4 text-sm leading-7 text-[#FF6B00]">
                   {item.answer}
                 </p>
               </details>
@@ -223,8 +223,8 @@ export default function HelpPage() {
 
         {/* CONTACT SUPPORT */}
 
-        <section className="mt-12 rounded-[26px] bg-[#0A1F1A] p-7 text-white sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#F7F7F5]">
+        <section className="mt-12 rounded-[26px] bg-[#14263D] p-7 text-white sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#FFF8F2]">
             Need More Assistance?
           </p>
 
@@ -232,7 +232,7 @@ export default function HelpPage() {
             We're Here to Help
           </h2>
 
-          <p className="mt-3 max-w-xl text-sm leading-7 text-[#F7F7F5]">
+          <p className="mt-3 max-w-xl text-sm leading-7 text-[#FFF8F2]">
             Can't find the answer you're looking for?
             Create a private support ticket, track its
             progress and communicate with GoldMart Support.
@@ -240,7 +240,7 @@ export default function HelpPage() {
 
           <Link
             href="/support"
-            className="mt-6 inline-flex rounded-full bg-[#D4AF37] px-7 py-3 text-sm font-bold text-[#0A1F1A] transition hover:bg-[#F7F7F5]"
+            className="mt-6 inline-flex rounded-full bg-[#FF6B00] px-7 py-3 text-sm font-bold text-[#14263D] transition hover:bg-[#FFF8F2]"
           >
             Open Support Ticket →
           </Link>
