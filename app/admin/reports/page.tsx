@@ -378,7 +378,7 @@ export default function AdminReportsPage() {
     loading || busyAction !== null;
 
   return (
-    <main className="min-h-screen bg-[#F7F9F8] pb-32 text-[#202A31] md:pb-12">
+    <main className="min-h-screen bg-[#f5f7f6] pb-32 text-[#1b3329] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
         <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(115deg,#23364B,#456A8D 56%,#A7AFC1)"}}>
@@ -387,25 +387,25 @@ export default function AdminReportsPage() {
             <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#D6E6FC"}}>GOLDMART PRIVATE ADMIN · SAFETY & TRUST</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Reports & Users</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Manage reviews, reports and account safeguards.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#B7EDCF]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#def3e6]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Assistant</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Assistant</Link>
           <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#284F55] bg-[#284F55] text-white">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Support</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Support</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#E8E1D5] bg-white">
+      <header className="border-b border-[#e0eae3] bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link
             href="/"
@@ -419,7 +419,7 @@ export default function AdminReportsPage() {
 
           <Link
             href="/account"
-            className="rounded-full border border-[#E8E1D5] px-4 py-2 text-xs font-bold transition hover:border-[#C5A46D] sm:text-sm"
+            className="rounded-full border border-[#e0eae3] px-4 py-2 text-xs font-bold transition hover:border-[#68a98c] sm:text-sm"
           >
             ← Admin Dashboard
           </Link>
@@ -433,11 +433,11 @@ export default function AdminReportsPage() {
         <section className="relative overflow-hidden rounded-[28px] bg-[#253F48] p-7 text-white sm:p-10">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full border border-[#C5A46D]/25"
+            className="pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full border border-[#68a98c]/25"
           />
 
           <div className="relative">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">
               GoldMart Administration
             </p>
 
@@ -454,14 +454,14 @@ export default function AdminReportsPage() {
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/admin/support"
-                className="rounded-full bg-[#C5A46D] px-5 py-3 text-sm font-bold text-[#17191D] transition hover:bg-[#E9D9BB]"
+                className="rounded-full bg-[#68a98c] px-5 py-3 text-sm font-bold text-[#162e25] transition hover:bg-[#ddf1e3]"
               >
                 🎧 Support Inbox →
               </Link>
 
               <Link
                 href="/admin/refunds"
-                className="rounded-full border border-[#C5A46D]/60 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+                className="rounded-full border border-[#68a98c]/60 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
               >
                 Manage Refunds →
               </Link>
@@ -474,7 +474,7 @@ export default function AdminReportsPage() {
         <section className="mt-9">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#176c52]">
                 Marketplace Moderation
               </p>
 
@@ -489,7 +489,7 @@ export default function AdminReportsPage() {
                 void loadReports()
               }
               disabled={actionDisabled}
-              className="rounded-full border border-[#D7BF97] bg-white px-5 py-2.5 text-sm font-bold transition hover:bg-[#F5F1E9] disabled:opacity-50"
+              className="rounded-full border border-[#D7BF97] bg-white px-5 py-2.5 text-sm font-bold transition hover:bg-[#ebf4ed] disabled:opacity-50"
             >
               {loading
                 ? "Refreshing..."
@@ -527,9 +527,9 @@ export default function AdminReportsPage() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="rounded-[22px] border border-[#E8E1D5] bg-white p-4 shadow-sm sm:p-5"
+                className="rounded-[22px] border border-[#e0eae3] bg-white p-4 shadow-sm sm:p-5"
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F5F1E9] text-xl">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ebf4ed] text-xl">
                   {item.icon}
                 </span>
 
@@ -591,7 +591,7 @@ export default function AdminReportsPage() {
               onClick={() =>
                 void loadReports()
               }
-              className="mt-4 rounded-full bg-[#17191D] px-5 py-2.5 text-sm font-bold text-white"
+              className="mt-4 rounded-full bg-[#162e25] px-5 py-2.5 text-sm font-bold text-white"
             >
               Try Again
             </button>
@@ -600,7 +600,7 @@ export default function AdminReportsPage() {
 
         {/* FILTERS */}
 
-        <section className="mt-9 rounded-[24px] border border-[#E8E1D5] bg-white p-5 shadow-sm sm:p-6">
+        <section className="mt-9 rounded-[24px] border border-[#e0eae3] bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-xl font-black">
               Manage Reports
@@ -673,7 +673,7 @@ export default function AdminReportsPage() {
         {/* LOADING */}
 
         {loading && (
-          <div className="mt-6 rounded-3xl border border-[#E8E1D5] bg-white p-10 text-center">
+          <div className="mt-6 rounded-3xl border border-[#e0eae3] bg-white p-10 text-center">
             <p className="text-4xl">📋</p>
 
             <p className="mt-4 font-bold">
@@ -687,7 +687,7 @@ export default function AdminReportsPage() {
         {!loading &&
           !error &&
           visibleReports.length === 0 && (
-            <div className="mt-6 rounded-3xl border border-[#E8E1D5] bg-white p-10 text-center">
+            <div className="mt-6 rounded-3xl border border-[#e0eae3] bg-white p-10 text-center">
               <p className="text-4xl">📭</p>
 
               <h3 className="mt-4 text-xl font-black">
@@ -711,12 +711,12 @@ export default function AdminReportsPage() {
             {visibleReports.map((report) => (
               <article
                 key={report.id}
-                className="overflow-hidden rounded-[24px] border border-[#E8E1D5] bg-white p-5 shadow-sm sm:p-7"
+                className="overflow-hidden rounded-[24px] border border-[#e0eae3] bg-white p-5 shadow-sm sm:p-7"
               >
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="rounded-full bg-[#F5F1E9] px-3 py-1 text-xs font-bold text-[#96713D]">
+                      <span className="rounded-full bg-[#ebf4ed] px-3 py-1 text-xs font-bold text-[#176c52]">
                         Report #{report.id}
                       </span>
 
@@ -753,8 +753,8 @@ export default function AdminReportsPage() {
                 {/* PEOPLE INVOLVED */}
 
                 <div className="mt-6 grid gap-3 md:grid-cols-2">
-                  <div className="rounded-2xl bg-[#FAF8F3] p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#96713D]">
+                  <div className="rounded-2xl bg-[#f5f8f5] p-4">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#176c52]">
                       Reported By
                     </p>
 
@@ -770,8 +770,8 @@ export default function AdminReportsPage() {
                     </p>
                   </div>
 
-                  <div className="rounded-2xl bg-[#FAF8F3] p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#96713D]">
+                  <div className="rounded-2xl bg-[#f5f8f5] p-4">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#176c52]">
                       Reported Account
                     </p>
 
@@ -791,8 +791,8 @@ export default function AdminReportsPage() {
                 {/* REPORT DETAILS */}
 
                 {report.message && (
-                  <div className="mt-4 rounded-2xl border border-[#E8E1D5] p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#96713D]">
+                  <div className="mt-4 rounded-2xl border border-[#e0eae3] p-4">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#176c52]">
                       Customer Report
                     </p>
 
@@ -803,8 +803,8 @@ export default function AdminReportsPage() {
                 )}
 
                 {report.admin_message && (
-                  <div className="mt-4 rounded-2xl border border-[#E8E1D5] bg-[#FFFDF8] p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#96713D]">
+                  <div className="mt-4 rounded-2xl border border-[#e0eae3] bg-[#FFFDF8] p-4">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#176c52]">
                       Previous Admin Action
                     </p>
 
@@ -816,7 +816,7 @@ export default function AdminReportsPage() {
 
                 {/* ADMIN ACTIONS */}
 
-                <div className="mt-6 border-t border-[#E8E1D5] pt-5">
+                <div className="mt-6 border-t border-[#e0eae3] pt-5">
                   <p className="mb-3 text-xs font-bold uppercase tracking-wide text-[#716B62]">
                     Moderation Actions
                   </p>
@@ -832,7 +832,7 @@ export default function AdminReportsPage() {
                             "reviewed"
                           )
                         }
-                        className="rounded-full border border-[#D7BF97] px-4 py-2.5 text-xs font-bold transition hover:bg-[#FAF8F3] disabled:opacity-50 sm:text-sm"
+                        className="rounded-full border border-[#D7BF97] px-4 py-2.5 text-xs font-bold transition hover:bg-[#f5f8f5] disabled:opacity-50 sm:text-sm"
                       >
                         Mark Reviewed
                       </button>
@@ -849,7 +849,7 @@ export default function AdminReportsPage() {
                               "resolved"
                             )
                           }
-                          className="rounded-full bg-[#17191D] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#96713D] disabled:opacity-50 sm:text-sm"
+                          className="rounded-full bg-[#162e25] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#176c52] disabled:opacity-50 sm:text-sm"
                         >
                           Mark Resolved
                         </button>
@@ -866,7 +866,7 @@ export default function AdminReportsPage() {
                               "dismissed"
                             )
                           }
-                          className="rounded-full border border-[#D7BF97] px-4 py-2.5 text-xs font-bold transition hover:bg-[#FAF8F3] disabled:opacity-50 sm:text-sm"
+                          className="rounded-full border border-[#D7BF97] px-4 py-2.5 text-xs font-bold transition hover:bg-[#f5f8f5] disabled:opacity-50 sm:text-sm"
                         >
                           Dismiss
                         </button>
