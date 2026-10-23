@@ -516,7 +516,7 @@ export default function CheckoutPage() {
             className="flex items-center gap-2 text-2xl font-black"
           >
             Gold
-            <span className="text-[#128563]">
+            <span className="text-[#D4AF37]">
               Mart
             </span>
           </Link>
@@ -525,7 +525,7 @@ export default function CheckoutPage() {
 
             <Link
               href="/"
-              className="rounded-full bg-black px-5 py-2 text-sm font-bold text-white transition hover:bg-[#128563] hover:text-black"
+              className="rounded-full bg-black px-5 py-2 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
             >
               🏠 Home
             </Link>
@@ -546,7 +546,7 @@ export default function CheckoutPage() {
 
       <div className="mx-auto max-w-7xl px-4 py-10">
 
-        <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
+        <p className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
           GoldMart Checkout
         </p>
 
@@ -601,7 +601,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="First Name"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
                 />
 
                 <input
@@ -615,7 +615,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="Last Name"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
                 />
 
                 <input
@@ -630,7 +630,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="Email Address"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
                 />
 
                 <input
@@ -645,7 +645,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="Phone Number"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
                 />
 
                 <textarea
@@ -660,7 +660,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="Full Delivery Address"
-                  className="resize-none rounded-xl border px-4 py-3 outline-none focus:border-[#128563] sm:col-span-2"
+                  className="resize-none rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37] sm:col-span-2"
                 />
 
                 <input
@@ -674,7 +674,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="City"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
                 />
 
                 <select
@@ -687,7 +687,7 @@ export default function CheckoutPage() {
                       e.target.value
                     )
                   }
-                  className="rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#128563]"
+                  className="rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
                 >
                   <option>Rivers</option>
                   <option>Lagos</option>
@@ -712,7 +712,7 @@ export default function CheckoutPage() {
                 Delivery Method
               </h2>
 
-              <label className="mt-5 flex cursor-pointer items-center justify-between rounded-2xl border border-[#128563] bg-emerald-50 p-4">
+              <label className="mt-5 flex cursor-pointer items-center justify-between rounded-2xl border border-[#D4AF37] bg-emerald-50 p-4">
 
                 <div className="flex items-center gap-3">
 
@@ -770,7 +770,7 @@ export default function CheckoutPage() {
                   className={`rounded-2xl border p-5 text-left transition ${
                     paymentMethod ===
                     "card"
-                      ? "border-[#128563] bg-emerald-50"
+                      ? "border-[#D4AF37] bg-emerald-50"
                       : "hover:border-gray-400"
                   }`}
                 >
@@ -798,7 +798,7 @@ export default function CheckoutPage() {
                   className={`rounded-2xl border p-5 text-left transition ${
                     paymentMethod ===
                     "transfer"
-                      ? "border-[#128563] bg-emerald-50"
+                      ? "border-[#D4AF37] bg-emerald-50"
                       : "hover:border-gray-400"
                   }`}
                 >
@@ -826,7 +826,7 @@ export default function CheckoutPage() {
                   className={`rounded-2xl border p-5 text-left transition ${
                     paymentMethod ===
                     "wallet"
-                      ? "border-[#128563] bg-emerald-50"
+                      ? "border-[#D4AF37] bg-emerald-50"
                       : "hover:border-gray-400"
                   }`}
                 >
@@ -850,7 +850,7 @@ export default function CheckoutPage() {
 
           </section>
 
-          {currency==="NGN" && <section className="mt-4 rounded-[22px] border border-[#BFD8D4] bg-[#EEF6F3] p-5 lg:col-span-2"><h2 className="font-black text-[#23554D]">Secure Delivery &amp; Insurance · planned</h2><p className="mt-2 text-sm text-[#3E6560]">Proposed ₦8,000 delivery charge for orders below ₦300,000, free on orders of ₦300,000 or above. This fee is not collected yet, and insurance/48-hour returns are not active until service arrangements are confirmed.</p></section>}
+          {currency==="NGN" && <section className="mt-4 rounded-[22px] border border-[#F5E6A3] bg-[#F7F7F5] p-5 lg:col-span-2"><h2 className="font-black text-[#1A3C32]">Secure Delivery &amp; Insurance · planned</h2><p className="mt-2 text-sm text-[#1A3C32]">Proposed ₦8,000 delivery charge for orders below ₦300,000, free on orders of ₦300,000 or above. This fee is not collected yet, and insurance/48-hour returns are not active until service arrangements are confirmed.</p></section>}
           {/* ORDER SUMMARY */}
 
           <aside className="h-fit rounded-3xl bg-white p-6 shadow-sm lg:sticky lg:top-24">
@@ -994,7 +994,7 @@ export default function CheckoutPage() {
                         Total
                       </span>
 
-                      <span className="text-2xl font-black text-[#127256]">
+                      <span className="text-2xl font-black text-[#D4AF37]">
                         {formatPrice(
                           total
                         )}
@@ -1016,7 +1016,7 @@ export default function CheckoutPage() {
                     cart.length === 0 ||
                     !currency
                   }
-                  className="mt-6 w-full rounded-2xl bg-black py-4 font-black text-white transition hover:bg-[#128563] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+                  className="mt-6 w-full rounded-2xl bg-black py-4 font-black text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {loading
                     ? "Processing Payment..."
