@@ -295,7 +295,7 @@ export default function TrackOrderPage() {
   // ===================================================
 
   return (
-    <main className="min-h-screen bg-[#F7F8F6] pb-28 text-[#202A31] md:pb-14">
+    <main className="min-h-screen bg-[#f5f8f6] pb-28 text-[#1b3329] md:pb-14">
       <section aria-label="Track your order introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(120deg,#173D44,#347D78,#A5CFCA)" }}>
         <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">📦</div>
         <div className="relative">
