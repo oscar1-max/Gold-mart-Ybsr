@@ -392,12 +392,12 @@ export default function NotificationsPage() {
   const readCount = notifications.length - unreadCount;
   function notificationTone(type?: string | null) {
     switch(type) {
-      case "message": return "bg-[#E5EDFA] text-[#46618D]";
-      case "order": return "bg-[#E1F1E8] text-[#38745C]";
-      case "seller": return "bg-[#F9EED8] text-[#946A32]";
-      case "payment": return "bg-[#E6F3F1] text-[#377F77]";
-      case "review": return "bg-[#FAE9E9] text-[#A45A62]";
-      default: return "bg-[#EFE9F8] text-[#786397]";
+      case "message": return "bg-[#F7F7F5] text-[#D4AF37]";
+      case "order": return "bg-[#F7F7F5] text-[#D4AF37]";
+      case "seller": return "bg-[#F7F7F5] text-[#D4AF37]";
+      case "payment": return "bg-[#F7F7F5] text-[#D4AF37]";
+      case "review": return "bg-[#F7F7F5] text-[#A45A62]";
+      default: return "bg-[#F7F7F5] text-[#D4AF37]";
     }
   }
 
@@ -406,17 +406,17 @@ export default function NotificationsPage() {
   // ===================================================
 
   return (
-    <main className="min-h-screen bg-[#f6f8f6] pb-28 text-[#1b3329] md:pb-8">
+    <main className="min-h-screen bg-[#FFFFFF] pb-28 text-[#0A1F1A] md:pb-8">
 
       {/* HEADER */}
-      <header className="border-b border-[#E6E8E5] bg-white">
+      <header className="border-b border-[#F7F7F5] bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link
             href="/"
             className="text-2xl font-black tracking-tight"
           >
             Gold
-            <span className="text-[#C9A227]">
+            <span className="text-[#D4AF37]">
               Mart
             </span>
           </Link>
@@ -431,9 +431,9 @@ export default function NotificationsPage() {
       </header>
 
       <section className="mx-auto max-w-5xl px-4 py-6 sm:py-10">
-        <div className="relative mb-7 overflow-hidden rounded-[28px] px-6 py-9 text-white shadow-[0_16px_35px_rgba(20,39,44,0.13)] sm:px-9 sm:py-11" style={{background:"linear-gradient(115deg,#1F3542,#376F70 58%,#9B8065)"}}>
+        <div className="relative mb-7 overflow-hidden rounded-[28px] px-6 py-9 text-white shadow-[0_16px_35px_rgba(20,39,44,0.13)] sm:px-9 sm:py-11" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
           <span className="pointer-events-none absolute -right-8 -top-16 text-[180px] opacity-10" aria-hidden="true">✦</span>
-          <p className="relative text-[10px] font-bold uppercase tracking-[0.2em] text-[#F2DDBD]">Your GoldMart updates</p>
+          <p className="relative text-[10px] font-bold uppercase tracking-[0.2em] text-[#F5E6A3]">Your GoldMart updates</p>
           <h2 className="relative mt-3 text-3xl font-black tracking-tight sm:text-4xl">Stay in the know.</h2>
           <p className="relative mt-3 max-w-lg text-sm leading-6 text-white/85">Messages, orders, payments and important activity — thoughtfully organized in one place.</p>
           <div className="relative mt-6 flex flex-wrap gap-2">
@@ -445,7 +445,7 @@ export default function NotificationsPage() {
         {/* TITLE */}
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-xs font-black uppercase tracking-widest text-[#9A7617]">
+            <p className="text-xs font-black uppercase tracking-widest text-[#D4AF37]">
               GoldMart
             </p>
 
@@ -491,11 +491,11 @@ export default function NotificationsPage() {
         {token && !loading && !error && (
           <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3" aria-label="Notification counts">
             {[
-              {value:notifications.length,label:"Total",tone:"bg-white text-[#273B43]"},
-              {value:unreadCount,label:"Unread",tone:"bg-[#E5F4ED] text-[#326A55]"},
-              {value:readCount,label:"Read",tone:"bg-[#E9EFF8] text-[#4D6489]"},
+              {value:notifications.length,label:"Total",tone:"bg-white text-[#1A3C32]"},
+              {value:unreadCount,label:"Unread",tone:"bg-[#F7F7F5] text-[#1A3C32]"},
+              {value:readCount,label:"Read",tone:"bg-[#F7F7F5] text-[#D4AF37]"},
             ].map((item) => (
-              <div key={item.label} className={`rounded-2xl border border-[#E5EAE6] p-4 shadow-sm ${item.tone}`}>
+              <div key={item.label} className={`rounded-2xl border border-[#F7F7F5] p-4 shadow-sm ${item.tone}`}>
                 <p className="text-2xl font-black">{item.value}</p><p className="mt-1 text-[11px] font-bold">{item.label}</p>
               </div>
             ))}
@@ -505,7 +505,7 @@ export default function NotificationsPage() {
           <div role="group" aria-label="Filter notifications" className="mt-6 flex gap-2 overflow-x-auto pb-1">
             {([{key:"all",label:"All updates"},{key:"unread",label:"Unread"},{key:"read",label:"Read"}] as const).map(item => (
               <button key={item.key} type="button" onClick={() => setFilter(item.key)} aria-pressed={filter === item.key}
-                className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition ${filter === item.key ? "border-[#25464C] bg-[#25464C] text-white" : "border-[#E0E4E0] bg-white text-[#53605E] hover:border-[#B9CFC9]"}`}>
+                className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition ${filter === item.key ? "border-[#1A3C32] bg-[#1A3C32] text-white" : "border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3]"}`}>
                 {item.label}
               </button>
             ))}
@@ -588,8 +588,8 @@ export default function NotificationsPage() {
                     key={notification.id}
                     className={`overflow-hidden rounded-[22px] border bg-white shadow-[0_5px_20px_rgba(25,43,45,0.04)] transition hover:shadow-lg ${
                       notification.is_read
-                        ? "border-[#E6EAE7]"
-                        : "border-[#A5C9BA] bg-[#F5FBF7]"
+                        ? "border-[#F7F7F5]"
+                        : "border-[#F5E6A3] bg-[#FFFFFF]"
                     }`}
                   >
                     {/* NOTIFICATION HEADER */}
@@ -614,7 +614,7 @@ export default function NotificationsPage() {
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
                             {!notification.is_read && (
-                              <span className="h-2 w-2 rounded-full bg-[#3B987E]" />
+                              <span className="h-2 w-2 rounded-full bg-[#D4AF37]" />
                             )}
 
                             <h2 className="font-black">
@@ -646,7 +646,7 @@ export default function NotificationsPage() {
                     </button>
 
                     {/* ACTIONS */}
-                    <div className="flex flex-wrap items-center gap-2 border-t border-[#E6EAE6] bg-[#FAFBF9] p-4">
+                    <div className="flex flex-wrap items-center gap-2 border-t border-[#F7F7F5] bg-[#FFFFFF] p-4">
 
                       {/* OPEN CHAT / ORDER */}
                       {destination && (
@@ -660,7 +660,7 @@ export default function NotificationsPage() {
                               );
                             }
                           }}
-                          className="rounded-full bg-[#25464C] px-4 py-2 text-xs font-black text-white hover:bg-[#36756F]"
+                          className="rounded-full bg-[#1A3C32] px-4 py-2 text-xs font-black text-white hover:bg-[#D4AF37]"
                         >
                           {notification.type === "message"
                             ? "💬 Open Chat"
@@ -678,7 +678,7 @@ export default function NotificationsPage() {
                             !notification.is_read
                           )
                         }
-                        className="rounded-full border border-[#D4DEDB] bg-white px-4 py-2 text-xs font-bold text-[#355952] hover:bg-[#F0F7F4] disabled:opacity-50"
+                        className="rounded-full border border-[#F7F7F5] bg-white px-4 py-2 text-xs font-bold text-[#1A3C32] hover:bg-[#F7F7F5] disabled:opacity-50"
                       >
                         {isBusy
                           ? "Working..."
@@ -728,9 +728,9 @@ export default function NotificationsPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-[#E3E7E3] bg-[#243941] px-4 py-8 text-center text-white">
+      <footer className="border-t border-[#F7F7F5] bg-[#1A3C32] px-4 py-8 text-center text-white">
         <p className="text-2xl font-black">
-          Gold<span className="text-[#128563]">Mart</span>
+          Gold<span className="text-[#D4AF37]">Mart</span>
         </p>
 
         <p className="mt-2 text-xs text-gray-400">
