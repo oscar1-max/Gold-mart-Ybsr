@@ -338,7 +338,7 @@ export default function AdminOverviewPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#F7F9F8] pb-32 text-[#202A31] md:pb-12">
+    <main className="min-h-screen bg-[#f5f7f6] pb-32 text-[#1b3329] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
         <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(115deg,#142E37,#245D61 58%,#AD8B60)"}}>
@@ -347,39 +347,39 @@ export default function AdminOverviewPage() {
             <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#D1BA88"}}>GOLDMART PRIVATE ADMIN · EXECUTIVE HQ</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Admin Overview</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Your private command centre for the marketplace.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#B7EDCF]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#def3e6]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
           <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#284F55] bg-[#284F55] text-white">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Support</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Support</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#E8E1D5] bg-white">
+      <header className="border-b border-[#e0eae3] bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
           <Link
             href="/"
             className="text-2xl font-black tracking-tight"
           >
             Gold
-            <span className="text-[#B08A50]">
+            <span className="text-[#4e9776]">
               Mart
             </span>
           </Link>
 
           <Link
             href="/account"
-            className="rounded-full border border-[#D7BF97] px-4 py-2 text-xs font-bold hover:bg-[#FAF8F3]"
+            className="rounded-full border border-[#D7BF97] px-4 py-2 text-xs font-bold hover:bg-[#f5f8f5]"
           >
             ← My Account
           </Link>
@@ -393,11 +393,11 @@ export default function AdminOverviewPage() {
         <section className="relative overflow-hidden rounded-[28px] bg-[#253F48] p-7 text-white sm:p-10">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-12 -top-16 h-52 w-52 rounded-full border border-[#C5A46D]/30"
+            className="pointer-events-none absolute -right-12 -top-16 h-52 w-52 rounded-full border border-[#68a98c]/30"
           />
 
           <div className="relative">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">
               GoldMart Administration
             </p>
 
@@ -413,7 +413,7 @@ export default function AdminOverviewPage() {
 
             {dashboardState === "ready" && (
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <span className="rounded-full border border-[#C5A46D]/50 bg-[#C5A46D]/15 px-4 py-2 text-xs font-bold text-[#E9D9BB]">
+                <span className="rounded-full border border-[#68a98c]/50 bg-[#68a98c]/15 px-4 py-2 text-xs font-bold text-[#ddf1e3]">
                   🛡️ Administrator Tools
                 </span>
 
@@ -422,7 +422,7 @@ export default function AdminOverviewPage() {
                   onClick={() =>
                     void loadDashboard()
                   }
-                  className="rounded-full bg-[#C5A46D] px-5 py-2.5 text-sm font-bold text-[#17191D] hover:bg-[#E9D9BB]"
+                  className="rounded-full bg-[#68a98c] px-5 py-2.5 text-sm font-bold text-[#162e25] hover:bg-[#ddf1e3]"
                 >
                   ↻ Refresh Overview
                 </button>
@@ -434,7 +434,7 @@ export default function AdminOverviewPage() {
         {/* ACCESS CHECK */}
 
         {dashboardState === "loading" && (
-          <div className="mt-8 rounded-3xl border border-[#E8E1D5] bg-white p-8 text-center">
+          <div className="mt-8 rounded-3xl border border-[#e0eae3] bg-white p-8 text-center">
             <p className="text-sm text-[#716B62]">
               Checking administrator access
               and loading your dashboard...
@@ -445,7 +445,7 @@ export default function AdminOverviewPage() {
         {/* LOGIN REQUIRED */}
 
         {dashboardState === "login" && (
-          <section className="mt-8 rounded-3xl border border-[#E8E1D5] bg-white p-8 text-center">
+          <section className="mt-8 rounded-3xl border border-[#e0eae3] bg-white p-8 text-center">
             <div className="text-4xl">🔐</div>
 
             <h2 className="mt-4 text-xl font-black">
@@ -459,7 +459,7 @@ export default function AdminOverviewPage() {
 
             <Link
               href="/login"
-              className="mt-6 inline-block rounded-full bg-[#254F54] px-6 py-3 text-sm font-bold text-white"
+              className="mt-6 inline-block rounded-full bg-[#145d4a] px-6 py-3 text-sm font-bold text-white"
             >
               Go to Login
             </Link>
@@ -469,7 +469,7 @@ export default function AdminOverviewPage() {
         {/* ACCESS RESTRICTED */}
 
         {dashboardState === "denied" && (
-          <section className="mt-8 rounded-3xl border border-[#E8E1D5] bg-white p-8 text-center">
+          <section className="mt-8 rounded-3xl border border-[#e0eae3] bg-white p-8 text-center">
             <div className="text-4xl">🔒</div>
 
             <h2 className="mt-4 text-xl font-black">
@@ -485,7 +485,7 @@ export default function AdminOverviewPage() {
 
             <Link
               href="/account"
-              className="mt-6 inline-block rounded-full bg-[#254F54] px-6 py-3 text-sm font-bold text-white"
+              className="mt-6 inline-block rounded-full bg-[#145d4a] px-6 py-3 text-sm font-bold text-white"
             >
               Back to My Account
             </Link>
@@ -495,7 +495,7 @@ export default function AdminOverviewPage() {
         {/* SERVER ERROR */}
 
         {dashboardState === "unavailable" && (
-          <section className="mt-8 rounded-3xl border border-[#E8E1D5] bg-white p-8 text-center">
+          <section className="mt-8 rounded-3xl border border-[#e0eae3] bg-white p-8 text-center">
             <div className="text-4xl">⚠️</div>
 
             <h2 className="mt-4 text-xl font-black">
@@ -512,7 +512,7 @@ export default function AdminOverviewPage() {
               onClick={() =>
                 void loadDashboard()
               }
-              className="mt-6 rounded-full bg-[#254F54] px-6 py-3 text-sm font-bold text-white"
+              className="mt-6 rounded-full bg-[#145d4a] px-6 py-3 text-sm font-bold text-white"
             >
               Try Again
             </button>
@@ -526,7 +526,7 @@ export default function AdminOverviewPage() {
             {/* SUMMARY CARDS */}
 
             <section className="mt-9">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#176c52]">
                 Marketplace Operations
               </p>
 
@@ -538,9 +538,9 @@ export default function AdminOverviewPage() {
                 {stats.map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-[22px] border border-[#E8E1D5] bg-white p-4 shadow-sm sm:p-5"
+                    className="rounded-[22px] border border-[#e0eae3] bg-white p-4 shadow-sm sm:p-5"
                   >
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F5F1E9] text-xl">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#ebf4ed] text-xl">
                       {item.icon}
                     </span>
 
@@ -568,7 +568,7 @@ export default function AdminOverviewPage() {
 
             <section className="mt-10">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#176c52]">
                   Administration
                 </p>
 
@@ -584,10 +584,10 @@ export default function AdminOverviewPage() {
                   return (
                     <article
                       key={item.key}
-                      className="flex flex-col rounded-[24px] border border-[#E8E1D5] bg-white p-6 shadow-sm"
+                      className="flex flex-col rounded-[24px] border border-[#e0eae3] bg-white p-6 shadow-sm"
                     >
                       <div className="flex items-center justify-between gap-3">
-                        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F5F1E9] text-2xl">
+                        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ebf4ed] text-2xl">
                           {item.icon}
                         </span>
 
@@ -617,7 +617,7 @@ export default function AdminOverviewPage() {
                       </p>
 
                       {module.state === "ready" && (
-                        <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl bg-[#FAF8F3] p-4">
+                        <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl bg-[#f5f8f5] p-4">
                           <div>
                             <p className="text-xs text-[#716B62]">
                               Loaded
@@ -649,12 +649,12 @@ export default function AdminOverviewPage() {
                       {module.state === "ready" ? (
                         <Link
                           href={item.href}
-                          className="mt-5 block rounded-full bg-[#254F54] px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-[#96713D]"
+                          className="mt-5 block rounded-full bg-[#145d4a] px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-[#176c52]"
                         >
                           {item.button} →
                         </Link>
                       ) : (
-                        <p className="mt-5 rounded-full border border-[#E8E1D5] px-5 py-3 text-center text-xs font-semibold text-[#716B62]">
+                        <p className="mt-5 rounded-full border border-[#e0eae3] px-5 py-3 text-center text-xs font-semibold text-[#716B62]">
                           {module.message}
                         </p>
                       )}
