@@ -77,12 +77,12 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md">
+    <main className="gm-auth flex min-h-screen items-center justify-center bg-gray-50 px-4">
+      <div className="gm-auth-inner w-full max-w-md">
 
         <Link
           href="/"
-          className="mb-8 block text-center text-3xl font-black"
+          className="gm-auth-brand mb-8 block text-center text-3xl font-black"
         >
           Gold
           <span className="text-[#D4AF37]">
@@ -90,7 +90,7 @@ export default function LoginPage() {
           </span>
         </Link>
 
-        <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
+        <div className="gm-auth-panel rounded-3xl bg-white p-6 shadow-sm sm:p-8">
 
           <h1 className="text-3xl font-black">
             Welcome Back
