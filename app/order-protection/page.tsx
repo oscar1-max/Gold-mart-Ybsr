@@ -390,11 +390,11 @@ export default function OrderProtectionPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f5f8f6] pb-28 text-[#1b3329] md:pb-14">
-      <section aria-label="Buyer protection introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(120deg,#3D314B,#755E80,#C39D75)" }}>
+    <main className="min-h-screen bg-[#FFFFFF] pb-28 text-[#0A1F1A] md:pb-14">
+      <section aria-label="Buyer protection introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)" }}>
         <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🛡️</div>
         <div className="relative">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F2DEC0]">GoldMart · Buyer protection</p>
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F5E6A3]">GoldMart · Buyer protection</p>
           <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">Support for every purchase.</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Review your orders, raise requests and confirm delivery when your order arrives.</p>
           <div className="mt-5 flex flex-wrap gap-2">
@@ -412,7 +412,7 @@ export default function OrderProtectionPage() {
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#C49A29]">
+            <span className="text-[#D4AF37]">
               Mart
             </span>
           </Link>
@@ -427,7 +427,7 @@ export default function OrderProtectionPage() {
       </header>
 
       <section className="mx-auto max-w-4xl px-4 py-10">
-        <p className="text-xs font-bold uppercase tracking-widest text-[#9B751B]">
+        <p className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
           GoldMart Customer Care
         </p>
 
@@ -442,7 +442,7 @@ export default function OrderProtectionPage() {
         </p>
 
         {signedOut && (
-          <div className="mt-8 rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-8 text-center shadow-sm">
+          <div className="mt-8 rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-8 text-center shadow-sm">
             <h2 className="text-xl font-bold">
               Sign in required
             </h2>
@@ -461,7 +461,7 @@ export default function OrderProtectionPage() {
         )}
 
         {loading && !signedOut && (
-          <div className="mt-8 rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-8 text-center">
+          <div className="mt-8 rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-8 text-center">
             Loading your orders...
           </div>
         )}
@@ -470,7 +470,7 @@ export default function OrderProtectionPage() {
           !signedOut &&
           orders.length === 0 &&
           !error && (
-            <div className="mt-8 rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-8 text-center">
+            <div className="mt-8 rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-8 text-center">
               <p className="text-3xl">📦</p>
               <h2 className="mt-3 text-xl font-bold">
                 No orders found
@@ -493,7 +493,7 @@ export default function OrderProtectionPage() {
           !signedOut &&
           orders.length > 0 && (
             <div className="mt-8 space-y-5">
-              <div className="rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
+              <div className="rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
                 <label
                   htmlFor="order-select"
                   className="block text-sm font-bold"
@@ -525,7 +525,7 @@ export default function OrderProtectionPage() {
               </div>
 
               {selectedOrder && (
-                <div className="rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
+                <div className="rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <p className="text-sm text-gray-500">
@@ -544,7 +544,7 @@ export default function OrderProtectionPage() {
                       </p>
                     </div>
 
-                    <span className="rounded-full bg-[#F9EDC6] px-4 py-2 text-sm font-bold text-[#775914]">
+                    <span className="rounded-full bg-[#F7F7F5] px-4 py-2 text-sm font-bold text-[#D4AF37]">
                       {readableStatus(
                         selectedOrder.status
                       )}
@@ -570,7 +570,7 @@ export default function OrderProtectionPage() {
               )}
 
               {detailsLoading && (
-                <div className="rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6">
+                <div className="rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6">
                   Loading buyer protection details...
                 </div>
               )}
@@ -600,7 +600,7 @@ export default function OrderProtectionPage() {
                     {/* EXISTING REFUND REQUEST */}
 
                     {protection.refund_request && (
-                      <div className="rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
+                      <div className="rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
                         <h2 className="text-xl font-black">
                           Refund Request Status
                         </h2>
@@ -618,7 +618,7 @@ export default function OrderProtectionPage() {
                         <p className="mt-4 text-sm text-gray-500">
                           Current Status
                         </p>
-                        <p className="font-bold text-[#967018]">
+                        <p className="font-bold text-[#D4AF37]">
                           {readableStatus(
                             protection.refund_request
                               .status
@@ -662,7 +662,7 @@ export default function OrderProtectionPage() {
                     {/* NEW REFUND REQUEST */}
 
                     {!hasRequest && (
-                      <div className="rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
+                      <div className="rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
                         <h2 className="text-xl font-black">
                           {requestLabel}
                         </h2>
@@ -694,7 +694,7 @@ export default function OrderProtectionPage() {
                           rows={5}
                           maxLength={2000}
                           placeholder="Explain the problem with your order..."
-                          className="mt-2 w-full rounded-xl border border-gray-300 p-4 text-sm outline-none focus:border-[#C49A29]"
+                          className="mt-2 w-full rounded-xl border border-gray-300 p-4 text-sm outline-none focus:border-[#D4AF37]"
                         />
 
                         <p className="mt-1 text-xs text-gray-500">
@@ -709,7 +709,7 @@ export default function OrderProtectionPage() {
                             busy ||
                             reason.trim().length < 10
                           }
-                          className="mt-5 w-full rounded-xl bg-[#C49A29] px-5 py-3 font-black text-black disabled:cursor-not-allowed disabled:opacity-50"
+                          className="mt-5 w-full rounded-xl bg-[#D4AF37] px-5 py-3 font-black text-black disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           {busy
                             ? "Submitting..."
@@ -720,7 +720,7 @@ export default function OrderProtectionPage() {
 
                     {/* DELIVERY CONFIRMATION */}
 
-                    <div className="rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
+                    <div className="rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-6 shadow-sm">
                       <h2 className="text-xl font-black">
                         Confirm Delivery
                       </h2>
