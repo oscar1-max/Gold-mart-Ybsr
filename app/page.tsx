@@ -99,7 +99,7 @@ function ProductCard({ product, compact = false }: { product: Product; compact?:
             </div>
           )}
           {!available && (
-            <span className="absolute left-2 top-2 rounded-full bg-[#17191D]/90 px-2.5 py-1 text-[10px] font-bold text-white">
+            <span className="absolute left-2 top-2 rounded-full bg-[#162e25]/90 px-2.5 py-1 text-[10px] font-bold text-white">
               Sold out
             </span>
           )}
@@ -113,11 +113,11 @@ function ProductCard({ product, compact = false }: { product: Product; compact?:
           </p>
         )}
         <Link href={`/product/${product.id}`}>
-          <h3 className="line-clamp-2 min-h-[38px] text-[13px] font-semibold leading-[19px] text-[#17191D] sm:text-sm">
+          <h3 className="line-clamp-2 min-h-[38px] text-[13px] font-semibold leading-[19px] text-[#162e25] sm:text-sm">
             {product.name}
           </h3>
         </Link>
-        <p className="mt-2 break-words text-[15px] font-black tracking-tight text-[#17191D] sm:text-lg">
+        <p className="mt-2 break-words text-[15px] font-black tracking-tight text-[#162e25] sm:text-lg">
           {formatPrice(product.price, product.currency)}
         </p>
         <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-[#746F67]">
@@ -221,12 +221,12 @@ export default function Home() {
   }, [products, activeTab]);
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#F4F7F5] pb-24 text-[#17191D] md:pb-0">
+    <main className="min-h-screen overflow-x-hidden bg-[#F4F7F5] pb-24 text-[#162e25] md:pb-0">
       {/* TOP BAR + MOBILE SEARCH */}
       <header className="sticky top-0 z-50 border-b border-[#EBE4D9] bg-white/95 shadow-[0_3px_16px_rgba(23,25,29,0.035)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
           <Link href="/" className="shrink-0 text-[23px] font-black tracking-[-0.055em]" aria-label="GoldMart home">
-            Gold<span className="text-[#B08A50]">Mart</span><span className="ml-1 align-top text-[10px] text-[#C5A46D]">✦</span>
+            Gold<span className="text-[#4e9776]">Mart</span><span className="ml-1 align-top text-[10px] text-[#68a98c]">✦</span>
           </Link>
           <nav aria-label="Desktop navigation" className="hidden items-center gap-6 text-sm font-semibold text-[#59554E] md:flex">
             <Link href="/shop" className="hover:text-[#347467]">Shop</Link>
@@ -246,7 +246,7 @@ export default function Home() {
         <div className="mx-auto max-w-4xl px-4 pb-3 sm:px-6">
           <form
             onSubmit={(event) => { event.preventDefault(); handleSearch(); }}
-            className="flex h-12 items-center gap-2 overflow-hidden rounded-full border border-[#D8CAB4] bg-[#F3F7F5] pl-4 pr-1.5 transition focus-within:border-[#96713D] focus-within:ring-2 focus-within:ring-[#C5A46D]/15"
+            className="flex h-12 items-center gap-2 overflow-hidden rounded-full border border-[#D8CAB4] bg-[#F3F7F5] pl-4 pr-1.5 transition focus-within:border-[#176c52] focus-within:ring-2 focus-within:ring-[#68a98c]/15"
             role="search"
           >
             <span className="text-lg" aria-hidden="true">⌕</span>
@@ -256,10 +256,10 @@ export default function Home() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search products and more..."
-              className="min-w-0 flex-1 bg-transparent text-sm text-[#17191D] outline-none placeholder:text-[#8A847A]"
+              className="min-w-0 flex-1 bg-transparent text-sm text-[#162e25] outline-none placeholder:text-[#8A847A]"
             />
             <Link href="/visual-search" aria-label="Visual search" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg hover:bg-white">📷</Link>
-            <button type="submit" aria-label="Search" className="flex h-9 w-10 shrink-0 items-center justify-center rounded-full bg-[#17191D] text-lg text-white transition hover:bg-[#247263]">⌕</button>
+            <button type="submit" aria-label="Search" className="flex h-9 w-10 shrink-0 items-center justify-center rounded-full bg-[#162e25] text-lg text-white transition hover:bg-[#247263]">⌕</button>
           </form>
         </div>
       </header>
@@ -295,12 +295,12 @@ export default function Home() {
       {/* LUXURY HERO */}
       <section className="mx-auto max-w-7xl px-4 pb-5 pt-5 sm:px-6 sm:pt-7 lg:px-8">
         <div className="relative isolate overflow-hidden rounded-[30px] bg-[linear-gradient(120deg,#1A2932_0%,#304D4C_53%,#695138_100%)] px-6 pb-8 pt-10 text-white shadow-[0_18px_42px_rgba(23,25,29,0.14)] sm:px-10 sm:py-14 lg:px-16 lg:py-20">
-          <div className="pointer-events-none absolute -right-20 -top-32 h-[340px] w-[340px] rounded-full border border-[#C5A46D]/25 sm:right-0" />
-          <div className="pointer-events-none absolute -right-10 -top-20 h-[230px] w-[230px] rounded-full border border-[#C5A46D]/30" />
-          <div className="pointer-events-none absolute bottom-[-110px] right-[-85px] h-[290px] w-[290px] rounded-full bg-[#C5A46D]/15 blur-3xl" />
-          <div className="pointer-events-none absolute right-8 top-24 hidden text-[125px] font-black leading-none text-[#C5A46D]/15 lg:block" aria-hidden="true">GM</div>
+          <div className="pointer-events-none absolute -right-20 -top-32 h-[340px] w-[340px] rounded-full border border-[#68a98c]/25 sm:right-0" />
+          <div className="pointer-events-none absolute -right-10 -top-20 h-[230px] w-[230px] rounded-full border border-[#68a98c]/30" />
+          <div className="pointer-events-none absolute bottom-[-110px] right-[-85px] h-[290px] w-[290px] rounded-full bg-[#68a98c]/15 blur-3xl" />
+          <div className="pointer-events-none absolute right-8 top-24 hidden text-[125px] font-black leading-none text-[#68a98c]/15 lg:block" aria-hidden="true">GM</div>
           <div className="relative z-10 max-w-2xl">
-            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#E9D9BB] sm:text-xs">THE GOLDMART EXPERIENCE</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#ddf1e3] sm:text-xs">THE GOLDMART EXPERIENCE</p>
             <h1 className="mt-3 max-w-xl text-[34px] font-black leading-[1.08] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
               Discover more.<br /><span className="text-[#F1D2A1]">Love every find.</span>
             </h1>
@@ -308,8 +308,8 @@ export default function Home() {
               Find products you'll love, browse by department, and keep your orders, messages and account together in one easy place.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/shop" className="inline-flex items-center justify-center rounded-full bg-[#C5A46D] px-6 py-3 text-sm font-extrabold text-[#17191D] transition hover:bg-[#E9D9BB]">Explore the Shop →</Link>
-              <Link href="/categories" className="inline-flex items-center justify-center rounded-full border border-[#8D816D] px-6 py-3 text-sm font-bold text-white transition hover:border-[#E9D9BB]">Browse Categories</Link>
+              <Link href="/shop" className="inline-flex items-center justify-center rounded-full bg-[#68a98c] px-6 py-3 text-sm font-extrabold text-[#162e25] transition hover:bg-[#ddf1e3]">Explore the Shop →</Link>
+              <Link href="/categories" className="inline-flex items-center justify-center rounded-full border border-[#8D816D] px-6 py-3 text-sm font-bold text-white transition hover:border-[#ddf1e3]">Browse Categories</Link>
               <Link href="/orders" className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/20">My Orders ↗</Link>
             </div>
           </div>
@@ -349,7 +349,7 @@ export default function Home() {
           </div>
         </Link>
         <Link href="/shop" className="group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] bg-[linear-gradient(135deg,#354C5E,#232C35)] p-4 text-white transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
-          <span className="pointer-events-none absolute -right-6 -top-11 h-36 w-36 rounded-full border-[20px] border-[#C5A46D]/15" />
+          <span className="pointer-events-none absolute -right-6 -top-11 h-36 w-36 rounded-full border-[20px] border-[#68a98c]/15" />
           <span className="relative text-2xl" aria-hidden="true">◈</span>
           <div className="relative">
             <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#D6B780]">Discover GoldMart</p>
@@ -399,7 +399,7 @@ export default function Home() {
               aria-selected={activeTab === tab}
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${activeTab === tab ? "border-[#17191D] bg-[#17191D] text-white" : "border-[#E6DCCD] bg-white text-[#5D564D] hover:border-[#71A999]"}`}
+              className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${activeTab === tab ? "border-[#162e25] bg-[#162e25] text-white" : "border-[#e2ebe5] bg-white text-[#5D564D] hover:border-[#71A999]"}`}
             >
               {tab}
             </button>
@@ -424,7 +424,7 @@ export default function Home() {
             <span className="text-4xl" aria-hidden="true">🛍️</span>
             <h3 className="mt-3 text-lg font-black">{productsError ? "Products unavailable right now" : "No products found"}</h3>
             <p className="mt-2 text-sm text-[#746F67]">{productsError ? "Please try again in a moment." : "Browse the shop or choose another filter."}</p>
-            <Link href="/shop" className="mt-5 inline-flex rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white hover:bg-[#247263]">Visit Shop →</Link>
+            <Link href="/shop" className="mt-5 inline-flex rounded-full bg-[#162e25] px-6 py-3 text-sm font-bold text-white hover:bg-[#247263]">Visit Shop →</Link>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
@@ -474,20 +474,20 @@ export default function Home() {
 
       {/* SELLER CTA */}
       <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-[25px] bg-[#17191D] p-6 text-white sm:p-9">
-          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#C5A46D]/25" />
+        <div className="relative overflow-hidden rounded-[25px] bg-[#162e25] p-6 text-white sm:p-9">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#68a98c]/25" />
           <div className="relative">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D6B780]">Sell with GoldMart</p>
             <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Have products to sell?</h2>
             <p className="mt-2 max-w-lg text-sm leading-6 text-[#D8D4CA]">Manage your products and reach customers from your seller dashboard.</p>
-            <Link href="/seller" className="mt-5 inline-flex rounded-full bg-[#C5A46D] px-6 py-3 text-sm font-extrabold text-[#17191D] transition hover:bg-[#E9D9BB]">Explore Selling →</Link>
+            <Link href="/seller" className="mt-5 inline-flex rounded-full bg-[#68a98c] px-6 py-3 text-sm font-extrabold text-[#162e25] transition hover:bg-[#ddf1e3]">Explore Selling →</Link>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
       <footer className="border-t border-[#EAE2D7] bg-white px-5 pb-10 pt-9 text-center md:pb-12">
-        <Link href="/" className="text-2xl font-black tracking-[-0.05em]">Gold<span className="text-[#B08A50]">Mart</span></Link>
+        <Link href="/" className="text-2xl font-black tracking-[-0.05em]">Gold<span className="text-[#4e9776]">Mart</span></Link>
         <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-[#746F67]">Discover products, manage orders and connect with sellers in one place.</p>
         <div className="mx-auto mt-6 grid max-w-md grid-cols-2 gap-3 text-xs font-semibold text-[#625B50]">
           <Link href="/shop" className="hover:text-[#347467]">Shop</Link>
