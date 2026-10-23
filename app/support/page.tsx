@@ -58,7 +58,7 @@ function friendlyStatus(status: string) {
 
 function statusStyle(status: string) {
   if (status === "resolved") {
-    return "bg-emerald-50 text-emerald-800";
+    return "bg-orange-50 text-orange-800";
   }
 
   if (status === "closed") {
@@ -69,7 +69,7 @@ function statusStyle(status: string) {
     return "bg-blue-50 text-blue-800";
   }
 
-  return "bg-[#F7F7F5] text-[#D4AF37]";
+  return "bg-[#FFF8F2] text-[#FF6B00]";
 }
 
 async function apiRequest(
@@ -349,19 +349,19 @@ export default function SupportPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-16 text-[#0A1F1A]">
-      <div className="h-1 bg-gradient-to-r from-[#1A3C32] via-[#F7F7F5] to-[#D4AF37]" />
+    <main className="min-h-screen bg-[#FFFFFF] pb-16 text-[#14263D]">
+      <div className="h-1 bg-gradient-to-r from-[#243B53] via-[#FFF8F2] to-[#FF6B00]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#F7F7F5] bg-white">
+      <header className="border-b border-[#FFF8F2] bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link
             href="/"
             className="text-2xl font-black tracking-tight"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#FF6B00]">
               Mart
             </span>
           </Link>
@@ -369,14 +369,14 @@ export default function SupportPage() {
           <div className="flex gap-2 text-sm font-semibold">
             <Link
               href="/help"
-              className="rounded-full border border-[#F7F7F5] px-4 py-2 hover:border-[#D4AF37]"
+              className="rounded-full border border-[#FFF8F2] px-4 py-2 hover:border-[#FF6B00]"
             >
               Help Centre
             </Link>
 
             <Link
               href="/account"
-              className="rounded-full bg-[#0A1F1A] px-4 py-2 text-white"
+              className="rounded-full bg-[#14263D] px-4 py-2 text-white"
             >
               My Account
             </Link>
@@ -387,8 +387,8 @@ export default function SupportPage() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         {/* HERO */}
 
-        <section className="rounded-[28px] bg-[#0A1F1A] px-6 py-8 text-white sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F7F7F5]">
+        <section className="rounded-[28px] bg-[#14263D] px-6 py-8 text-white sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFF8F2]">
             GoldMart Support Centre
           </p>
 
@@ -396,7 +396,7 @@ export default function SupportPage() {
             How can we help?
           </h1>
 
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-[#F7F7F5]">
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-[#FFF8F2]">
             Create a private support ticket,
             check its progress, and reply to
             the GoldMart support team.
@@ -412,19 +412,19 @@ export default function SupportPage() {
         {/* SIGN IN REQUIRED */}
 
         {signedIn === false && (
-          <section className="mt-7 rounded-3xl border border-[#F7F7F5] bg-white p-7 text-center">
+          <section className="mt-7 rounded-3xl border border-[#FFF8F2] bg-white p-7 text-center">
             <h2 className="text-xl font-black">
               Sign in to contact support
             </h2>
 
-            <p className="mt-2 text-sm text-[#D4AF37]">
+            <p className="mt-2 text-sm text-[#FF6B00]">
               Your support tickets are linked
               to your GoldMart account.
             </p>
 
             <Link
               href="/login"
-              className="mt-5 inline-block rounded-full bg-[#0A1F1A] px-7 py-3 text-sm font-bold text-white"
+              className="mt-5 inline-block rounded-full bg-[#14263D] px-7 py-3 text-sm font-bold text-white"
             >
               Sign In
             </Link>
@@ -438,12 +438,12 @@ export default function SupportPage() {
             <div className="space-y-6">
               {/* CREATE TICKET */}
 
-              <section className="rounded-3xl border border-[#F7F7F5] bg-white p-5 shadow-sm sm:p-7">
+              <section className="rounded-3xl border border-[#FFF8F2] bg-white p-5 shadow-sm sm:p-7">
                 <h2 className="text-xl font-black">
                   Create a Support Ticket
                 </h2>
 
-                <p className="mt-2 text-sm text-[#D4AF37]">
+                <p className="mt-2 text-sm text-[#FF6B00]">
                   Explain your issue clearly.
                   Do not include passwords,
                   card numbers, or secret codes.
@@ -469,7 +469,7 @@ export default function SupportPage() {
                           event.target.value
                         )
                       }
-                      className="w-full rounded-xl border border-[#F7F7F5] bg-white px-4 py-3 text-sm outline-none focus:border-[#D4AF37]"
+                      className="w-full rounded-xl border border-[#FFF8F2] bg-white px-4 py-3 text-sm outline-none focus:border-[#FF6B00]"
                     >
                       {categories.map((item) => (
                         <option
@@ -502,7 +502,7 @@ export default function SupportPage() {
                       minLength={5}
                       maxLength={120}
                       placeholder="e.g. I need help with my order"
-                      className="w-full rounded-xl border border-[#F7F7F5] px-4 py-3 text-sm outline-none focus:border-[#D4AF37]"
+                      className="w-full rounded-xl border border-[#FFF8F2] px-4 py-3 text-sm outline-none focus:border-[#FF6B00]"
                     />
                   </div>
 
@@ -527,7 +527,7 @@ export default function SupportPage() {
                       maxLength={5000}
                       rows={5}
                       placeholder="Tell us what happened and what help you need..."
-                      className="w-full resize-y rounded-xl border border-[#F7F7F5] px-4 py-3 text-sm outline-none focus:border-[#D4AF37]"
+                      className="w-full resize-y rounded-xl border border-[#FFF8F2] px-4 py-3 text-sm outline-none focus:border-[#FF6B00]"
                     />
                   </div>
 
@@ -543,7 +543,7 @@ export default function SupportPage() {
                   {notice && (
                     <p
                       role="status"
-                      className="text-sm font-semibold text-emerald-800"
+                      className="text-sm font-semibold text-orange-800"
                     >
                       {notice}
                     </p>
@@ -552,7 +552,7 @@ export default function SupportPage() {
                   <button
                     type="submit"
                     disabled={creating}
-                    className="w-full rounded-full bg-[#0A1F1A] px-6 py-3 font-bold text-white transition hover:bg-[#1A3C32] disabled:opacity-60"
+                    className="w-full rounded-full bg-[#14263D] px-6 py-3 font-bold text-white transition hover:bg-[#243B53] disabled:opacity-60"
                   >
                     {creating
                       ? "Creating ticket..."
@@ -563,7 +563,7 @@ export default function SupportPage() {
 
               {/* MY TICKETS */}
 
-              <section className="rounded-3xl border border-[#F7F7F5] bg-white p-5 shadow-sm sm:p-7">
+              <section className="rounded-3xl border border-[#FFF8F2] bg-white p-5 shadow-sm sm:p-7">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="text-xl font-black">
                     My Support Tickets
@@ -575,14 +575,14 @@ export default function SupportPage() {
                       void loadTickets()
                     }
                     disabled={listLoading}
-                    className="text-sm font-bold text-[#1A3C32] disabled:opacity-50"
+                    className="text-sm font-bold text-[#243B53] disabled:opacity-50"
                   >
                     Refresh
                   </button>
                 </div>
 
                 {listLoading && (
-                  <p className="mt-4 text-sm text-[#D4AF37]">
+                  <p className="mt-4 text-sm text-[#FF6B00]">
                     Loading tickets...
                   </p>
                 )}
@@ -599,7 +599,7 @@ export default function SupportPage() {
                 {!listLoading &&
                   !listError &&
                   tickets.length === 0 && (
-                    <p className="mt-4 rounded-xl bg-[#FFFFFF] p-5 text-sm text-[#D4AF37]">
+                    <p className="mt-4 rounded-xl bg-[#FFFFFF] p-5 text-sm text-[#FF6B00]">
                       No support tickets yet.
                       You can create one above.
                     </p>
@@ -615,11 +615,11 @@ export default function SupportPage() {
                           String(ticket.id)
                         )
                       }
-                      className={`w-full rounded-2xl border p-4 text-left transition hover:border-[#D4AF37] ${
+                      className={`w-full rounded-2xl border p-4 text-left transition hover:border-[#FF6B00] ${
                         selectedId ===
                         String(ticket.id)
-                          ? "border-[#D4AF37] bg-[#FFFFFF]"
-                          : "border-[#F7F7F5]"
+                          ? "border-[#FF6B00] bg-[#FFFFFF]"
+                          : "border-[#FFF8F2]"
                       }`}
                     >
                       <span className="flex items-start justify-between gap-2">
@@ -639,7 +639,7 @@ export default function SupportPage() {
                         </span>
                       </span>
 
-                      <span className="mt-2 block text-xs text-[#D4AF37]">
+                      <span className="mt-2 block text-xs text-[#FF6B00]">
                         Updated{" "}
                         {friendlyDate(
                           ticket.updated_at
@@ -653,13 +653,13 @@ export default function SupportPage() {
 
             {/* TICKET CONVERSATION */}
 
-            <section className="rounded-3xl border border-[#F7F7F5] bg-white p-5 shadow-sm sm:p-7">
+            <section className="rounded-3xl border border-[#FFF8F2] bg-white p-5 shadow-sm sm:p-7">
               <h2 className="text-xl font-black">
                 Ticket Conversation
               </h2>
 
               {!selectedId && (
-                <p className="mt-4 text-sm leading-6 text-[#D4AF37]">
+                <p className="mt-4 text-sm leading-6 text-[#FF6B00]">
                   Select a ticket from your list
                   to read replies or send a
                   follow-up message.
@@ -667,7 +667,7 @@ export default function SupportPage() {
               )}
 
               {detailLoading && (
-                <p className="mt-4 text-sm text-[#D4AF37]">
+                <p className="mt-4 text-sm text-[#FF6B00]">
                   Loading conversation...
                 </p>
               )}
@@ -684,7 +684,7 @@ export default function SupportPage() {
               {detail && !detailLoading && (
                 <div className="mt-5">
                   <div className="rounded-2xl bg-[#FFFFFF] p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#1A3C32]">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#243B53]">
                       Ticket #{detail.ticket.id}
                     </p>
 
@@ -717,11 +717,11 @@ export default function SupportPage() {
                             key={String(item.id)}
                             className={`rounded-2xl p-4 ${
                               mine
-                                ? "bg-[#F7F7F5]"
-                                : "border border-[#F7F7F5] bg-white"
+                                ? "bg-[#FFF8F2]"
+                                : "border border-[#FFF8F2] bg-white"
                             }`}
                           >
-                            <p className="text-xs font-bold text-[#1A3C32]">
+                            <p className="text-xs font-bold text-[#243B53]">
                               {mine
                                 ? "You"
                                 : "GoldMart Support"}
@@ -731,7 +731,7 @@ export default function SupportPage() {
                               {item.message}
                             </p>
 
-                            <p className="mt-3 text-xs text-[#D4AF37]">
+                            <p className="mt-3 text-xs text-[#FF6B00]">
                               {friendlyDate(
                                 item.created_at
                               )}
@@ -744,14 +744,14 @@ export default function SupportPage() {
 
                   {detail.ticket.status ===
                   "closed" ? (
-                    <p className="mt-5 rounded-xl bg-[#FFFFFF] p-4 text-sm text-[#D4AF37]">
+                    <p className="mt-5 rounded-xl bg-[#FFFFFF] p-4 text-sm text-[#FF6B00]">
                       This ticket is closed.
                       Create a new ticket if
                       you need more help.
                     </p>
                   ) : (
                     <form
-                      className="mt-6 space-y-3 border-t border-[#F7F7F5] pt-5"
+                      className="mt-6 space-y-3 border-t border-[#FFF8F2] pt-5"
                       onSubmit={submitReply}
                     >
                       <label
@@ -773,7 +773,7 @@ export default function SupportPage() {
                         maxLength={5000}
                         rows={4}
                         placeholder="Write your reply..."
-                        className="w-full resize-y rounded-xl border border-[#F7F7F5] px-4 py-3 text-sm outline-none focus:border-[#D4AF37]"
+                        className="w-full resize-y rounded-xl border border-[#FFF8F2] px-4 py-3 text-sm outline-none focus:border-[#FF6B00]"
                       />
 
                       {replyError && (
@@ -791,7 +791,7 @@ export default function SupportPage() {
                           sendingReply ||
                           !reply.trim()
                         }
-                        className="rounded-full bg-[#0A1F1A] px-6 py-3 text-sm font-bold text-white hover:bg-[#1A3C32] disabled:opacity-60"
+                        className="rounded-full bg-[#14263D] px-6 py-3 text-sm font-bold text-white hover:bg-[#243B53] disabled:opacity-60"
                       >
                         {sendingReply
                           ? "Sending..."
