@@ -850,6 +850,7 @@ export default function CheckoutPage() {
 
           </section>
 
+          {currency==="NGN" && <section className="mt-4 rounded-[22px] border border-[#BFD8D4] bg-[#EEF6F3] p-5 lg:col-span-2"><h2 className="font-black text-[#23554D]">Secure Delivery &amp; Insurance · planned</h2><p className="mt-2 text-sm text-[#3E6560]">Proposed ₦8,000 delivery charge for orders below ₦300,000, free on orders of ₦300,000 or above. This fee is not collected yet, and insurance/48-hour returns are not active until service arrangements are confirmed.</p></section>}
           {/* ORDER SUMMARY */}
 
           <aside className="h-fit rounded-3xl bg-white p-6 shadow-sm lg:sticky lg:top-24">

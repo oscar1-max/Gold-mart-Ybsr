@@ -152,6 +152,7 @@ export default function CartPage() {
           <span className="rounded-full bg-[#E8F2EC] px-3 py-1.5 text-xs font-bold text-[#336E58]">{cart.length} products</span>
         </div>
 
+        {cart.length>0 && currency==="NGN" && <section className="mt-5 rounded-[24px] border border-[#BDD8CD] bg-[#EAF5EF] px-5 py-5 text-[#24564D]"><p className="text-sm font-black">🔒 Proposed Secure Delivery savings</p><p className="mt-2 text-sm">{total>=300000 ? "🎉 This order meets the ₦300,000 free-delivery threshold." : `Add ₦${Math.max(0,300000-total).toLocaleString("en-NG")} more to reach the proposed free-delivery threshold.`}</p><p className="mt-2 text-xs text-[#57776D]">Planned fee: ₦8,000 below ₦300,000; free from ₦300,000. Not yet applied at checkout. Insurance/returns require an active coverage policy and delivery partner.</p></section>}
         {currencies.length > 1 && (
           <div role="alert" className="mt-5 rounded-2xl border border-[#F2D9A7] bg-[#FFF8E8] p-4 text-sm font-semibold text-[#7D5B23]">
             Your cart contains products with different currencies. Please checkout each currency separately.

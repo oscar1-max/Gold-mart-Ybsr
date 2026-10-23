@@ -535,7 +535,7 @@ export default function SellerDashboard() {
         <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(120deg,#102A3C,#1C5563 54%,#3C8B87)"}}>
           <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
           <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#BDECE4]">GOLDMART SELLER STUDIO · Seller Studio</p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Your store, your command.</h2>
+          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Your business, beautifully managed.</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Manage your catalogue, customer orders and growth in one professional workspace.</p></div>
         </section>
         <nav aria-label="Seller Studio navigation" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
@@ -570,7 +570,7 @@ export default function SellerDashboard() {
             <Link
               href="/notifications"
               aria-label="Notifications"
-              className="rounded-full border border-[#E8E1D5] px-3 py-2 text-sm transition hover:border-[#C5A46D]"
+              className="rounded-full border border-[#DAE8E1] px-3 py-2 text-sm transition hover:border-[#71A999]"
             >
               🔔
             </Link>
@@ -578,14 +578,14 @@ export default function SellerDashboard() {
             <Link
               href="/chat"
               aria-label="Customer messages"
-              className="rounded-full border border-[#E8E1D5] px-3 py-2 text-sm transition hover:border-[#C5A46D]"
+              className="rounded-full border border-[#DAE8E1] px-3 py-2 text-sm transition hover:border-[#71A999]"
             >
               💬
             </Link>
 
             <Link
               href="/account"
-              className="rounded-full border border-[#E8E1D5] px-4 py-2 text-xs font-bold transition hover:border-[#C5A46D] sm:text-sm"
+              className="rounded-full border border-[#DAE8E1] px-4 py-2 text-xs font-bold transition hover:border-[#71A999] sm:text-sm"
             >
               Account
             </Link>
@@ -594,7 +594,7 @@ export default function SellerDashboard() {
               type="button"
               onClick={handleSwitchToBuyer}
               disabled={switching}
-              className="rounded-full bg-[#17191D] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#96713D] disabled:opacity-50 sm:text-sm"
+              className="rounded-full bg-[#17191D] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#247263] disabled:opacity-50 sm:text-sm"
             >
               {switching
                 ? "Switching..."
@@ -712,7 +712,7 @@ export default function SellerDashboard() {
         >
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#347467]">
                 Business snapshot
               </p>
 
@@ -726,7 +726,7 @@ export default function SellerDashboard() {
 
             <Link
               href="/seller/orders"
-              className="text-sm font-bold text-[#96713D] hover:underline"
+              className="text-sm font-bold text-[#347467] hover:underline"
             >
               Manage orders →
             </Link>
@@ -745,7 +745,7 @@ export default function SellerDashboard() {
           <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
             <Link
               href="/seller/products"
-              className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm transition hover:border-[#C5A46D] hover:shadow-md sm:p-6"
+              className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm transition hover:border-[#71A999] hover:shadow-md sm:p-6"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
                 📦
@@ -761,14 +761,14 @@ export default function SellerDashboard() {
                   : "—"}
               </p>
 
-              <p className="mt-2 text-xs font-bold text-[#96713D]">
+              <p className="mt-2 text-xs font-bold text-[#347467]">
                 Manage products →
               </p>
             </Link>
 
             <Link
               href="/seller/orders"
-              className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm transition hover:border-[#C5A46D] hover:shadow-md sm:p-6"
+              className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm transition hover:border-[#71A999] hover:shadow-md sm:p-6"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
                 🚚
@@ -784,7 +784,7 @@ export default function SellerDashboard() {
                   : "—"}
               </p>
 
-              <p className="mt-2 text-xs font-bold text-[#96713D]">
+              <p className="mt-2 text-xs font-bold text-[#347467]">
                 Open orders →
               </p>
             </Link>
@@ -855,7 +855,7 @@ export default function SellerDashboard() {
         >
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#347467]">
                 Keep products available
               </p>
 
@@ -869,7 +869,7 @@ export default function SellerDashboard() {
 
             <Link
               href="/seller/products"
-              className="text-sm font-bold text-[#96713D] hover:underline"
+              className="text-sm font-bold text-[#347467] hover:underline"
             >
               View inventory →
             </Link>
@@ -990,7 +990,7 @@ export default function SellerDashboard() {
 
                     <Link
                       href="/seller/products/new"
-                      className="mt-3 inline-block font-bold text-[#96713D] hover:underline"
+                      className="mt-3 inline-block font-bold text-[#347467] hover:underline"
                     >
                       Add your first product →
                     </Link>
@@ -1006,7 +1006,7 @@ export default function SellerDashboard() {
           className="mt-10"
           aria-labelledby="management-heading"
         >
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#347467]">
             Seller tools
           </p>
 
@@ -1022,7 +1022,7 @@ export default function SellerDashboard() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="group flex items-start gap-4 rounded-[22px] border border-[#DAE5E5] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#C5A46D] hover:shadow-md sm:p-6"
+                className="group flex items-start gap-4 rounded-[22px] border border-[#DAE5E5] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#71A999] hover:shadow-md sm:p-6"
               >
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#F5F1E9] text-2xl">
                   {item.emoji}
@@ -1037,7 +1037,7 @@ export default function SellerDashboard() {
                     {item.subtitle}
                   </span>
 
-                  <span className="mt-2 block text-xs font-bold text-[#96713D]">
+                  <span className="mt-2 block text-xs font-bold text-[#347467]">
                     Open →
                   </span>
                 </span>
@@ -1054,7 +1054,7 @@ export default function SellerDashboard() {
         >
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#347467]">
                 Your catalogue
               </p>
 
@@ -1068,7 +1068,7 @@ export default function SellerDashboard() {
 
             <Link
               href="/seller/products"
-              className="text-sm font-bold text-[#96713D] hover:underline"
+              className="text-sm font-bold text-[#347467] hover:underline"
             >
               View all →
             </Link>
@@ -1125,7 +1125,7 @@ export default function SellerDashboard() {
                 .map((product) => (
                   <article
                     key={product.id}
-                    className="overflow-hidden rounded-[22px] border border-[#DAE5E5] bg-white shadow-sm transition hover:border-[#C5A46D] hover:shadow-md"
+                    className="overflow-hidden rounded-[22px] border border-[#DAE5E5] bg-white shadow-sm transition hover:border-[#71A999] hover:shadow-md"
                   >
                     {product.image_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -1146,7 +1146,7 @@ export default function SellerDashboard() {
                         {product.name}
                       </h3>
 
-                      <p className="mt-2 text-base font-extrabold text-[#96713D]">
+                      <p className="mt-2 text-base font-extrabold text-[#347467]">
                         {formatPrice(
                           product.price,
                           product.currency
@@ -1173,7 +1173,7 @@ export default function SellerDashboard() {
 
                       <Link
                         href={`/seller/products/${product.id}/edit`}
-                        className="mt-4 block rounded-full border border-[#D7BF97] px-3 py-2.5 text-center text-xs font-bold transition hover:bg-[#FAF8F3]"
+                        className="mt-4 block rounded-full border border-[#D7BF97] px-3 py-2.5 text-center text-xs font-bold transition hover:bg-[#F3F7F5]"
                       >
                         Edit product →
                       </Link>
@@ -1190,7 +1190,7 @@ export default function SellerDashboard() {
           className="mt-10"
           aria-labelledby="reviews-heading"
         >
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#347467]">
             Customer feedback
           </p>
 
@@ -1276,7 +1276,7 @@ export default function SellerDashboard() {
                           </p>
 
                           <p
-                            className="mt-1 text-[#96713D]"
+                            className="mt-1 text-[#347467]"
                             aria-label={`${review.rating} out of 5 stars`}
                           >
                             {Array.from(
@@ -1310,7 +1310,7 @@ export default function SellerDashboard() {
                       </div>
 
                       {review.review && (
-                        <p className="mt-4 rounded-2xl bg-[#FAF8F3] p-4 text-sm leading-6 text-[#57534C]">
+                        <p className="mt-4 rounded-2xl bg-[#F3F7F5] p-4 text-sm leading-6 text-[#57534C]">
                           “{review.review}”
                         </p>
                       )}
