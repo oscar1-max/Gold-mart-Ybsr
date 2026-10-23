@@ -229,24 +229,24 @@ export default function NewProductPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F1F5F5] pb-28 text-[#20313B] md:pb-14">
-      <section className="mx-auto mt-6 max-w-4xl rounded-[26px] border border-[#B7DAD0] bg-[linear-gradient(125deg,#E9F7F1,#F6FCF8)] p-6 text-[#153F3A] shadow-sm"><p className="text-xs font-black uppercase tracking-[0.2em] text-[#32736A]">GoldMart Seller Benefits</p><h2 className="mt-2 text-xl font-black">Start listing for free</h2><p className="mt-2 text-sm leading-6">Our proposed marketplace commission is <strong>6% per completed sale</strong>. There is no charge to add a product. Example: a ₦600,000 sale gives an estimated ₦36,000 marketplace commission and ₦564,000 seller share before processing fees, refunds and delivery costs.</p><p className="mt-3 text-xs text-[#51766E]">Commission records are being prepared; seller payouts are not enabled.</p><div className="mt-4 rounded-2xl border border-[#CBE2DC] bg-white p-4"><p className="font-black">Proposed Seller Plan · Two months free</p><p className="mt-1 text-sm">₦240,000 for six months after the free trial. Planned benefits: verified badge (after checks), increased discovery opportunities, product listings and seller support.</p><p className="mt-2 text-xs text-[#58756C]">Subscriptions are not being charged or enforced yet. Pricing and benefits require activation and seller acceptance.</p></div></section>
+    <main className="min-h-screen bg-[#F7F7F5] pb-28 text-[#1A3C32] md:pb-14">
+      <section className="mx-auto mt-6 max-w-4xl rounded-[26px] border border-[#F5E6A3] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] p-6 text-[#1A3C32] shadow-sm"><p className="text-xs font-black uppercase tracking-[0.2em] text-[#D4AF37]">GoldMart Seller Benefits</p><h2 className="mt-2 text-xl font-black">Start listing for free</h2><p className="mt-2 text-sm leading-6">Our proposed marketplace commission is <strong>6% per completed sale</strong>. There is no charge to add a product. Example: a ₦600,000 sale gives an estimated ₦36,000 marketplace commission and ₦564,000 seller share before processing fees, refunds and delivery costs.</p><p className="mt-3 text-xs text-[#D4AF37]">Commission records are being prepared; seller payouts are not enabled.</p><div className="mt-4 rounded-2xl border border-[#F7F7F5] bg-white p-4"><p className="font-black">Proposed Seller Plan · Two months free</p><p className="mt-1 text-sm">₦240,000 for six months after the free trial. Planned benefits: verified badge (after checks), increased discovery opportunities, product listings and seller support.</p><p className="mt-2 text-xs text-[#D4AF37]">Subscriptions are not being charged or enforced yet. Pricing and benefits require activation and seller acceptance.</p></div></section>
 
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(120deg,#18334F,#345F82 55%,#78A6B6)"}}>
+        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
           <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
-          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#BDECE4]">GOLDMART SELLER STUDIO · Listing Studio</p>
+          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#F5E6A3]">GOLDMART SELLER STUDIO · Listing Studio</p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Create something great.</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Showcase your products with clear photos, pricing and stock.</p></div>
         </section>
         <nav aria-label="Seller Studio navigation" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/seller" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Dashboard</Link>
-          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Catalogue</Link>
-          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Add Product</Link>
-          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Orders</Link>
-          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Finance</Link>
-          <Link href="/chat" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Messages</Link>
-          <Link href="/account" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Account</Link>
+          <Link href="/seller" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Dashboard</Link>
+          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Catalogue</Link>
+          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Add Product</Link>
+          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Orders</Link>
+          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Finance</Link>
+          <Link href="/chat" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Messages</Link>
+          <Link href="/account" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Account</Link>
         </nav>
       </div>
 
@@ -259,7 +259,7 @@ export default function NewProductPage() {
             href="/"
             className="text-2xl font-black"
           >
-            Gold<span className="text-[#128563]">Mart</span>
+            Gold<span className="text-[#D4AF37]">Mart</span>
           </Link>
 
           <Link
@@ -277,14 +277,14 @@ export default function NewProductPage() {
 
         <Link
           href="/seller/products"
-          className="font-bold text-[#127256]"
+          className="font-bold text-[#D4AF37]"
         >
           ← Back to My Products
         </Link>
 
         <div className="mt-6">
 
-          <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
+          <p className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
             Seller Center
           </p>
 
@@ -315,7 +315,7 @@ export default function NewProductPage() {
         {/* FORM */}
         <form
           onSubmit={handleSubmit}
-          className="mt-8 rounded-[25px] border border-[#DAE5E5] bg-white shadow-[0_9px_26px_rgba(24,51,62,0.05)] p-6 shadow-sm sm:p-8"
+          className="mt-8 rounded-[25px] border border-[#F7F7F5] bg-white shadow-[0_9px_26px_rgba(24,51,62,0.05)] p-6 shadow-sm sm:p-8"
         >
 
           {/* PRODUCT NAME */}
@@ -331,7 +331,7 @@ export default function NewProductPage() {
                 setName(event.target.value)
               }
               placeholder="e.g. Wireless Bluetooth Headphones"
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               required
             />
           </div>
@@ -349,7 +349,7 @@ export default function NewProductPage() {
               }
               placeholder="Describe your product..."
               rows={5}
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
             />
           </div>
 
@@ -371,7 +371,7 @@ export default function NewProductPage() {
                   setPrice(event.target.value)
                 }
                 placeholder="15000"
-                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
                 required
               />
             </div>
@@ -387,7 +387,7 @@ export default function NewProductPage() {
                 onChange={(event) =>
                   setCurrency(event.target.value)
                 }
-                className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#128563]"
+                className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
               >
                 <option value="USD">
                   USD ($) - US Dollar
@@ -416,7 +416,7 @@ export default function NewProductPage() {
                 Price Preview
               </p>
 
-              <p className="mt-1 text-xl font-black text-[#127256]">
+              <p className="mt-1 text-xl font-black text-[#D4AF37]">
                 {currency === "USD" && "$"}
                 {currency === "NGN" && "₦"}
                 {currency === "EUR" && "€"}
@@ -446,7 +446,7 @@ export default function NewProductPage() {
                 setStock(event.target.value)
               }
               placeholder="10"
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               required
             />
 
@@ -465,7 +465,7 @@ export default function NewProductPage() {
                 setCategoryId(event.target.value)
               }
               disabled={loadingCategories}
-              className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#128563]"
+              className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
               required
             >
               <option value="">
@@ -509,7 +509,7 @@ export default function NewProductPage() {
                 className={`inline-flex cursor-pointer items-center justify-center rounded-xl px-6 py-3 font-bold transition ${
                   uploadingImage
                     ? "cursor-not-allowed bg-gray-200 text-gray-500"
-                    : "bg-black text-white hover:bg-[#128563] hover:text-black"
+                    : "bg-black text-white hover:bg-[#D4AF37] hover:text-black"
                 }`}
               >
                 {uploadingImage
@@ -565,7 +565,7 @@ export default function NewProductPage() {
             <button
               type="submit"
               disabled={loading || uploadingImage}
-              className="flex-1 rounded-xl bg-black px-6 py-3 font-bold text-white transition hover:bg-[#128563] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex-1 rounded-xl bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading
                 ? "Adding Product..."

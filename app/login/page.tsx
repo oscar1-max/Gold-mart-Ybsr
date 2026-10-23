@@ -85,7 +85,7 @@ export default function LoginPage() {
           className="mb-8 block text-center text-3xl font-black"
         >
           Gold
-          <span className="text-[#128563]">
+          <span className="text-[#D4AF37]">
             Mart
           </span>
         </Link>
@@ -124,7 +124,7 @@ export default function LoginPage() {
                   setEmail(event.target.value)
                 }
                 placeholder="you@example.com"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
             </div>
 
@@ -141,14 +141,14 @@ export default function LoginPage() {
                   setPassword(event.target.value)
                 }
                 placeholder="Enter your password"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-black py-3 font-bold text-white transition hover:bg-[#128563] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-xl bg-black py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading
                 ? "Signing In..."
@@ -161,7 +161,7 @@ export default function LoginPage() {
             Don't have an account?{" "}
             <Link
               href="/register"
-              className="font-bold text-[#127256]"
+              className="font-bold text-[#D4AF37]"
             >
               Create one
             </Link>

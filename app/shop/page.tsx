@@ -355,11 +355,11 @@ export default function ShopPage() {
     );
 
   return (
-    <main className="min-h-screen bg-[#f5f8f6] pb-28 text-[#1b3329] md:pb-14">
-      <section aria-label="Shop everything introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(120deg,#1E3546,#326B73,#C09A63)" }}>
+    <main className="min-h-screen bg-[#FFFFFF] pb-28 text-[#0A1F1A] md:pb-14">
+      <section aria-label="Shop everything introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)" }}>
         <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🛍️</div>
         <div className="relative">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F2DEC0]">GoldMart · Shop everything</p>
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F5E6A3]">GoldMart · Shop everything</p>
           <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">Find your next favorite.</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Browse inspiring products from every GoldMart department.</p>
           <div className="mt-5 flex flex-wrap gap-2">
@@ -381,7 +381,7 @@ export default function ShopPage() {
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#128563]">
+            <span className="text-[#D4AF37]">
               Mart
             </span>
           </Link>
@@ -401,7 +401,7 @@ export default function ShopPage() {
       <div className="mx-auto max-w-7xl px-4 py-10">
 
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
+          <p className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
             GoldMart Store
           </p>
 
@@ -436,7 +436,7 @@ export default function ShopPage() {
               }
             }}
             placeholder="Search products..."
-            className="w-full px-5 py-4 outline-none focus:border-[#128563]"
+            className="w-full px-5 py-4 outline-none focus:border-[#D4AF37]"
           />
 
           <button
@@ -444,7 +444,7 @@ export default function ShopPage() {
             onClick={
               handleSearch
             }
-            className="bg-black px-6 font-bold text-white transition hover:bg-[#128563] hover:text-black"
+            className="bg-black px-6 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
           >
             Search
           </button>
@@ -469,7 +469,7 @@ export default function ShopPage() {
                   selectedCategory ===
                   category
                     ? "bg-black text-white"
-                    : "border bg-white hover:border-[#128563]"
+                    : "border bg-white hover:border-[#D4AF37]"
                 }`}
               >
                 {category}
@@ -521,7 +521,7 @@ export default function ShopPage() {
         {/* LOADING */}
 
         {loading && (
-          <div className="mt-10 rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
+          <div className="mt-10 rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
 
             <div className="text-4xl">
               ⏳
@@ -539,7 +539,7 @@ export default function ShopPage() {
 
         {!loading &&
           error && (
-            <div className="mt-10 rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
+            <div className="mt-10 rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
 
               <div className="text-4xl">
                 ⚠️
@@ -575,7 +575,7 @@ export default function ShopPage() {
 
               {filteredProducts.length ===
               0 ? (
-                <div className="mt-10 rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
+                <div className="mt-10 rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
 
                   <div className="text-5xl">
                     🔎
@@ -641,7 +641,7 @@ export default function ShopPage() {
 
                         <div className="p-4">
 
-                          <p className="text-xs font-bold uppercase text-[#127256]">
+                          <p className="text-xs font-bold uppercase text-[#D4AF37]">
                             {
                               product.category
                             }
@@ -650,7 +650,7 @@ export default function ShopPage() {
                           <Link
                             href={`/product/${product.id}`}
                           >
-                            <h3 className="mt-1 font-bold hover:text-[#127256]">
+                            <h3 className="mt-1 font-bold hover:text-[#D4AF37]">
                               {
                                 product.name
                               }
@@ -663,10 +663,10 @@ export default function ShopPage() {
                             }
                           </p>
 
-                          {product.is_deal && <div className="mt-3"><span className="rounded-full bg-[#FFEADA] px-3 py-1 text-xs font-black text-[#925032]">⚡ Flash Deal</span><p className="mt-2 text-xs text-gray-500 line-through">{formatPrice(product.original_price||product.price,product.currency)}</p></div>}
+                          {product.is_deal && <div className="mt-3"><span className="rounded-full bg-[#F7F7F5] px-3 py-1 text-xs font-black text-[#925032]">⚡ Flash Deal</span><p className="mt-2 text-xs text-gray-500 line-through">{formatPrice(product.original_price||product.price,product.currency)}</p></div>}
                           <div className="mt-3 flex items-center justify-between">
 
-                            <span className="font-black text-[#127256]">
+                            <span className="font-black text-[#D4AF37]">
                               {formatPrice(
                                 product.price,
                                 product.currency
