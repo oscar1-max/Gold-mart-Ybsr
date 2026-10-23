@@ -87,7 +87,7 @@ export default function RegisterPage() {
           href="/"
           className="mb-8 block text-center text-3xl font-black"
         >
-          Gold<span className="text-[#128563]">Mart</span>
+          Gold<span className="text-[#D4AF37]">Mart</span>
         </Link>
 
         <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
@@ -124,8 +124,8 @@ export default function RegisterPage() {
                   onClick={() => setRole("customer")}
                   className={`rounded-xl border p-4 text-left transition ${
                     role === "customer"
-                      ? "border-[#128563] bg-yellow-50 ring-2 ring-[#128563]"
-                      : "border-gray-200 hover:border-[#128563]"
+                      ? "border-[#D4AF37] bg-yellow-50 ring-2 ring-[#D4AF37]"
+                      : "border-gray-200 hover:border-[#D4AF37]"
                   }`}
                 >
                   <div className="text-2xl">🛒</div>
@@ -144,8 +144,8 @@ export default function RegisterPage() {
                   onClick={() => setRole("seller")}
                   className={`rounded-xl border p-4 text-left transition ${
                     role === "seller"
-                      ? "border-[#128563] bg-yellow-50 ring-2 ring-[#128563]"
-                      : "border-gray-200 hover:border-[#128563]"
+                      ? "border-[#D4AF37] bg-yellow-50 ring-2 ring-[#D4AF37]"
+                      : "border-gray-200 hover:border-[#D4AF37]"
                   }`}
                 >
                   <div className="text-2xl">🏪</div>
@@ -176,7 +176,7 @@ export default function RegisterPage() {
                   setName(event.target.value)
                 }
                 placeholder="Your full name"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
             </div>
 
@@ -194,7 +194,7 @@ export default function RegisterPage() {
                   setEmail(event.target.value)
                 }
                 placeholder="you@example.com"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
             </div>
 
@@ -213,7 +213,7 @@ export default function RegisterPage() {
                   setPassword(event.target.value)
                 }
                 placeholder="At least 6 characters"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
             </div>
 
@@ -232,7 +232,7 @@ export default function RegisterPage() {
                   setConfirmPassword(event.target.value)
                 }
                 placeholder="Enter password again"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               />
             </div>
 
@@ -240,7 +240,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-black py-3 font-bold text-white transition hover:bg-[#128563] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-xl bg-black py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading
                 ? "Creating Account..."
@@ -255,7 +255,7 @@ export default function RegisterPage() {
             Already have an account?{" "}
             <Link
               href="/login"
-              className="font-bold text-[#127256]"
+              className="font-bold text-[#D4AF37]"
             >
               Sign In
             </Link>
