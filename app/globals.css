@@ -641,12 +641,7 @@ body, .gm-zone, .gm-zone-buyer, .gm-zone-admin, .gm-zone-seller {
 .gm-zone main :is(article,section,aside)[class*="bg-purple-"]:not([class*="bg-purple-50"]) {
   background:#FFFFFF; color:#0F0F0F; border-color:#F0E6C0;
 }
-.gm-zone main :is(article,section,aside)[class~="bg-[#1A3C32]"] {
-  background:#FFFFFF; color:#0F0F0F;
-}
-.gm-zone main :is(article,section,aside)[class~="bg-[#0A1F1A]"] {
-  background:#FFFFFF; color:#0F0F0F;
-}
+/* Keep intentionally dark callout banners dark so their white headings stay readable. */
 .gm-zone main :is(article,section,aside)[class~="bg-[#F7F7F5]"]:not(.gm-banner) {
   background:#FFFFFF; border-color:#F0E6C0;
 }
@@ -727,9 +722,6 @@ body, .gm-zone, .gm-zone-buyer, .gm-zone-admin, .gm-zone-seller {
 .gm-workspace-page main :is(article,aside,section)[class*="bg-purple"],
 .gm-workspace-page main :is(article,aside,section)[class*="bg-teal"] {
   background:#FFFFFF;color:#0F0F0F;border-color:#F0E6C0;
-}
-.gm-workspace-page main :is(article,aside,section)[class~="bg-[#1A3C32]"] {
-  background:#FFFFFF;color:#0F0F0F;
 }
 
 /* Storefront header + search. */
