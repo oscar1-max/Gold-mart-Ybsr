@@ -44,15 +44,15 @@ const categories = [
 const discoveryTabs = ["All", "⚡ Deals", "5-Star Rated", "Best Selling", "New Arrivals"];
 
 const quickLinks = [
-  { href: "/shop", icon: "🛍️", label: "Shop All", sub: "Browse every department", tone: "from-[#DDEDF0] to-[#F2FAF9] text-[#285965]", border: "border-[#C5DEE3]" },
-  { href: "/track-order", icon: "📦", label: "Track Order", sub: "Follow your purchases", tone: "from-[#E1EFE7] to-[#F3FBF6] text-[#34634B]", border: "border-[#C7E2D2]" },
-  { href: "/order-protection", icon: "🛡️", label: "Buyer Protection", sub: "Get help with an order", tone: "from-[#EEE4F3] to-[#FAF6FC] text-[#715287]", border: "border-[#DDCDE8]" },
-  { href: "/help", icon: "🎧", label: "Help Centre", sub: "Answers and support", tone: "from-[#F8E7D9] to-[#FFF8F0] text-[#92613C]", border: "border-[#EED6BF]" },
-  { href: "/chat", icon: "💬", label: "Messages", sub: "Connect with sellers", tone: "from-[#E1E7F8] to-[#F4F6FC] text-[#465E94]", border: "border-[#CEDAF1]" },
+  { href: "/shop", icon: "🛍️", label: "Shop All", sub: "Browse every department", tone: "from-[#F7F7F5] to-[#FFFFFF] text-[#1A3C32]", border: "border-[#F7F7F5]" },
+  { href: "/track-order", icon: "📦", label: "Track Order", sub: "Follow your purchases", tone: "from-[#F7F7F5] to-[#FFFFFF] text-[#1A3C32]", border: "border-[#F7F7F5]" },
+  { href: "/order-protection", icon: "🛡️", label: "Buyer Protection", sub: "Get help with an order", tone: "from-[#F7F7F5] to-[#FFFFFF] text-[#D4AF37]", border: "border-[#F7F7F5]" },
+  { href: "/help", icon: "🎧", label: "Help Centre", sub: "Answers and support", tone: "from-[#F7F7F5] to-[#F7F7F5] text-[#D4AF37]", border: "border-[#F5E6A3]" },
+  { href: "/chat", icon: "💬", label: "Messages", sub: "Connect with sellers", tone: "from-[#F7F7F5] to-[#FFFFFF] text-[#D4AF37]", border: "border-[#F7F7F5]" },
 ];
 
 const cardClass =
-  "group overflow-hidden rounded-[20px] border border-[#E0E9E3] bg-white shadow-[0_5px_22px_rgba(23,25,29,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#D5BE98] hover:shadow-[0_12px_28px_rgba(23,25,29,0.09)]";
+  "group overflow-hidden rounded-[20px] border border-[#F7F7F5] bg-white shadow-[0_5px_22px_rgba(23,25,29,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#F5E6A3] hover:shadow-[0_12px_28px_rgba(23,25,29,0.09)]";
 
 function formatPrice(price: string | number, currency?: string | null) {
   const amount = Number(price);
@@ -84,7 +84,7 @@ function ProductCard({ product, compact = false }: { product: Product; compact?:
   return (
     <article className={`${cardClass} ${compact ? "min-w-[180px] max-w-[180px] shrink-0" : "min-w-0"}`}>
       <Link href={`/product/${product.id}`} className="block" aria-label={`View ${product.name}`}>
-        <div className="relative aspect-square overflow-hidden bg-[#F6F3EE]">
+        <div className="relative aspect-square overflow-hidden bg-[#F7F7F5]">
           {product.image_url ? (
             <Image
               src={product.image_url}
@@ -99,7 +99,7 @@ function ProductCard({ product, compact = false }: { product: Product; compact?:
             </div>
           )}
           {!available && (
-            <span className="absolute left-2 top-2 rounded-full bg-[#162e25]/90 px-2.5 py-1 text-[10px] font-bold text-white">
+            <span className="absolute left-2 top-2 rounded-full bg-[#0A1F1A]/90 px-2.5 py-1 text-[10px] font-bold text-white">
               Sold out
             </span>
           )}
@@ -108,19 +108,19 @@ function ProductCard({ product, compact = false }: { product: Product; compact?:
 
       <div className="p-3 sm:p-4">
         {product.category_name && (
-          <p className="mb-1 truncate text-[10px] font-bold uppercase tracking-[0.1em] text-[#347467]">
+          <p className="mb-1 truncate text-[10px] font-bold uppercase tracking-[0.1em] text-[#D4AF37]">
             {product.category_name}
           </p>
         )}
         <Link href={`/product/${product.id}`}>
-          <h3 className="line-clamp-2 min-h-[38px] text-[13px] font-semibold leading-[19px] text-[#162e25] sm:text-sm">
+          <h3 className="line-clamp-2 min-h-[38px] text-[13px] font-semibold leading-[19px] text-[#0A1F1A] sm:text-sm">
             {product.name}
           </h3>
         </Link>
-        <p className="mt-2 break-words text-[15px] font-black tracking-tight text-[#162e25] sm:text-lg">
+        <p className="mt-2 break-words text-[15px] font-black tracking-tight text-[#0A1F1A] sm:text-lg">
           {formatPrice(product.price, product.currency)}
         </p>
-        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-[#746F67]">
+        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-[#D4AF37]">
           <span>⭐ {Number.isFinite(rating) ? rating.toFixed(1) : "0.0"}</span>
           <span aria-hidden="true">•</span>
           <span>{available ? "In stock" : "Unavailable"}</span>
@@ -221,32 +221,32 @@ export default function Home() {
   }, [products, activeTab]);
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#F4F7F5] pb-24 text-[#162e25] md:pb-0">
+    <main className="min-h-screen overflow-x-hidden bg-[#FFFFFF] pb-24 text-[#0A1F1A] md:pb-0">
       {/* TOP BAR + MOBILE SEARCH */}
-      <header className="sticky top-0 z-50 border-b border-[#EBE4D9] bg-white/95 shadow-[0_3px_16px_rgba(23,25,29,0.035)] backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-[#F7F7F5] bg-white/95 shadow-[0_3px_16px_rgba(23,25,29,0.035)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
           <Link href="/" className="shrink-0 text-[23px] font-black tracking-[-0.055em]" aria-label="GoldMart home">
-            Gold<span className="text-[#4e9776]">Mart</span><span className="ml-1 align-top text-[10px] text-[#68a98c]">✦</span>
+            Gold<span className="text-[#D4AF37]">Mart</span><span className="ml-1 align-top text-[10px] text-[#D4AF37]">✦</span>
           </Link>
-          <nav aria-label="Desktop navigation" className="hidden items-center gap-6 text-sm font-semibold text-[#59554E] md:flex">
-            <Link href="/shop" className="hover:text-[#347467]">Shop</Link>
-            <Link href="/categories" className="hover:text-[#347467]">Categories</Link>
-            <Link href="/track-order" className="hover:text-[#347467]">Track Order</Link>
-            <Link href="/help" className="hover:text-[#347467]">Help</Link>
+          <nav aria-label="Desktop navigation" className="hidden items-center gap-6 text-sm font-semibold text-[#1A3C32] md:flex">
+            <Link href="/shop" className="hover:text-[#D4AF37]">Shop</Link>
+            <Link href="/categories" className="hover:text-[#D4AF37]">Categories</Link>
+            <Link href="/track-order" className="hover:text-[#D4AF37]">Track Order</Link>
+            <Link href="/help" className="hover:text-[#D4AF37]">Help</Link>
           </nav>
           <div className="flex items-center gap-2">
             {user && (
-              <Link href="/notifications" aria-label="Notifications" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#F3F7F5] text-lg transition hover:border-[#71A999]">🔔</Link>
+              <Link href="/notifications" aria-label="Notifications" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F7F7F5] bg-[#FFFFFF] text-lg transition hover:border-[#D4AF37]">🔔</Link>
             )}
-            <Link href={user ? "/account" : "/login"} aria-label="Account" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#F3F7F5] text-lg transition hover:border-[#71A999]">👤</Link>
-            <Link href="/cart" aria-label="Cart" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#F3F7F5] text-lg transition hover:border-[#71A999]">🛒</Link>
+            <Link href={user ? "/account" : "/login"} aria-label="Account" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F7F7F5] bg-[#FFFFFF] text-lg transition hover:border-[#D4AF37]">👤</Link>
+            <Link href="/cart" aria-label="Cart" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F7F7F5] bg-[#FFFFFF] text-lg transition hover:border-[#D4AF37]">🛒</Link>
           </div>
         </div>
 
         <div className="mx-auto max-w-4xl px-4 pb-3 sm:px-6">
           <form
             onSubmit={(event) => { event.preventDefault(); handleSearch(); }}
-            className="flex h-12 items-center gap-2 overflow-hidden rounded-full border border-[#D8CAB4] bg-[#F3F7F5] pl-4 pr-1.5 transition focus-within:border-[#176c52] focus-within:ring-2 focus-within:ring-[#68a98c]/15"
+            className="flex h-12 items-center gap-2 overflow-hidden rounded-full border border-[#F5E6A3] bg-[#FFFFFF] pl-4 pr-1.5 transition focus-within:border-[#1A3C32] focus-within:ring-2 focus-within:ring-[#D4AF37]/15"
             role="search"
           >
             <span className="text-lg" aria-hidden="true">⌕</span>
@@ -256,10 +256,10 @@ export default function Home() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search products and more..."
-              className="min-w-0 flex-1 bg-transparent text-sm text-[#162e25] outline-none placeholder:text-[#8A847A]"
+              className="min-w-0 flex-1 bg-transparent text-sm text-[#0A1F1A] outline-none placeholder:text-[#D4AF37]"
             />
             <Link href="/visual-search" aria-label="Visual search" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg hover:bg-white">📷</Link>
-            <button type="submit" aria-label="Search" className="flex h-9 w-10 shrink-0 items-center justify-center rounded-full bg-[#162e25] text-lg text-white transition hover:bg-[#247263]">⌕</button>
+            <button type="submit" aria-label="Search" className="flex h-9 w-10 shrink-0 items-center justify-center rounded-full bg-[#0A1F1A] text-lg text-white transition hover:bg-[#D4AF37]">⌕</button>
           </form>
         </div>
       </header>
@@ -267,8 +267,8 @@ export default function Home() {
       {/* Premium service shortcuts — all link to the original working pages */}
       <section aria-label="GoldMart shopping shortcuts" className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 lg:px-8">
         <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
-          <div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#9B7951]">Everything at your fingertips</p><h2 className="mt-1 text-lg font-black sm:text-xl">Explore GoldMart</h2></div>
-          <Link href="/categories" className="text-xs font-bold text-[#81633C] hover:underline">All categories ↗</Link>
+          <div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#D4AF37]">Everything at your fingertips</p><h2 className="mt-1 text-lg font-black sm:text-xl">Explore GoldMart</h2></div>
+          <Link href="/categories" className="text-xs font-bold text-[#D4AF37] hover:underline">All categories ↗</Link>
         </div>
         <nav className="og-scrollbar flex gap-3 overflow-x-auto pb-3 lg:grid lg:grid-cols-5" aria-label="Shopping and support">
           {quickLinks.map(item => (
@@ -282,34 +282,34 @@ export default function Home() {
       </section>
 
       {/* INTRO BANNER */}
-      <section className="border-b border-[#EFE7DA] bg-white">
-        <div className="mx-auto flex max-w-7xl items-center gap-5 overflow-x-auto px-4 py-2.5 text-[11px] font-semibold text-[#6C6255] sm:justify-center sm:text-xs">
+      <section className="border-b border-[#F7F7F5] bg-white">
+        <div className="mx-auto flex max-w-7xl items-center gap-5 overflow-x-auto px-4 py-2.5 text-[11px] font-semibold text-[#1A3C32] sm:justify-center sm:text-xs">
           <span className="shrink-0">✦ Curated shopping</span>
-          <span className="text-[#D0B48A]" aria-hidden="true">•</span>
+          <span className="text-[#F5E6A3]" aria-hidden="true">•</span>
           <span className="shrink-0">📦 Order updates</span>
-          <span className="text-[#D0B48A]" aria-hidden="true">•</span>
+          <span className="text-[#F5E6A3]" aria-hidden="true">•</span>
           <span className="shrink-0">🛡️ Buyer support</span>
         </div>
       </section>
 
       {/* LUXURY HERO */}
       <section className="mx-auto max-w-7xl px-4 pb-5 pt-5 sm:px-6 sm:pt-7 lg:px-8">
-        <div className="relative isolate overflow-hidden rounded-[30px] bg-[linear-gradient(120deg,#1A2932_0%,#304D4C_53%,#695138_100%)] px-6 pb-8 pt-10 text-white shadow-[0_18px_42px_rgba(23,25,29,0.14)] sm:px-10 sm:py-14 lg:px-16 lg:py-20">
-          <div className="pointer-events-none absolute -right-20 -top-32 h-[340px] w-[340px] rounded-full border border-[#68a98c]/25 sm:right-0" />
-          <div className="pointer-events-none absolute -right-10 -top-20 h-[230px] w-[230px] rounded-full border border-[#68a98c]/30" />
-          <div className="pointer-events-none absolute bottom-[-110px] right-[-85px] h-[290px] w-[290px] rounded-full bg-[#68a98c]/15 blur-3xl" />
-          <div className="pointer-events-none absolute right-8 top-24 hidden text-[125px] font-black leading-none text-[#68a98c]/15 lg:block" aria-hidden="true">GM</div>
+        <div className="relative isolate overflow-hidden rounded-[30px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] px-6 pb-8 pt-10 text-white shadow-[0_18px_42px_rgba(23,25,29,0.14)] sm:px-10 sm:py-14 lg:px-16 lg:py-20">
+          <div className="pointer-events-none absolute -right-20 -top-32 h-[340px] w-[340px] rounded-full border border-[#D4AF37]/25 sm:right-0" />
+          <div className="pointer-events-none absolute -right-10 -top-20 h-[230px] w-[230px] rounded-full border border-[#D4AF37]/30" />
+          <div className="pointer-events-none absolute bottom-[-110px] right-[-85px] h-[290px] w-[290px] rounded-full bg-[#D4AF37]/15 blur-3xl" />
+          <div className="pointer-events-none absolute right-8 top-24 hidden text-[125px] font-black leading-none text-[#D4AF37]/15 lg:block" aria-hidden="true">GM</div>
           <div className="relative z-10 max-w-2xl">
-            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#ddf1e3] sm:text-xs">THE GOLDMART EXPERIENCE</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F7F7F5] sm:text-xs">THE GOLDMART EXPERIENCE</p>
             <h1 className="mt-3 max-w-xl text-[34px] font-black leading-[1.08] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
-              Discover more.<br /><span className="text-[#F1D2A1]">Love every find.</span>
+              Discover more.<br /><span className="text-[#F5E6A3]">Love every find.</span>
             </h1>
-            <p className="mt-4 max-w-md text-sm leading-6 text-[#DED8CE] sm:text-base">
+            <p className="mt-4 max-w-md text-sm leading-6 text-[#F7F7F5] sm:text-base">
               Find products you'll love, browse by department, and keep your orders, messages and account together in one easy place.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/shop" className="inline-flex items-center justify-center rounded-full bg-[#68a98c] px-6 py-3 text-sm font-extrabold text-[#162e25] transition hover:bg-[#ddf1e3]">Explore the Shop →</Link>
-              <Link href="/categories" className="inline-flex items-center justify-center rounded-full border border-[#8D816D] px-6 py-3 text-sm font-bold text-white transition hover:border-[#ddf1e3]">Browse Categories</Link>
+              <Link href="/shop" className="inline-flex items-center justify-center rounded-full bg-[#D4AF37] px-6 py-3 text-sm font-extrabold text-[#0A1F1A] transition hover:bg-[#F7F7F5]">Explore the Shop →</Link>
+              <Link href="/categories" className="inline-flex items-center justify-center rounded-full border border-[#D4AF37] px-6 py-3 text-sm font-bold text-white transition hover:border-[#F7F7F5]">Browse Categories</Link>
               <Link href="/orders" className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/20">My Orders ↗</Link>
             </div>
           </div>
@@ -318,19 +318,19 @@ export default function Home() {
 
       {/* CATEGORY RAIL */}
       <section className="mx-auto max-w-7xl px-4 pb-5 sm:px-6 lg:px-8">
-        <div className="rounded-[24px] border border-[#EAE3D9] bg-white px-4 pb-5 pt-5 sm:px-6">
+        <div className="rounded-[24px] border border-[#F7F7F5] bg-white px-4 pb-5 pt-5 sm:px-6">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#347467]">Find your style</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#D4AF37]">Find your style</p>
               <h2 className="mt-1 text-xl font-black tracking-tight sm:text-2xl">Explore your interests</h2>
             </div>
-            <Link href="/categories" className="shrink-0 text-xs font-bold text-[#347467] hover:underline sm:text-sm">View All →</Link>
+            <Link href="/categories" className="shrink-0 text-xs font-bold text-[#D4AF37] hover:underline sm:text-sm">View All →</Link>
           </div>
           <div className="og-scrollbar mt-5 grid grid-cols-4 gap-3 sm:grid-cols-8 sm:gap-4">
             {categories.map((category) => (
               <Link key={category.name} href={`/shop?category=${encodeURIComponent(category.value)}`} className="group flex min-w-0 flex-col items-center gap-2 text-center">
-                <span className="flex h-[64px] w-full max-w-20 items-center justify-center rounded-[20px] border border-[#EAE3D9] bg-[linear-gradient(135deg,#E9EFF1,#F4E8DB)] text-[29px] transition group-hover:-translate-y-0.5 group-hover:border-[#71A999] group-hover:bg-[#F3E8D5] sm:h-20">{category.icon}</span>
-                <span className="text-[11px] font-bold text-[#47433E] sm:text-xs">{category.name}</span>
+                <span className="flex h-[64px] w-full max-w-20 items-center justify-center rounded-[20px] border border-[#F7F7F5] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-[29px] transition group-hover:-translate-y-0.5 group-hover:border-[#D4AF37] group-hover:bg-[#F7F7F5] sm:h-20">{category.icon}</span>
+                <span className="text-[11px] font-bold text-[#1A3C32] sm:text-xs">{category.name}</span>
               </Link>
             ))}
           </div>
@@ -339,22 +339,22 @@ export default function Home() {
 
       {/* EDITORIAL DISCOVERY CARDS */}
       <section className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 pb-6 sm:gap-5 sm:px-6 lg:px-8">
-        <Link href="/shop?sort=new" className="group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] border border-[#E7D8C0] bg-[linear-gradient(135deg,#FAE7DC,#F6F0E4)] p-4 transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
+        <Link href="/shop?sort=new" className="group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] border border-[#F5E6A3] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] p-4 transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
           <span className="pointer-events-none absolute -right-8 -top-9 h-32 w-32 rounded-full border-[20px] border-white/40" />
           <span className="relative text-2xl" aria-hidden="true">✦</span>
           <div className="relative">
-            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#916C38]">Just discovered</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#D4AF37]">Just discovered</p>
             <h3 className="mt-1 text-lg font-black tracking-tight sm:text-2xl">New Arrivals</h3>
-            <span className="mt-2 inline-block text-xs font-bold text-[#75552F]">Explore products →</span>
+            <span className="mt-2 inline-block text-xs font-bold text-[#D4AF37]">Explore products →</span>
           </div>
         </Link>
-        <Link href="/shop" className="group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] bg-[linear-gradient(135deg,#354C5E,#232C35)] p-4 text-white transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
-          <span className="pointer-events-none absolute -right-6 -top-11 h-36 w-36 rounded-full border-[20px] border-[#68a98c]/15" />
+        <Link href="/shop" className="group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] p-4 text-white transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
+          <span className="pointer-events-none absolute -right-6 -top-11 h-36 w-36 rounded-full border-[20px] border-[#D4AF37]/15" />
           <span className="relative text-2xl" aria-hidden="true">◈</span>
           <div className="relative">
-            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#D6B780]">Discover GoldMart</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#F5E6A3]">Discover GoldMart</p>
             <h3 className="mt-1 text-lg font-black tracking-tight sm:text-2xl">Shop All</h3>
-            <span className="mt-2 inline-block text-xs font-bold text-[#E3CA9F]">Browse collection →</span>
+            <span className="mt-2 inline-block text-xs font-bold text-[#F5E6A3]">Browse collection →</span>
           </div>
         </Link>
       </section>
@@ -362,15 +362,15 @@ export default function Home() {
       {/* Curated category tiles link to existing filters; no fabricated offers */}
       <section aria-label="Featured departments" className="mx-auto max-w-7xl px-4 pb-6 sm:px-6 lg:px-8">
         <div className="mb-4 flex items-end justify-between gap-3">
-          <div><p className="text-[10px] font-bold uppercase tracking-[0.17em] text-[#997547]">Curated for you</p><h2 className="mt-1 text-xl font-black tracking-tight sm:text-2xl">Discover your next favorite</h2></div>
-          <Link href="/categories" className="text-xs font-bold text-[#7E6139] hover:underline">All categories ↗</Link>
+          <div><p className="text-[10px] font-bold uppercase tracking-[0.17em] text-[#D4AF37]">Curated for you</p><h2 className="mt-1 text-xl font-black tracking-tight sm:text-2xl">Discover your next favorite</h2></div>
+          <Link href="/categories" className="text-xs font-bold text-[#D4AF37] hover:underline">All categories ↗</Link>
         </div>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           {[
-            {name:"Fashion finds",category:"Fashion",icon:"✿",tone:"bg-[linear-gradient(135deg,#F7E1E2,#FFF7F3)] text-[#653E46]"},
-            {name:"Tech essentials",category:"Electronics",icon:"◈",tone:"bg-[linear-gradient(135deg,#DCECF0,#F2F9FC)] text-[#31525F]"},
-            {name:"Home favorites",category:"Home & Kitchen",icon:"⌂",tone:"bg-[linear-gradient(135deg,#E8F0DE,#FAF9EC)] text-[#4E6340]"},
-            {name:"Beauty edits",category:"Beauty & Cosmetics",icon:"✦",tone:"bg-[linear-gradient(135deg,#F3E1F4,#FBF6FF)] text-[#765080]"},
+            {name:"Fashion finds",category:"Fashion",icon:"✿",tone:"bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-[#1A3C32]"},
+            {name:"Tech essentials",category:"Electronics",icon:"◈",tone:"bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-[#1A3C32]"},
+            {name:"Home favorites",category:"Home & Kitchen",icon:"⌂",tone:"bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-[#1A3C32]"},
+            {name:"Beauty edits",category:"Beauty & Cosmetics",icon:"✦",tone:"bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-[#D4AF37]"},
           ].map((item) => (
             <Link key={item.category} href={`/shop?category=${encodeURIComponent(item.category)}`}
               className={`group relative flex min-h-[145px] flex-col justify-between overflow-hidden rounded-[22px] border border-white/70 p-4 shadow-[0_7px_20px_rgba(23,25,29,0.035)] transition hover:-translate-y-1 hover:shadow-md sm:p-5 ${item.tone}`}>
@@ -386,10 +386,10 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
         <div className="mb-4 flex items-end justify-between gap-3">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.19em] text-[#347467]">The marketplace</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.19em] text-[#D4AF37]">The marketplace</p>
             <h2 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Discover what’s worth exploring</h2>
           </div>
-          <Link href="/shop" className="shrink-0 text-xs font-bold text-[#347467] hover:underline sm:text-sm">Shop All →</Link>
+          <Link href="/shop" className="shrink-0 text-xs font-bold text-[#D4AF37] hover:underline sm:text-sm">Shop All →</Link>
         </div>
         <div role="tablist" aria-label="Explore products" className="og-scrollbar mb-5 flex gap-2 overflow-x-auto pb-1">
           {discoveryTabs.map((tab) => (
@@ -399,7 +399,7 @@ export default function Home() {
               aria-selected={activeTab === tab}
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${activeTab === tab ? "border-[#162e25] bg-[#162e25] text-white" : "border-[#e2ebe5] bg-white text-[#5D564D] hover:border-[#71A999]"}`}
+              className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${activeTab === tab ? "border-[#0A1F1A] bg-[#0A1F1A] text-white" : "border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#D4AF37]"}`}
             >
               {tab}
             </button>
@@ -409,22 +409,22 @@ export default function Home() {
         {loadingProducts ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4" aria-label="Loading products">
             {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="animate-pulse overflow-hidden rounded-[20px] border border-[#EAE3D9] bg-white">
-                <div className="aspect-square bg-[#EEE9DF]" />
+              <div key={item} className="animate-pulse overflow-hidden rounded-[20px] border border-[#F7F7F5] bg-white">
+                <div className="aspect-square bg-[#F7F7F5]" />
                 <div className="space-y-3 p-4">
-                  <div className="h-3 w-4/5 rounded-full bg-[#EEE9DF]" />
-                  <div className="h-4 w-1/2 rounded-full bg-[#EEE9DF]" />
-                  <div className="h-9 rounded-full bg-[#EEE9DF]" />
+                  <div className="h-3 w-4/5 rounded-full bg-[#F7F7F5]" />
+                  <div className="h-4 w-1/2 rounded-full bg-[#F7F7F5]" />
+                  <div className="h-9 rounded-full bg-[#F7F7F5]" />
                 </div>
               </div>
             ))}
           </div>
         ) : displayedProducts.length === 0 ? (
-          <div className="rounded-[22px] border border-[#EAE3D9] bg-white px-5 py-12 text-center">
+          <div className="rounded-[22px] border border-[#F7F7F5] bg-white px-5 py-12 text-center">
             <span className="text-4xl" aria-hidden="true">🛍️</span>
             <h3 className="mt-3 text-lg font-black">{productsError ? "Products unavailable right now" : "No products found"}</h3>
-            <p className="mt-2 text-sm text-[#746F67]">{productsError ? "Please try again in a moment." : "Browse the shop or choose another filter."}</p>
-            <Link href="/shop" className="mt-5 inline-flex rounded-full bg-[#162e25] px-6 py-3 text-sm font-bold text-white hover:bg-[#247263]">Visit Shop →</Link>
+            <p className="mt-2 text-sm text-[#D4AF37]">{productsError ? "Please try again in a moment." : "Browse the shop or choose another filter."}</p>
+            <Link href="/shop" className="mt-5 inline-flex rounded-full bg-[#0A1F1A] px-6 py-3 text-sm font-bold text-white hover:bg-[#D4AF37]">Visit Shop →</Link>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
@@ -438,10 +438,10 @@ export default function Home() {
           <section className="mt-8">
             <div className="mb-4 flex items-end justify-between gap-3">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#347467]">Keep exploring</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#D4AF37]">Keep exploring</p>
                 <h2 className="mt-1 text-xl font-black sm:text-2xl">More to Discover</h2>
               </div>
-              <Link href="/shop" className="text-xs font-bold text-[#347467] hover:underline">View All →</Link>
+              <Link href="/shop" className="text-xs font-bold text-[#D4AF37] hover:underline">View All →</Link>
             </div>
             <div className="og-scrollbar flex gap-3 overflow-x-auto pb-3">
               {displayedProducts.slice(12, 20).map((product) => (
@@ -454,19 +454,19 @@ export default function Home() {
 
       {/* CUSTOMER ASSISTANCE */}
       <section className="mx-auto max-w-7xl px-4 pb-7 sm:px-6 lg:px-8">
-        <div className="rounded-[25px] border border-[#E7D9C4] bg-[#F1E7D6] p-5 sm:p-8">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#347467]">Shopping with confidence</p>
+        <div className="rounded-[25px] border border-[#F7F7F5] bg-[#F7F7F5] p-5 sm:p-8">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#D4AF37]">Shopping with confidence</p>
           <h2 className="mt-2 text-xl font-black tracking-tight sm:text-2xl">Here when you need us.</h2>
-          <p className="mt-2 max-w-xl text-sm leading-6 text-[#676056]">Explore order updates, submit a buyer-protection request or find answers in the Help Centre.</p>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-[#1A3C32]">Explore order updates, submit a buyer-protection request or find answers in the Help Centre.</p>
           <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            <Link href="/track-order" className="rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#71A999]">
-              <span className="text-2xl">📦</span><p className="mt-2 text-sm font-black">Track an Order</p><p className="mt-1 text-xs text-[#746F67]">See your order status</p>
+            <Link href="/track-order" className="rounded-2xl border border-[#F7F7F5] bg-white p-4 transition hover:border-[#D4AF37]">
+              <span className="text-2xl">📦</span><p className="mt-2 text-sm font-black">Track an Order</p><p className="mt-1 text-xs text-[#D4AF37]">See your order status</p>
             </Link>
-            <Link href="/order-protection" className="rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#71A999]">
-              <span className="text-2xl">🛡️</span><p className="mt-2 text-sm font-black">Buyer Protection</p><p className="mt-1 text-xs text-[#746F67]">Get help with a purchase</p>
+            <Link href="/order-protection" className="rounded-2xl border border-[#F7F7F5] bg-white p-4 transition hover:border-[#D4AF37]">
+              <span className="text-2xl">🛡️</span><p className="mt-2 text-sm font-black">Buyer Protection</p><p className="mt-1 text-xs text-[#D4AF37]">Get help with a purchase</p>
             </Link>
-            <Link href="/help" className="col-span-2 rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#71A999] sm:col-span-1">
-              <span className="text-2xl">💬</span><p className="mt-2 text-sm font-black">Help Centre</p><p className="mt-1 text-xs text-[#746F67]">Helpful answers and guides</p>
+            <Link href="/help" className="col-span-2 rounded-2xl border border-[#F7F7F5] bg-white p-4 transition hover:border-[#D4AF37] sm:col-span-1">
+              <span className="text-2xl">💬</span><p className="mt-2 text-sm font-black">Help Centre</p><p className="mt-1 text-xs text-[#D4AF37]">Helpful answers and guides</p>
             </Link>
           </div>
         </div>
@@ -474,32 +474,32 @@ export default function Home() {
 
       {/* SELLER CTA */}
       <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-[25px] bg-[#162e25] p-6 text-white sm:p-9">
-          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#68a98c]/25" />
+        <div className="relative overflow-hidden rounded-[25px] bg-[#0A1F1A] p-6 text-white sm:p-9">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#D4AF37]/25" />
           <div className="relative">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D6B780]">Sell with GoldMart</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F5E6A3]">Sell with GoldMart</p>
             <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Have products to sell?</h2>
-            <p className="mt-2 max-w-lg text-sm leading-6 text-[#D8D4CA]">Manage your products and reach customers from your seller dashboard.</p>
-            <Link href="/seller" className="mt-5 inline-flex rounded-full bg-[#68a98c] px-6 py-3 text-sm font-extrabold text-[#162e25] transition hover:bg-[#ddf1e3]">Explore Selling →</Link>
+            <p className="mt-2 max-w-lg text-sm leading-6 text-[#F7F7F5]">Manage your products and reach customers from your seller dashboard.</p>
+            <Link href="/seller" className="mt-5 inline-flex rounded-full bg-[#D4AF37] px-6 py-3 text-sm font-extrabold text-[#0A1F1A] transition hover:bg-[#F7F7F5]">Explore Selling →</Link>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-[#EAE2D7] bg-white px-5 pb-10 pt-9 text-center md:pb-12">
-        <Link href="/" className="text-2xl font-black tracking-[-0.05em]">Gold<span className="text-[#4e9776]">Mart</span></Link>
-        <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-[#746F67]">Discover products, manage orders and connect with sellers in one place.</p>
-        <div className="mx-auto mt-6 grid max-w-md grid-cols-2 gap-3 text-xs font-semibold text-[#625B50]">
-          <Link href="/shop" className="hover:text-[#347467]">Shop</Link>
-          <Link href="/categories" className="hover:text-[#347467]">Categories</Link>
-          <Link href="/orders" className="hover:text-[#347467]">My Orders</Link>
-          <Link href="/account" className="hover:text-[#347467]">My Account</Link>
-          <Link href="/seller" className="hover:text-[#347467]">Sell on GoldMart</Link>
-          <Link href="/help" className="hover:text-[#347467]">Help Centre</Link>
-          <Link href="/track-order" className="hover:text-[#347467]">Track Order</Link>
-          <Link href="/order-protection" className="hover:text-[#347467]">Buyer Protection</Link>
+      <footer className="border-t border-[#F7F7F5] bg-white px-5 pb-10 pt-9 text-center md:pb-12">
+        <Link href="/" className="text-2xl font-black tracking-[-0.05em]">Gold<span className="text-[#D4AF37]">Mart</span></Link>
+        <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-[#D4AF37]">Discover products, manage orders and connect with sellers in one place.</p>
+        <div className="mx-auto mt-6 grid max-w-md grid-cols-2 gap-3 text-xs font-semibold text-[#1A3C32]">
+          <Link href="/shop" className="hover:text-[#D4AF37]">Shop</Link>
+          <Link href="/categories" className="hover:text-[#D4AF37]">Categories</Link>
+          <Link href="/orders" className="hover:text-[#D4AF37]">My Orders</Link>
+          <Link href="/account" className="hover:text-[#D4AF37]">My Account</Link>
+          <Link href="/seller" className="hover:text-[#D4AF37]">Sell on GoldMart</Link>
+          <Link href="/help" className="hover:text-[#D4AF37]">Help Centre</Link>
+          <Link href="/track-order" className="hover:text-[#D4AF37]">Track Order</Link>
+          <Link href="/order-protection" className="hover:text-[#D4AF37]">Buyer Protection</Link>
         </div>
-        <p className="mt-6 border-t border-[#F0ECE5] pt-5 text-[11px] text-[#8A847A]">© {new Date().getFullYear()} GoldMart. All rights reserved.</p>
+        <p className="mt-6 border-t border-[#F7F7F5] pt-5 text-[11px] text-[#D4AF37]">© {new Date().getFullYear()} GoldMart. All rights reserved.</p>
       </footer>
 
 
