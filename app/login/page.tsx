@@ -85,7 +85,7 @@ export default function LoginPage() {
           className="gm-auth-brand mb-8 block text-center text-3xl font-black"
         >
           Gold
-          <span className="text-[#D4AF37]">
+          <span className="text-[#FF6B00]">
             Mart
           </span>
         </Link>
@@ -124,7 +124,7 @@ export default function LoginPage() {
                   setEmail(event.target.value)
                 }
                 placeholder="you@example.com"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
               />
             </div>
 
@@ -141,14 +141,14 @@ export default function LoginPage() {
                   setPassword(event.target.value)
                 }
                 placeholder="Enter your password"
-                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                className="w-full rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-black py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-xl bg-black py-3 font-bold text-white transition hover:bg-[#FF6B00] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading
                 ? "Signing In..."
@@ -161,7 +161,7 @@ export default function LoginPage() {
             Don't have an account?{" "}
             <Link
               href="/register"
-              className="font-bold text-[#D4AF37]"
+              className="font-bold text-[#FF6B00]"
             >
               Create one
             </Link>

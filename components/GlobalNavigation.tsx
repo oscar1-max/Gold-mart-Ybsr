@@ -100,9 +100,9 @@ const buttonStyle: CSSProperties = {
 
   padding: "9px 12px",
   backgroundColor: "#FFFFFF",
-  color: "#1A3C32",
+  color: "#243B53",
 
-  border: "1px solid #F5E6A3",
+  border: "1px solid #FFE9CC",
   borderRadius: "999px",
 
   boxShadow:
@@ -121,23 +121,23 @@ const buttonStyle: CSSProperties = {
 
 const aiButtonStyle: CSSProperties = {
   ...buttonStyle,
-  backgroundColor: "#1A3C32",
+  backgroundColor: "#243B53",
   color: "#FFFFFF",
-  borderColor: "#1A3C32",
+  borderColor: "#243B53",
 };
 
 const monitoringButtonStyle: CSSProperties = {
   ...buttonStyle,
-  backgroundColor: "#1A3C32",
+  backgroundColor: "#243B53",
   color: "#FFFFFF",
-  borderColor: "#1A3C32",
+  borderColor: "#243B53",
 };
 
 const supportButtonStyle: CSSProperties = {
   ...buttonStyle,
   backgroundColor: "#FFFFFF",
-  color: "#1A3C32",
-  borderColor: "#1A3C32",
+  color: "#243B53",
+  borderColor: "#243B53",
 };
 
 // =====================================================
@@ -352,14 +352,14 @@ export default function GlobalNavigation() {
 
   return (
     <>
-      <nav aria-label="GoldMart mobile navigation" className="fixed inset-x-0 bottom-0 z-[90] border-t border-[#F7F7F5] bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_35px_rgba(23,25,29,0.07)] backdrop-blur-xl md:hidden">
+      <nav aria-label="GoldMart mobile navigation" className="fixed inset-x-0 bottom-0 z-[90] border-t border-[#FFF8F2] bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_35px_rgba(23,25,29,0.07)] backdrop-blur-xl md:hidden">
         <div className="mx-auto grid h-[66px] max-w-xl grid-cols-5 items-center px-2">
           {mobileTabs.map((tab) => {
             const active = pathname === tab.href || (tab.href !== "/" && pathname?.startsWith(tab.href + "/"));
             return (
               <button key={tab.href} type="button" onClick={() => router.push(tab.href)}
                 aria-current={active ? "page" : undefined}
-                className={`flex h-[58px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl text-center transition ${active ? "bg-[#F7F7F5] text-[#1A3C32]" : "text-[#D4AF37] hover:bg-[#FFFFFF]"}`}>
+                className={`flex h-[58px] min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl text-center transition ${active ? "bg-[#FFF8F2] text-[#243B53]" : "text-[#FF6B00] hover:bg-[#FFFFFF]"}`}>
                 <span aria-hidden="true" className="text-[22px] leading-6">{tab.icon}</span>
                 <span className="text-[10px] font-bold">{tab.label}</span>
               </button>
@@ -370,19 +370,19 @@ export default function GlobalNavigation() {
 
       {pathname !== "/" && (
         <button type="button" onClick={goBack} aria-label="Go back to the previous page"
-          className="fixed bottom-[calc(82px+env(safe-area-inset-bottom))] left-3 z-[80] flex h-11 items-center gap-2 rounded-full border border-[#F7F7F5] bg-white/95 px-4 text-xs font-bold text-[#1A3C32] shadow-lg backdrop-blur hover:border-[#D4AF37] md:bottom-6 md:left-6">
+          className="fixed bottom-[calc(82px+env(safe-area-inset-bottom))] left-3 z-[80] flex h-11 items-center gap-2 rounded-full border border-[#FFF8F2] bg-white/95 px-4 text-xs font-bold text-[#243B53] shadow-lg backdrop-blur hover:border-[#FF6B00] md:bottom-6 md:left-6">
           ← Back
         </button>
       )}
       <button type="button" onClick={goHome} aria-label="Go to GoldMart homepage"
-        className="fixed bottom-6 right-4 z-[80] hidden h-11 items-center gap-2 rounded-full border border-[#F7F7F5] bg-white/95 px-4 text-xs font-bold text-[#1A3C32] shadow-lg backdrop-blur hover:border-[#D4AF37] md:flex">
+        className="fixed bottom-6 right-4 z-[80] hidden h-11 items-center gap-2 rounded-full border border-[#FFF8F2] bg-white/95 px-4 text-xs font-bold text-[#243B53] shadow-lg backdrop-blur hover:border-[#FF6B00] md:flex">
         ⌂ Home
       </button>
 
       {isAdmin && (
         <div className="fixed bottom-[calc(82px+env(safe-area-inset-bottom))] right-3 z-[85] flex flex-col items-end gap-2 md:bottom-6 md:right-28">
           {adminMenuOpen && (
-            <div className="flex flex-col gap-1.5 rounded-2xl border border-[#F7F7F5] bg-white p-2 shadow-xl" aria-label="Administrator shortcuts">
+            <div className="flex flex-col gap-1.5 rounded-2xl border border-[#FFF8F2] bg-white p-2 shadow-xl" aria-label="Administrator shortcuts">
               <button type="button" onClick={() => { setAdminMenuOpen(false); goAiAdmin(); }} className="rounded-xl px-4 py-2.5 text-left text-xs font-bold hover:bg-[#FFFFFF]">🤖 AI Admin</button>
               <button type="button" onClick={() => { setAdminMenuOpen(false); goMonitoring(); }} className="rounded-xl px-4 py-2.5 text-left text-xs font-bold hover:bg-[#FFFFFF]">🛡️ Monitoring</button>
               <button type="button" onClick={() => { setAdminMenuOpen(false); goSupportAssistant(); }} className="rounded-xl px-4 py-2.5 text-left text-xs font-bold hover:bg-[#FFFFFF]">💬 Support Assistant</button>
@@ -390,7 +390,7 @@ export default function GlobalNavigation() {
           )}
           <button type="button" aria-expanded={adminMenuOpen} aria-label="Toggle administrator tools"
             onClick={() => setAdminMenuOpen(value => !value)}
-            className="rounded-full border border-[#D4AF37] bg-[#1A3C32] px-4 py-3 text-xs font-extrabold text-[#F7F7F5] shadow-xl">
+            className="rounded-full border border-[#FF6B00] bg-[#243B53] px-4 py-3 text-xs font-extrabold text-[#FFF8F2] shadow-xl">
             {adminMenuOpen ? "✕ Close" : "✦ Admin Tools"}
           </button>
         </div>
