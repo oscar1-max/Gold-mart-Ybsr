@@ -355,7 +355,7 @@ export default function ShopPage() {
     );
 
   return (
-    <main className="min-h-screen bg-[#F7F8F6] pb-28 text-[#202A31] md:pb-14">
+    <main className="min-h-screen bg-[#f5f8f6] pb-28 text-[#1b3329] md:pb-14">
       <section aria-label="Shop everything introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(120deg,#1E3546,#326B73,#C09A63)" }}>
         <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🛍️</div>
         <div className="relative">
@@ -381,7 +381,7 @@ export default function ShopPage() {
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#128563]">
               Mart
             </span>
           </Link>
@@ -401,7 +401,7 @@ export default function ShopPage() {
       <div className="mx-auto max-w-7xl px-4 py-10">
 
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+          <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
             GoldMart Store
           </p>
 
@@ -436,7 +436,7 @@ export default function ShopPage() {
               }
             }}
             placeholder="Search products..."
-            className="w-full px-5 py-4 outline-none focus:border-[#D4AF37]"
+            className="w-full px-5 py-4 outline-none focus:border-[#128563]"
           />
 
           <button
@@ -444,7 +444,7 @@ export default function ShopPage() {
             onClick={
               handleSearch
             }
-            className="bg-black px-6 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+            className="bg-black px-6 font-bold text-white transition hover:bg-[#128563] hover:text-black"
           >
             Search
           </button>
@@ -469,7 +469,7 @@ export default function ShopPage() {
                   selectedCategory ===
                   category
                     ? "bg-black text-white"
-                    : "border bg-white hover:border-[#D4AF37]"
+                    : "border bg-white hover:border-[#128563]"
                 }`}
               >
                 {category}
@@ -641,7 +641,7 @@ export default function ShopPage() {
 
                         <div className="p-4">
 
-                          <p className="text-xs font-bold uppercase text-[#A67C00]">
+                          <p className="text-xs font-bold uppercase text-[#127256]">
                             {
                               product.category
                             }
@@ -650,7 +650,7 @@ export default function ShopPage() {
                           <Link
                             href={`/product/${product.id}`}
                           >
-                            <h3 className="mt-1 font-bold hover:text-[#A67C00]">
+                            <h3 className="mt-1 font-bold hover:text-[#127256]">
                               {
                                 product.name
                               }
@@ -666,7 +666,7 @@ export default function ShopPage() {
                           {product.is_deal && <div className="mt-3"><span className="rounded-full bg-[#FFEADA] px-3 py-1 text-xs font-black text-[#925032]">⚡ Flash Deal</span><p className="mt-2 text-xs text-gray-500 line-through">{formatPrice(product.original_price||product.price,product.currency)}</p></div>}
                           <div className="mt-3 flex items-center justify-between">
 
-                            <span className="font-black text-[#A67C00]">
+                            <span className="font-black text-[#127256]">
                               {formatPrice(
                                 product.price,
                                 product.currency
