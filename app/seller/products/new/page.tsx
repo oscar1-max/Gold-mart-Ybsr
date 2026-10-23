@@ -259,7 +259,7 @@ export default function NewProductPage() {
             href="/"
             className="text-2xl font-black"
           >
-            Gold<span className="text-[#D4AF37]">Mart</span>
+            Gold<span className="text-[#128563]">Mart</span>
           </Link>
 
           <Link
@@ -277,14 +277,14 @@ export default function NewProductPage() {
 
         <Link
           href="/seller/products"
-          className="font-bold text-[#A67C00]"
+          className="font-bold text-[#127256]"
         >
           ← Back to My Products
         </Link>
 
         <div className="mt-6">
 
-          <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+          <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
             Seller Center
           </p>
 
@@ -331,7 +331,7 @@ export default function NewProductPage() {
                 setName(event.target.value)
               }
               placeholder="e.g. Wireless Bluetooth Headphones"
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
               required
             />
           </div>
@@ -349,7 +349,7 @@ export default function NewProductPage() {
               }
               placeholder="Describe your product..."
               rows={5}
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
             />
           </div>
 
@@ -371,7 +371,7 @@ export default function NewProductPage() {
                   setPrice(event.target.value)
                 }
                 placeholder="15000"
-                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
                 required
               />
             </div>
@@ -387,7 +387,7 @@ export default function NewProductPage() {
                 onChange={(event) =>
                   setCurrency(event.target.value)
                 }
-                className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
+                className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#128563]"
               >
                 <option value="USD">
                   USD ($) - US Dollar
@@ -416,7 +416,7 @@ export default function NewProductPage() {
                 Price Preview
               </p>
 
-              <p className="mt-1 text-xl font-black text-[#A67C00]">
+              <p className="mt-1 text-xl font-black text-[#127256]">
                 {currency === "USD" && "$"}
                 {currency === "NGN" && "₦"}
                 {currency === "EUR" && "€"}
@@ -446,7 +446,7 @@ export default function NewProductPage() {
                 setStock(event.target.value)
               }
               placeholder="10"
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
               required
             />
 
@@ -465,7 +465,7 @@ export default function NewProductPage() {
                 setCategoryId(event.target.value)
               }
               disabled={loadingCategories}
-              className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
+              className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#128563]"
               required
             >
               <option value="">
@@ -509,7 +509,7 @@ export default function NewProductPage() {
                 className={`inline-flex cursor-pointer items-center justify-center rounded-xl px-6 py-3 font-bold transition ${
                   uploadingImage
                     ? "cursor-not-allowed bg-gray-200 text-gray-500"
-                    : "bg-black text-white hover:bg-[#D4AF37] hover:text-black"
+                    : "bg-black text-white hover:bg-[#128563] hover:text-black"
                 }`}
               >
                 {uploadingImage
@@ -565,7 +565,7 @@ export default function NewProductPage() {
             <button
               type="submit"
               disabled={loading || uploadingImage}
-              className="flex-1 rounded-xl bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex-1 rounded-xl bg-black px-6 py-3 font-bold text-white transition hover:bg-[#128563] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading
                 ? "Adding Product..."
