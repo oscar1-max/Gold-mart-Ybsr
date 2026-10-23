@@ -41,7 +41,7 @@ export default function Categories() {
   return (
     <section className="px-6 py-16">
       <div className="mx-auto max-w-6xl">
-        <p className="text-center text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+        <p className="text-center text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
           Explore GoldMart
         </p>
 
@@ -64,7 +64,7 @@ export default function Categories() {
                 🛍️
               </div>
 
-              <h3 className="mt-5 text-lg font-black transition group-hover:text-[#A67C00]">
+              <h3 className="mt-5 text-lg font-black transition group-hover:text-[#D4AF37]">
                 {category.name}
               </h3>
 
@@ -72,7 +72,7 @@ export default function Categories() {
                 {category.description}
               </p>
 
-              <span className="mt-4 inline-block text-sm font-bold text-[#A67C00]">
+              <span className="mt-4 inline-block text-sm font-bold text-[#D4AF37]">
                 Shop Now →
               </span>
             </Link>
