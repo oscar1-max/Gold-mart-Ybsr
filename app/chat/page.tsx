@@ -279,11 +279,11 @@ export default function ChatPage() {
   // ===================================================
 
   return (
-    <main className="min-h-screen bg-[#f5f8f6] pb-28 text-[#1b3329] md:pb-14">
-      <section aria-label="Messages introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(120deg,#233C46,#397B77,#C4A97C)" }}>
+    <main className="min-h-screen bg-[#FFFFFF] pb-28 text-[#0A1F1A] md:pb-14">
+      <section aria-label="Messages introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)" }}>
         <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">💬</div>
         <div className="relative">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F2DEC0]">GoldMart · Messages</p>
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F5E6A3]">GoldMart · Messages</p>
           <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">Conversations, beautifully organized.</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Keep up with buyers and sellers in one convenient place.</p>
           <div className="mt-5 flex flex-wrap gap-2">
@@ -300,7 +300,7 @@ export default function ChatPage() {
 
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
+            <p className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
               GoldMart Messages
             </p>
 
@@ -324,7 +324,7 @@ export default function ChatPage() {
 
             <Link
               href="/shop"
-              className="rounded-xl bg-black px-4 py-3 text-sm font-bold text-white hover:bg-[#128563] hover:text-black"
+              className="rounded-xl bg-black px-4 py-3 text-sm font-bold text-white hover:bg-[#D4AF37] hover:text-black"
             >
               Shop
             </Link>
@@ -360,7 +360,7 @@ export default function ChatPage() {
         {/* LOADING */}
 
         {loading && (
-          <div className="rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center shadow-sm">
+          <div className="rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center shadow-sm">
             <div className="mb-4 text-4xl">
               ⏳
             </div>
@@ -374,7 +374,7 @@ export default function ChatPage() {
         {/* ERROR */}
 
         {!loading && error && (
-          <div className="rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-8 text-center shadow-sm">
+          <div className="rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-8 text-center shadow-sm">
             <div className="mb-4 text-4xl">
               ⚠️
             </div>
@@ -401,7 +401,7 @@ export default function ChatPage() {
           !error &&
           conversations.length ===
             0 && (
-            <div className="rounded-2xl border border-[#E7E9E6] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center shadow-sm">
+            <div className="rounded-2xl border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center shadow-sm">
               <div className="text-5xl">
                 💬
               </div>
@@ -456,7 +456,7 @@ export default function ChatPage() {
                         conversation.id
                       }
                       href={`/chat/${conversation.id}`}
-                      className="block rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:border-[#128563] hover:shadow-md"
+                      className="block rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:border-[#D4AF37] hover:shadow-md"
                     >
                       <div className="flex items-start gap-4">
                         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-yellow-100 text-xl">
@@ -477,7 +477,7 @@ export default function ChatPage() {
                             </span>
                           </div>
 
-                          <p className="mt-1 text-xs font-semibold text-[#127256]">
+                          <p className="mt-1 text-xs font-semibold text-[#D4AF37]">
                             {isSeller
                               ? "Customer conversation"
                               : "Seller conversation"}
