@@ -191,18 +191,18 @@ export default function SellerProductsPage() {
 
   return (
     <main className="min-h-screen bg-[#F1F5F5] pb-28 text-[#20313B]">
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
-      <header className="border-b border-[#E8E1D5] bg-white/95">
+      <header className="border-b border-[#e0eae3] bg-white/95">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link href="/" className="text-2xl font-black tracking-tight" aria-label="GoldMart Home">
             Gold<span className="text-[#B08A50]">Mart</span>
           </Link>
           <div className="flex items-center gap-2">
-            <Link href="/seller" className="rounded-full border border-[#E8E1D5] px-4 py-2.5 text-xs font-bold hover:border-[#C5A46D] sm:text-sm">
+            <Link href="/seller" className="rounded-full border border-[#e0eae3] px-4 py-2.5 text-xs font-bold hover:border-[#68a98c] sm:text-sm">
               ← Dashboard
             </Link>
-            <Link href="/shop" className="rounded-full bg-[#17191D] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#96713D] sm:text-sm">
+            <Link href="/shop" className="rounded-full bg-[#162e25] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#176c52] sm:text-sm">
               Buyer Store
             </Link>
           </div>
@@ -211,14 +211,14 @@ export default function SellerProductsPage() {
 
       <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10">
         <section className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(115deg,#132F41,#1B5C67,#588E8B)] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.12)] sm:px-9 sm:py-10">
-          <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-20 h-60 w-60 rounded-full border border-[#C5A46D]/25" />
+          <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-20 h-60 w-60 rounded-full border border-[#68a98c]/25" />
           <div className="relative flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">GoldMart • Seller Centre</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">GoldMart • Seller Centre</p>
               <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">My Products</h1>
               <p className="mt-3 max-w-xl text-sm leading-6 text-[#E1DDD6]">Manage your listings, find products quickly, and stay ahead of low inventory.</p>
             </div>
-            <Link href="/seller/products/new" className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#C5A46D] px-6 py-3 text-sm font-extrabold text-[#17191D] transition hover:bg-[#E9D9BB]">
+            <Link href="/seller/products/new" className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#68a98c] px-6 py-3 text-sm font-extrabold text-[#162e25] transition hover:bg-[#ddf1e3]">
               + Add Product
             </Link>
           </div>
@@ -229,7 +229,7 @@ export default function SellerProductsPage() {
             <p className="font-black">Could not load your products</p>
             <p className="mt-1 text-sm">{error}</p>
             <div className="mt-4 flex flex-wrap gap-2">
-              <button type="button" onClick={() => void loadProducts()} className="rounded-full bg-[#17191D] px-5 py-2.5 text-sm font-bold text-white">Try Again</button>
+              <button type="button" onClick={() => void loadProducts()} className="rounded-full bg-[#162e25] px-5 py-2.5 text-sm font-bold text-white">Try Again</button>
               <Link href="/login" className="rounded-full border border-red-300 px-5 py-2.5 text-sm font-bold">Sign In</Link>
             </div>
           </div>
@@ -238,10 +238,10 @@ export default function SellerProductsPage() {
         <section className="mt-9" aria-label="Inventory summary">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">Your inventory</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#176c52]">Your inventory</p>
               <h2 className="mt-1 text-2xl font-black tracking-tight">Stock Overview</h2>
             </div>
-            <button type="button" disabled={loading} onClick={() => void loadProducts()} className="rounded-full border border-[#D7BF97] bg-white px-5 py-2.5 text-sm font-bold text-[#17191D] hover:bg-[#F5F1E9] disabled:opacity-50">
+            <button type="button" disabled={loading} onClick={() => void loadProducts()} className="rounded-full border border-[#D7BF97] bg-white px-5 py-2.5 text-sm font-bold text-[#162e25] hover:bg-[#ebf4ed] disabled:opacity-50">
               {loading ? "Loading..." : "↻ Refresh Products"}
             </button>
           </div>
@@ -253,11 +253,11 @@ export default function SellerProductsPage() {
                 onClick={() => setStockFilter(item.value)}
                 disabled={loading || Boolean(error)}
                 aria-pressed={stockFilter === item.value}
-                className={`rounded-[22px] border p-4 text-left shadow-sm transition sm:p-5 ${stockFilter === item.value ? "border-[#B08A50] bg-[#F5F1E9]" : "border-[#E8E1D5] bg-white hover:border-[#C5A46D]"} disabled:cursor-not-allowed disabled:opacity-60`}
+                className={`rounded-[22px] border p-4 text-left shadow-sm transition sm:p-5 ${stockFilter === item.value ? "border-[#B08A50] bg-[#ebf4ed]" : "border-[#e0eae3] bg-white hover:border-[#68a98c]"} disabled:cursor-not-allowed disabled:opacity-60`}
               >
-                <p className="text-xs font-bold text-[#74716B] sm:text-sm">{item.title}</p>
+                <p className="text-xs font-bold text-[#647a6d] sm:text-sm">{item.title}</p>
                 <p className="mt-2 text-2xl font-black sm:text-3xl">{loading || error ? "—" : item.count}</p>
-                <p className="mt-1 text-xs text-[#96713D]">{stockFilter === item.value ? "Selected" : "View products →"}</p>
+                <p className="mt-1 text-xs text-[#176c52]">{stockFilter === item.value ? "Selected" : "View products →"}</p>
               </button>
             ))}
           </div>
@@ -269,28 +269,28 @@ export default function SellerProductsPage() {
         </section>
 
         {!error && (
-          <section className="mt-9 rounded-[24px] border border-[#E8E1D5] bg-white p-4 shadow-sm sm:p-6" aria-label="Product search and filters">
+          <section className="mt-9 rounded-[24px] border border-[#e0eae3] bg-white p-4 shadow-sm sm:p-6" aria-label="Product search and filters">
             <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px_200px]">
               <label className="block">
-                <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#74716B]">Search products</span>
+                <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#647a6d]">Search products</span>
                 <input
                   type="search"
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
                   placeholder="Search name, category, description..."
-                  className="w-full rounded-xl border border-[#D9D3C9] bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:border-[#B08A50] focus:ring-2 focus:ring-[#C5A46D]/30"
+                  className="w-full rounded-xl border border-[#D9D3C9] bg-[#f5f8f5] px-4 py-3 text-sm outline-none focus:border-[#B08A50] focus:ring-2 focus:ring-[#68a98c]/30"
                 />
               </label>
               <label className="block">
-                <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#74716B]">Category</span>
-                <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)} className="w-full rounded-xl border border-[#D9D3C9] bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:border-[#B08A50]">
+                <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#647a6d]">Category</span>
+                <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)} className="w-full rounded-xl border border-[#D9D3C9] bg-[#f5f8f5] px-4 py-3 text-sm outline-none focus:border-[#B08A50]">
                   <option value="all">All categories</option>
                   {categories.map((category) => <option key={category} value={category}>{category}</option>)}
                 </select>
               </label>
               <label className="block">
-                <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#74716B]">Sort products</span>
-                <select value={sortBy} onChange={(event) => setSortBy(event.target.value as SortOption)} className="w-full rounded-xl border border-[#D9D3C9] bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:border-[#B08A50]">
+                <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#647a6d]">Sort products</span>
+                <select value={sortBy} onChange={(event) => setSortBy(event.target.value as SortOption)} className="w-full rounded-xl border border-[#D9D3C9] bg-[#f5f8f5] px-4 py-3 text-sm outline-none focus:border-[#B08A50]">
                   <option value="name-asc">Name: A–Z</option>
                   <option value="name-desc">Name: Z–A</option>
                   <option value="stock-asc">Stock: Low to High</option>
@@ -298,11 +298,11 @@ export default function SellerProductsPage() {
                 </select>
               </label>
             </div>
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[#E8E1D5] pt-4">
-              <p className="text-sm text-[#74716B]" aria-live="polite">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[#e0eae3] pt-4">
+              <p className="text-sm text-[#647a6d]" aria-live="polite">
                 {loading ? "Loading products..." : error ? "Products unavailable" : `Showing ${visibleProducts.length} of ${listedProducts.length} products`}
               </p>
-              <button type="button" onClick={resetFilters} className="text-sm font-bold text-[#96713D] hover:underline">Clear Filters</button>
+              <button type="button" onClick={resetFilters} className="text-sm font-bold text-[#176c52] hover:underline">Clear Filters</button>
             </div>
           </section>
         )}
@@ -313,7 +313,7 @@ export default function SellerProductsPage() {
         {loading && (
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Loading products">
             {[1, 2, 3].map((number) => (
-              <div key={number} className="animate-pulse overflow-hidden rounded-[22px] border border-[#E8E1D5] bg-white">
+              <div key={number} className="animate-pulse overflow-hidden rounded-[22px] border border-[#e0eae3] bg-white">
                 <div className="h-52 bg-[#EFEAE1]" />
                 <div className="space-y-3 p-5"><div className="h-4 w-3/4 rounded bg-[#EFEAE1]" /><div className="h-4 w-1/2 rounded bg-[#EFEAE1]" /></div>
               </div>
@@ -322,19 +322,19 @@ export default function SellerProductsPage() {
         )}
 
         {!loading && !error && listedProducts.length === 0 && (
-          <section className="mt-6 rounded-[24px] border border-[#E8E1D5] bg-white px-5 py-12 text-center">
+          <section className="mt-6 rounded-[24px] border border-[#e0eae3] bg-white px-5 py-12 text-center">
             <p className="text-5xl">📦</p>
             <h2 className="mt-4 text-xl font-black">Your store is ready for its first product</h2>
-            <p className="mt-2 text-sm text-[#74716B]">Add a product to start building your GoldMart catalogue.</p>
-            <Link href="/seller/products/new" className="mt-6 inline-flex rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white hover:bg-[#96713D]">Add Product →</Link>
+            <p className="mt-2 text-sm text-[#647a6d]">Add a product to start building your GoldMart catalogue.</p>
+            <Link href="/seller/products/new" className="mt-6 inline-flex rounded-full bg-[#162e25] px-6 py-3 text-sm font-bold text-white hover:bg-[#176c52]">Add Product →</Link>
           </section>
         )}
 
         {!loading && !error && listedProducts.length > 0 && visibleProducts.length === 0 && (
-          <section className="mt-6 rounded-[24px] border border-[#E8E1D5] bg-white px-5 py-12 text-center">
+          <section className="mt-6 rounded-[24px] border border-[#e0eae3] bg-white px-5 py-12 text-center">
             <h2 className="text-xl font-black">No matching products</h2>
-            <p className="mt-2 text-sm text-[#74716B]">Try another search or clear your filters.</p>
-            <button type="button" onClick={resetFilters} className="mt-5 rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white">Show All Products</button>
+            <p className="mt-2 text-sm text-[#647a6d]">Try another search or clear your filters.</p>
+            <button type="button" onClick={resetFilters} className="mt-5 rounded-full bg-[#162e25] px-6 py-3 text-sm font-bold text-white">Show All Products</button>
           </section>
         )}
 
@@ -354,8 +354,8 @@ export default function SellerProductsPage() {
                   : "In stock";
 
               return (
-                <article key={product.id} className="overflow-hidden rounded-[22px] border border-[#E8E1D5] bg-white shadow-sm transition hover:border-[#C5A46D] hover:shadow-md">
-                  <div className="relative h-56 bg-[#F5F1E9]">
+                <article key={product.id} className="overflow-hidden rounded-[22px] border border-[#e0eae3] bg-white shadow-sm transition hover:border-[#68a98c] hover:shadow-md">
+                  <div className="relative h-56 bg-[#ebf4ed]">
                     {product.image_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={product.image_url} alt={product.name} loading="lazy" className="h-full w-full object-cover" />
@@ -365,23 +365,23 @@ export default function SellerProductsPage() {
                     <span className={`absolute right-3 top-3 rounded-full border px-3 py-1 text-xs font-bold shadow-sm ${badgeStyle}`}>{badgeText}</span>
                   </div>
                   <div className="p-5">
-                    <p className="text-xs font-bold uppercase tracking-wider text-[#96713D]">{product.category_name || "Uncategorized"}</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-[#176c52]">{product.category_name || "Uncategorized"}</p>
                     <h2 className="mt-2 line-clamp-2 text-lg font-black">{product.name}</h2>
-                    {product.description && <p className="mt-2 line-clamp-2 text-sm leading-6 text-[#74716B]">{product.description}</p>}
-                    <div className="mt-5 flex items-end justify-between gap-3 border-t border-[#E8E1D5] pt-4">
+                    {product.description && <p className="mt-2 line-clamp-2 text-sm leading-6 text-[#647a6d]">{product.description}</p>}
+                    <div className="mt-5 flex items-end justify-between gap-3 border-t border-[#e0eae3] pt-4">
                       <div>
-                        <p className="text-xs text-[#74716B]">Listed price</p>
-                        <p className="mt-1 text-xl font-black text-[#96713D]">{formatPrice(product.price, product.currency)}</p>
+                        <p className="text-xs text-[#647a6d]">Listed price</p>
+                        <p className="mt-1 text-xl font-black text-[#176c52]">{formatPrice(product.price, product.currency)}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-xs text-[#74716B]">Units in stock</p>
+                        <p className="text-xs text-[#647a6d]">Units in stock</p>
                         <p className="mt-1 text-xl font-black">{getStock(product)}</p>
                       </div>
                     </div>
                     <div className="mt-5 flex flex-wrap gap-2">
                       <button type="button" disabled={busyId !== null} onClick={() => void setListing(product, product.is_active === false)} className={`rounded-full px-4 py-3 text-sm font-bold disabled:opacity-50 ${product.is_active === false ? "bg-[#DDEFE9] text-[#276454]" : "bg-[#FFF0EA] text-[#9A503F]"}`}>{busyId===product.id ? "Saving..." : product.is_active===false ? "Restore listing" : "Remove from store"}</button>
-                      <Link href={`/seller/products/${product.id}/edit`} className="flex-1 rounded-full border border-[#D7BF97] px-4 py-3 text-center text-sm font-bold hover:bg-[#FAF8F3]">Edit Product</Link>
-                      <Link href="/shop" className="flex-1 rounded-full bg-[#17191D] px-4 py-3 text-center text-sm font-bold text-white hover:bg-[#96713D]">View Store</Link>
+                      <Link href={`/seller/products/${product.id}/edit`} className="flex-1 rounded-full border border-[#D7BF97] px-4 py-3 text-center text-sm font-bold hover:bg-[#f5f8f5]">Edit Product</Link>
+                      <Link href="/shop" className="flex-1 rounded-full bg-[#162e25] px-4 py-3 text-center text-sm font-bold text-white hover:bg-[#176c52]">View Store</Link>
                     </div>
                   </div>
                 </article>
