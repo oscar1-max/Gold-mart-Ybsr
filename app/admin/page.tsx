@@ -338,48 +338,48 @@ export default function AdminOverviewPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#f5f7f6] pb-32 text-[#1b3329] md:pb-12">
+    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#0A1F1A] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(115deg,#142E37,#245D61 58%,#AD8B60)"}}>
+        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
           <span aria-hidden="true" className="pointer-events-none absolute -right-6 -top-12 text-[150px] leading-none opacity-10">✦</span>
           <div className="relative">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#D1BA88"}}>GOLDMART PRIVATE ADMIN · EXECUTIVE HQ</p>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#F5E6A3"}}>GOLDMART PRIVATE ADMIN · EXECUTIVE HQ</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Admin Overview</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Your private command centre for the marketplace.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#def3e6]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#F7F7F5]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#284F55] bg-[#284F55] text-white">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Support</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#1A3C32] bg-[#1A3C32] text-white">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Support</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
+      <div className="h-1 bg-gradient-to-r from-[#1A3C32] via-[#F7F7F5] to-[#D4AF37]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#e0eae3] bg-white">
+      <header className="border-b border-[#F7F7F5] bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
           <Link
             href="/"
             className="text-2xl font-black tracking-tight"
           >
             Gold
-            <span className="text-[#4e9776]">
+            <span className="text-[#D4AF37]">
               Mart
             </span>
           </Link>
 
           <Link
             href="/account"
-            className="rounded-full border border-[#D7BF97] px-4 py-2 text-xs font-bold hover:bg-[#f5f8f5]"
+            className="rounded-full border border-[#F5E6A3] px-4 py-2 text-xs font-bold hover:bg-[#FFFFFF]"
           >
             ← My Account
           </Link>
@@ -390,14 +390,14 @@ export default function AdminOverviewPage() {
 
         {/* HERO */}
 
-        <section className="relative overflow-hidden rounded-[28px] bg-[#253F48] p-7 text-white sm:p-10">
+        <section className="relative overflow-hidden rounded-[28px] bg-[#1A3C32] p-7 text-white sm:p-10">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-12 -top-16 h-52 w-52 rounded-full border border-[#68a98c]/30"
+            className="pointer-events-none absolute -right-12 -top-16 h-52 w-52 rounded-full border border-[#D4AF37]/30"
           />
 
           <div className="relative">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F7F7F5]">
               GoldMart Administration
             </p>
 
@@ -405,7 +405,7 @@ export default function AdminOverviewPage() {
               Admin Overview
             </h1>
 
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#E5DDD1]">
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#F7F7F5]">
               Your central control centre for
               marketplace reports, refund reviews,
               and customer support.
@@ -413,7 +413,7 @@ export default function AdminOverviewPage() {
 
             {dashboardState === "ready" && (
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <span className="rounded-full border border-[#68a98c]/50 bg-[#68a98c]/15 px-4 py-2 text-xs font-bold text-[#ddf1e3]">
+                <span className="rounded-full border border-[#D4AF37]/50 bg-[#D4AF37]/15 px-4 py-2 text-xs font-bold text-[#F7F7F5]">
                   🛡️ Administrator Tools
                 </span>
 
@@ -422,7 +422,7 @@ export default function AdminOverviewPage() {
                   onClick={() =>
                     void loadDashboard()
                   }
-                  className="rounded-full bg-[#68a98c] px-5 py-2.5 text-sm font-bold text-[#162e25] hover:bg-[#ddf1e3]"
+                  className="rounded-full bg-[#D4AF37] px-5 py-2.5 text-sm font-bold text-[#0A1F1A] hover:bg-[#F7F7F5]"
                 >
                   ↻ Refresh Overview
                 </button>
@@ -434,8 +434,8 @@ export default function AdminOverviewPage() {
         {/* ACCESS CHECK */}
 
         {dashboardState === "loading" && (
-          <div className="mt-8 rounded-3xl border border-[#e0eae3] bg-white p-8 text-center">
-            <p className="text-sm text-[#716B62]">
+          <div className="mt-8 rounded-3xl border border-[#F7F7F5] bg-white p-8 text-center">
+            <p className="text-sm text-[#D4AF37]">
               Checking administrator access
               and loading your dashboard...
             </p>
@@ -445,21 +445,21 @@ export default function AdminOverviewPage() {
         {/* LOGIN REQUIRED */}
 
         {dashboardState === "login" && (
-          <section className="mt-8 rounded-3xl border border-[#e0eae3] bg-white p-8 text-center">
+          <section className="mt-8 rounded-3xl border border-[#F7F7F5] bg-white p-8 text-center">
             <div className="text-4xl">🔐</div>
 
             <h2 className="mt-4 text-xl font-black">
               Please Sign In
             </h2>
 
-            <p className="mt-3 text-sm text-[#716B62]">
+            <p className="mt-3 text-sm text-[#D4AF37]">
               Sign in with your authorized
               GoldMart administrator account.
             </p>
 
             <Link
               href="/login"
-              className="mt-6 inline-block rounded-full bg-[#145d4a] px-6 py-3 text-sm font-bold text-white"
+              className="mt-6 inline-block rounded-full bg-[#1A3C32] px-6 py-3 text-sm font-bold text-white"
             >
               Go to Login
             </Link>
@@ -469,14 +469,14 @@ export default function AdminOverviewPage() {
         {/* ACCESS RESTRICTED */}
 
         {dashboardState === "denied" && (
-          <section className="mt-8 rounded-3xl border border-[#e0eae3] bg-white p-8 text-center">
+          <section className="mt-8 rounded-3xl border border-[#F7F7F5] bg-white p-8 text-center">
             <div className="text-4xl">🔒</div>
 
             <h2 className="mt-4 text-xl font-black">
               Administrator Access Required
             </h2>
 
-            <p className="mt-3 text-sm text-[#716B62]">
+            <p className="mt-3 text-sm text-[#D4AF37]">
               Your account could not be verified
               for these administration tools.
               Sign in with the correct account
@@ -485,7 +485,7 @@ export default function AdminOverviewPage() {
 
             <Link
               href="/account"
-              className="mt-6 inline-block rounded-full bg-[#145d4a] px-6 py-3 text-sm font-bold text-white"
+              className="mt-6 inline-block rounded-full bg-[#1A3C32] px-6 py-3 text-sm font-bold text-white"
             >
               Back to My Account
             </Link>
@@ -495,14 +495,14 @@ export default function AdminOverviewPage() {
         {/* SERVER ERROR */}
 
         {dashboardState === "unavailable" && (
-          <section className="mt-8 rounded-3xl border border-[#e0eae3] bg-white p-8 text-center">
+          <section className="mt-8 rounded-3xl border border-[#F7F7F5] bg-white p-8 text-center">
             <div className="text-4xl">⚠️</div>
 
             <h2 className="mt-4 text-xl font-black">
               Dashboard Temporarily Unavailable
             </h2>
 
-            <p className="mt-3 text-sm text-[#716B62]">
+            <p className="mt-3 text-sm text-[#D4AF37]">
               The admin services could not be
               loaded. Please try again.
             </p>
@@ -512,7 +512,7 @@ export default function AdminOverviewPage() {
               onClick={() =>
                 void loadDashboard()
               }
-              className="mt-6 rounded-full bg-[#145d4a] px-6 py-3 text-sm font-bold text-white"
+              className="mt-6 rounded-full bg-[#1A3C32] px-6 py-3 text-sm font-bold text-white"
             >
               Try Again
             </button>
@@ -526,7 +526,7 @@ export default function AdminOverviewPage() {
             {/* SUMMARY CARDS */}
 
             <section className="mt-9">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#176c52]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1A3C32]">
                 Marketplace Operations
               </p>
 
@@ -538,13 +538,13 @@ export default function AdminOverviewPage() {
                 {stats.map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-[22px] border border-[#e0eae3] bg-white p-4 shadow-sm sm:p-5"
+                    className="rounded-[22px] border border-[#F7F7F5] bg-white p-4 shadow-sm sm:p-5"
                   >
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#ebf4ed] text-xl">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F7F7F5] text-xl">
                       {item.icon}
                     </span>
 
-                    <p className="mt-4 text-xs font-semibold leading-5 text-[#716B62]">
+                    <p className="mt-4 text-xs font-semibold leading-5 text-[#D4AF37]">
                       {item.label}
                     </p>
 
@@ -555,7 +555,7 @@ export default function AdminOverviewPage() {
                 ))}
               </div>
 
-              <p className="mt-3 text-xs leading-5 text-[#716B62]">
+              <p className="mt-3 text-xs leading-5 text-[#D4AF37]">
                 Summary figures are based on the
                 records returned by the existing
                 APIs. Refund figures include only
@@ -568,7 +568,7 @@ export default function AdminOverviewPage() {
 
             <section className="mt-10">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#176c52]">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1A3C32]">
                   Administration
                 </p>
 
@@ -584,10 +584,10 @@ export default function AdminOverviewPage() {
                   return (
                     <article
                       key={item.key}
-                      className="flex flex-col rounded-[24px] border border-[#e0eae3] bg-white p-6 shadow-sm"
+                      className="flex flex-col rounded-[24px] border border-[#F7F7F5] bg-white p-6 shadow-sm"
                     >
                       <div className="flex items-center justify-between gap-3">
-                        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ebf4ed] text-2xl">
+                        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F7F7F5] text-2xl">
                           {item.icon}
                         </span>
 
@@ -612,14 +612,14 @@ export default function AdminOverviewPage() {
                         {item.title}
                       </h3>
 
-                      <p className="mt-3 flex-1 text-sm leading-6 text-[#716B62]">
+                      <p className="mt-3 flex-1 text-sm leading-6 text-[#D4AF37]">
                         {item.description}
                       </p>
 
                       {module.state === "ready" && (
-                        <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl bg-[#f5f8f5] p-4">
+                        <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl bg-[#FFFFFF] p-4">
                           <div>
-                            <p className="text-xs text-[#716B62]">
+                            <p className="text-xs text-[#D4AF37]">
                               Loaded
                             </p>
 
@@ -629,7 +629,7 @@ export default function AdminOverviewPage() {
                           </div>
 
                           <div>
-                            <p className="text-xs text-[#716B62]">
+                            <p className="text-xs text-[#D4AF37]">
                               Needs Attention
                             </p>
 
@@ -649,12 +649,12 @@ export default function AdminOverviewPage() {
                       {module.state === "ready" ? (
                         <Link
                           href={item.href}
-                          className="mt-5 block rounded-full bg-[#145d4a] px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-[#176c52]"
+                          className="mt-5 block rounded-full bg-[#1A3C32] px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-[#1A3C32]"
                         >
                           {item.button} →
                         </Link>
                       ) : (
-                        <p className="mt-5 rounded-full border border-[#e0eae3] px-5 py-3 text-center text-xs font-semibold text-[#716B62]">
+                        <p className="mt-5 rounded-full border border-[#F7F7F5] px-5 py-3 text-center text-xs font-semibold text-[#D4AF37]">
                           {module.message}
                         </p>
                       )}
@@ -666,12 +666,12 @@ export default function AdminOverviewPage() {
 
             {/* SAFETY INFORMATION */}
 
-            <section className="mt-9 rounded-[24px] border border-[#E2D5BE] bg-[#FFF9EE] p-6">
+            <section className="mt-9 rounded-[24px] border border-[#F5E6A3] bg-[#F7F7F5] p-6">
               <h2 className="text-lg font-black">
                 🛡️ Admin Safety
               </h2>
 
-              <p className="mt-3 text-sm leading-7 text-[#665F55]">
+              <p className="mt-3 text-sm leading-7 text-[#1A3C32]">
                 Reports and account restrictions
                 must be reviewed carefully.
                 Approving a refund request
@@ -685,7 +685,7 @@ export default function AdminOverviewPage() {
           </>
         )}
 
-        <p className="mt-9 text-center text-xs text-[#89847A]">
+        <p className="mt-9 text-center text-xs text-[#D4AF37]">
           GoldMart Administration ·
           Marketplace Control Centre
         </p>
