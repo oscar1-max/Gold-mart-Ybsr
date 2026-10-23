@@ -313,39 +313,39 @@ export default function AdminSupportAssistantPage() {
   // ============================================
 
   return (
-    <main className="min-h-screen bg-[#f5f7f6] pb-32 text-[#1b3329] md:pb-12">
+    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#0A1F1A] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(115deg,#49324C,#87617E 58%,#C49186)"}}>
+        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
           <span aria-hidden="true" className="pointer-events-none absolute -right-6 -top-12 text-[150px] leading-none opacity-10">✎</span>
           <div className="relative">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#F9D7DC"}}>GOLDMART PRIVATE ADMIN · DRAFT WORKSPACE</p>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#F7F7F5"}}>GOLDMART PRIVATE ADMIN · DRAFT WORKSPACE</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Support Assistant</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Thoughtful support replies, prepared with clarity.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#def3e6]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#F7F7F5]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#284F55] bg-[#284F55] text-white">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Support</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#1A3C32] bg-[#1A3C32] text-white">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Support</Link>
         </nav>
       </div>
 
       {/* HEADER */}
 
-      <header className="border-b border-[#E9DEBE] bg-white">
+      <header className="border-b border-[#F5E6A3] bg-white">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-5">
           <Link
             href="/"
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#12664e]">
+            <span className="text-[#1A3C32]">
               Mart
             </span>
           </Link>
@@ -372,7 +372,7 @@ export default function AdminSupportAssistantPage() {
         {/* TITLE */}
 
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-[#98721B]">
+          <p className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
             GoldMart Administration
           </p>
 
@@ -389,7 +389,7 @@ export default function AdminSupportAssistantPage() {
 
         {/* SECURITY */}
 
-        <section className="rounded-2xl border border-[#EDD4E2] bg-white p-5">
+        <section className="rounded-2xl border border-[#F7F7F5] bg-white p-5">
           <p className="font-black">
             🔒 Secure support drafting
           </p>
@@ -405,7 +405,7 @@ export default function AdminSupportAssistantPage() {
         {/* LOADING */}
 
         {loading && (
-          <div className="rounded-[21px] border border-[#E3EAE6] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-8 text-center">
+          <div className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-8 text-center">
             Loading GoldMart Support Assistant...
           </div>
         )}
@@ -439,7 +439,7 @@ export default function AdminSupportAssistantPage() {
           <>
             {/* DRAFT FORM */}
 
-            <section className="rounded-[25px] border border-[#E3EAE6] bg-white shadow-[0_7px_24px_rgba(26,43,48,0.045)] p-5 shadow-sm sm:p-7">
+            <section className="rounded-[25px] border border-[#F7F7F5] bg-white shadow-[0_7px_24px_rgba(26,43,48,0.045)] p-5 shadow-sm sm:p-7">
               <h2 className="text-xl font-black">
                 Create a Support Reply
               </h2>
@@ -469,7 +469,7 @@ export default function AdminSupportAssistantPage() {
                       }}
                       className={`rounded-2xl border p-4 font-bold ${
                         audience === "buyer"
-                          ? "border-[#12664e] bg-[#FFF9EA]"
+                          ? "border-[#1A3C32] bg-[#F7F7F5]"
                           : "border-gray-200 bg-white"
                       }`}
                     >
@@ -484,7 +484,7 @@ export default function AdminSupportAssistantPage() {
                       }}
                       className={`rounded-2xl border p-4 font-bold ${
                         audience === "seller"
-                          ? "border-[#12664e] bg-[#FFF9EA]"
+                          ? "border-[#1A3C32] bg-[#F7F7F5]"
                           : "border-gray-200 bg-white"
                       }`}
                     >
@@ -512,7 +512,7 @@ export default function AdminSupportAssistantPage() {
                       );
                       resetDraft();
                     }}
-                    className="w-full rounded-2xl border border-gray-300 bg-white p-4 text-sm outline-none focus:border-[#12664e]"
+                    className="w-full rounded-2xl border border-gray-300 bg-white p-4 text-sm outline-none focus:border-[#1A3C32]"
                   >
                     {issues.map((item) => (
                       <option
@@ -531,7 +531,7 @@ export default function AdminSupportAssistantPage() {
                     generating ||
                     !issue
                   }
-                  className="w-full rounded-full bg-[#162e25] px-6 py-4 text-sm font-black text-white disabled:opacity-50"
+                  className="w-full rounded-full bg-[#0A1F1A] px-6 py-4 text-sm font-black text-white disabled:opacity-50"
                 >
                   {generating
                     ? "Preparing Reply..."
@@ -545,7 +545,7 @@ export default function AdminSupportAssistantPage() {
             {notice && (
               <div
                 role="status"
-                className="rounded-2xl border border-[#E7D9AA] bg-[#FFF9EA] p-4 text-sm"
+                className="rounded-2xl border border-[#F5E6A3] bg-[#F7F7F5] p-4 text-sm"
               >
                 {notice}
               </div>
@@ -555,7 +555,7 @@ export default function AdminSupportAssistantPage() {
 
             {draft && (
               <section className="space-y-5">
-                <div className="rounded-[25px] border border-[#E3EAE6] bg-white shadow-[0_7px_24px_rgba(26,43,48,0.045)] p-5 shadow-sm sm:p-7">
+                <div className="rounded-[25px] border border-[#F7F7F5] bg-white shadow-[0_7px_24px_rgba(26,43,48,0.045)] p-5 shadow-sm sm:p-7">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
                       <h2 className="text-xl font-black">
@@ -591,7 +591,7 @@ export default function AdminSupportAssistantPage() {
                       )
                     }
                     rows={13}
-                    className="mt-2 w-full resize-y rounded-2xl border border-gray-300 bg-[#FCFBF8] p-4 text-sm leading-7 outline-none focus:border-[#12664e]"
+                    className="mt-2 w-full resize-y rounded-2xl border border-gray-300 bg-[#FFFFFF] p-4 text-sm leading-7 outline-none focus:border-[#1A3C32]"
                   />
 
                   <div className="mt-4 flex flex-wrap gap-3">
@@ -603,7 +603,7 @@ export default function AdminSupportAssistantPage() {
                       disabled={
                         !editableDraft.trim()
                       }
-                      className="rounded-full bg-[#145d4a] px-6 py-3 text-sm font-bold text-white disabled:opacity-50"
+                      className="rounded-full bg-[#1A3C32] px-6 py-3 text-sm font-bold text-white disabled:opacity-50"
                     >
                       📋 Copy Reply
                     </button>
@@ -627,7 +627,7 @@ export default function AdminSupportAssistantPage() {
 
                 {/* REVIEW CHECKLIST */}
 
-                <div className="rounded-[25px] border border-[#E3EAE6] bg-white shadow-[0_7px_24px_rgba(26,43,48,0.045)] p-5 shadow-sm sm:p-7">
+                <div className="rounded-[25px] border border-[#F7F7F5] bg-white shadow-[0_7px_24px_rgba(26,43,48,0.045)] p-5 shadow-sm sm:p-7">
                   <h2 className="text-xl font-black">
                     ✅ Review Before Sending
                   </h2>
@@ -644,7 +644,7 @@ export default function AdminSupportAssistantPage() {
                           key={index}
                           className="flex items-start gap-3 rounded-xl border p-3 text-sm leading-6"
                         >
-                          <span className="font-black text-[#98721B]">
+                          <span className="font-black text-[#D4AF37]">
                             {index + 1}.
                           </span>
 
@@ -657,7 +657,7 @@ export default function AdminSupportAssistantPage() {
 
                 {/* WARNING */}
 
-                <div className="rounded-2xl border border-[#EDD4E2] bg-white p-5 text-sm leading-6 text-gray-600">
+                <div className="rounded-2xl border border-[#F7F7F5] bg-white p-5 text-sm leading-6 text-gray-600">
                   <strong className="text-gray-900">
                     Important:
                   </strong>{" "}
