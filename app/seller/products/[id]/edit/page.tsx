@@ -273,22 +273,22 @@ export default function EditProductPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#F1F5F5] pb-28 text-[#20313B] md:pb-14">
+      <main className="min-h-screen bg-[#F7F7F5] pb-28 text-[#1A3C32] md:pb-14">
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(120deg,#293750,#506889 55%,#88A6BA)"}}>
+        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
           <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
-          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#BDECE4]">GOLDMART SELLER STUDIO · Product Editor</p>
+          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#F5E6A3]">GOLDMART SELLER STUDIO · Product Editor</p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Fine-tune your listing.</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Update product details and inventory without losing your place.</p></div>
         </section>
         <nav aria-label="Seller Studio navigation" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/seller" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Dashboard</Link>
-          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Catalogue</Link>
-          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Add Product</Link>
-          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Orders</Link>
-          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Finance</Link>
-          <Link href="/chat" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Messages</Link>
-          <Link href="/account" className="shrink-0 rounded-full border border-[#CEDFDF] bg-white px-4 py-2.5 text-xs font-bold text-[#2E5361] transition hover:border-[#70A9A8] hover:bg-[#E9F3F2]">Account</Link>
+          <Link href="/seller" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Dashboard</Link>
+          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Catalogue</Link>
+          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Add Product</Link>
+          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Orders</Link>
+          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Finance</Link>
+          <Link href="/chat" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Messages</Link>
+          <Link href="/account" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Account</Link>
         </nav>
       </div>
 
@@ -310,7 +310,7 @@ export default function EditProductPage() {
 
           <Link
             href="/seller/products"
-            className="font-bold text-[#127256]"
+            className="font-bold text-[#D4AF37]"
           >
             ← Back to My Products
           </Link>
@@ -343,7 +343,7 @@ export default function EditProductPage() {
             href="/"
             className="text-2xl font-black"
           >
-            Gold<span className="text-[#128563]">
+            Gold<span className="text-[#D4AF37]">
               Mart
             </span>
           </Link>
@@ -363,14 +363,14 @@ export default function EditProductPage() {
 
         <Link
           href="/seller/products"
-          className="font-bold text-[#127256]"
+          className="font-bold text-[#D4AF37]"
         >
           ← Back to My Products
         </Link>
 
         <div className="mt-6">
 
-          <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
+          <p className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
             Seller Center
           </p>
 
@@ -385,12 +385,12 @@ export default function EditProductPage() {
         </div>
 
 
-        <section className="mt-7 rounded-[24px] border border-[#C9DAD6] bg-[#EAF4F1] p-5 sm:p-7">
-          <p className="text-xs font-extrabold uppercase tracking-wider text-[#32665D]">Seller promotion tools</p>
+        <section className="mt-7 rounded-[24px] border border-[#F7F7F5] bg-[#F7F7F5] p-5 sm:p-7">
+          <p className="text-xs font-extrabold uppercase tracking-wider text-[#1A3C32]">Seller promotion tools</p>
           <h2 className="mt-2 text-xl font-black">⚡ Flash Deal</h2>
-          <p className="mt-2 text-sm text-[#526B67]">Offer a lower price until your selected end time. Checkout uses the active price automatically. Only USD and NGN supported.</p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2"><label className="text-sm font-bold">Deal price<input type="number" min="0.01" step="0.01" value={dealPrice} onChange={e=>setDealPrice(e.target.value)} placeholder="Lower than regular price" className="mt-2 w-full rounded-xl border border-[#ABC9C0] bg-white px-4 py-3"/></label><label className="text-sm font-bold">Ends at<input type="datetime-local" value={dealEnd} onChange={e=>setDealEnd(e.target.value)} className="mt-2 w-full rounded-xl border border-[#ABC9C0] bg-white px-4 py-3"/></label></div>
-          <div className="mt-4 flex flex-wrap gap-2"><button type="button" disabled={dealBusy||!dealPrice||!dealEnd} onClick={()=>void saveDeal()} className="rounded-full bg-[#205B59] px-5 py-3 text-sm font-bold text-white disabled:opacity-40">Start Flash Deal</button><button type="button" disabled={dealBusy} onClick={()=>void saveDeal(true)} className="rounded-full border border-[#B3CEC5] bg-white px-5 py-3 text-sm font-bold disabled:opacity-40">Clear Deal</button></div>
+          <p className="mt-2 text-sm text-[#1A3C32]">Offer a lower price until your selected end time. Checkout uses the active price automatically. Only USD and NGN supported.</p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2"><label className="text-sm font-bold">Deal price<input type="number" min="0.01" step="0.01" value={dealPrice} onChange={e=>setDealPrice(e.target.value)} placeholder="Lower than regular price" className="mt-2 w-full rounded-xl border border-[#F5E6A3] bg-white px-4 py-3"/></label><label className="text-sm font-bold">Ends at<input type="datetime-local" value={dealEnd} onChange={e=>setDealEnd(e.target.value)} className="mt-2 w-full rounded-xl border border-[#F5E6A3] bg-white px-4 py-3"/></label></div>
+          <div className="mt-4 flex flex-wrap gap-2"><button type="button" disabled={dealBusy||!dealPrice||!dealEnd} onClick={()=>void saveDeal()} className="rounded-full bg-[#1A3C32] px-5 py-3 text-sm font-bold text-white disabled:opacity-40">Start Flash Deal</button><button type="button" disabled={dealBusy} onClick={()=>void saveDeal(true)} className="rounded-full border border-[#F5E6A3] bg-white px-5 py-3 text-sm font-bold disabled:opacity-40">Clear Deal</button></div>
           {dealMessage&&<p role="status" className="mt-3 text-sm font-semibold">{dealMessage}</p>}
         </section>
         {/* ERROR */}
@@ -409,7 +409,7 @@ export default function EditProductPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="mt-8 rounded-[25px] border border-[#DAE5E5] bg-white shadow-[0_9px_26px_rgba(24,51,62,0.05)] p-6 shadow-sm sm:p-8"
+          className="mt-8 rounded-[25px] border border-[#F7F7F5] bg-white shadow-[0_9px_26px_rgba(24,51,62,0.05)] p-6 shadow-sm sm:p-8"
         >
 
           {/* PRODUCT NAME */}
@@ -424,7 +424,7 @@ export default function EditProductPage() {
               onChange={(event) =>
                 setName(event.target.value)
               }
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               required
             />
           </div>
@@ -442,7 +442,7 @@ export default function EditProductPage() {
                 setDescription(event.target.value)
               }
               rows={5}
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
             />
 
           </div>
@@ -461,7 +461,7 @@ export default function EditProductPage() {
                 onChange={(event) =>
                   setCurrency(event.target.value)
                 }
-                className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#128563]"
+                className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
               >
                 <option value="NGN">
                   ₦ Nigerian Naira
@@ -502,7 +502,7 @@ export default function EditProductPage() {
                   onChange={(event) =>
                     setPrice(event.target.value)
                   }
-                  className="w-full rounded-xl border py-3 pl-10 pr-4 outline-none focus:border-[#128563]"
+                  className="w-full rounded-xl border py-3 pl-10 pr-4 outline-none focus:border-[#D4AF37]"
                   required
                 />
 
@@ -527,7 +527,7 @@ export default function EditProductPage() {
               onChange={(event) =>
                 setStock(event.target.value)
               }
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
               required
             />
 
@@ -545,7 +545,7 @@ export default function EditProductPage() {
               onChange={(event) =>
                 setCategoryId(event.target.value)
               }
-              className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#128563]"
+              className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
             >
 
               <option value="">
@@ -579,7 +579,7 @@ export default function EditProductPage() {
                 setImageUrl(event.target.value)
               }
               placeholder="https://..."
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
             />
 
           </div>
@@ -614,7 +614,7 @@ export default function EditProductPage() {
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 rounded-xl bg-black px-6 py-3 font-bold text-white transition hover:bg-[#128563] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex-1 rounded-xl bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving
                 ? "Saving Changes..."
