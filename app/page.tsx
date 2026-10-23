@@ -52,7 +52,7 @@ const quickLinks = [
 ];
 
 const cardClass =
-  "group overflow-hidden rounded-[20px] border border-[#E9E2D6] bg-white shadow-[0_5px_22px_rgba(23,25,29,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#D5BE98] hover:shadow-[0_12px_28px_rgba(23,25,29,0.09)]";
+  "group overflow-hidden rounded-[20px] border border-[#E0E9E3] bg-white shadow-[0_5px_22px_rgba(23,25,29,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#D5BE98] hover:shadow-[0_12px_28px_rgba(23,25,29,0.09)]";
 
 function formatPrice(price: string | number, currency?: string | null) {
   const amount = Number(price);
@@ -108,7 +108,7 @@ function ProductCard({ product, compact = false }: { product: Product; compact?:
 
       <div className="p-3 sm:p-4">
         {product.category_name && (
-          <p className="mb-1 truncate text-[10px] font-bold uppercase tracking-[0.1em] text-[#96713D]">
+          <p className="mb-1 truncate text-[10px] font-bold uppercase tracking-[0.1em] text-[#347467]">
             {product.category_name}
           </p>
         )}
@@ -221,7 +221,7 @@ export default function Home() {
   }, [products, activeTab]);
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#F8F8F6] pb-24 text-[#17191D] md:pb-0">
+    <main className="min-h-screen overflow-x-hidden bg-[#F4F7F5] pb-24 text-[#17191D] md:pb-0">
       {/* TOP BAR + MOBILE SEARCH */}
       <header className="sticky top-0 z-50 border-b border-[#EBE4D9] bg-white/95 shadow-[0_3px_16px_rgba(23,25,29,0.035)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
@@ -229,24 +229,24 @@ export default function Home() {
             Gold<span className="text-[#B08A50]">Mart</span><span className="ml-1 align-top text-[10px] text-[#C5A46D]">✦</span>
           </Link>
           <nav aria-label="Desktop navigation" className="hidden items-center gap-6 text-sm font-semibold text-[#59554E] md:flex">
-            <Link href="/shop" className="hover:text-[#96713D]">Shop</Link>
-            <Link href="/categories" className="hover:text-[#96713D]">Categories</Link>
-            <Link href="/track-order" className="hover:text-[#96713D]">Track Order</Link>
-            <Link href="/help" className="hover:text-[#96713D]">Help</Link>
+            <Link href="/shop" className="hover:text-[#347467]">Shop</Link>
+            <Link href="/categories" className="hover:text-[#347467]">Categories</Link>
+            <Link href="/track-order" className="hover:text-[#347467]">Track Order</Link>
+            <Link href="/help" className="hover:text-[#347467]">Help</Link>
           </nav>
           <div className="flex items-center gap-2">
             {user && (
-              <Link href="/notifications" aria-label="Notifications" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#FAF8F3] text-lg transition hover:border-[#C5A46D]">🔔</Link>
+              <Link href="/notifications" aria-label="Notifications" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#F3F7F5] text-lg transition hover:border-[#71A999]">🔔</Link>
             )}
-            <Link href={user ? "/account" : "/login"} aria-label="Account" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#FAF8F3] text-lg transition hover:border-[#C5A46D]">👤</Link>
-            <Link href="/cart" aria-label="Cart" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#FAF8F3] text-lg transition hover:border-[#C5A46D]">🛒</Link>
+            <Link href={user ? "/account" : "/login"} aria-label="Account" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#F3F7F5] text-lg transition hover:border-[#71A999]">👤</Link>
+            <Link href="/cart" aria-label="Cart" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#EBE4D9] bg-[#F3F7F5] text-lg transition hover:border-[#71A999]">🛒</Link>
           </div>
         </div>
 
         <div className="mx-auto max-w-4xl px-4 pb-3 sm:px-6">
           <form
             onSubmit={(event) => { event.preventDefault(); handleSearch(); }}
-            className="flex h-12 items-center gap-2 overflow-hidden rounded-full border border-[#D8CAB4] bg-[#FAF8F3] pl-4 pr-1.5 transition focus-within:border-[#96713D] focus-within:ring-2 focus-within:ring-[#C5A46D]/15"
+            className="flex h-12 items-center gap-2 overflow-hidden rounded-full border border-[#D8CAB4] bg-[#F3F7F5] pl-4 pr-1.5 transition focus-within:border-[#96713D] focus-within:ring-2 focus-within:ring-[#C5A46D]/15"
             role="search"
           >
             <span className="text-lg" aria-hidden="true">⌕</span>
@@ -259,7 +259,7 @@ export default function Home() {
               className="min-w-0 flex-1 bg-transparent text-sm text-[#17191D] outline-none placeholder:text-[#8A847A]"
             />
             <Link href="/visual-search" aria-label="Visual search" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg hover:bg-white">📷</Link>
-            <button type="submit" aria-label="Search" className="flex h-9 w-10 shrink-0 items-center justify-center rounded-full bg-[#17191D] text-lg text-white transition hover:bg-[#96713D]">⌕</button>
+            <button type="submit" aria-label="Search" className="flex h-9 w-10 shrink-0 items-center justify-center rounded-full bg-[#17191D] text-lg text-white transition hover:bg-[#247263]">⌕</button>
           </form>
         </div>
       </header>
@@ -321,15 +321,15 @@ export default function Home() {
         <div className="rounded-[24px] border border-[#EAE3D9] bg-white px-4 pb-5 pt-5 sm:px-6">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#96713D]">Find your style</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#347467]">Find your style</p>
               <h2 className="mt-1 text-xl font-black tracking-tight sm:text-2xl">Explore your interests</h2>
             </div>
-            <Link href="/categories" className="shrink-0 text-xs font-bold text-[#96713D] hover:underline sm:text-sm">View All →</Link>
+            <Link href="/categories" className="shrink-0 text-xs font-bold text-[#347467] hover:underline sm:text-sm">View All →</Link>
           </div>
           <div className="og-scrollbar mt-5 grid grid-cols-4 gap-3 sm:grid-cols-8 sm:gap-4">
             {categories.map((category) => (
               <Link key={category.name} href={`/shop?category=${encodeURIComponent(category.value)}`} className="group flex min-w-0 flex-col items-center gap-2 text-center">
-                <span className="flex h-[64px] w-full max-w-20 items-center justify-center rounded-[20px] border border-[#EAE3D9] bg-[linear-gradient(135deg,#E9EFF1,#F4E8DB)] text-[29px] transition group-hover:-translate-y-0.5 group-hover:border-[#C5A46D] group-hover:bg-[#F3E8D5] sm:h-20">{category.icon}</span>
+                <span className="flex h-[64px] w-full max-w-20 items-center justify-center rounded-[20px] border border-[#EAE3D9] bg-[linear-gradient(135deg,#E9EFF1,#F4E8DB)] text-[29px] transition group-hover:-translate-y-0.5 group-hover:border-[#71A999] group-hover:bg-[#F3E8D5] sm:h-20">{category.icon}</span>
                 <span className="text-[11px] font-bold text-[#47433E] sm:text-xs">{category.name}</span>
               </Link>
             ))}
@@ -386,10 +386,10 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
         <div className="mb-4 flex items-end justify-between gap-3">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.19em] text-[#96713D]">The marketplace</p>
-            <h2 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Trending across GoldMart</h2>
+            <p className="text-[10px] font-bold uppercase tracking-[0.19em] text-[#347467]">The marketplace</p>
+            <h2 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Discover what’s worth exploring</h2>
           </div>
-          <Link href="/shop" className="shrink-0 text-xs font-bold text-[#96713D] hover:underline sm:text-sm">Shop All →</Link>
+          <Link href="/shop" className="shrink-0 text-xs font-bold text-[#347467] hover:underline sm:text-sm">Shop All →</Link>
         </div>
         <div role="tablist" aria-label="Explore products" className="og-scrollbar mb-5 flex gap-2 overflow-x-auto pb-1">
           {discoveryTabs.map((tab) => (
@@ -399,7 +399,7 @@ export default function Home() {
               aria-selected={activeTab === tab}
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${activeTab === tab ? "border-[#17191D] bg-[#17191D] text-white" : "border-[#E6DCCD] bg-white text-[#5D564D] hover:border-[#C5A46D]"}`}
+              className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${activeTab === tab ? "border-[#17191D] bg-[#17191D] text-white" : "border-[#E6DCCD] bg-white text-[#5D564D] hover:border-[#71A999]"}`}
             >
               {tab}
             </button>
@@ -424,7 +424,7 @@ export default function Home() {
             <span className="text-4xl" aria-hidden="true">🛍️</span>
             <h3 className="mt-3 text-lg font-black">{productsError ? "Products unavailable right now" : "No products found"}</h3>
             <p className="mt-2 text-sm text-[#746F67]">{productsError ? "Please try again in a moment." : "Browse the shop or choose another filter."}</p>
-            <Link href="/shop" className="mt-5 inline-flex rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white hover:bg-[#96713D]">Visit Shop →</Link>
+            <Link href="/shop" className="mt-5 inline-flex rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white hover:bg-[#247263]">Visit Shop →</Link>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
@@ -438,10 +438,10 @@ export default function Home() {
           <section className="mt-8">
             <div className="mb-4 flex items-end justify-between gap-3">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#96713D]">Keep exploring</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#347467]">Keep exploring</p>
                 <h2 className="mt-1 text-xl font-black sm:text-2xl">More to Discover</h2>
               </div>
-              <Link href="/shop" className="text-xs font-bold text-[#96713D] hover:underline">View All →</Link>
+              <Link href="/shop" className="text-xs font-bold text-[#347467] hover:underline">View All →</Link>
             </div>
             <div className="og-scrollbar flex gap-3 overflow-x-auto pb-3">
               {displayedProducts.slice(12, 20).map((product) => (
@@ -455,17 +455,17 @@ export default function Home() {
       {/* CUSTOMER ASSISTANCE */}
       <section className="mx-auto max-w-7xl px-4 pb-7 sm:px-6 lg:px-8">
         <div className="rounded-[25px] border border-[#E7D9C4] bg-[#F1E7D6] p-5 sm:p-8">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#96713D]">Shopping with confidence</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#347467]">Shopping with confidence</p>
           <h2 className="mt-2 text-xl font-black tracking-tight sm:text-2xl">Here when you need us.</h2>
           <p className="mt-2 max-w-xl text-sm leading-6 text-[#676056]">Explore order updates, submit a buyer-protection request or find answers in the Help Centre.</p>
           <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            <Link href="/track-order" className="rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#C5A46D]">
+            <Link href="/track-order" className="rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#71A999]">
               <span className="text-2xl">📦</span><p className="mt-2 text-sm font-black">Track an Order</p><p className="mt-1 text-xs text-[#746F67]">See your order status</p>
             </Link>
-            <Link href="/order-protection" className="rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#C5A46D]">
+            <Link href="/order-protection" className="rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#71A999]">
               <span className="text-2xl">🛡️</span><p className="mt-2 text-sm font-black">Buyer Protection</p><p className="mt-1 text-xs text-[#746F67]">Get help with a purchase</p>
             </Link>
-            <Link href="/help" className="col-span-2 rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#C5A46D] sm:col-span-1">
+            <Link href="/help" className="col-span-2 rounded-2xl border border-[#E8DACA] bg-white p-4 transition hover:border-[#71A999] sm:col-span-1">
               <span className="text-2xl">💬</span><p className="mt-2 text-sm font-black">Help Centre</p><p className="mt-1 text-xs text-[#746F67]">Helpful answers and guides</p>
             </Link>
           </div>
@@ -490,14 +490,14 @@ export default function Home() {
         <Link href="/" className="text-2xl font-black tracking-[-0.05em]">Gold<span className="text-[#B08A50]">Mart</span></Link>
         <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-[#746F67]">Discover products, manage orders and connect with sellers in one place.</p>
         <div className="mx-auto mt-6 grid max-w-md grid-cols-2 gap-3 text-xs font-semibold text-[#625B50]">
-          <Link href="/shop" className="hover:text-[#96713D]">Shop</Link>
-          <Link href="/categories" className="hover:text-[#96713D]">Categories</Link>
-          <Link href="/orders" className="hover:text-[#96713D]">My Orders</Link>
-          <Link href="/account" className="hover:text-[#96713D]">My Account</Link>
-          <Link href="/seller" className="hover:text-[#96713D]">Sell on GoldMart</Link>
-          <Link href="/help" className="hover:text-[#96713D]">Help Centre</Link>
-          <Link href="/track-order" className="hover:text-[#96713D]">Track Order</Link>
-          <Link href="/order-protection" className="hover:text-[#96713D]">Buyer Protection</Link>
+          <Link href="/shop" className="hover:text-[#347467]">Shop</Link>
+          <Link href="/categories" className="hover:text-[#347467]">Categories</Link>
+          <Link href="/orders" className="hover:text-[#347467]">My Orders</Link>
+          <Link href="/account" className="hover:text-[#347467]">My Account</Link>
+          <Link href="/seller" className="hover:text-[#347467]">Sell on GoldMart</Link>
+          <Link href="/help" className="hover:text-[#347467]">Help Centre</Link>
+          <Link href="/track-order" className="hover:text-[#347467]">Track Order</Link>
+          <Link href="/order-protection" className="hover:text-[#347467]">Buyer Protection</Link>
         </div>
         <p className="mt-6 border-t border-[#F0ECE5] pt-5 text-[11px] text-[#8A847A]">© {new Date().getFullYear()} GoldMart. All rights reserved.</p>
       </footer>
