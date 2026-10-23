@@ -443,7 +443,7 @@ export default function AdminSupportPage() {
   }, [tickets, search, filter]);
 
   return (
-    <main className="min-h-screen bg-[#F7F9F8] pb-32 text-[#202A31] md:pb-12">
+    <main className="min-h-screen bg-[#f5f7f6] pb-32 text-[#1b3329] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
         <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(115deg,#20394A,#427C90 56%,#76ABA9)"}}>
@@ -452,25 +452,25 @@ export default function AdminSupportPage() {
             <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#D8EEEF"}}>GOLDMART PRIVATE ADMIN · CUSTOMER CARE DESK</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Support Inbox</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">A focused place to manage support conversations.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#B7EDCF]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#def3e6]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Refunds</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Refunds</Link>
           <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#284F55] bg-[#284F55] text-white">Support</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#E8E1D5] bg-white">
+      <header className="border-b border-[#e0eae3] bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
           <Link
             href="/"
@@ -484,7 +484,7 @@ export default function AdminSupportPage() {
 
           <Link
             href="/account"
-            className="rounded-full border border-[#E8E1D5] px-4 py-2 text-sm font-bold"
+            className="rounded-full border border-[#e0eae3] px-4 py-2 text-sm font-bold"
           >
             My Account
           </Link>
@@ -496,7 +496,7 @@ export default function AdminSupportPage() {
         {/* HERO */}
 
         <section className="rounded-[28px] bg-[#253F48] p-7 text-white sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">
             GoldMart Administration
           </p>
 
@@ -522,7 +522,7 @@ export default function AdminSupportPage() {
         {/* LOGIN REQUIRED */}
 
         {access === "login" && (
-          <div className="mt-7 rounded-3xl border border-[#E8E1D5] bg-white p-8 text-center">
+          <div className="mt-7 rounded-3xl border border-[#e0eae3] bg-white p-8 text-center">
             <h2 className="text-xl font-black">
               Please sign in
             </h2>
@@ -534,7 +534,7 @@ export default function AdminSupportPage() {
 
             <Link
               href="/login"
-              className="mt-6 inline-block rounded-full bg-[#254F54] px-6 py-3 text-sm font-bold text-white"
+              className="mt-6 inline-block rounded-full bg-[#145d4a] px-6 py-3 text-sm font-bold text-white"
             >
               Go to Login
             </Link>
@@ -557,7 +557,7 @@ export default function AdminSupportPage() {
 
             <Link
               href="/account"
-              className="mt-6 inline-block rounded-full bg-[#254F54] px-6 py-3 text-sm font-bold text-white"
+              className="mt-6 inline-block rounded-full bg-[#145d4a] px-6 py-3 text-sm font-bold text-white"
             >
               Back to Account
             </Link>
@@ -595,7 +595,7 @@ export default function AdminSupportPage() {
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-[22px] border border-[#E8E1D5] bg-white p-5 shadow-sm"
+                  className="rounded-[22px] border border-[#e0eae3] bg-white p-5 shadow-sm"
                 >
                   <span className="text-2xl">
                     {item.icon}
@@ -618,7 +618,7 @@ export default function AdminSupportPage() {
 
               {/* TICKET LIST */}
 
-              <section className="min-w-0 rounded-3xl border border-[#E8E1D5] bg-white p-5 shadow-sm sm:p-6">
+              <section className="min-w-0 rounded-3xl border border-[#e0eae3] bg-white p-5 shadow-sm sm:p-6">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="text-xl font-black">
                     Support Tickets
@@ -630,7 +630,7 @@ export default function AdminSupportPage() {
                     onClick={() =>
                       void loadTickets()
                     }
-                    className="text-sm font-bold text-[#96713D] disabled:opacity-50"
+                    className="text-sm font-bold text-[#176c52] disabled:opacity-50"
                   >
                     Refresh
                   </button>
@@ -695,7 +695,7 @@ export default function AdminSupportPage() {
                 {!loading &&
                   !listError &&
                   visibleTickets.length === 0 && (
-                    <div className="mt-6 rounded-2xl bg-[#FAF8F3] p-8 text-center">
+                    <div className="mt-6 rounded-2xl bg-[#f5f8f5] p-8 text-center">
                       <p className="text-4xl">
                         📭
                       </p>
@@ -720,16 +720,16 @@ export default function AdminSupportPage() {
                         onClick={() =>
                           void openTicket(ticket)
                         }
-                        className={`w-full rounded-2xl border p-4 text-left transition hover:border-[#C5A46D] ${
+                        className={`w-full rounded-2xl border p-4 text-left transition hover:border-[#68a98c] ${
                           String(
                             selectedTicket?.id
                           ) === String(ticket.id)
-                            ? "border-[#B08A50] bg-[#FAF8F3]"
-                            : "border-[#E8E1D5]"
+                            ? "border-[#B08A50] bg-[#f5f8f5]"
+                            : "border-[#e0eae3]"
                         }`}
                       >
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          <span className="text-xs font-bold text-[#96713D]">
+                          <span className="text-xs font-bold text-[#176c52]">
                             Ticket #{ticket.id}
                           </span>
 
@@ -768,7 +768,7 @@ export default function AdminSupportPage() {
 
               {/* SELECTED TICKET */}
 
-              <section className="min-w-0 rounded-3xl border border-[#E8E1D5] bg-white p-5 shadow-sm sm:p-6">
+              <section className="min-w-0 rounded-3xl border border-[#e0eae3] bg-white p-5 shadow-sm sm:p-6">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="text-xl font-black">
                     Ticket Details
@@ -781,7 +781,7 @@ export default function AdminSupportPage() {
                       onClick={() =>
                         void refreshConversation()
                       }
-                      className="text-sm font-bold text-[#96713D] disabled:opacity-50"
+                      className="text-sm font-bold text-[#176c52] disabled:opacity-50"
                     >
                       Refresh
                     </button>
@@ -789,7 +789,7 @@ export default function AdminSupportPage() {
                 </div>
 
                 {!selectedTicket && (
-                  <div className="mt-6 rounded-2xl bg-[#FAF8F3] p-8 text-center">
+                  <div className="mt-6 rounded-2xl bg-[#f5f8f5] p-8 text-center">
                     <p className="text-4xl">
                       💬
                     </p>
@@ -804,8 +804,8 @@ export default function AdminSupportPage() {
 
                 {selectedTicket && (
                   <div className="mt-5">
-                    <div className="rounded-2xl bg-[#FAF8F3] p-5">
-                      <p className="text-xs font-bold text-[#96713D]">
+                    <div className="rounded-2xl bg-[#f5f8f5] p-5">
+                      <p className="text-xs font-bold text-[#176c52]">
                         Ticket #
                         {selectedTicket.id}
                       </p>
@@ -849,7 +849,7 @@ export default function AdminSupportPage() {
 
                           <form
                             onSubmit={updateStatus}
-                            className="mt-6 rounded-2xl border border-[#E8E1D5] p-4"
+                            className="mt-6 rounded-2xl border border-[#e0eae3] p-4"
                           >
                             <label
                               htmlFor="ticket-status"
@@ -891,7 +891,7 @@ export default function AdminSupportPage() {
                                 statusDraft ===
                                   selectedTicket.status
                               }
-                              className="mt-3 rounded-full bg-[#17191D] px-5 py-2.5 text-sm font-bold text-white disabled:opacity-40"
+                              className="mt-3 rounded-full bg-[#162e25] px-5 py-2.5 text-sm font-bold text-white disabled:opacity-40"
                             >
                               {savingStatus
                                 ? "Saving..."
@@ -931,15 +931,15 @@ export default function AdminSupportPage() {
                                       )}
                                       className={`rounded-2xl p-4 ${
                                         fromCustomer
-                                          ? "bg-[#FAF8F3]"
-                                          : "bg-[#17191D] text-white"
+                                          ? "bg-[#f5f8f5]"
+                                          : "bg-[#162e25] text-white"
                                       }`}
                                     >
                                       <p
                                         className={`text-xs font-bold ${
                                           fromCustomer
-                                            ? "text-[#96713D]"
-                                            : "text-[#E9D9BB]"
+                                            ? "text-[#176c52]"
+                                            : "text-[#ddf1e3]"
                                         }`}
                                       >
                                         {fromCustomer
@@ -975,7 +975,7 @@ export default function AdminSupportPage() {
 
                           {selectedTicket.status ===
                           "closed" ? (
-                            <p className="mt-6 rounded-xl bg-[#FAF8F3] p-4 text-sm text-[#716B62]">
+                            <p className="mt-6 rounded-xl bg-[#f5f8f5] p-4 text-sm text-[#716B62]">
                               This ticket is
                               closed. Change its
                               status before
@@ -986,7 +986,7 @@ export default function AdminSupportPage() {
                               onSubmit={
                                 sendReply
                               }
-                              className="mt-7 border-t border-[#E8E1D5] pt-5"
+                              className="mt-7 border-t border-[#e0eae3] pt-5"
                             >
                               <label
                                 htmlFor="admin-reply"
@@ -1022,7 +1022,7 @@ export default function AdminSupportPage() {
                                   sendingReply ||
                                   !replyText.trim()
                                 }
-                                className="mt-3 rounded-full bg-[#C5A46D] px-6 py-3 text-sm font-bold text-[#17191D] disabled:opacity-50"
+                                className="mt-3 rounded-full bg-[#68a98c] px-6 py-3 text-sm font-bold text-[#162e25] disabled:opacity-50"
                               >
                                 {sendingReply
                                   ? "Sending..."

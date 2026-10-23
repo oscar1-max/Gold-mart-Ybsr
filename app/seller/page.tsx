@@ -549,7 +549,7 @@ export default function SellerDashboard() {
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
       {/* HEADER */}
 
@@ -594,7 +594,7 @@ export default function SellerDashboard() {
               type="button"
               onClick={handleSwitchToBuyer}
               disabled={switching}
-              className="rounded-full bg-[#17191D] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#247263] disabled:opacity-50 sm:text-sm"
+              className="rounded-full bg-[#162e25] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#247263] disabled:opacity-50 sm:text-sm"
             >
               {switching
                 ? "Switching..."
@@ -610,17 +610,17 @@ export default function SellerDashboard() {
         <section className="relative overflow-hidden rounded-[28px] bg-[#164555] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.12)] sm:px-9 sm:py-10">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-10 -top-16 h-60 w-60 rounded-full border border-[#C5A46D]/25"
+            className="pointer-events-none absolute -right-10 -top-16 h-60 w-60 rounded-full border border-[#68a98c]/25"
           />
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-2 -top-10 h-44 w-44 rounded-full border border-[#C5A46D]/20"
+            className="pointer-events-none absolute -right-2 -top-10 h-44 w-44 rounded-full border border-[#68a98c]/20"
           />
 
           <div className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">
                 GoldMart • Seller Centre
               </p>
 
@@ -637,7 +637,7 @@ export default function SellerDashboard() {
 
             <Link
               href="/seller/products/new"
-              className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#C5A46D] px-6 py-3 text-sm font-extrabold text-[#17191D] transition hover:bg-[#E9D9BB]"
+              className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#68a98c] px-6 py-3 text-sm font-extrabold text-[#162e25] transition hover:bg-[#ddf1e3]"
             >
               + Add product
               <span
@@ -680,7 +680,7 @@ export default function SellerDashboard() {
           className="mt-8 flex flex-wrap items-center justify-between gap-3"
           aria-label="Dashboard refresh"
         >
-          <p className="text-xs text-[#74716B]">
+          <p className="text-xs text-[#647a6d]">
             {loading
               ? "Loading your live store data..."
               : lastUpdated
@@ -696,7 +696,7 @@ export default function SellerDashboard() {
               )
             }
             disabled={loading}
-            className="rounded-full border border-[#D7BF97] bg-white px-4 py-2 text-xs font-bold text-[#17191D] transition hover:bg-[#F5F1E9] disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-full border border-[#D7BF97] bg-white px-4 py-2 text-xs font-bold text-[#162e25] transition hover:bg-[#ebf4ed] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading
               ? "Refreshing..."
@@ -747,11 +747,11 @@ export default function SellerDashboard() {
               href="/seller/products"
               className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm transition hover:border-[#71A999] hover:shadow-md sm:p-6"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ebf4ed] text-xl">
                 📦
               </span>
 
-              <p className="mt-4 text-xs font-semibold text-[#74716B] sm:text-sm">
+              <p className="mt-4 text-xs font-semibold text-[#647a6d] sm:text-sm">
                 Total products
               </p>
 
@@ -770,11 +770,11 @@ export default function SellerDashboard() {
               href="/seller/orders"
               className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm transition hover:border-[#71A999] hover:shadow-md sm:p-6"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ebf4ed] text-xl">
                 🚚
               </span>
 
-              <p className="mt-4 text-xs font-semibold text-[#74716B] sm:text-sm">
+              <p className="mt-4 text-xs font-semibold text-[#647a6d] sm:text-sm">
                 Recorded orders
               </p>
 
@@ -790,11 +790,11 @@ export default function SellerDashboard() {
             </Link>
 
             <div className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm sm:p-6">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ebf4ed] text-xl">
                 💰
               </span>
 
-              <p className="mt-4 text-xs font-semibold text-[#74716B] sm:text-sm">
+              <p className="mt-4 text-xs font-semibold text-[#647a6d] sm:text-sm">
                 Recorded sales
               </p>
 
@@ -804,17 +804,17 @@ export default function SellerDashboard() {
                   : "—"}
               </p>
 
-              <p className="mt-2 text-xs text-[#74716B]">
+              <p className="mt-2 text-xs text-[#647a6d]">
                 Not an available payout balance
               </p>
             </div>
 
             <div className="rounded-[22px] border border-[#DAE5E5] bg-white p-4 shadow-sm sm:p-6">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5F1E9] text-xl">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ebf4ed] text-xl">
                 ⭐
               </span>
 
-              <p className="mt-4 text-xs font-semibold text-[#74716B] sm:text-sm">
+              <p className="mt-4 text-xs font-semibold text-[#647a6d] sm:text-sm">
                 Store rating
               </p>
 
@@ -825,7 +825,7 @@ export default function SellerDashboard() {
                   : "—"}
               </p>
 
-              <p className="mt-2 text-xs text-[#74716B]">
+              <p className="mt-2 text-xs text-[#647a6d]">
                 {showReviews
                   ? `${rating.review_count} review${
                       rating.review_count === 1
@@ -837,7 +837,7 @@ export default function SellerDashboard() {
             </div>
           </div>
 
-          <p className="mt-3 text-xs leading-5 text-[#74716B]">
+          <p className="mt-3 text-xs leading-5 text-[#647a6d]">
             Recorded sales are shown in the
             dashboard&apos;s existing ₦ format.
             This does not confirm a cash balance
@@ -887,7 +887,7 @@ export default function SellerDashboard() {
             <>
               <div className="mt-5 grid grid-cols-3 gap-3">
                 <div className="rounded-[20px] border border-[#DAE5E5] bg-white p-4 sm:p-5">
-                  <p className="text-xs font-semibold text-[#74716B]">
+                  <p className="text-xs font-semibold text-[#647a6d]">
                     In stock
                   </p>
 
@@ -899,7 +899,7 @@ export default function SellerDashboard() {
                 </div>
 
                 <div className="rounded-[20px] border border-[#DAE5E5] bg-white p-4 sm:p-5">
-                  <p className="text-xs font-semibold text-[#74716B]">
+                  <p className="text-xs font-semibold text-[#647a6d]">
                     Low stock
                   </p>
 
@@ -911,7 +911,7 @@ export default function SellerDashboard() {
                 </div>
 
                 <div className="rounded-[20px] border border-[#DAE5E5] bg-white p-4 sm:p-5">
-                  <p className="text-xs font-semibold text-[#74716B]">
+                  <p className="text-xs font-semibold text-[#647a6d]">
                     Out of stock
                   </p>
 
@@ -930,7 +930,7 @@ export default function SellerDashboard() {
                       ⚠️ Products that need attention
                     </h3>
 
-                    <p className="mt-1 text-xs text-[#74716B]">
+                    <p className="mt-1 text-xs text-[#647a6d]">
                       Low stock means 1–
                       {LOW_STOCK_THRESHOLD}
                       {" "}units remaining.
@@ -984,7 +984,7 @@ export default function SellerDashboard() {
               {showProducts &&
                 products.length === 0 && (
                   <div className="mt-4 rounded-[22px] border border-[#DAE5E5] bg-white p-6 text-center">
-                    <p className="text-sm text-[#74716B]">
+                    <p className="text-sm text-[#647a6d]">
                       No products listed yet.
                     </p>
 
@@ -1024,7 +1024,7 @@ export default function SellerDashboard() {
                 href={item.href}
                 className="group flex items-start gap-4 rounded-[22px] border border-[#DAE5E5] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#71A999] hover:shadow-md sm:p-6"
               >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#F5F1E9] text-2xl">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#ebf4ed] text-2xl">
                   {item.emoji}
                 </span>
 
@@ -1033,7 +1033,7 @@ export default function SellerDashboard() {
                     {item.title}
                   </span>
 
-                  <span className="mt-1 block text-sm leading-5 text-[#74716B]">
+                  <span className="mt-1 block text-sm leading-5 text-[#647a6d]">
                     {item.subtitle}
                   </span>
 
@@ -1091,7 +1091,7 @@ export default function SellerDashboard() {
               ))}
             </div>
           ) : productsError ? (
-            <p className="mt-5 rounded-xl bg-white p-5 text-sm text-[#74716B]">
+            <p className="mt-5 rounded-xl bg-white p-5 text-sm text-[#647a6d]">
               Your product list is unavailable right
               now. Tap Refresh dashboard to try again.
             </p>
@@ -1106,14 +1106,14 @@ export default function SellerDashboard() {
                 first product
               </h3>
 
-              <p className="mt-2 text-sm text-[#74716B]">
+              <p className="mt-2 text-sm text-[#647a6d]">
                 Add a product to start building
                 your catalogue.
               </p>
 
               <Link
                 href="/seller/products/new"
-                className="mt-5 inline-flex rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white"
+                className="mt-5 inline-flex rounded-full bg-[#162e25] px-6 py-3 text-sm font-bold text-white"
               >
                 Add product →
               </Link>
@@ -1133,10 +1133,10 @@ export default function SellerDashboard() {
                         src={product.image_url}
                         alt={product.name}
                         loading="lazy"
-                        className="aspect-square w-full bg-[#F5F1E9] object-cover"
+                        className="aspect-square w-full bg-[#ebf4ed] object-cover"
                       />
                     ) : (
-                      <div className="flex aspect-square items-center justify-center bg-[#F5F1E9] text-5xl">
+                      <div className="flex aspect-square items-center justify-center bg-[#ebf4ed] text-5xl">
                         📦
                       </div>
                     )}
@@ -1159,7 +1159,7 @@ export default function SellerDashboard() {
                             product.stock
                           ) === 0
                             ? "font-bold text-[#9D3434]"
-                            : "text-[#74716B]"
+                            : "text-[#647a6d]"
                         }`}
                       >
                         {stockCount(
@@ -1201,13 +1201,13 @@ export default function SellerDashboard() {
             Reviews & Ratings
           </h2>
 
-          <p className="mt-2 text-sm text-[#74716B]">
+          <p className="mt-2 text-sm text-[#647a6d]">
             Feedback left by customers of your store.
           </p>
 
           <div className="mt-5 flex flex-wrap items-center gap-6 rounded-[22px] border border-[#DAE5E5] bg-white p-5 sm:p-6">
             <div>
-              <p className="text-xs text-[#74716B]">
+              <p className="text-xs text-[#647a6d]">
                 Average rating
               </p>
 
@@ -1219,10 +1219,10 @@ export default function SellerDashboard() {
               </p>
             </div>
 
-            <div className="h-10 w-px bg-[#E8E1D5]" />
+            <div className="h-10 w-px bg-[#e0eae3]" />
 
             <div>
-              <p className="text-xs text-[#74716B]">
+              <p className="text-xs text-[#647a6d]">
                 Total reviews
               </p>
 
@@ -1235,7 +1235,7 @@ export default function SellerDashboard() {
           </div>
 
           {!loading && reviewError && (
-            <p className="mt-4 rounded-xl border border-[#DAE5E5] bg-white p-4 text-sm text-[#74716B]">
+            <p className="mt-4 rounded-xl border border-[#DAE5E5] bg-white p-4 text-sm text-[#647a6d]">
               {reviewError}
             </p>
           )}
@@ -1251,7 +1251,7 @@ export default function SellerDashboard() {
                   No reviews yet
                 </h3>
 
-                <p className="mt-2 text-sm text-[#74716B]">
+                <p className="mt-2 text-sm text-[#647a6d]">
                   Your customer reviews will
                   appear here.
                 </p>
@@ -1298,7 +1298,7 @@ export default function SellerDashboard() {
                         </div>
 
                         <time
-                          className="shrink-0 text-xs text-[#74716B]"
+                          className="shrink-0 text-xs text-[#647a6d]"
                           dateTime={
                             review.created_at
                           }
@@ -1323,7 +1323,7 @@ export default function SellerDashboard() {
         {/* FOOTER CARD */}
 
         <section className="mt-10 overflow-hidden rounded-[26px] bg-[#164555] p-6 text-white sm:p-9">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#E9D9BB]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#ddf1e3]">
             Keep growing with GoldMart
           </p>
 
@@ -1339,14 +1339,14 @@ export default function SellerDashboard() {
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/seller/products/new"
-              className="rounded-full bg-[#C5A46D] px-6 py-3 text-center text-sm font-bold text-[#17191D] transition hover:bg-[#E9D9BB]"
+              className="rounded-full bg-[#68a98c] px-6 py-3 text-center text-sm font-bold text-[#162e25] transition hover:bg-[#ddf1e3]"
             >
               Add a product →
             </Link>
 
             <Link
               href="/chat"
-              className="rounded-full border border-[#C5A46D]/65 px-6 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10"
+              className="rounded-full border border-[#68a98c]/65 px-6 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10"
             >
               Customer messages
             </Link>

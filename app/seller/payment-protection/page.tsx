@@ -111,7 +111,7 @@ function statusStyle(status: string) {
     return "border-emerald-200 bg-emerald-50 text-emerald-800";
   }
 
-  return "border-[#E8E1D5] bg-[#FAF8F3] text-[#665F55]";
+  return "border-[#e0eae3] bg-[#f5f8f5] text-[#665F55]";
 }
 
 function StatusBadge({
@@ -274,13 +274,13 @@ export default function SellerPaymentProtectionPage() {
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
       <header className="border-b border-[#DAE5E5] bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
           <Link
             href="/seller"
-            className="text-sm font-bold text-[#96713D] hover:underline"
+            className="text-sm font-bold text-[#176c52] hover:underline"
           >
             ← Seller Dashboard
           </Link>
@@ -296,7 +296,7 @@ export default function SellerPaymentProtectionPage() {
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <section className="rounded-[28px] bg-[#164555] px-6 py-8 text-white sm:px-8">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">
             Seller Finance
           </p>
 
@@ -310,7 +310,7 @@ export default function SellerPaymentProtectionPage() {
             status. This page is for tracking only.
           </p>
 
-          <div className="mt-6 rounded-2xl border border-[#C5A46D]/40 bg-white/10 p-4 text-sm leading-6 text-[#F4E5CA]">
+          <div className="mt-6 rounded-2xl border border-[#68a98c]/40 bg-white/10 p-4 text-sm leading-6 text-[#F4E5CA]">
             These figures are not available balances,
             money held in escrow, or proof of Paystack
             settlement. Payouts and withdrawals are
@@ -320,7 +320,7 @@ export default function SellerPaymentProtectionPage() {
 
         <div className="mt-7 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#96713D]">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#176c52]">
               Payment Records
             </p>
 
@@ -333,7 +333,7 @@ export default function SellerPaymentProtectionPage() {
             type="button"
             onClick={refresh}
             disabled={loading}
-            className="rounded-full border border-[#D7BF97] bg-white px-5 py-3 text-sm font-bold transition hover:bg-[#F5F1E9] disabled:opacity-60"
+            className="rounded-full border border-[#D7BF97] bg-white px-5 py-3 text-sm font-bold transition hover:bg-[#ebf4ed] disabled:opacity-60"
           >
             {loading ? "Loading..." : "↻ Refresh"}
           </button>
@@ -347,7 +347,7 @@ export default function SellerPaymentProtectionPage() {
 
             <Link
               href="/login"
-              className="mt-4 inline-flex rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white"
+              className="mt-4 inline-flex rounded-full bg-[#162e25] px-5 py-3 text-sm font-bold text-white"
             >
               Sign In →
             </Link>
@@ -367,7 +367,7 @@ export default function SellerPaymentProtectionPage() {
           <>
             <section className="mt-6 grid gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-[#DAE5E5] bg-white p-6">
-                <p className="text-sm text-[#74716B]">
+                <p className="text-sm text-[#647a6d]">
                   Allocation Records
                 </p>
 
@@ -377,11 +377,11 @@ export default function SellerPaymentProtectionPage() {
               </div>
 
               <div className="rounded-2xl border border-[#DAE5E5] bg-white p-6">
-                <p className="text-sm text-[#74716B]">
+                <p className="text-sm text-[#647a6d]">
                   Withdrawal Availability
                 </p>
 
-                <p className="mt-2 text-xl font-black text-[#96713D]">
+                <p className="mt-2 text-xl font-black text-[#176c52]">
                   Not Enabled
                 </p>
               </div>
@@ -392,13 +392,13 @@ export default function SellerPaymentProtectionPage() {
                 Recorded Totals
               </h2>
 
-              <p className="mt-1 text-sm text-[#74716B]">
+              <p className="mt-1 text-sm text-[#647a6d]">
                 Amounts are separated by currency
                 and review status.
               </p>
 
               {summaryRows.length === 0 ? (
-                <div className="mt-4 rounded-2xl border border-[#DAE5E5] bg-white p-6 text-sm text-[#74716B]">
+                <div className="mt-4 rounded-2xl border border-[#DAE5E5] bg-white p-6 text-sm text-[#647a6d]">
                   {loading
                     ? "Loading totals..."
                     : "No allocations recorded yet."}
@@ -419,7 +419,7 @@ export default function SellerPaymentProtectionPage() {
                         )}
                       </p>
 
-                      <p className="mt-2 text-xs text-[#74716B]">
+                      <p className="mt-2 text-xs text-[#647a6d]">
                         {row.allocation_count} recorded
                         allocation(s)
                       </p>
@@ -435,13 +435,13 @@ export default function SellerPaymentProtectionPage() {
                   Allocation History
                 </h2>
 
-                <p className="text-xs font-medium text-[#74716B]">
+                <p className="text-xs font-medium text-[#647a6d]">
                   Page {page}
                 </p>
               </div>
 
               {loading ? (
-                <div className="mt-4 rounded-2xl border border-[#DAE5E5] bg-white p-8 text-center text-sm text-[#74716B]">
+                <div className="mt-4 rounded-2xl border border-[#DAE5E5] bg-white p-8 text-center text-sm text-[#647a6d]">
                   Loading seller allocation records...
                 </div>
               ) : allocations.length === 0 ? (
@@ -454,7 +454,7 @@ export default function SellerPaymentProtectionPage() {
                     No records on this page
                   </h3>
 
-                  <p className="mt-2 text-sm leading-6 text-[#74716B]">
+                  <p className="mt-2 text-sm leading-6 text-[#647a6d]">
                     New allocation records are created
                     when eligible verified payments
                     become completed order records.
@@ -471,7 +471,7 @@ export default function SellerPaymentProtectionPage() {
                     >
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#96713D]">
+                          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#176c52]">
                             Order #{allocation.order_id}
                           </p>
 
@@ -490,7 +490,7 @@ export default function SellerPaymentProtectionPage() {
 
                       <div className="mt-5 grid gap-4 border-t border-[#F0ECE5] pt-4 sm:grid-cols-3">
                         <div>
-                          <p className="text-xs text-[#74716B]">
+                          <p className="text-xs text-[#647a6d]">
                             Order Status
                           </p>
 
@@ -504,7 +504,7 @@ export default function SellerPaymentProtectionPage() {
                         </div>
 
                         <div>
-                          <p className="text-xs text-[#74716B]">
+                          <p className="text-xs text-[#647a6d]">
                             Payment Record
                           </p>
 
@@ -518,7 +518,7 @@ export default function SellerPaymentProtectionPage() {
                         </div>
 
                         <div>
-                          <p className="text-xs text-[#74716B]">
+                          <p className="text-xs text-[#647a6d]">
                             Recorded
                           </p>
 
@@ -530,7 +530,7 @@ export default function SellerPaymentProtectionPage() {
                         </div>
                       </div>
 
-                      <p className="mt-5 text-xs leading-5 text-[#74716B]">
+                      <p className="mt-5 text-xs leading-5 text-[#647a6d]">
                         This amount is a gross order
                         allocation before commissions,
                         fees, refunds and settlement
@@ -565,7 +565,7 @@ export default function SellerPaymentProtectionPage() {
                     setPage((value) => value + 1)
                   }
                   disabled={loading || !hasNextPage}
-                  className="rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white disabled:opacity-40"
+                  className="rounded-full bg-[#162e25] px-5 py-3 text-sm font-bold text-white disabled:opacity-40"
                 >
                   Next →
                 </button>
@@ -590,7 +590,7 @@ export default function SellerPaymentProtectionPage() {
 
           <Link
             href="/seller"
-            className="mt-5 inline-flex rounded-full bg-[#17191D] px-5 py-3 text-sm font-bold text-white"
+            className="mt-5 inline-flex rounded-full bg-[#162e25] px-5 py-3 text-sm font-bold text-white"
           >
             Back to Seller Dashboard →
           </Link>

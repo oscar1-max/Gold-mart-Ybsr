@@ -313,7 +313,7 @@ export default function AdminSupportAssistantPage() {
   // ============================================
 
   return (
-    <main className="min-h-screen bg-[#F7F9F8] pb-32 text-[#202A31] md:pb-12">
+    <main className="min-h-screen bg-[#f5f7f6] pb-32 text-[#1b3329] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
         <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(115deg,#49324C,#87617E 58%,#C49186)"}}>
@@ -322,17 +322,17 @@ export default function AdminSupportAssistantPage() {
             <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#F9D7DC"}}>GOLDMART PRIVATE ADMIN · DRAFT WORKSPACE</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Support Assistant</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Thoughtful support replies, prepared with clarity.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#B7EDCF]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#def3e6]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Monitoring</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Monitoring</Link>
           <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#284F55] bg-[#284F55] text-white">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Support</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Support</Link>
         </nav>
       </div>
 
@@ -345,7 +345,7 @@ export default function AdminSupportAssistantPage() {
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#B38A25]">
+            <span className="text-[#12664e]">
               Mart
             </span>
           </Link>
@@ -469,7 +469,7 @@ export default function AdminSupportAssistantPage() {
                       }}
                       className={`rounded-2xl border p-4 font-bold ${
                         audience === "buyer"
-                          ? "border-[#B38A25] bg-[#FFF9EA]"
+                          ? "border-[#12664e] bg-[#FFF9EA]"
                           : "border-gray-200 bg-white"
                       }`}
                     >
@@ -484,7 +484,7 @@ export default function AdminSupportAssistantPage() {
                       }}
                       className={`rounded-2xl border p-4 font-bold ${
                         audience === "seller"
-                          ? "border-[#B38A25] bg-[#FFF9EA]"
+                          ? "border-[#12664e] bg-[#FFF9EA]"
                           : "border-gray-200 bg-white"
                       }`}
                     >
@@ -512,7 +512,7 @@ export default function AdminSupportAssistantPage() {
                       );
                       resetDraft();
                     }}
-                    className="w-full rounded-2xl border border-gray-300 bg-white p-4 text-sm outline-none focus:border-[#B38A25]"
+                    className="w-full rounded-2xl border border-gray-300 bg-white p-4 text-sm outline-none focus:border-[#12664e]"
                   >
                     {issues.map((item) => (
                       <option
@@ -531,7 +531,7 @@ export default function AdminSupportAssistantPage() {
                     generating ||
                     !issue
                   }
-                  className="w-full rounded-full bg-[#17191D] px-6 py-4 text-sm font-black text-white disabled:opacity-50"
+                  className="w-full rounded-full bg-[#162e25] px-6 py-4 text-sm font-black text-white disabled:opacity-50"
                 >
                   {generating
                     ? "Preparing Reply..."
@@ -591,7 +591,7 @@ export default function AdminSupportAssistantPage() {
                       )
                     }
                     rows={13}
-                    className="mt-2 w-full resize-y rounded-2xl border border-gray-300 bg-[#FCFBF8] p-4 text-sm leading-7 outline-none focus:border-[#B38A25]"
+                    className="mt-2 w-full resize-y rounded-2xl border border-gray-300 bg-[#FCFBF8] p-4 text-sm leading-7 outline-none focus:border-[#12664e]"
                   />
 
                   <div className="mt-4 flex flex-wrap gap-3">
@@ -603,7 +603,7 @@ export default function AdminSupportAssistantPage() {
                       disabled={
                         !editableDraft.trim()
                       }
-                      className="rounded-full bg-[#254F54] px-6 py-3 text-sm font-bold text-white disabled:opacity-50"
+                      className="rounded-full bg-[#145d4a] px-6 py-3 text-sm font-bold text-white disabled:opacity-50"
                     >
                       📋 Copy Reply
                     </button>

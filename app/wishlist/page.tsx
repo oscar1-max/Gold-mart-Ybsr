@@ -250,7 +250,7 @@ export default function WishlistPage() {
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#128563]">
               Mart
             </span>
           </Link>
@@ -279,7 +279,7 @@ export default function WishlistPage() {
           <div>
             <Link
               href="/"
-              className="text-sm font-bold text-[#A67C00]"
+              className="text-sm font-bold text-[#127256]"
             >
               ← Back to Home
             </Link>
@@ -388,7 +388,7 @@ export default function WishlistPage() {
                   {/* INFO */}
                   <div className="p-5">
                     {product.category_name && (
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#A67C00]">
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#127256]">
                         {product.category_name}
                       </p>
                     )}
@@ -401,7 +401,7 @@ export default function WishlistPage() {
                       </h2>
                     </Link>
 
-                    <p className="mt-3 text-xl font-black text-[#A67C00]">
+                    <p className="mt-3 text-xl font-black text-[#127256]">
                       {formatPrice(
                         product.price,
                         product.currency
@@ -428,7 +428,7 @@ export default function WishlistPage() {
                           handleAddToCart(item)
                         }
                         disabled={stock <= 0}
-                        className="rounded-xl bg-black py-3 font-bold text-white hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-xl bg-black py-3 font-bold text-white hover:bg-[#128563] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         🛒 Add to Cart
                       </button>

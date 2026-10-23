@@ -220,21 +220,21 @@ export default function SellerOrdersPage() {
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
       <header className="border-b border-[#DAE5E5] bg-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link href="/" className="text-2xl font-black tracking-tight">Gold<span className="text-[#B08A50]">Mart</span></Link>
-          <Link href="/seller" className="rounded-full border border-[#E8E1D5] px-4 py-2.5 text-sm font-bold hover:border-[#C5A46D]">← Seller Dashboard</Link>
+          <Link href="/seller" className="rounded-full border border-[#e0eae3] px-4 py-2.5 text-sm font-bold hover:border-[#68a98c]">← Seller Dashboard</Link>
         </div>
       </header>
 
       <div className="mx-auto max-w-7xl px-4 pt-7 sm:px-6 sm:pt-10">
         <section className="relative overflow-hidden rounded-[28px] bg-[#164555] p-6 text-white sm:p-9">
-          <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-24 h-60 w-60 rounded-full border border-[#C5A46D]/25" />
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">GoldMart · Seller Centre</p>
+          <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-24 h-60 w-60 rounded-full border border-[#68a98c]/25" />
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">GoldMart · Seller Centre</p>
           <h1 className="mt-3 text-3xl font-black sm:text-4xl">Customer Orders</h1>
           <p className="mt-3 max-w-xl text-sm leading-6 text-[#DFD9CF]">Manage fulfilment, see customers and review the products in each order.</p>
-          <button type="button" onClick={() => void loadOrders(true)} disabled={loading || refreshing || updatingId !== null} className="mt-6 rounded-full bg-[#C5A46D] px-5 py-3 text-sm font-extrabold text-[#17191D] disabled:opacity-60">
+          <button type="button" onClick={() => void loadOrders(true)} disabled={loading || refreshing || updatingId !== null} className="mt-6 rounded-full bg-[#68a98c] px-5 py-3 text-sm font-extrabold text-[#162e25] disabled:opacity-60">
             {refreshing ? "Refreshing..." : "↻ Refresh Orders"}
           </button>
         </section>
@@ -248,47 +248,47 @@ export default function SellerOrdersPage() {
               { label: "Delivered", value: counts.delivered },
             ].map((item) => (
               <div key={item.label} className="rounded-[22px] border border-[#DAE5E5] bg-white p-5 shadow-sm">
-                <p className="text-xs font-semibold text-[#74716B]">{item.label}</p>
+                <p className="text-xs font-semibold text-[#647a6d]">{item.label}</p>
                 <p className="mt-2 text-3xl font-black">{item.value}</p>
               </div>
             ))}
           </section>
         )}
 
-        {error && <div role="alert" className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-sm text-red-800"><p className="font-bold">Unable to load orders</p><p className="mt-1">{error}</p><button type="button" className="mt-3 rounded-full bg-[#17191D] px-4 py-2 font-bold text-white" onClick={() => void loadOrders()}>Try Again</button></div>}
+        {error && <div role="alert" className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-sm text-red-800"><p className="font-bold">Unable to load orders</p><p className="mt-1">{error}</p><button type="button" className="mt-3 rounded-full bg-[#162e25] px-4 py-2 font-bold text-white" onClick={() => void loadOrders()}>Try Again</button></div>}
         {actionError && <div role="alert" className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-sm text-red-800">{actionError}</div>}
 
         {!loading && !error && orders.length > 0 && (
           <section className="mt-8 rounded-[22px] border border-[#DAE5E5] bg-white p-4 sm:p-5" aria-label="Find orders">
             <div className="grid gap-3 sm:grid-cols-[1fr_220px]">
               <div>
-                <label htmlFor="order-search" className="mb-2 block text-xs font-bold text-[#74716B]">Find an order</label>
-                <input id="order-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Order number, customer or product" className="w-full rounded-xl border border-[#DAD2C4] bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:border-[#96713D]" />
+                <label htmlFor="order-search" className="mb-2 block text-xs font-bold text-[#647a6d]">Find an order</label>
+                <input id="order-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Order number, customer or product" className="w-full rounded-xl border border-[#DAD2C4] bg-[#f5f8f5] px-4 py-3 text-sm outline-none focus:border-[#176c52]" />
               </div>
               <div>
-                <label htmlFor="order-filter" className="mb-2 block text-xs font-bold text-[#74716B]">Filter status</label>
-                <select id="order-filter" value={filter} onChange={(event) => setFilter(event.target.value as StatusFilter)} className="w-full rounded-xl border border-[#DAD2C4] bg-[#FAF8F3] px-4 py-3 text-sm outline-none focus:border-[#96713D]">
+                <label htmlFor="order-filter" className="mb-2 block text-xs font-bold text-[#647a6d]">Filter status</label>
+                <select id="order-filter" value={filter} onChange={(event) => setFilter(event.target.value as StatusFilter)} className="w-full rounded-xl border border-[#DAD2C4] bg-[#f5f8f5] px-4 py-3 text-sm outline-none focus:border-[#176c52]">
                   {STATUS_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
                 </select>
               </div>
             </div>
-            <p className="mt-3 text-xs text-[#74716B]">Showing {visibleOrders.length} of {orders.length} orders · Newest first</p>
+            <p className="mt-3 text-xs text-[#647a6d]">Showing {visibleOrders.length} of {orders.length} orders · Newest first</p>
           </section>
         )}
 
-        {loading && <div className="mt-8 animate-pulse rounded-[22px] border border-[#DAE5E5] bg-white p-10 text-center font-semibold text-[#74716B]">Loading your customer orders...</div>}
+        {loading && <div className="mt-8 animate-pulse rounded-[22px] border border-[#DAE5E5] bg-white p-10 text-center font-semibold text-[#647a6d]">Loading your customer orders...</div>}
 
         {!loading && !error && orders.length === 0 && (
           <section className="mt-8 rounded-[26px] border border-[#DAE5E5] bg-white px-5 py-14 text-center">
             <p className="text-5xl">📭</p>
             <h2 className="mt-4 text-2xl font-black">No customer orders yet</h2>
-            <p className="mx-auto mt-2 max-w-lg text-sm text-[#74716B]">Orders containing your products will appear here when customers purchase them.</p>
-            <Link href="/seller/products" className="mt-6 inline-flex rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white">Manage Products →</Link>
+            <p className="mx-auto mt-2 max-w-lg text-sm text-[#647a6d]">Orders containing your products will appear here when customers purchase them.</p>
+            <Link href="/seller/products" className="mt-6 inline-flex rounded-full bg-[#162e25] px-6 py-3 text-sm font-bold text-white">Manage Products →</Link>
           </section>
         )}
 
         {!loading && !error && orders.length > 0 && visibleOrders.length === 0 && (
-          <div className="mt-6 rounded-2xl border border-[#DAE5E5] bg-white p-8 text-center text-sm text-[#74716B]">No orders match your search or filter.</div>
+          <div className="mt-6 rounded-2xl border border-[#DAE5E5] bg-white p-8 text-center text-sm text-[#647a6d]">No orders match your search or filter.</div>
         )}
 
         {!loading && !error && visibleOrders.length > 0 && (
@@ -298,54 +298,54 @@ export default function SellerOrdersPage() {
               const busy = updatingId === order.id;
               return (
                 <article key={order.id} className="overflow-hidden rounded-[24px] border border-[#DAE5E5] bg-white shadow-[0_5px_20px_rgba(23,25,29,0.035)]">
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E8E1D5] p-5 sm:p-6">
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e0eae3] p-5 sm:p-6">
                     <div>
                       <p className="text-lg font-black">Order #{order.id}</p>
-                      <p className="mt-1 text-xs text-[#74716B]">{dateLabel(order.created_at)}</p>
+                      <p className="mt-1 text-xs text-[#647a6d]">{dateLabel(order.created_at)}</p>
                     </div>
                     <span className={`rounded-full border px-3 py-1.5 text-xs font-extrabold capitalize ${badgeClass(order.status)}`}>{normalizeStatus(order.status).replace(/_/g, " ")}</span>
                   </div>
                   <div className="p-5 sm:p-6">
-                    <div className="rounded-2xl bg-[#FAF8F3] p-4">
-                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#96713D]">Customer</p>
+                    <div className="rounded-2xl bg-[#f5f8f5] p-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#176c52]">Customer</p>
                       <p className="mt-2 font-bold">{order.customer_name || "GoldMart Customer"}</p>
-                      <p className="mt-1 break-all text-sm text-[#74716B]">{order.customer_email || "No email provided"}</p>
+                      <p className="mt-1 break-all text-sm text-[#647a6d]">{order.customer_email || "No email provided"}</p>
                     </div>
 
                     <h3 className="mt-6 text-base font-black">Products in this order</h3>
                     <div className="mt-3 space-y-3">
                       {(Array.isArray(order.items) ? order.items : []).map((item) => (
-                        <div key={item.id} className="flex items-center gap-3 rounded-2xl border border-[#E8E1D5] p-3 sm:gap-4">
+                        <div key={item.id} className="flex items-center gap-3 rounded-2xl border border-[#e0eae3] p-3 sm:gap-4">
                           {item.image_url ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={item.image_url} alt={item.product_name} className="h-16 w-16 shrink-0 rounded-xl bg-[#F5F1E9] object-cover" loading="lazy" />
+                            <img src={item.image_url} alt={item.product_name} className="h-16 w-16 shrink-0 rounded-xl bg-[#ebf4ed] object-cover" loading="lazy" />
                           ) : (
-                            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-[#F5F1E9] text-2xl">📦</div>
+                            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-[#ebf4ed] text-2xl">📦</div>
                           )}
                           <div className="min-w-0 flex-1">
                             <p className="text-sm font-bold">{item.product_name}</p>
-                            <p className="mt-1 text-xs text-[#74716B]">Qty: {item.quantity}</p>
+                            <p className="mt-1 text-xs text-[#647a6d]">Qty: {item.quantity}</p>
                           </div>
-                          <p className="text-right text-sm font-black text-[#96713D]">{money(item.price)}</p>
+                          <p className="text-right text-sm font-black text-[#176c52]">{money(item.price)}</p>
                         </div>
                       ))}
                     </div>
-                    <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#E8E1D5] pt-5">
-                      <p className="text-sm font-bold text-[#74716B]">Order total</p>
-                      <p className="text-xl font-black text-[#96713D]">{money(order.total_amount)}</p>
+                    <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#e0eae3] pt-5">
+                      <p className="text-sm font-bold text-[#647a6d]">Order total</p>
+                      <p className="text-xl font-black text-[#176c52]">{money(order.total_amount)}</p>
                     </div>
-                    <p className="mt-1 text-right text-xs text-[#74716B]">As reported by the orders API; not a seller payout balance.</p>
-                    <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#E8E1D5] bg-[#FAF8F3] p-4">
+                    <p className="mt-1 text-right text-xs text-[#647a6d]">As reported by the orders API; not a seller payout balance.</p>
+                    <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#e0eae3] bg-[#f5f8f5] p-4">
                       <div>
                         <p className="text-sm font-bold">Order fulfilment</p>
-                        <p className="mt-1 text-xs text-[#74716B]">Progress is saved through GoldMart's backend.</p>
+                        <p className="mt-1 text-xs text-[#647a6d]">Progress is saved through GoldMart's backend.</p>
                       </div>
                       {next ? (
-                        <button type="button" disabled={updatingId !== null || refreshing} onClick={() => void advanceStatus(order)} className="rounded-full bg-[#17191D] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#96713D] disabled:cursor-not-allowed disabled:opacity-50">
+                        <button type="button" disabled={updatingId !== null || refreshing} onClick={() => void advanceStatus(order)} className="rounded-full bg-[#162e25] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#176c52] disabled:cursor-not-allowed disabled:opacity-50">
                           {busy ? "Saving..." : `${next.label} →`}
                         </button>
                       ) : (
-                        <span className="rounded-full border border-[#DAD2C4] px-4 py-2 text-xs font-bold text-[#74716B]">{normalizeStatus(order.status) === "delivered" ? "Delivered" : isClosed(order.status) ? "No fulfilment changes" : "Contact support for status changes"}</span>
+                        <span className="rounded-full border border-[#DAD2C4] px-4 py-2 text-xs font-bold text-[#647a6d]">{normalizeStatus(order.status) === "delivered" ? "Delivered" : isClosed(order.status) ? "No fulfilment changes" : "Contact support for status changes"}</span>
                       )}
                     </div>
                   </div>

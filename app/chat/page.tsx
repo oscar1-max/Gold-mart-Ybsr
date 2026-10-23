@@ -279,7 +279,7 @@ export default function ChatPage() {
   // ===================================================
 
   return (
-    <main className="min-h-screen bg-[#F7F8F6] pb-28 text-[#202A31] md:pb-14">
+    <main className="min-h-screen bg-[#f5f8f6] pb-28 text-[#1b3329] md:pb-14">
       <section aria-label="Messages introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(120deg,#233C46,#397B77,#C4A97C)" }}>
         <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">💬</div>
         <div className="relative">
@@ -300,7 +300,7 @@ export default function ChatPage() {
 
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+            <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
               GoldMart Messages
             </p>
 
@@ -324,7 +324,7 @@ export default function ChatPage() {
 
             <Link
               href="/shop"
-              className="rounded-xl bg-black px-4 py-3 text-sm font-bold text-white hover:bg-[#D4AF37] hover:text-black"
+              className="rounded-xl bg-black px-4 py-3 text-sm font-bold text-white hover:bg-[#128563] hover:text-black"
             >
               Shop
             </Link>
@@ -456,7 +456,7 @@ export default function ChatPage() {
                         conversation.id
                       }
                       href={`/chat/${conversation.id}`}
-                      className="block rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:border-[#D4AF37] hover:shadow-md"
+                      className="block rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:border-[#128563] hover:shadow-md"
                     >
                       <div className="flex items-start gap-4">
                         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-yellow-100 text-xl">
@@ -477,7 +477,7 @@ export default function ChatPage() {
                             </span>
                           </div>
 
-                          <p className="mt-1 text-xs font-semibold text-[#A67C00]">
+                          <p className="mt-1 text-xs font-semibold text-[#127256]">
                             {isSeller
                               ? "Customer conversation"
                               : "Seller conversation"}

@@ -46,7 +46,7 @@ export default function OrderTrackingPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
 
           <Link href="/" className="text-2xl font-black">
-            Gold<span className="text-[#D4AF37]">Mart</span>
+            Gold<span className="text-[#128563]">Mart</span>
           </Link>
 
           <Link
@@ -62,7 +62,7 @@ export default function OrderTrackingPage() {
       {/* CONTENT */}
       <div className="mx-auto max-w-4xl px-4 py-10">
 
-        <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+        <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
           GoldMart Delivery
         </p>
 
@@ -112,7 +112,7 @@ export default function OrderTrackingPage() {
                 Order Total
               </p>
 
-              <p className="mt-1 text-xl font-black text-[#A67C00]">
+              <p className="mt-1 text-xl font-black text-[#127256]">
                 {order.total}
               </p>
             </div>
@@ -220,7 +220,7 @@ export default function OrderTrackingPage() {
         {/* NOTICE */}
         <section className="mt-6 rounded-3xl bg-black p-8 text-white">
 
-          <p className="text-sm font-bold uppercase tracking-widest text-[#D4AF37]">
+          <p className="text-sm font-bold uppercase tracking-widest text-[#128563]">
             Live Tracking
           </p>
 

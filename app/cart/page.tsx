@@ -112,11 +112,11 @@ export default function CartPage() {
   const itemCount = cart.reduce((sum, item) => sum + Number(item.quantity), 0);
 
   return (
-    <main className="min-h-screen bg-[#F7F8F6] pb-28 text-[#202A31] md:pb-12">
+    <main className="min-h-screen bg-[#f5f8f6] pb-28 text-[#1b3329] md:pb-12">
       <header className="border-b border-[#E5E8E6] bg-white/95">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link href="/" className="shrink-0 text-2xl font-black tracking-[-0.055em]">
-            Gold<span className="text-[#B18D57]">Mart</span><span className="ml-1 align-top text-xs text-[#C5A46D]">✦</span>
+            Gold<span className="text-[#1d8966]">Mart</span><span className="ml-1 align-top text-xs text-[#68a98c]">✦</span>
           </Link>
           <div className="flex flex-wrap items-center justify-end gap-2">
             <Link href="/" className="hidden rounded-full border border-[#E1E7E2] bg-white px-4 py-2.5 text-xs font-bold hover:bg-[#F2F7F3] sm:inline-flex">Home</Link>

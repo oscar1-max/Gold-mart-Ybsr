@@ -349,12 +349,12 @@ export default function SupportPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FAF8F3] pb-16 text-[#17191D]">
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+    <main className="min-h-screen bg-[#f5f8f5] pb-16 text-[#162e25]">
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#E8E1D5] bg-white">
+      <header className="border-b border-[#e0eae3] bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link
             href="/"
@@ -369,14 +369,14 @@ export default function SupportPage() {
           <div className="flex gap-2 text-sm font-semibold">
             <Link
               href="/help"
-              className="rounded-full border border-[#E8E1D5] px-4 py-2 hover:border-[#C5A46D]"
+              className="rounded-full border border-[#e0eae3] px-4 py-2 hover:border-[#68a98c]"
             >
               Help Centre
             </Link>
 
             <Link
               href="/account"
-              className="rounded-full bg-[#17191D] px-4 py-2 text-white"
+              className="rounded-full bg-[#162e25] px-4 py-2 text-white"
             >
               My Account
             </Link>
@@ -387,8 +387,8 @@ export default function SupportPage() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         {/* HERO */}
 
-        <section className="rounded-[28px] bg-[#17191D] px-6 py-8 text-white sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+        <section className="rounded-[28px] bg-[#162e25] px-6 py-8 text-white sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">
             GoldMart Support Centre
           </p>
 
@@ -412,7 +412,7 @@ export default function SupportPage() {
         {/* SIGN IN REQUIRED */}
 
         {signedIn === false && (
-          <section className="mt-7 rounded-3xl border border-[#E8E1D5] bg-white p-7 text-center">
+          <section className="mt-7 rounded-3xl border border-[#e0eae3] bg-white p-7 text-center">
             <h2 className="text-xl font-black">
               Sign in to contact support
             </h2>
@@ -424,7 +424,7 @@ export default function SupportPage() {
 
             <Link
               href="/login"
-              className="mt-5 inline-block rounded-full bg-[#17191D] px-7 py-3 text-sm font-bold text-white"
+              className="mt-5 inline-block rounded-full bg-[#162e25] px-7 py-3 text-sm font-bold text-white"
             >
               Sign In
             </Link>
@@ -438,7 +438,7 @@ export default function SupportPage() {
             <div className="space-y-6">
               {/* CREATE TICKET */}
 
-              <section className="rounded-3xl border border-[#E8E1D5] bg-white p-5 shadow-sm sm:p-7">
+              <section className="rounded-3xl border border-[#e0eae3] bg-white p-5 shadow-sm sm:p-7">
                 <h2 className="text-xl font-black">
                   Create a Support Ticket
                 </h2>
@@ -552,7 +552,7 @@ export default function SupportPage() {
                   <button
                     type="submit"
                     disabled={creating}
-                    className="w-full rounded-full bg-[#17191D] px-6 py-3 font-bold text-white transition hover:bg-[#96713D] disabled:opacity-60"
+                    className="w-full rounded-full bg-[#162e25] px-6 py-3 font-bold text-white transition hover:bg-[#176c52] disabled:opacity-60"
                   >
                     {creating
                       ? "Creating ticket..."
@@ -563,7 +563,7 @@ export default function SupportPage() {
 
               {/* MY TICKETS */}
 
-              <section className="rounded-3xl border border-[#E8E1D5] bg-white p-5 shadow-sm sm:p-7">
+              <section className="rounded-3xl border border-[#e0eae3] bg-white p-5 shadow-sm sm:p-7">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="text-xl font-black">
                     My Support Tickets
@@ -575,7 +575,7 @@ export default function SupportPage() {
                       void loadTickets()
                     }
                     disabled={listLoading}
-                    className="text-sm font-bold text-[#96713D] disabled:opacity-50"
+                    className="text-sm font-bold text-[#176c52] disabled:opacity-50"
                   >
                     Refresh
                   </button>
@@ -599,7 +599,7 @@ export default function SupportPage() {
                 {!listLoading &&
                   !listError &&
                   tickets.length === 0 && (
-                    <p className="mt-4 rounded-xl bg-[#FAF8F3] p-5 text-sm text-[#716B62]">
+                    <p className="mt-4 rounded-xl bg-[#f5f8f5] p-5 text-sm text-[#716B62]">
                       No support tickets yet.
                       You can create one above.
                     </p>
@@ -618,8 +618,8 @@ export default function SupportPage() {
                       className={`w-full rounded-2xl border p-4 text-left transition hover:border-[#B08A50] ${
                         selectedId ===
                         String(ticket.id)
-                          ? "border-[#B08A50] bg-[#FAF8F3]"
-                          : "border-[#E8E1D5]"
+                          ? "border-[#B08A50] bg-[#f5f8f5]"
+                          : "border-[#e0eae3]"
                       }`}
                     >
                       <span className="flex items-start justify-between gap-2">
@@ -653,7 +653,7 @@ export default function SupportPage() {
 
             {/* TICKET CONVERSATION */}
 
-            <section className="rounded-3xl border border-[#E8E1D5] bg-white p-5 shadow-sm sm:p-7">
+            <section className="rounded-3xl border border-[#e0eae3] bg-white p-5 shadow-sm sm:p-7">
               <h2 className="text-xl font-black">
                 Ticket Conversation
               </h2>
@@ -683,8 +683,8 @@ export default function SupportPage() {
 
               {detail && !detailLoading && (
                 <div className="mt-5">
-                  <div className="rounded-2xl bg-[#FAF8F3] p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#96713D]">
+                  <div className="rounded-2xl bg-[#f5f8f5] p-4">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#176c52]">
                       Ticket #{detail.ticket.id}
                     </p>
 
@@ -718,10 +718,10 @@ export default function SupportPage() {
                             className={`rounded-2xl p-4 ${
                               mine
                                 ? "bg-[#F6F0E6]"
-                                : "border border-[#E8E1D5] bg-white"
+                                : "border border-[#e0eae3] bg-white"
                             }`}
                           >
-                            <p className="text-xs font-bold text-[#96713D]">
+                            <p className="text-xs font-bold text-[#176c52]">
                               {mine
                                 ? "You"
                                 : "GoldMart Support"}
@@ -744,14 +744,14 @@ export default function SupportPage() {
 
                   {detail.ticket.status ===
                   "closed" ? (
-                    <p className="mt-5 rounded-xl bg-[#FAF8F3] p-4 text-sm text-[#716B62]">
+                    <p className="mt-5 rounded-xl bg-[#f5f8f5] p-4 text-sm text-[#716B62]">
                       This ticket is closed.
                       Create a new ticket if
                       you need more help.
                     </p>
                   ) : (
                     <form
-                      className="mt-6 space-y-3 border-t border-[#E8E1D5] pt-5"
+                      className="mt-6 space-y-3 border-t border-[#e0eae3] pt-5"
                       onSubmit={submitReply}
                     >
                       <label
@@ -791,7 +791,7 @@ export default function SupportPage() {
                           sendingReply ||
                           !reply.trim()
                         }
-                        className="rounded-full bg-[#17191D] px-6 py-3 text-sm font-bold text-white hover:bg-[#96713D] disabled:opacity-60"
+                        className="rounded-full bg-[#162e25] px-6 py-3 text-sm font-bold text-white hover:bg-[#176c52] disabled:opacity-60"
                       >
                         {sendingReply
                           ? "Sending..."

@@ -516,7 +516,7 @@ export default function CheckoutPage() {
             className="flex items-center gap-2 text-2xl font-black"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#128563]">
               Mart
             </span>
           </Link>
@@ -525,7 +525,7 @@ export default function CheckoutPage() {
 
             <Link
               href="/"
-              className="rounded-full bg-black px-5 py-2 text-sm font-bold text-white transition hover:bg-[#D4AF37] hover:text-black"
+              className="rounded-full bg-black px-5 py-2 text-sm font-bold text-white transition hover:bg-[#128563] hover:text-black"
             >
               🏠 Home
             </Link>
@@ -546,7 +546,7 @@ export default function CheckoutPage() {
 
       <div className="mx-auto max-w-7xl px-4 py-10">
 
-        <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+        <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
           GoldMart Checkout
         </p>
 
@@ -566,7 +566,7 @@ export default function CheckoutPage() {
 
         {cart.length > 0 &&
           currencies.length > 1 && (
-            <div className="mt-6 rounded-2xl border border-yellow-200 bg-yellow-50 p-4 text-sm font-semibold text-yellow-800">
+            <div className="mt-6 rounded-2xl border border-yellow-200 bg-emerald-50 p-4 text-sm font-semibold text-yellow-800">
               Your cart contains products
               with different currencies.
               Please remove products with
@@ -601,7 +601,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="First Name"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
                 />
 
                 <input
@@ -615,7 +615,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="Last Name"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
                 />
 
                 <input
@@ -630,7 +630,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="Email Address"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
                 />
 
                 <input
@@ -645,7 +645,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="Phone Number"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
                 />
 
                 <textarea
@@ -660,7 +660,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="Full Delivery Address"
-                  className="resize-none rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37] sm:col-span-2"
+                  className="resize-none rounded-xl border px-4 py-3 outline-none focus:border-[#128563] sm:col-span-2"
                 />
 
                 <input
@@ -674,7 +674,7 @@ export default function CheckoutPage() {
                     )
                   }
                   placeholder="City"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
                 />
 
                 <select
@@ -687,7 +687,7 @@ export default function CheckoutPage() {
                       e.target.value
                     )
                   }
-                  className="rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
+                  className="rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#128563]"
                 >
                   <option>Rivers</option>
                   <option>Lagos</option>
@@ -712,7 +712,7 @@ export default function CheckoutPage() {
                 Delivery Method
               </h2>
 
-              <label className="mt-5 flex cursor-pointer items-center justify-between rounded-2xl border border-[#D4AF37] bg-yellow-50 p-4">
+              <label className="mt-5 flex cursor-pointer items-center justify-between rounded-2xl border border-[#128563] bg-emerald-50 p-4">
 
                 <div className="flex items-center gap-3">
 
@@ -770,7 +770,7 @@ export default function CheckoutPage() {
                   className={`rounded-2xl border p-5 text-left transition ${
                     paymentMethod ===
                     "card"
-                      ? "border-[#D4AF37] bg-yellow-50"
+                      ? "border-[#128563] bg-emerald-50"
                       : "hover:border-gray-400"
                   }`}
                 >
@@ -798,7 +798,7 @@ export default function CheckoutPage() {
                   className={`rounded-2xl border p-5 text-left transition ${
                     paymentMethod ===
                     "transfer"
-                      ? "border-[#D4AF37] bg-yellow-50"
+                      ? "border-[#128563] bg-emerald-50"
                       : "hover:border-gray-400"
                   }`}
                 >
@@ -826,7 +826,7 @@ export default function CheckoutPage() {
                   className={`rounded-2xl border p-5 text-left transition ${
                     paymentMethod ===
                     "wallet"
-                      ? "border-[#D4AF37] bg-yellow-50"
+                      ? "border-[#128563] bg-emerald-50"
                       : "hover:border-gray-400"
                   }`}
                 >
@@ -994,7 +994,7 @@ export default function CheckoutPage() {
                         Total
                       </span>
 
-                      <span className="text-2xl font-black text-[#A67C00]">
+                      <span className="text-2xl font-black text-[#127256]">
                         {formatPrice(
                           total
                         )}
@@ -1016,7 +1016,7 @@ export default function CheckoutPage() {
                     cart.length === 0 ||
                     !currency
                   }
-                  className="mt-6 w-full rounded-2xl bg-black py-4 font-black text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+                  className="mt-6 w-full rounded-2xl bg-black py-4 font-black text-white transition hover:bg-[#128563] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {loading
                     ? "Processing Payment..."

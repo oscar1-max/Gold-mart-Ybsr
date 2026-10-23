@@ -104,7 +104,7 @@ export default function CategoriesPage() {
       <header className="border-b border-[#E9E8E2] bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link href="/" className="shrink-0 text-[23px] font-black tracking-[-0.055em]">
-            Gold<span className="text-[#B18D57]">Mart</span><span className="ml-1 align-top text-xs text-[#C3A576]">✦</span>
+            Gold<span className="text-[#1d8966]">Mart</span><span className="ml-1 align-top text-xs text-[#C3A576]">✦</span>
           </Link>
           <Link href="/shop" className="rounded-full border border-[#D9DAD6] px-4 py-2 text-xs font-bold transition hover:bg-[#F7F4EE]">
             Shop all <span aria-hidden="true">↗</span>
@@ -138,13 +138,13 @@ export default function CategoriesPage() {
             </div>
             <nav aria-label="Choose a department" className="og-scrollbar max-h-[65vh] overflow-y-auto py-2">
               <button type="button" onClick={() => setSelected("All")} aria-pressed={selected === "All"}
-                className={`flex w-full flex-col items-center gap-1.5 border-l-[3px] px-2 py-3 text-center transition sm:flex-row sm:gap-3 sm:px-4 sm:text-left ${selected === "All" ? "border-[#B99560] bg-[#F8F2E8] text-[#24282E]" : "border-transparent text-[#656B70] hover:bg-[#F7F7F5]"}`}>
+                className={`flex w-full flex-col items-center gap-1.5 border-l-[3px] px-2 py-3 text-center transition sm:flex-row sm:gap-3 sm:px-4 sm:text-left ${selected === "All" ? "border-[#5ea584] bg-[#F8F2E8] text-[#24282E]" : "border-transparent text-[#656B70] hover:bg-[#F7F7F5]"}`}>
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F1E8D8] text-lg">✦</span>
                 <span className="text-[10px] font-bold leading-4 sm:text-sm">All departments</span>
               </button>
               {departments.map((item) => (
                 <button key={item.name} type="button" onClick={() => setSelected(item.name)} aria-pressed={selected === item.name}
-                  className={`flex w-full flex-col items-center gap-1.5 border-l-[3px] px-2 py-3 text-center transition sm:flex-row sm:gap-3 sm:px-4 sm:text-left ${selected === item.name ? "border-[#B99560] bg-[#F8F2E8] text-[#24282E]" : "border-transparent text-[#656B70] hover:bg-[#F7F7F5]"}`}>
+                  className={`flex w-full flex-col items-center gap-1.5 border-l-[3px] px-2 py-3 text-center transition sm:flex-row sm:gap-3 sm:px-4 sm:text-left ${selected === item.name ? "border-[#5ea584] bg-[#F8F2E8] text-[#24282E]" : "border-transparent text-[#656B70] hover:bg-[#F7F7F5]"}`}>
                   <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg ${item.accent}`}>{item.icon}</span>
                   <span className="break-words text-[10px] font-bold leading-4 sm:text-sm">{item.short}</span>
                 </button>

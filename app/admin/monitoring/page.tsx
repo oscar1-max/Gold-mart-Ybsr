@@ -411,7 +411,7 @@ export default function AdminMonitoringPage() {
   // =========================================
 
   return (
-    <main className="min-h-screen bg-[#F7F9F8] pb-32 text-[#202A31] md:pb-12">
+    <main className="min-h-screen bg-[#f5f7f6] pb-32 text-[#1b3329] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
         <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(115deg,#153B43,#26777A 55%,#518F83)"}}>
@@ -420,17 +420,17 @@ export default function AdminMonitoringPage() {
             <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#BDE8E0"}}>GOLDMART PRIVATE ADMIN · OPERATIONS RADAR</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">AI Monitoring</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Track alerts and keep your marketplace in view.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#B7EDCF]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#def3e6]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">AI Admin</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">AI Admin</Link>
           <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#284F55] bg-[#284F55] text-white">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Support</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Support</Link>
         </nav>
       </div>
 
@@ -441,7 +441,7 @@ export default function AdminMonitoringPage() {
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#B38A25]">
+            <span className="text-[#12664e]">
               Mart
             </span>
           </Link>
@@ -546,7 +546,7 @@ export default function AdminMonitoringPage() {
                     onClick={() =>
                       void scanMarketplace()
                     }
-                    className="rounded-full bg-[#254F54] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
+                    className="rounded-full bg-[#145d4a] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
                   >
                     {scanning
                       ? "Scanning..."
@@ -618,7 +618,7 @@ export default function AdminMonitoringPage() {
                     disabled={busy}
                     className={`rounded-full px-4 py-2 text-sm font-bold capitalize ${
                       filter === item
-                        ? "bg-[#17191D] text-white"
+                        ? "bg-[#162e25] text-white"
                         : "border bg-white text-gray-700"
                     } disabled:opacity-50`}
                   >
@@ -777,7 +777,7 @@ export default function AdminMonitoringPage() {
                                 "acknowledge"
                               )
                             }
-                            className="rounded-full border border-[#B38A25] px-4 py-2 text-sm font-bold text-[#896716] disabled:opacity-50"
+                            className="rounded-full border border-[#12664e] px-4 py-2 text-sm font-bold text-[#155a48] disabled:opacity-50"
                           >
                             {updating
                               ? "Updating..."
@@ -795,7 +795,7 @@ export default function AdminMonitoringPage() {
                                 "resolve"
                               )
                             }
-                            className="rounded-full bg-[#17191D] px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+                            className="rounded-full bg-[#162e25] px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
                           >
                             {updating
                               ? "Checking..."

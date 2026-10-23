@@ -264,8 +264,8 @@ export default function AccountPage() {
 
   if (checking) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#FAF8F3] text-[#17191D]">
-        <p className="text-sm font-medium text-[#74716B]">
+      <main className="flex min-h-screen items-center justify-center bg-[#f5f8f5] text-[#162e25]">
+        <p className="text-sm font-medium text-[#647a6d]">
           Loading your account...
         </p>
       </main>
@@ -274,24 +274,24 @@ export default function AccountPage() {
 
   if (!user) {
     return (
-      <main className="min-h-screen bg-[#FAF8F3] px-4 py-10 text-[#17191D]">
+      <main className="min-h-screen bg-[#f5f8f5] px-4 py-10 text-[#162e25]">
         <div className="mx-auto max-w-lg">
           <Link
             href="/"
-            className="text-sm font-semibold text-[#96713D]"
+            className="text-sm font-semibold text-[#176c52]"
           >
             ← Back to GoldMart
           </Link>
 
-          <section className="mt-8 overflow-hidden rounded-[28px] border border-[#E8E1D5] bg-white shadow-[0_16px_45px_rgba(23,25,29,0.06)]">
-            <div className="h-2 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+          <section className="mt-8 overflow-hidden rounded-[28px] border border-[#e0eae3] bg-white shadow-[0_16px_45px_rgba(23,25,29,0.06)]">
+            <div className="h-2 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
             <div className="px-7 py-12 text-center sm:px-10">
-              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-[#E9D9BB] bg-[#FAF8F3] text-4xl">
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-[#ddf1e3] bg-[#f5f8f5] text-4xl">
                 👤
               </div>
 
-              <p className="mt-7 text-xs font-bold uppercase tracking-[0.22em] text-[#96713D]">
+              <p className="mt-7 text-xs font-bold uppercase tracking-[0.22em] text-[#176c52]">
                 The GoldMart Experience
               </p>
 
@@ -299,21 +299,21 @@ export default function AccountPage() {
                 Welcome to GoldMart
               </h1>
 
-              <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[#74716B]">
+              <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[#647a6d]">
                 Sign in to manage orders, messages,
                 buyer protection and your account.
               </p>
 
               <Link
                 href="/login"
-                className="mt-8 block rounded-full bg-[#17191D] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-[#96713D]"
+                className="mt-8 block rounded-full bg-[#162e25] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-[#176c52]"
               >
                 Sign In →
               </Link>
 
               <Link
                 href="/register"
-                className="mt-3 block rounded-full border border-[#D7BF97] bg-white px-6 py-3.5 text-sm font-bold text-[#17191D] transition hover:bg-[#FAF8F3]"
+                className="mt-3 block rounded-full border border-[#D7BF97] bg-white px-6 py-3.5 text-sm font-bold text-[#162e25] transition hover:bg-[#f5f8f5]"
               >
                 Create an Account
               </Link>
@@ -343,8 +343,8 @@ export default function AccountPage() {
     "GoldMart Member";
 
   return (
-    <main className="min-h-screen bg-[#F8F9F7] pb-28 text-[#202A31] md:pb-12">
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+    <main className="min-h-screen bg-[#f6f8f6] pb-28 text-[#1b3329] md:pb-12">
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
       {/* HEADER */}
 
@@ -356,7 +356,7 @@ export default function AccountPage() {
             aria-label="GoldMart home"
           >
             Gold
-            <span className="text-[#B08A50]">
+            <span className="text-[#4e9776]">
               Mart
             </span>
           </Link>
@@ -364,7 +364,7 @@ export default function AccountPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/shop"
-              className="text-xs font-semibold text-[#74716B] transition hover:text-[#96713D] sm:text-sm"
+              className="text-xs font-semibold text-[#647a6d] transition hover:text-[#176c52] sm:text-sm"
             >
               Continue Shopping
             </Link>
@@ -372,7 +372,7 @@ export default function AccountPage() {
             <Link
               href="/notifications"
               aria-label="Notifications"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E8E1D5] bg-[#FAF8F3] text-lg transition hover:border-[#C5A46D]"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e0eae3] bg-[#f5f8f5] text-lg transition hover:border-[#68a98c]"
             >
               🔔
             </Link>
@@ -383,7 +383,7 @@ export default function AccountPage() {
       <div className="mx-auto max-w-5xl px-4 py-7 sm:px-6 sm:py-10">
         <div className="mb-6 flex items-center justify-between gap-3">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#96713D]">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#176c52]">
               Your GoldMart
             </p>
 
@@ -394,7 +394,7 @@ export default function AccountPage() {
 
           <Link
             href="/"
-            className="rounded-full border border-[#E8E1D5] bg-white px-4 py-2 text-xs font-bold transition hover:border-[#C5A46D]"
+            className="rounded-full border border-[#e0eae3] bg-white px-4 py-2 text-xs font-bold transition hover:border-[#68a98c]"
           >
             ← Home
           </Link>
@@ -403,9 +403,9 @@ export default function AccountPage() {
         {/* PREMIUM PROFILE HEADER */}
 
         <section className="relative overflow-hidden rounded-[29px] bg-[linear-gradient(115deg,#1D3440_0%,#376C6A_58%,#8B745C_100%)] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.14)] sm:px-8 sm:py-11">
-          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#C5A46D]/25" />
+          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#68a98c]/25" />
 
-          <div className="pointer-events-none absolute -right-8 -top-12 h-40 w-40 rounded-full bg-[#C5A46D]/10 blur-xl" />
+          <div className="pointer-events-none absolute -right-8 -top-12 h-40 w-40 rounded-full bg-[#68a98c]/10 blur-xl" />
 
           <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">
             <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[24px] border border-white/40 bg-[linear-gradient(135deg,#F2D7A9,#F8EEE0)] text-2xl font-black text-[#1C3A40] shadow-lg">
@@ -413,7 +413,7 @@ export default function AccountPage() {
             </div>
 
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">
                 Welcome back
               </p>
 
@@ -426,7 +426,7 @@ export default function AccountPage() {
               </p>
             </div>
 
-            <span className="w-fit rounded-full border border-[#C5A46D]/60 bg-[#C5A46D]/15 px-4 py-2 text-xs font-bold text-[#E9D9BB]">
+            <span className="w-fit rounded-full border border-[#68a98c]/60 bg-[#68a98c]/15 px-4 py-2 text-xs font-bold text-[#ddf1e3]">
               {isSeller
                 ? "✦ Seller Account"
                 : "✦ Buyer Account"}
@@ -455,7 +455,7 @@ export default function AccountPage() {
         <section className="mt-9">
           <div className="mb-4 flex items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#96713D]">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#176c52]">
                 Everything you need
               </p>
 
@@ -466,7 +466,7 @@ export default function AccountPage() {
 
             <Link
               href="/shop"
-              className="text-xs font-bold text-[#96713D] hover:underline"
+              className="text-xs font-bold text-[#176c52] hover:underline"
             >
               Browse Shop →
             </Link>
@@ -493,7 +493,7 @@ export default function AccountPage() {
                   {item.title}
                 </h3>
 
-                <p className="mt-1 text-xs leading-5 text-[#74716B]">
+                <p className="mt-1 text-xs leading-5 text-[#647a6d]">
                   {item.detail}
                 </p>
               </Link>
@@ -510,7 +510,7 @@ export default function AccountPage() {
             </div>
 
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#96713D]">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#176c52]">
                 Account Modes
               </p>
 
@@ -542,7 +542,7 @@ export default function AccountPage() {
               {isSeller && (
                 <Link
                   href="/seller"
-                  className="ml-3 inline-flex py-3 text-sm font-bold text-[#96713D] hover:underline"
+                  className="ml-3 inline-flex py-3 text-sm font-bold text-[#176c52] hover:underline"
                 >
                   Seller Dashboard →
                 </Link>
@@ -556,12 +556,12 @@ export default function AccountPage() {
         {showAdminSection && (
           <section className="mt-8 rounded-[26px] border border-[#C5D8D3] bg-[linear-gradient(135deg,#F0F8F5,#F8F5F0,#F3F0FA)] p-5 shadow-[0_10px_30px_rgba(22,42,46,0.06)] sm:p-7">
             <div className="flex items-start gap-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#17191D] text-2xl text-white">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#162e25] text-2xl text-white">
                 🛡️
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#96713D]">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#176c52]">
                   Administration
                 </p>
 
@@ -569,7 +569,7 @@ export default function AccountPage() {
                   Admin Dashboard
                 </h2>
 
-                <p className="mt-2 text-sm leading-6 text-[#74716B]">
+                <p className="mt-2 text-sm leading-6 text-[#647a6d]">
                   Manage marketplace reports, refunds and
                   customer support.
                 </p>
@@ -620,7 +620,7 @@ export default function AccountPage() {
                 </div>
 
                 {isRefundAdmin && (
-                  <p className="mt-4 text-xs leading-5 text-[#74716B]">
+                  <p className="mt-4 text-xs leading-5 text-[#647a6d]">
                     Approving a refund request
                     does not itself send money
                     to a buyer.
@@ -641,26 +641,26 @@ export default function AccountPage() {
           <div className="mt-4 overflow-hidden rounded-[24px] border border-[#DFE6DF] bg-white shadow-[0_7px_20px_rgba(23,25,29,0.035)]">
             <Link
               href="/notifications"
-              className="flex items-center justify-between gap-4 border-b border-[#F0ECE5] px-5 py-4 text-sm font-bold transition hover:bg-[#FAF8F3]"
+              className="flex items-center justify-between gap-4 border-b border-[#F0ECE5] px-5 py-4 text-sm font-bold transition hover:bg-[#f5f8f5]"
             >
               <span>🔔 &nbsp; Notifications</span>
-              <span className="text-[#96713D]">→</span>
+              <span className="text-[#176c52]">→</span>
             </Link>
 
             <Link
               href="/categories"
-              className="flex items-center justify-between gap-4 border-b border-[#F0ECE5] px-5 py-4 text-sm font-bold transition hover:bg-[#FAF8F3]"
+              className="flex items-center justify-between gap-4 border-b border-[#F0ECE5] px-5 py-4 text-sm font-bold transition hover:bg-[#f5f8f5]"
             >
               <span>🛍️ &nbsp; Shop Categories</span>
-              <span className="text-[#96713D]">→</span>
+              <span className="text-[#176c52]">→</span>
             </Link>
 
             <Link
               href="/help"
-              className="flex items-center justify-between gap-4 px-5 py-4 text-sm font-bold transition hover:bg-[#FAF8F3]"
+              className="flex items-center justify-between gap-4 px-5 py-4 text-sm font-bold transition hover:bg-[#f5f8f5]"
             >
               <span>🎧 &nbsp; Help Centre</span>
-              <span className="text-[#96713D]">→</span>
+              <span className="text-[#176c52]">→</span>
             </Link>
           </div>
         </section>
