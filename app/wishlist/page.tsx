@@ -250,7 +250,7 @@ export default function WishlistPage() {
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#FF6B00]">
               Mart
             </span>
           </Link>
@@ -279,7 +279,7 @@ export default function WishlistPage() {
           <div>
             <Link
               href="/"
-              className="text-sm font-bold text-[#D4AF37]"
+              className="text-sm font-bold text-[#FF6B00]"
             >
               ← Back to Home
             </Link>
@@ -388,7 +388,7 @@ export default function WishlistPage() {
                   {/* INFO */}
                   <div className="p-5">
                     {product.category_name && (
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#D4AF37]">
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#FF6B00]">
                         {product.category_name}
                       </p>
                     )}
@@ -401,7 +401,7 @@ export default function WishlistPage() {
                       </h2>
                     </Link>
 
-                    <p className="mt-3 text-xl font-black text-[#D4AF37]">
+                    <p className="mt-3 text-xl font-black text-[#FF6B00]">
                       {formatPrice(
                         product.price,
                         product.currency
@@ -410,7 +410,7 @@ export default function WishlistPage() {
 
                     <p className="mt-2 text-sm font-bold">
                       {stock > 0 ? (
-                        <span className="text-green-600">
+                        <span className="text-orange-600">
                           ✓ {stock} available
                         </span>
                       ) : (
@@ -428,7 +428,7 @@ export default function WishlistPage() {
                           handleAddToCart(item)
                         }
                         disabled={stock <= 0}
-                        className="rounded-xl bg-black py-3 font-bold text-white hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-xl bg-black py-3 font-bold text-white hover:bg-[#FF6B00] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         🛒 Add to Cart
                       </button>
