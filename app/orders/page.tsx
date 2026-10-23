@@ -471,7 +471,7 @@ export default function OrdersPage() {
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#128563]">
               Mart
             </span>
           </Link>
@@ -486,7 +486,7 @@ export default function OrdersPage() {
       </header>
 
       <div className="mx-auto max-w-7xl px-4 py-10">
-        <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+        <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
           My Account
         </p>
 
@@ -628,7 +628,7 @@ export default function OrdersPage() {
                   {/* ORDER HEADER */}
                   <div className="flex flex-col gap-4 border-b pb-5 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p className="font-bold text-[#A67C00]">
+                      <p className="font-bold text-[#127256]">
                         Order #{order.id}
                       </p>
 
@@ -680,7 +680,7 @@ export default function OrdersPage() {
                           </div>
                         </div>
 
-                        <p className="font-black text-[#A67C00]">
+                        <p className="font-black text-[#127256]">
                           {formatPrice(
                             Number(item.price) *
                             Number(item.quantity)
@@ -696,7 +696,7 @@ export default function OrdersPage() {
                       Order Total
                     </p>
 
-                    <p className="text-2xl font-black text-[#A67C00]">
+                    <p className="text-2xl font-black text-[#127256]">
                       {formatPrice(order.total_amount)}
                     </p>
                   </div>
@@ -845,7 +845,7 @@ export default function OrdersPage() {
                                     ""
                                   );
                                 }}
-                                className="rounded-full border border-[#A67C00] bg-white px-5 py-3 text-sm font-bold text-[#8A6500]"
+                                className="rounded-full border border-[#127256] bg-white px-5 py-3 text-sm font-bold text-[#8A6500]"
                               >
                                 {status === "processing" ||
                                 status === "pending"
@@ -872,7 +872,7 @@ export default function OrdersPage() {
                                     )
                                   }
                                   placeholder="Explain what happened (at least 10 characters)."
-                                  className="mt-2 w-full rounded-xl border p-3 outline-none focus:border-[#D4AF37]"
+                                  className="mt-2 w-full rounded-xl border p-3 outline-none focus:border-[#128563]"
                                 />
 
                                 <p className="mt-1 text-xs text-gray-500">
@@ -1052,7 +1052,7 @@ export default function OrdersPage() {
                           )
                         }
                         placeholder="Write an optional review..."
-                        className="mt-4 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                        className="mt-4 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#128563]"
                       />
 
                       {reviewMessage && (
