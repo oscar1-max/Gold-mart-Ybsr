@@ -79,7 +79,7 @@ const quickHelp = [
 
 export default function HelpPage() {
   return (
-    <main className="min-h-screen bg-[#F7F8F6] pb-28 text-[#202A31] md:pb-14">
+    <main className="min-h-screen bg-[#f5f8f6] pb-28 text-[#1b3329] md:pb-14">
       <section aria-label="Help centre introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(120deg,#273C50,#4D7188,#D1AB7A)" }}>
         <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🎧</div>
         <div className="relative">
@@ -94,9 +94,9 @@ export default function HelpPage() {
         </div>
       </section>
 
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
-      <header className="border-b border-[#E8E1D5] bg-white">
+      <header className="border-b border-[#e0eae3] bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-5">
           <Link
             href="/"
@@ -110,7 +110,7 @@ export default function HelpPage() {
 
           <Link
             href="/account"
-            className="rounded-full border border-[#E8E1D5] px-4 py-2 text-sm font-bold transition hover:border-[#C5A46D]"
+            className="rounded-full border border-[#e0eae3] px-4 py-2 text-sm font-bold transition hover:border-[#68a98c]"
           >
             My Account
           </Link>
@@ -120,15 +120,15 @@ export default function HelpPage() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <Link
           href="/"
-          className="text-sm font-bold text-[#96713D] hover:underline"
+          className="text-sm font-bold text-[#176c52] hover:underline"
         >
           ← Back to Home
         </Link>
 
         {/* HELP CENTRE HERO */}
 
-        <section className="mt-6 overflow-hidden rounded-[28px] bg-[#17191D] px-6 py-9 text-white sm:px-10">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+        <section className="mt-6 overflow-hidden rounded-[28px] bg-[#162e25] px-6 py-9 text-white sm:px-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">
             GoldMart Customer Care
           </p>
 
@@ -144,7 +144,7 @@ export default function HelpPage() {
 
           <Link
             href="/support"
-            className="mt-7 inline-flex items-center justify-center rounded-full bg-[#C5A46D] px-7 py-3 text-sm font-extrabold text-[#17191D] transition hover:bg-[#E9D9BB]"
+            className="mt-7 inline-flex items-center justify-center rounded-full bg-[#68a98c] px-7 py-3 text-sm font-extrabold text-[#162e25] transition hover:bg-[#ddf1e3]"
           >
             🎫 Contact GoldMart Support →
           </Link>
@@ -153,7 +153,7 @@ export default function HelpPage() {
         {/* QUICK HELP */}
 
         <section className="mt-10">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#176c52]">
             How can we help?
           </p>
 
@@ -166,9 +166,9 @@ export default function HelpPage() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="group rounded-[22px] border border-[#E8E1D5] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[#C5A46D] hover:shadow-md"
+                className="group rounded-[22px] border border-[#e0eae3] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[#68a98c] hover:shadow-md"
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F5F1E9] text-2xl">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#ebf4ed] text-2xl">
                   {item.icon}
                 </span>
 
@@ -180,7 +180,7 @@ export default function HelpPage() {
                   {item.description}
                 </p>
 
-                <span className="mt-4 inline-block text-sm font-bold text-[#96713D]">
+                <span className="mt-4 inline-block text-sm font-bold text-[#176c52]">
                   Open →
                 </span>
               </Link>
@@ -191,7 +191,7 @@ export default function HelpPage() {
         {/* FAQ */}
 
         <section className="mt-12">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#96713D]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#176c52]">
             Common Questions
           </p>
 
@@ -207,7 +207,7 @@ export default function HelpPage() {
             {questions.map((item) => (
               <details
                 key={item.question}
-                className="group rounded-2xl border border-[#E8E1D5] bg-white p-5 shadow-sm"
+                className="group rounded-2xl border border-[#e0eae3] bg-white p-5 shadow-sm"
               >
                 <summary className="cursor-pointer font-bold">
                   {item.question}
@@ -223,8 +223,8 @@ export default function HelpPage() {
 
         {/* CONTACT SUPPORT */}
 
-        <section className="mt-12 rounded-[26px] bg-[#17191D] p-7 text-white sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#E9D9BB]">
+        <section className="mt-12 rounded-[26px] bg-[#162e25] p-7 text-white sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#ddf1e3]">
             Need More Assistance?
           </p>
 
@@ -240,7 +240,7 @@ export default function HelpPage() {
 
           <Link
             href="/support"
-            className="mt-6 inline-flex rounded-full bg-[#C5A46D] px-7 py-3 text-sm font-bold text-[#17191D] transition hover:bg-[#E9D9BB]"
+            className="mt-6 inline-flex rounded-full bg-[#68a98c] px-7 py-3 text-sm font-bold text-[#162e25] transition hover:bg-[#ddf1e3]"
           >
             Open Support Ticket →
           </Link>
