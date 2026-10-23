@@ -727,7 +727,7 @@ export default function AdminRefundsPage() {
   // =============================================
 
   return (
-    <main className="min-h-screen bg-[#F7F9F8] pb-32 text-[#202A31] md:pb-12">
+    <main className="min-h-screen bg-[#f5f7f6] pb-32 text-[#1b3329] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
         <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(115deg,#3F322A,#866744 56%,#C7A779)"}}>
@@ -736,25 +736,25 @@ export default function AdminRefundsPage() {
             <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#FFE5B8"}}>GOLDMART PRIVATE ADMIN · FINANCIAL REVIEW</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Manage Refunds</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Clear, careful visibility into refund requests.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#B7EDCF]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#def3e6]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Reports</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Reports</Link>
           <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#284F55] bg-[#284F55] text-white">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#DDE5E1] bg-white text-[#506363] hover:border-[#93BBB0] hover:bg-[#F1F8F5]">Support</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#dee9e2] bg-white text-[#506363] hover:border-[#8fbfa7] hover:bg-[#ebf5ee]">Support</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#96713D] via-[#E9D9BB] to-[#C5A46D]" />
+      <div className="h-1 bg-gradient-to-r from-[#176c52] via-[#ddf1e3] to-[#68a98c]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#E8E1D5] bg-white">
+      <header className="border-b border-[#e0eae3] bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
           <Link
             href="/"
@@ -780,7 +780,7 @@ export default function AdminRefundsPage() {
         {/* HERO */}
 
         <section className="rounded-[28px] bg-[#253F48] p-7 text-white sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9D9BB]">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#ddf1e3]">
             GoldMart Administration
           </p>
 
@@ -895,7 +895,7 @@ export default function AdminRefundsPage() {
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-2xl border border-[#E8E1D5] bg-white p-5"
+                  className="rounded-2xl border border-[#e0eae3] bg-white p-5"
                 >
                   <div className="text-2xl">
                     {stat.icon}
@@ -987,7 +987,7 @@ export default function AdminRefundsPage() {
             {!loading &&
               !loadError &&
               visibleRequests.length === 0 && (
-                <div className="mt-6 rounded-3xl border border-[#E8E1D5] bg-white p-10 text-center">
+                <div className="mt-6 rounded-3xl border border-[#e0eae3] bg-white p-10 text-center">
                   <div className="text-4xl">
                     📭
                   </div>
@@ -1031,13 +1031,13 @@ export default function AdminRefundsPage() {
                       return (
                         <article
                           key={request.id}
-                          className="overflow-hidden rounded-3xl border border-[#E8E1D5] bg-white shadow-sm"
+                          className="overflow-hidden rounded-3xl border border-[#e0eae3] bg-white shadow-sm"
                         >
                           {/* CARD HEADER */}
 
                           <div className="flex flex-wrap items-center justify-between gap-3 border-b p-5 sm:p-7">
                             <div>
-                              <p className="text-xs font-bold text-[#96713D]">
+                              <p className="text-xs font-bold text-[#176c52]">
                                 Refund Request #
                                 {request.id}
                               </p>
@@ -1068,8 +1068,8 @@ export default function AdminRefundsPage() {
                           {/* BUYER DETAILS */}
 
                           <div className="grid gap-4 p-5 sm:grid-cols-2 sm:p-7">
-                            <div className="rounded-2xl bg-[#FAF8F3] p-4">
-                              <p className="text-xs font-bold text-[#96713D]">
+                            <div className="rounded-2xl bg-[#f5f8f5] p-4">
+                              <p className="text-xs font-bold text-[#176c52]">
                                 Buyer
                               </p>
 
@@ -1084,8 +1084,8 @@ export default function AdminRefundsPage() {
                               </p>
                             </div>
 
-                            <div className="rounded-2xl bg-[#FAF8F3] p-4">
-                              <p className="text-xs font-bold text-[#96713D]">
+                            <div className="rounded-2xl bg-[#f5f8f5] p-4">
+                              <p className="text-xs font-bold text-[#176c52]">
                                 Request Details
                               </p>
 
@@ -1126,7 +1126,7 @@ export default function AdminRefundsPage() {
                           {/* BUYER'S REASON */}
 
                           <div className="mx-5 rounded-2xl border p-4 sm:mx-7">
-                            <p className="text-xs font-bold text-[#96713D]">
+                            <p className="text-xs font-bold text-[#176c52]">
                               Buyer's Reason
                             </p>
 
@@ -1139,7 +1139,7 @@ export default function AdminRefundsPage() {
                           {/* REVIEW NOTE */}
 
                           {request.review_note && (
-                            <div className="mx-5 mt-4 rounded-2xl bg-[#FAF8F3] p-4 text-sm sm:mx-7">
+                            <div className="mx-5 mt-4 rounded-2xl bg-[#f5f8f5] p-4 text-sm sm:mx-7">
                               <strong>
                                 Admin Note:
                               </strong>{" "}
@@ -1195,7 +1195,7 @@ export default function AdminRefundsPage() {
                                     busyId !== null ||
                                     blocked
                                   }
-                                  className="rounded-full bg-[#254F54] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
+                                  className="rounded-full bg-[#145d4a] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
                                 >
                                   {busy
                                     ? "Processing..."
