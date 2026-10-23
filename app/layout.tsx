@@ -5,6 +5,7 @@ import "./globals.css";
 import { CartProvider } from "../components/CartProvider";
 import GlobalNavigation from "../components/GlobalNavigation";
 import RegisterServiceWorker from "../components/RegisterServiceWorker";
+import CommerceShell from "../components/CommerceShell";
 
 export const metadata: Metadata = {
   title: {
@@ -41,7 +42,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <CartProvider>
-          {children}
+          <CommerceShell>{children}</CommerceShell>
 
           <GlobalNavigation />
           <RegisterServiceWorker />
