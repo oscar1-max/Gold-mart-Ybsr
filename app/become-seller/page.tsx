@@ -84,7 +84,7 @@ export default function BecomeSellerPage() {
           href="/"
           className="text-2xl font-black"
         >
-          Gold<span className="text-[#D4AF37]">Mart</span>
+          Gold<span className="text-[#FF6B00]">Mart</span>
         </Link>
 
         <div className="mt-10 rounded-3xl bg-white p-6 shadow-sm sm:p-10">
@@ -93,7 +93,7 @@ export default function BecomeSellerPage() {
             🏪
           </div>
 
-          <p className="mt-6 text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
+          <p className="mt-6 text-sm font-bold uppercase tracking-wider text-[#FF6B00]">
             GoldMart Seller Center
           </p>
 
@@ -151,7 +151,7 @@ export default function BecomeSellerPage() {
             type="button"
             onClick={becomeSeller}
             disabled={loading}
-            className="mt-8 w-full rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+            className="mt-8 w-full rounded-xl bg-black py-4 font-bold text-white transition hover:bg-[#FF6B00] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading
               ? "Setting up seller account..."

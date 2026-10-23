@@ -92,7 +92,7 @@ function statusClass(value: string) {
     case "in_progress":
       return "bg-blue-50 text-blue-800";
     case "resolved":
-      return "bg-emerald-50 text-emerald-800";
+      return "bg-orange-50 text-orange-800";
     case "closed":
       return "bg-stone-100 text-stone-700";
     default:
@@ -443,48 +443,48 @@ export default function AdminSupportPage() {
   }, [tickets, search, filter]);
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#0A1F1A] md:pb-12">
+    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#14263D] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
+        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
           <span aria-hidden="true" className="pointer-events-none absolute -right-6 -top-12 text-[150px] leading-none opacity-10">✉</span>
           <div className="relative">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#F7F7F5"}}>GOLDMART PRIVATE ADMIN · CUSTOMER CARE DESK</p>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#FFF8F2"}}>GOLDMART PRIVATE ADMIN · CUSTOMER CARE DESK</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Support Inbox</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">A focused place to manage support conversations.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#F7F7F5]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#FFF8F2]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#1A3C32] bg-[#1A3C32] text-white">Support</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#243B53] bg-[#243B53] text-white">Support</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#1A3C32] via-[#F7F7F5] to-[#D4AF37]" />
+      <div className="h-1 bg-gradient-to-r from-[#243B53] via-[#FFF8F2] to-[#FF6B00]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#F7F7F5] bg-white">
+      <header className="border-b border-[#FFF8F2] bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6">
           <Link
             href="/"
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#FF6B00]">
               Mart
             </span>
           </Link>
 
           <Link
             href="/account"
-            className="rounded-full border border-[#F7F7F5] px-4 py-2 text-sm font-bold"
+            className="rounded-full border border-[#FFF8F2] px-4 py-2 text-sm font-bold"
           >
             My Account
           </Link>
@@ -495,8 +495,8 @@ export default function AdminSupportPage() {
 
         {/* HERO */}
 
-        <section className="rounded-[28px] bg-[#1A3C32] p-7 text-white sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F7F7F5]">
+        <section className="rounded-[28px] bg-[#243B53] p-7 text-white sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFF8F2]">
             GoldMart Administration
           </p>
 
@@ -504,7 +504,7 @@ export default function AdminSupportPage() {
             🎧 Admin Support Inbox
           </h1>
 
-          <p className="mt-3 max-w-xl text-sm leading-7 text-[#F7F7F5]">
+          <p className="mt-3 max-w-xl text-sm leading-7 text-[#FFF8F2]">
             Review support requests, help
             customers, and manage ticket
             progress from one place.
@@ -522,19 +522,19 @@ export default function AdminSupportPage() {
         {/* LOGIN REQUIRED */}
 
         {access === "login" && (
-          <div className="mt-7 rounded-3xl border border-[#F7F7F5] bg-white p-8 text-center">
+          <div className="mt-7 rounded-3xl border border-[#FFF8F2] bg-white p-8 text-center">
             <h2 className="text-xl font-black">
               Please sign in
             </h2>
 
-            <p className="mt-3 text-sm text-[#D4AF37]">
+            <p className="mt-3 text-sm text-[#FF6B00]">
               Sign in with your authorized
               GoldMart administrator account.
             </p>
 
             <Link
               href="/login"
-              className="mt-6 inline-block rounded-full bg-[#1A3C32] px-6 py-3 text-sm font-bold text-white"
+              className="mt-6 inline-block rounded-full bg-[#243B53] px-6 py-3 text-sm font-bold text-white"
             >
               Go to Login
             </Link>
@@ -549,7 +549,7 @@ export default function AdminSupportPage() {
               Administrator Access Required
             </h2>
 
-            <p className="mt-3 text-sm text-[#D4AF37]">
+            <p className="mt-3 text-sm text-[#FF6B00]">
               This account does not have
               permission to manage GoldMart
               support tickets.
@@ -557,7 +557,7 @@ export default function AdminSupportPage() {
 
             <Link
               href="/account"
-              className="mt-6 inline-block rounded-full bg-[#1A3C32] px-6 py-3 text-sm font-bold text-white"
+              className="mt-6 inline-block rounded-full bg-[#243B53] px-6 py-3 text-sm font-bold text-white"
             >
               Back to Account
             </Link>
@@ -595,13 +595,13 @@ export default function AdminSupportPage() {
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-[22px] border border-[#F7F7F5] bg-white p-5 shadow-sm"
+                  className="rounded-[22px] border border-[#FFF8F2] bg-white p-5 shadow-sm"
                 >
                   <span className="text-2xl">
                     {item.icon}
                   </span>
 
-                  <p className="mt-3 text-xs font-semibold text-[#D4AF37]">
+                  <p className="mt-3 text-xs font-semibold text-[#FF6B00]">
                     {item.label}
                   </p>
 
@@ -618,7 +618,7 @@ export default function AdminSupportPage() {
 
               {/* TICKET LIST */}
 
-              <section className="min-w-0 rounded-3xl border border-[#F7F7F5] bg-white p-5 shadow-sm sm:p-6">
+              <section className="min-w-0 rounded-3xl border border-[#FFF8F2] bg-white p-5 shadow-sm sm:p-6">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="text-xl font-black">
                     Support Tickets
@@ -630,7 +630,7 @@ export default function AdminSupportPage() {
                     onClick={() =>
                       void loadTickets()
                     }
-                    className="text-sm font-bold text-[#1A3C32] disabled:opacity-50"
+                    className="text-sm font-bold text-[#243B53] disabled:opacity-50"
                   >
                     Refresh
                   </button>
@@ -643,7 +643,7 @@ export default function AdminSupportPage() {
                     setSearch(event.target.value)
                   }
                   placeholder="Search ticket, customer ID, issue..."
-                  className="mt-5 w-full rounded-xl border border-[#F7F7F5] px-4 py-3 text-sm outline-none focus:border-[#D4AF37]"
+                  className="mt-5 w-full rounded-xl border border-[#FFF8F2] px-4 py-3 text-sm outline-none focus:border-[#FF6B00]"
                 />
 
                 <select
@@ -651,7 +651,7 @@ export default function AdminSupportPage() {
                   onChange={(event) =>
                     setFilter(event.target.value)
                   }
-                  className="mt-3 w-full rounded-xl border border-[#F7F7F5] bg-white px-4 py-3 text-sm"
+                  className="mt-3 w-full rounded-xl border border-[#FFF8F2] bg-white px-4 py-3 text-sm"
                 >
                   <option value="all">
                     All Statuses
@@ -668,7 +668,7 @@ export default function AdminSupportPage() {
                 </select>
 
                 {loading && (
-                  <p className="mt-6 text-sm text-[#D4AF37]">
+                  <p className="mt-6 text-sm text-[#FF6B00]">
                     Loading support tickets...
                   </p>
                 )}
@@ -704,7 +704,7 @@ export default function AdminSupportPage() {
                         No matching tickets
                       </p>
 
-                      <p className="mt-2 text-sm text-[#D4AF37]">
+                      <p className="mt-2 text-sm text-[#FF6B00]">
                         New support requests
                         will appear here.
                       </p>
@@ -720,16 +720,16 @@ export default function AdminSupportPage() {
                         onClick={() =>
                           void openTicket(ticket)
                         }
-                        className={`w-full rounded-2xl border p-4 text-left transition hover:border-[#D4AF37] ${
+                        className={`w-full rounded-2xl border p-4 text-left transition hover:border-[#FF6B00] ${
                           String(
                             selectedTicket?.id
                           ) === String(ticket.id)
-                            ? "border-[#D4AF37] bg-[#FFFFFF]"
-                            : "border-[#F7F7F5]"
+                            ? "border-[#FF6B00] bg-[#FFFFFF]"
+                            : "border-[#FFF8F2]"
                         }`}
                       >
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          <span className="text-xs font-bold text-[#1A3C32]">
+                          <span className="text-xs font-bold text-[#243B53]">
                             Ticket #{ticket.id}
                           </span>
 
@@ -748,12 +748,12 @@ export default function AdminSupportPage() {
                           {ticket.subject}
                         </p>
 
-                        <p className="mt-2 text-xs text-[#D4AF37]">
+                        <p className="mt-2 text-xs text-[#FF6B00]">
                           Customer ID:{" "}
                           {ticket.user_id}
                         </p>
 
-                        <p className="mt-1 text-xs capitalize text-[#D4AF37]">
+                        <p className="mt-1 text-xs capitalize text-[#FF6B00]">
                           {ticket.category}
                           {" · "}
                           {formatDate(
@@ -768,7 +768,7 @@ export default function AdminSupportPage() {
 
               {/* SELECTED TICKET */}
 
-              <section className="min-w-0 rounded-3xl border border-[#F7F7F5] bg-white p-5 shadow-sm sm:p-6">
+              <section className="min-w-0 rounded-3xl border border-[#FFF8F2] bg-white p-5 shadow-sm sm:p-6">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="text-xl font-black">
                     Ticket Details
@@ -781,7 +781,7 @@ export default function AdminSupportPage() {
                       onClick={() =>
                         void refreshConversation()
                       }
-                      className="text-sm font-bold text-[#1A3C32] disabled:opacity-50"
+                      className="text-sm font-bold text-[#243B53] disabled:opacity-50"
                     >
                       Refresh
                     </button>
@@ -794,7 +794,7 @@ export default function AdminSupportPage() {
                       💬
                     </p>
 
-                    <p className="mt-4 text-sm text-[#D4AF37]">
+                    <p className="mt-4 text-sm text-[#FF6B00]">
                       Select a ticket to read
                       the conversation and
                       respond to the customer.
@@ -805,7 +805,7 @@ export default function AdminSupportPage() {
                 {selectedTicket && (
                   <div className="mt-5">
                     <div className="rounded-2xl bg-[#FFFFFF] p-5">
-                      <p className="text-xs font-bold text-[#1A3C32]">
+                      <p className="text-xs font-bold text-[#243B53]">
                         Ticket #
                         {selectedTicket.id}
                       </p>
@@ -814,12 +814,12 @@ export default function AdminSupportPage() {
                         {selectedTicket.subject}
                       </h3>
 
-                      <p className="mt-2 text-sm text-[#D4AF37]">
+                      <p className="mt-2 text-sm text-[#FF6B00]">
                         Customer #
                         {selectedTicket.user_id}
                       </p>
 
-                      <p className="mt-1 text-xs text-[#D4AF37]">
+                      <p className="mt-1 text-xs text-[#FF6B00]">
                         Created{" "}
                         {formatDate(
                           selectedTicket.created_at
@@ -849,7 +849,7 @@ export default function AdminSupportPage() {
 
                           <form
                             onSubmit={updateStatus}
-                            className="mt-6 rounded-2xl border border-[#F7F7F5] p-4"
+                            className="mt-6 rounded-2xl border border-[#FFF8F2] p-4"
                           >
                             <label
                               htmlFor="ticket-status"
@@ -868,7 +868,7 @@ export default function AdminSupportPage() {
                                   event.target.value
                                 )
                               }
-                              className="mt-3 w-full rounded-xl border border-[#F7F7F5] bg-white px-4 py-3 text-sm"
+                              className="mt-3 w-full rounded-xl border border-[#FFF8F2] bg-white px-4 py-3 text-sm"
                             >
                               {STATUS_OPTIONS.map(
                                 (item) => (
@@ -891,7 +891,7 @@ export default function AdminSupportPage() {
                                 statusDraft ===
                                   selectedTicket.status
                               }
-                              className="mt-3 rounded-full bg-[#0A1F1A] px-5 py-2.5 text-sm font-bold text-white disabled:opacity-40"
+                              className="mt-3 rounded-full bg-[#14263D] px-5 py-2.5 text-sm font-bold text-white disabled:opacity-40"
                             >
                               {savingStatus
                                 ? "Saving..."
@@ -908,7 +908,7 @@ export default function AdminSupportPage() {
 
                             {messages.length ===
                               0 && (
-                              <p className="mt-4 text-sm text-[#D4AF37]">
+                              <p className="mt-4 text-sm text-[#FF6B00]">
                                 No messages found.
                               </p>
                             )}
@@ -932,14 +932,14 @@ export default function AdminSupportPage() {
                                       className={`rounded-2xl p-4 ${
                                         fromCustomer
                                           ? "bg-[#FFFFFF]"
-                                          : "bg-[#0A1F1A] text-white"
+                                          : "bg-[#14263D] text-white"
                                       }`}
                                     >
                                       <p
                                         className={`text-xs font-bold ${
                                           fromCustomer
-                                            ? "text-[#1A3C32]"
-                                            : "text-[#F7F7F5]"
+                                            ? "text-[#243B53]"
+                                            : "text-[#FFF8F2]"
                                         }`}
                                       >
                                         {fromCustomer
@@ -956,8 +956,8 @@ export default function AdminSupportPage() {
                                       <p
                                         className={`mt-3 text-xs ${
                                           fromCustomer
-                                            ? "text-[#D4AF37]"
-                                            : "text-[#F7F7F5]"
+                                            ? "text-[#FF6B00]"
+                                            : "text-[#FFF8F2]"
                                         }`}
                                       >
                                         {formatDate(
@@ -975,7 +975,7 @@ export default function AdminSupportPage() {
 
                           {selectedTicket.status ===
                           "closed" ? (
-                            <p className="mt-6 rounded-xl bg-[#FFFFFF] p-4 text-sm text-[#D4AF37]">
+                            <p className="mt-6 rounded-xl bg-[#FFFFFF] p-4 text-sm text-[#FF6B00]">
                               This ticket is
                               closed. Change its
                               status before
@@ -986,7 +986,7 @@ export default function AdminSupportPage() {
                               onSubmit={
                                 sendReply
                               }
-                              className="mt-7 border-t border-[#F7F7F5] pt-5"
+                              className="mt-7 border-t border-[#FFF8F2] pt-5"
                             >
                               <label
                                 htmlFor="admin-reply"
@@ -1013,7 +1013,7 @@ export default function AdminSupportPage() {
                                   )
                                 }
                                 placeholder="Write a helpful response..."
-                                className="mt-3 w-full resize-y rounded-xl border border-[#F7F7F5] px-4 py-3 text-sm outline-none focus:border-[#D4AF37]"
+                                className="mt-3 w-full resize-y rounded-xl border border-[#FFF8F2] px-4 py-3 text-sm outline-none focus:border-[#FF6B00]"
                               />
 
                               <button
@@ -1022,7 +1022,7 @@ export default function AdminSupportPage() {
                                   sendingReply ||
                                   !replyText.trim()
                                 }
-                                className="mt-3 rounded-full bg-[#D4AF37] px-6 py-3 text-sm font-bold text-[#0A1F1A] disabled:opacity-50"
+                                className="mt-3 rounded-full bg-[#FF6B00] px-6 py-3 text-sm font-bold text-[#14263D] disabled:opacity-50"
                               >
                                 {sendingReply
                                   ? "Sending..."
@@ -1043,7 +1043,7 @@ export default function AdminSupportPage() {
                           {notice && (
                             <p
                               role="status"
-                              className="mt-4 rounded-xl bg-emerald-50 p-4 text-sm font-bold text-emerald-800"
+                              className="mt-4 rounded-xl bg-orange-50 p-4 text-sm font-bold text-orange-800"
                             >
                               {notice}
                             </p>
@@ -1055,7 +1055,7 @@ export default function AdminSupportPage() {
               </section>
             </div>
 
-            <p className="mt-6 text-center text-xs text-[#D4AF37]">
+            <p className="mt-6 text-center text-xs text-[#FF6B00]">
               GoldMart Support Administration
               · Authorized personnel only
             </p>
