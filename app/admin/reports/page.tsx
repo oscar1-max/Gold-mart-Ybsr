@@ -68,7 +68,7 @@ function statusClass(status: string) {
     case "reviewed":
       return "bg-blue-50 text-blue-800";
     case "resolved":
-      return "bg-emerald-50 text-emerald-800";
+      return "bg-orange-50 text-orange-800";
     case "dismissed":
       return "bg-stone-100 text-stone-700";
     default:
@@ -378,48 +378,48 @@ export default function AdminReportsPage() {
     loading || busyAction !== null;
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#0A1F1A] md:pb-12">
+    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#14263D] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
+        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
           <span aria-hidden="true" className="pointer-events-none absolute -right-6 -top-12 text-[150px] leading-none opacity-10">▤</span>
           <div className="relative">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#F7F7F5"}}>GOLDMART PRIVATE ADMIN · SAFETY & TRUST</p>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#FFF8F2"}}>GOLDMART PRIVATE ADMIN · SAFETY & TRUST</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Reports & Users</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Manage reviews, reports and account safeguards.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#F7F7F5]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#FFF8F2]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#1A3C32] bg-[#1A3C32] text-white">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Support</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#243B53] bg-[#243B53] text-white">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Support</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#1A3C32] via-[#F7F7F5] to-[#D4AF37]" />
+      <div className="h-1 bg-gradient-to-r from-[#243B53] via-[#FFF8F2] to-[#FF6B00]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#F7F7F5] bg-white">
+      <header className="border-b border-[#FFF8F2] bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link
             href="/"
             className="text-2xl font-black tracking-tight"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#FF6B00]">
               Mart
             </span>
           </Link>
 
           <Link
             href="/account"
-            className="rounded-full border border-[#F7F7F5] px-4 py-2 text-xs font-bold transition hover:border-[#D4AF37] sm:text-sm"
+            className="rounded-full border border-[#FFF8F2] px-4 py-2 text-xs font-bold transition hover:border-[#FF6B00] sm:text-sm"
           >
             ← Admin Dashboard
           </Link>
@@ -430,14 +430,14 @@ export default function AdminReportsPage() {
 
         {/* HERO */}
 
-        <section className="relative overflow-hidden rounded-[28px] bg-[#1A3C32] p-7 text-white sm:p-10">
+        <section className="relative overflow-hidden rounded-[28px] bg-[#243B53] p-7 text-white sm:p-10">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full border border-[#D4AF37]/25"
+            className="pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full border border-[#FF6B00]/25"
           />
 
           <div className="relative">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F7F7F5]">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFF8F2]">
               GoldMart Administration
             </p>
 
@@ -445,7 +445,7 @@ export default function AdminReportsPage() {
               Reports & User Safety
             </h1>
 
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#F7F7F5]">
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#FFF8F2]">
               Review marketplace reports,
               investigate complaints and
               manage account restrictions.
@@ -454,14 +454,14 @@ export default function AdminReportsPage() {
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/admin/support"
-                className="rounded-full bg-[#D4AF37] px-5 py-3 text-sm font-bold text-[#0A1F1A] transition hover:bg-[#F7F7F5]"
+                className="rounded-full bg-[#FF6B00] px-5 py-3 text-sm font-bold text-[#14263D] transition hover:bg-[#FFF8F2]"
               >
                 🎧 Support Inbox →
               </Link>
 
               <Link
                 href="/admin/refunds"
-                className="rounded-full border border-[#D4AF37]/60 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+                className="rounded-full border border-[#FF6B00]/60 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
               >
                 Manage Refunds →
               </Link>
@@ -474,7 +474,7 @@ export default function AdminReportsPage() {
         <section className="mt-9">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1A3C32]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#243B53]">
                 Marketplace Moderation
               </p>
 
@@ -489,7 +489,7 @@ export default function AdminReportsPage() {
                 void loadReports()
               }
               disabled={actionDisabled}
-              className="rounded-full border border-[#F5E6A3] bg-white px-5 py-2.5 text-sm font-bold transition hover:bg-[#F7F7F5] disabled:opacity-50"
+              className="rounded-full border border-[#FFE9CC] bg-white px-5 py-2.5 text-sm font-bold transition hover:bg-[#FFF8F2] disabled:opacity-50"
             >
               {loading
                 ? "Refreshing..."
@@ -527,13 +527,13 @@ export default function AdminReportsPage() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="rounded-[22px] border border-[#F7F7F5] bg-white p-4 shadow-sm sm:p-5"
+                className="rounded-[22px] border border-[#FFF8F2] bg-white p-4 shadow-sm sm:p-5"
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F7F7F5] text-xl">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFF8F2] text-xl">
                   {item.icon}
                 </span>
 
-                <p className="mt-4 text-xs font-semibold text-[#D4AF37]">
+                <p className="mt-4 text-xs font-semibold text-[#FF6B00]">
                   {item.title}
                 </p>
 
@@ -546,7 +546,7 @@ export default function AdminReportsPage() {
             ))}
           </div>
 
-          <p className="mt-3 text-xs leading-5 text-[#D4AF37]">
+          <p className="mt-3 text-xs leading-5 text-[#FF6B00]">
             Figures reflect reports returned
             by the reports API, not necessarily
             every user on GoldMart.
@@ -558,7 +558,7 @@ export default function AdminReportsPage() {
         {notice && (
           <div
             role="status"
-            className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800"
+            className="mt-6 rounded-2xl border border-orange-200 bg-orange-50 p-4 text-sm font-semibold text-orange-800"
           >
             {notice}
           </div>
@@ -591,7 +591,7 @@ export default function AdminReportsPage() {
               onClick={() =>
                 void loadReports()
               }
-              className="mt-4 rounded-full bg-[#0A1F1A] px-5 py-2.5 text-sm font-bold text-white"
+              className="mt-4 rounded-full bg-[#14263D] px-5 py-2.5 text-sm font-bold text-white"
             >
               Try Again
             </button>
@@ -600,14 +600,14 @@ export default function AdminReportsPage() {
 
         {/* FILTERS */}
 
-        <section className="mt-9 rounded-[24px] border border-[#F7F7F5] bg-white p-5 shadow-sm sm:p-6">
+        <section className="mt-9 rounded-[24px] border border-[#FFF8F2] bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-xl font-black">
               Manage Reports
             </h2>
 
             {!loading && !error && (
-              <span className="text-sm font-semibold text-[#D4AF37]">
+              <span className="text-sm font-semibold text-[#FF6B00]">
                 Showing {visibleReports.length} of{" "}
                 {reports.length}
               </span>
@@ -618,7 +618,7 @@ export default function AdminReportsPage() {
             <div>
               <label
                 htmlFor="report-search"
-                className="mb-2 block text-xs font-bold text-[#D4AF37]"
+                className="mb-2 block text-xs font-bold text-[#FF6B00]"
               >
                 Search reports
               </label>
@@ -631,14 +631,14 @@ export default function AdminReportsPage() {
                   setSearch(event.target.value)
                 }
                 placeholder="Report ID, user, reason..."
-                className="w-full rounded-xl border border-[#F7F7F5] px-4 py-3 text-sm outline-none focus:border-[#D4AF37]"
+                className="w-full rounded-xl border border-[#FFF8F2] px-4 py-3 text-sm outline-none focus:border-[#FF6B00]"
               />
             </div>
 
             <div>
               <label
                 htmlFor="report-status"
-                className="mb-2 block text-xs font-bold text-[#D4AF37]"
+                className="mb-2 block text-xs font-bold text-[#FF6B00]"
               >
                 Filter by status
               </label>
@@ -651,7 +651,7 @@ export default function AdminReportsPage() {
                     event.target.value
                   )
                 }
-                className="w-full rounded-xl border border-[#F7F7F5] bg-white px-4 py-3 text-sm outline-none focus:border-[#D4AF37]"
+                className="w-full rounded-xl border border-[#FFF8F2] bg-white px-4 py-3 text-sm outline-none focus:border-[#FF6B00]"
               >
                 {STATUS_OPTIONS.map(
                   (status) => (
@@ -673,7 +673,7 @@ export default function AdminReportsPage() {
         {/* LOADING */}
 
         {loading && (
-          <div className="mt-6 rounded-3xl border border-[#F7F7F5] bg-white p-10 text-center">
+          <div className="mt-6 rounded-3xl border border-[#FFF8F2] bg-white p-10 text-center">
             <p className="text-4xl">📋</p>
 
             <p className="mt-4 font-bold">
@@ -687,7 +687,7 @@ export default function AdminReportsPage() {
         {!loading &&
           !error &&
           visibleReports.length === 0 && (
-            <div className="mt-6 rounded-3xl border border-[#F7F7F5] bg-white p-10 text-center">
+            <div className="mt-6 rounded-3xl border border-[#FFF8F2] bg-white p-10 text-center">
               <p className="text-4xl">📭</p>
 
               <h3 className="mt-4 text-xl font-black">
@@ -696,7 +696,7 @@ export default function AdminReportsPage() {
                   : "No matching reports"}
               </h3>
 
-              <p className="mt-2 text-sm text-[#D4AF37]">
+              <p className="mt-2 text-sm text-[#FF6B00]">
                 {reports.length === 0
                   ? "Buyer and seller reports will appear here."
                   : "Try another search or status filter."}
@@ -711,12 +711,12 @@ export default function AdminReportsPage() {
             {visibleReports.map((report) => (
               <article
                 key={report.id}
-                className="overflow-hidden rounded-[24px] border border-[#F7F7F5] bg-white p-5 shadow-sm sm:p-7"
+                className="overflow-hidden rounded-[24px] border border-[#FFF8F2] bg-white p-5 shadow-sm sm:p-7"
               >
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="rounded-full bg-[#F7F7F5] px-3 py-1 text-xs font-bold text-[#1A3C32]">
+                      <span className="rounded-full bg-[#FFF8F2] px-3 py-1 text-xs font-bold text-[#243B53]">
                         Report #{report.id}
                       </span>
 
@@ -741,7 +741,7 @@ export default function AdminReportsPage() {
                       {report.reason}
                     </h3>
 
-                    <p className="mt-2 text-xs text-[#D4AF37]">
+                    <p className="mt-2 text-xs text-[#FF6B00]">
                       Submitted{" "}
                       {formatDate(
                         report.created_at
@@ -754,7 +754,7 @@ export default function AdminReportsPage() {
 
                 <div className="mt-6 grid gap-3 md:grid-cols-2">
                   <div className="rounded-2xl bg-[#FFFFFF] p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#1A3C32]">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#243B53]">
                       Reported By
                     </p>
 
@@ -763,7 +763,7 @@ export default function AdminReportsPage() {
                         "GoldMart Member"}
                     </p>
 
-                    <p className="mt-1 text-xs text-[#D4AF37]">
+                    <p className="mt-1 text-xs text-[#FF6B00]">
                       User #{report.reporter_id}
                       {" · "}
                       {report.reporter_role}
@@ -771,7 +771,7 @@ export default function AdminReportsPage() {
                   </div>
 
                   <div className="rounded-2xl bg-[#FFFFFF] p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#1A3C32]">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#243B53]">
                       Reported Account
                     </p>
 
@@ -780,7 +780,7 @@ export default function AdminReportsPage() {
                         "GoldMart Member"}
                     </p>
 
-                    <p className="mt-1 text-xs text-[#D4AF37]">
+                    <p className="mt-1 text-xs text-[#FF6B00]">
                       User #{report.reported_user_id}
                       {" · "}
                       {report.reported_user_role}
@@ -791,24 +791,24 @@ export default function AdminReportsPage() {
                 {/* REPORT DETAILS */}
 
                 {report.message && (
-                  <div className="mt-4 rounded-2xl border border-[#F7F7F5] p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#1A3C32]">
+                  <div className="mt-4 rounded-2xl border border-[#FFF8F2] p-4">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#243B53]">
                       Customer Report
                     </p>
 
-                    <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-[#1A3C32]">
+                    <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-[#243B53]">
                       {report.message}
                     </p>
                   </div>
                 )}
 
                 {report.admin_message && (
-                  <div className="mt-4 rounded-2xl border border-[#F7F7F5] bg-[#FFFFFF] p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#1A3C32]">
+                  <div className="mt-4 rounded-2xl border border-[#FFF8F2] bg-[#FFFFFF] p-4">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#243B53]">
                       Previous Admin Action
                     </p>
 
-                    <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-[#1A3C32]">
+                    <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-[#243B53]">
                       {report.admin_message}
                     </p>
                   </div>
@@ -816,8 +816,8 @@ export default function AdminReportsPage() {
 
                 {/* ADMIN ACTIONS */}
 
-                <div className="mt-6 border-t border-[#F7F7F5] pt-5">
-                  <p className="mb-3 text-xs font-bold uppercase tracking-wide text-[#D4AF37]">
+                <div className="mt-6 border-t border-[#FFF8F2] pt-5">
+                  <p className="mb-3 text-xs font-bold uppercase tracking-wide text-[#FF6B00]">
                     Moderation Actions
                   </p>
 
@@ -832,7 +832,7 @@ export default function AdminReportsPage() {
                             "reviewed"
                           )
                         }
-                        className="rounded-full border border-[#F5E6A3] px-4 py-2.5 text-xs font-bold transition hover:bg-[#FFFFFF] disabled:opacity-50 sm:text-sm"
+                        className="rounded-full border border-[#FFE9CC] px-4 py-2.5 text-xs font-bold transition hover:bg-[#FFFFFF] disabled:opacity-50 sm:text-sm"
                       >
                         Mark Reviewed
                       </button>
@@ -849,7 +849,7 @@ export default function AdminReportsPage() {
                               "resolved"
                             )
                           }
-                          className="rounded-full bg-[#0A1F1A] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#1A3C32] disabled:opacity-50 sm:text-sm"
+                          className="rounded-full bg-[#14263D] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#243B53] disabled:opacity-50 sm:text-sm"
                         >
                           Mark Resolved
                         </button>
@@ -866,7 +866,7 @@ export default function AdminReportsPage() {
                               "dismissed"
                             )
                           }
-                          className="rounded-full border border-[#F5E6A3] px-4 py-2.5 text-xs font-bold transition hover:bg-[#FFFFFF] disabled:opacity-50 sm:text-sm"
+                          className="rounded-full border border-[#FFE9CC] px-4 py-2.5 text-xs font-bold transition hover:bg-[#FFFFFF] disabled:opacity-50 sm:text-sm"
                         >
                           Dismiss
                         </button>
@@ -907,7 +907,7 @@ export default function AdminReportsPage() {
                     )}
                   </div>
 
-                  <p className="mt-4 text-xs leading-5 text-[#D4AF37]">
+                  <p className="mt-4 text-xs leading-5 text-[#FF6B00]">
                     Review the evidence before
                     restricting an account.
                     Account restrictions are
@@ -919,7 +919,7 @@ export default function AdminReportsPage() {
           </section>
         )}
 
-        <p className="mt-9 text-center text-xs text-[#D4AF37]">
+        <p className="mt-9 text-center text-xs text-[#FF6B00]">
           GoldMart Administration ·
           Marketplace Safety & Trust
         </p>

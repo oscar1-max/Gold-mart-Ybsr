@@ -157,12 +157,12 @@ function Metric({
   detail?: string;
 }) {
   return (
-    <div className="rounded-2xl border border-[#F7F7F5] bg-white p-4 shadow-sm">
+    <div className="rounded-2xl border border-[#FFF8F2] bg-white p-4 shadow-sm">
       <p className="text-xs font-semibold text-gray-500 sm:text-sm">
         {label}
       </p>
 
-      <p className="mt-2 text-3xl font-black text-[#D4AF37]">
+      <p className="mt-2 text-3xl font-black text-[#FF6B00]">
         {num(value)}
       </p>
 
@@ -237,7 +237,7 @@ function ComparisonBars({
 
         <div className="h-4 overflow-hidden rounded-full bg-gray-100">
           <div
-            className="h-full rounded-full bg-[#1A3C32]"
+            className="h-full rounded-full bg-[#243B53]"
             style={{ width: `${currentWidth}%` }}
           />
         </div>
@@ -253,7 +253,7 @@ function ComparisonBars({
 
         <div className="h-4 overflow-hidden rounded-full bg-gray-100">
           <div
-            className="h-full rounded-full bg-[#0A1F1A]"
+            className="h-full rounded-full bg-[#14263D]"
             style={{ width: `${previousWidth}%` }}
           />
         </div>
@@ -281,7 +281,7 @@ function TrendLabel({ trend }: { trend: Trend }) {
     <span
       className={`text-sm font-bold ${
         positive
-          ? "text-green-700"
+          ? "text-orange-700"
           : negative
             ? "text-red-700"
             : "text-gray-500"
@@ -520,34 +520,34 @@ export default function AiAdminPage() {
   // ==============================================
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#0A1F1A] md:pb-12">
+    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#14263D] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
+        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
           <span aria-hidden="true" className="pointer-events-none absolute -right-6 -top-12 text-[150px] leading-none opacity-10">◈</span>
           <div className="relative">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#F7F7F5"}}>GOLDMART PRIVATE ADMIN · INTELLIGENCE STUDIO</p>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#FFF8F2"}}>GOLDMART PRIVATE ADMIN · INTELLIGENCE STUDIO</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">AI Admin</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Insights, conversations, and decisions at a glance.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#F7F7F5]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#FFF8F2]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#1A3C32] bg-[#1A3C32] text-white">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Support</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#243B53] bg-[#243B53] text-white">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Support</Link>
         </nav>
       </div>
 
-      <header className="border-b border-[#F5E6A3] bg-white">
+      <header className="border-b border-[#FFE9CC] bg-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-5">
           <Link href="/" className="text-2xl font-black">
             Gold
-            <span className="text-[#1A3C32]">
+            <span className="text-[#243B53]">
               Mart
             </span>
           </Link>
@@ -566,7 +566,7 @@ export default function AiAdminPage() {
 
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
+            <p className="text-sm font-bold uppercase tracking-wider text-[#FF6B00]">
               GoldMart Administration
             </p>
 
@@ -584,7 +584,7 @@ export default function AiAdminPage() {
             type="button"
             disabled={loading || refreshing}
             onClick={() => void loadOverview(true)}
-            className="rounded-full bg-[#1A3C32] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
+            className="rounded-full bg-[#243B53] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
           >
             {refreshing
               ? "Refreshing..."
@@ -592,7 +592,7 @@ export default function AiAdminPage() {
           </button>
         </div>
 
-        <div className="rounded-2xl border border-[#F7F7F5] bg-white p-4 text-sm leading-6 text-gray-600">
+        <div className="rounded-2xl border border-[#FFF8F2] bg-white p-4 text-sm leading-6 text-gray-600">
           <strong className="text-gray-900">
             🔒 Free • Rule-based • Administrator-only
           </strong>
@@ -607,7 +607,7 @@ export default function AiAdminPage() {
         {/* LOADING */}
 
         {loading && (
-          <div className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-8 text-center">
+          <div className="rounded-[21px] border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-8 text-center">
             Loading GoldMart analytics...
           </div>
         )}
@@ -656,8 +656,8 @@ export default function AiAdminPage() {
           <>
             {/* CHAT */}
 
-            <section className="overflow-hidden rounded-3xl border border-[#F7F7F5] bg-white shadow-sm">
-              <div className="flex items-center justify-between gap-3 border-b border-[#F7F7F5] bg-[#F7F7F5] p-5">
+            <section className="overflow-hidden rounded-3xl border border-[#FFF8F2] bg-white shadow-sm">
+              <div className="flex items-center justify-between gap-3 border-b border-[#FFF8F2] bg-[#FFF8F2] p-5">
                 <div>
                   <h2 className="text-xl font-black">
                     💬 Chat with GoldMart Pro
@@ -683,10 +683,10 @@ export default function AiAdminPage() {
 
               <div
                 aria-live="polite"
-                className="max-h-[540px] min-h-[300px] space-y-3 overflow-y-auto bg-[#F7F7F5] p-4 sm:p-6"
+                className="max-h-[540px] min-h-[300px] space-y-3 overflow-y-auto bg-[#FFF8F2] p-4 sm:p-6"
               >
                 {messages.length === 0 && (
-                  <div className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-4">
+                  <div className="rounded-[21px] border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-4">
                     <p className="font-black">
                       Ask me about your marketplace.
                     </p>
@@ -703,7 +703,7 @@ export default function AiAdminPage() {
                           key={item}
                           type="button"
                           onClick={() => setQuestion(item)}
-                          className="rounded-xl border border-[#F5E6A3] bg-[#FFFFFF] px-3 py-2 text-left text-xs font-semibold hover:border-[#1A3C32]"
+                          className="rounded-xl border border-[#FFE9CC] bg-[#FFFFFF] px-3 py-2 text-left text-xs font-semibold hover:border-[#243B53]"
                         >
                           {item}
                         </button>
@@ -724,7 +724,7 @@ export default function AiAdminPage() {
                     <div
                       className={`max-w-[92%] rounded-2xl p-4 text-sm leading-7 sm:max-w-[85%] ${
                         message.role === "user"
-                          ? "bg-[#0A1F1A] text-white"
+                          ? "bg-[#14263D] text-white"
                           : "border bg-white text-gray-900"
                       }`}
                     >
@@ -777,7 +777,7 @@ export default function AiAdminPage() {
                     setQuestion(event.target.value)
                   }
                   placeholder="Example: Check orders and refund requests together."
-                  className="mt-2 w-full rounded-2xl border border-gray-300 p-4 text-sm outline-none focus:border-[#1A3C32]"
+                  className="mt-2 w-full rounded-2xl border border-gray-300 p-4 text-sm outline-none focus:border-[#243B53]"
                 />
 
                 <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
@@ -791,7 +791,7 @@ export default function AiAdminPage() {
                       sending ||
                       question.trim().length < 2
                     }
-                    className="rounded-full bg-[#1A3C32] px-6 py-3 text-sm font-black text-white disabled:opacity-50"
+                    className="rounded-full bg-[#243B53] px-6 py-3 text-sm font-black text-white disabled:opacity-50"
                   >
                     {sending
                       ? "Analyzing..."
@@ -844,7 +844,7 @@ export default function AiAdminPage() {
                 />
 
                 <div className="grid gap-4 lg:grid-cols-2">
-                  <div className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5 shadow-sm">
+                  <div className="rounded-[21px] border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5 shadow-sm">
                     <h3 className="font-black">
                       Last 24 Hours
                     </h3>
@@ -874,7 +874,7 @@ export default function AiAdminPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5 shadow-sm">
+                  <div className="rounded-[21px] border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5 shadow-sm">
                     <h3 className="font-black">
                       Last 7 Days
                     </h3>
@@ -960,7 +960,7 @@ export default function AiAdminPage() {
               </div>
 
               {orderedAlerts.length === 0 ? (
-                <div className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5">
+                <div className="rounded-[21px] border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5">
                   <p className="font-bold">
                     No alerts triggered by the current rules.
                   </p>
@@ -975,7 +975,7 @@ export default function AiAdminPage() {
                   {orderedAlerts.map((alert, index) => (
                     <div
                       key={`${alert.type}-${index}`}
-                      className="rounded-2xl border border-[#F7F7F5] bg-white p-5 shadow-sm"
+                      className="rounded-2xl border border-[#FFF8F2] bg-white p-5 shadow-sm"
                     >
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-black uppercase">
@@ -992,7 +992,7 @@ export default function AiAdminPage() {
                       </p>
 
                       {alert.human_review_required && (
-                        <p className="mt-3 text-xs font-bold text-[#D4AF37]">
+                        <p className="mt-3 text-xs font-bold text-[#FF6B00]">
                           Human review required
                         </p>
                       )}
@@ -1065,7 +1065,7 @@ export default function AiAdminPage() {
 
               <Link
                 href="/admin/refunds"
-                className="mt-4 inline-block rounded-full border border-[#1A3C32] bg-white px-5 py-3 text-sm font-bold text-[#1A3C32]"
+                className="mt-4 inline-block rounded-full border border-[#243B53] bg-white px-5 py-3 text-sm font-bold text-[#243B53]"
               >
                 Open Refund Management →
               </Link>
@@ -1115,7 +1115,7 @@ export default function AiAdminPage() {
 
             {/* SECURITY AND FOOTER */}
 
-            <section className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5">
+            <section className="rounded-[21px] border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5">
               <h2 className="text-lg font-black">
                 🔐 Administrator Security
               </h2>

@@ -411,37 +411,37 @@ export default function AdminMonitoringPage() {
   // =========================================
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#0A1F1A] md:pb-12">
+    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#14263D] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
+        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
           <span aria-hidden="true" className="pointer-events-none absolute -right-6 -top-12 text-[150px] leading-none opacity-10">◎</span>
           <div className="relative">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#F5E6A3"}}>GOLDMART PRIVATE ADMIN · OPERATIONS RADAR</p>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#FFE9CC"}}>GOLDMART PRIVATE ADMIN · OPERATIONS RADAR</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">AI Monitoring</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/85">Track alerts and keep your marketplace in view.</p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#F7F7F5]"/>Authorized access required</div>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#FFF8F2]"/>Authorized access required</div>
           </div>
         </div>
         <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Overview</Link>
-          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">AI Admin</Link>
-          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#1A3C32] bg-[#1A3C32] text-white">Monitoring</Link>
-          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Assistant</Link>
-          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Reports</Link>
-          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Refunds</Link>
-          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#F7F7F5] bg-white text-[#1A3C32] hover:border-[#F5E6A3] hover:bg-[#F7F7F5]">Support</Link>
+          <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Overview</Link>
+          <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">AI Admin</Link>
+          <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#243B53] bg-[#243B53] text-white">Monitoring</Link>
+          <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Assistant</Link>
+          <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Reports</Link>
+          <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Refunds</Link>
+          <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Support</Link>
         </nav>
       </div>
 
-      <header className="border-b border-[#F5E6A3] bg-white">
+      <header className="border-b border-[#FFE9CC] bg-white">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-5">
           <Link
             href="/"
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#1A3C32]">
+            <span className="text-[#243B53]">
               Mart
             </span>
           </Link>
@@ -457,7 +457,7 @@ export default function AdminMonitoringPage() {
 
       <div className="mx-auto max-w-6xl space-y-7 px-4 py-8 pb-40">
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
+          <p className="text-sm font-bold uppercase tracking-wider text-[#FF6B00]">
             GoldMart Administration
           </p>
 
@@ -475,7 +475,7 @@ export default function AdminMonitoringPage() {
 
         {/* SECURITY NOTICE */}
 
-        <section className="rounded-2xl border border-[#F5E6A3] bg-white p-5">
+        <section className="rounded-2xl border border-[#FFE9CC] bg-white p-5">
           <p className="font-black">
             🔒 Administrator-only monitoring
           </p>
@@ -515,7 +515,7 @@ export default function AdminMonitoringPage() {
         {/* LOADING */}
 
         {loading && (
-          <div className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-8 text-center">
+          <div className="rounded-[21px] border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-8 text-center">
             Loading monitoring alerts...
           </div>
         )}
@@ -526,7 +526,7 @@ export default function AdminMonitoringPage() {
           <>
             {/* ACTION BAR */}
 
-            <section className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5 shadow-sm">
+            <section className="rounded-[21px] border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-5 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-black">
@@ -546,7 +546,7 @@ export default function AdminMonitoringPage() {
                     onClick={() =>
                       void scanMarketplace()
                     }
-                    className="rounded-full bg-[#1A3C32] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
+                    className="rounded-full bg-[#243B53] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
                   >
                     {scanning
                       ? "Scanning..."
@@ -580,7 +580,7 @@ export default function AdminMonitoringPage() {
               {notice && (
                 <div
                   role="status"
-                  className="mt-4 rounded-xl border border-[#F5E6A3] bg-[#F7F7F5] p-3 text-sm"
+                  className="mt-4 rounded-xl border border-[#FFE9CC] bg-[#FFF8F2] p-3 text-sm"
                 >
                   {notice}
                 </div>
@@ -618,7 +618,7 @@ export default function AdminMonitoringPage() {
                     disabled={busy}
                     className={`rounded-full px-4 py-2 text-sm font-bold capitalize ${
                       filter === item
-                        ? "bg-[#0A1F1A] text-white"
+                        ? "bg-[#14263D] text-white"
                         : "border bg-white text-gray-700"
                     } disabled:opacity-50`}
                   >
@@ -653,13 +653,13 @@ export default function AdminMonitoringPage() {
               ].map((metric) => (
                 <div
                   key={metric.label}
-                  className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-4"
+                  className="rounded-[21px] border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-4"
                 >
                   <p className="text-xs font-semibold text-gray-500">
                     {metric.label}
                   </p>
 
-                  <p className="mt-2 text-3xl font-black text-[#D4AF37]">
+                  <p className="mt-2 text-3xl font-black text-[#FF6B00]">
                     {metric.value}
                   </p>
                 </div>
@@ -676,7 +676,7 @@ export default function AdminMonitoringPage() {
             {/* ALERT CARDS */}
 
             {sortedAlerts.length === 0 ? (
-              <div className="rounded-[21px] border border-[#F7F7F5] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-8 text-center">
+              <div className="rounded-[21px] border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(26,43,48,0.035)] p-8 text-center">
                 <p className="font-black">
                   No saved alerts in this view.
                 </p>
@@ -696,7 +696,7 @@ export default function AdminMonitoringPage() {
                   return (
                     <article
                       key={String(alert.id)}
-                      className="rounded-2xl border border-[#F5E6A3] bg-white p-5 shadow-sm"
+                      className="rounded-2xl border border-[#FFE9CC] bg-white p-5 shadow-sm"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex flex-wrap items-center gap-2">
@@ -715,9 +715,9 @@ export default function AdminMonitoringPage() {
                       </div>
 
                       <div className="mt-3 flex flex-wrap gap-2">
-                        {alert.alert_key?.startsWith("refund")&&<Link href="/admin/refunds" className="rounded-xl bg-[#F7F7F5] px-4 py-2 text-xs font-black text-[#1A3C32]">Open Refund Records →</Link>}
-                        {alert.alert_key?.startsWith("orders")&&<Link href="/admin/reports" className="rounded-xl bg-[#F7F7F5] px-4 py-2 text-xs font-black text-[#D4AF37]">Review Order Reports →</Link>}
-                        {alert.alert_key?.startsWith("allocations")&&<Link href="/admin/ai" className="rounded-xl bg-[#F7F7F5] px-4 py-2 text-xs font-black text-[#D4AF37]">Open Allocation Insights →</Link>}
+                        {alert.alert_key?.startsWith("refund")&&<Link href="/admin/refunds" className="rounded-xl bg-[#FFF8F2] px-4 py-2 text-xs font-black text-[#243B53]">Open Refund Records →</Link>}
+                        {alert.alert_key?.startsWith("orders")&&<Link href="/admin/reports" className="rounded-xl bg-[#FFF8F2] px-4 py-2 text-xs font-black text-[#FF6B00]">Review Order Reports →</Link>}
+                        {alert.alert_key?.startsWith("allocations")&&<Link href="/admin/ai" className="rounded-xl bg-[#FFF8F2] px-4 py-2 text-xs font-black text-[#FF6B00]">Open Allocation Insights →</Link>}
                       </div>
                       <h3 className="mt-4 text-lg font-black">
                         {alert.title}
@@ -761,8 +761,8 @@ export default function AdminMonitoringPage() {
                         )}
                       </div>
 
-                      <button type="button" onClick={()=>void showEvidence(alert.id)} disabled={evidenceBusy!==null} className="mt-4 rounded-xl border border-[#F5E6A3] bg-[#F7F7F5] px-4 py-2.5 text-xs font-black text-[#1A3C32] disabled:opacity-50">{evidenceBusy===String(alert.id)?"Loading records...":evidence[String(alert.id)]?"Hide Related Records":"View Related Records →"}</button>
-                      {evidence[String(alert.id)] && <div className="mt-3 rounded-xl border border-[#F7F7F5] bg-[#FFFFFF] p-4"><p className="text-xs font-black">Matching records (up to 30, newest or oldest by issue)</p>{evidence[String(alert.id)].length===0?<p className="mt-2 text-xs text-[#D4AF37]">No records currently match this rule. Run a new scan.</p>:<div className="mt-3 space-y-2">{evidence[String(alert.id)].map(record=><p key={record.id} className="rounded-lg bg-white px-3 py-2 text-xs">Record #{record.id}{record.order_id? ` · Order #${record.order_id}`:""} · {record.status} · {formatDate(record.created_at)}</p>)}</div>}</div>}
+                      <button type="button" onClick={()=>void showEvidence(alert.id)} disabled={evidenceBusy!==null} className="mt-4 rounded-xl border border-[#FFE9CC] bg-[#FFF8F2] px-4 py-2.5 text-xs font-black text-[#243B53] disabled:opacity-50">{evidenceBusy===String(alert.id)?"Loading records...":evidence[String(alert.id)]?"Hide Related Records":"View Related Records →"}</button>
+                      {evidence[String(alert.id)] && <div className="mt-3 rounded-xl border border-[#FFF8F2] bg-[#FFFFFF] p-4"><p className="text-xs font-black">Matching records (up to 30, newest or oldest by issue)</p>{evidence[String(alert.id)].length===0?<p className="mt-2 text-xs text-[#FF6B00]">No records currently match this rule. Run a new scan.</p>:<div className="mt-3 space-y-2">{evidence[String(alert.id)].map(record=><p key={record.id} className="rounded-lg bg-white px-3 py-2 text-xs">Record #{record.id}{record.order_id? ` · Order #${record.order_id}`:""} · {record.status} · {formatDate(record.created_at)}</p>)}</div>}</div>}
                       {evidenceError&&<p role="alert" className="mt-3 text-xs text-red-700">{evidenceError}</p>}
                       {/* ADMIN ACTIONS */}
 
@@ -777,7 +777,7 @@ export default function AdminMonitoringPage() {
                                 "acknowledge"
                               )
                             }
-                            className="rounded-full border border-[#1A3C32] px-4 py-2 text-sm font-bold text-[#1A3C32] disabled:opacity-50"
+                            className="rounded-full border border-[#243B53] px-4 py-2 text-sm font-bold text-[#243B53] disabled:opacity-50"
                           >
                             {updating
                               ? "Updating..."
@@ -795,7 +795,7 @@ export default function AdminMonitoringPage() {
                                 "resolve"
                               )
                             }
-                            className="rounded-full bg-[#0A1F1A] px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+                            className="rounded-full bg-[#14263D] px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
                           >
                             {updating
                               ? "Checking..."
