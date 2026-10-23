@@ -310,7 +310,7 @@ export default function EditProductPage() {
 
           <Link
             href="/seller/products"
-            className="font-bold text-[#A67C00]"
+            className="font-bold text-[#127256]"
           >
             ← Back to My Products
           </Link>
@@ -343,7 +343,7 @@ export default function EditProductPage() {
             href="/"
             className="text-2xl font-black"
           >
-            Gold<span className="text-[#D4AF37]">
+            Gold<span className="text-[#128563]">
               Mart
             </span>
           </Link>
@@ -363,14 +363,14 @@ export default function EditProductPage() {
 
         <Link
           href="/seller/products"
-          className="font-bold text-[#A67C00]"
+          className="font-bold text-[#127256]"
         >
           ← Back to My Products
         </Link>
 
         <div className="mt-6">
 
-          <p className="text-sm font-bold uppercase tracking-wider text-[#A67C00]">
+          <p className="text-sm font-bold uppercase tracking-wider text-[#127256]">
             Seller Center
           </p>
 
@@ -424,7 +424,7 @@ export default function EditProductPage() {
               onChange={(event) =>
                 setName(event.target.value)
               }
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
               required
             />
           </div>
@@ -442,7 +442,7 @@ export default function EditProductPage() {
                 setDescription(event.target.value)
               }
               rows={5}
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
             />
 
           </div>
@@ -461,7 +461,7 @@ export default function EditProductPage() {
                 onChange={(event) =>
                   setCurrency(event.target.value)
                 }
-                className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
+                className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#128563]"
               >
                 <option value="NGN">
                   ₦ Nigerian Naira
@@ -502,7 +502,7 @@ export default function EditProductPage() {
                   onChange={(event) =>
                     setPrice(event.target.value)
                   }
-                  className="w-full rounded-xl border py-3 pl-10 pr-4 outline-none focus:border-[#D4AF37]"
+                  className="w-full rounded-xl border py-3 pl-10 pr-4 outline-none focus:border-[#128563]"
                   required
                 />
 
@@ -527,7 +527,7 @@ export default function EditProductPage() {
               onChange={(event) =>
                 setStock(event.target.value)
               }
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
               required
             />
 
@@ -545,7 +545,7 @@ export default function EditProductPage() {
               onChange={(event) =>
                 setCategoryId(event.target.value)
               }
-              className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
+              className="mt-2 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#128563]"
             >
 
               <option value="">
@@ -579,7 +579,7 @@ export default function EditProductPage() {
                 setImageUrl(event.target.value)
               }
               placeholder="https://..."
-              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+              className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-[#128563]"
             />
 
           </div>
@@ -614,7 +614,7 @@ export default function EditProductPage() {
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 rounded-xl bg-black px-6 py-3 font-bold text-white transition hover:bg-[#D4AF37] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex-1 rounded-xl bg-black px-6 py-3 font-bold text-white transition hover:bg-[#128563] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving
                 ? "Saving Changes..."
