@@ -530,30 +530,30 @@ export default function SellerDashboard() {
   const salesDisplay = salesByCurrency.length === 0 ? "No verified sales yet" : salesByCurrency.map(item => formatPrice(item.amount,item.currency)).join(" · ");
 
   return (
-    <main className="min-h-screen bg-[#F7F7F5] pb-28 text-[#1A3C32] md:pb-14">
+    <main className="min-h-screen bg-[#FFF8F2] pb-28 text-[#243B53] md:pb-14">
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(135deg, #0A1F1A 0%, #1A3C32 50%, #D4AF37 100%)"}}>
+        <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
           <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
-          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#F5E6A3]">GOLDMART SELLER STUDIO · Seller Studio</p>
+          <div className="relative"><p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#FFE9CC]">GOLDMART SELLER STUDIO · Seller Studio</p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Your business, beautifully managed.</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Manage your catalogue, customer orders and growth in one professional workspace.</p></div>
         </section>
         <nav aria-label="Seller Studio navigation" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
-          <Link href="/seller" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Dashboard</Link>
-          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Catalogue</Link>
-          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Add Product</Link>
-          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Orders</Link>
-          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Finance</Link>
-          <Link href="/chat" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Messages</Link>
-          <Link href="/account" className="shrink-0 rounded-full border border-[#F7F7F5] bg-white px-4 py-2.5 text-xs font-bold text-[#1A3C32] transition hover:border-[#D4AF37] hover:bg-[#F7F7F5]">Account</Link>
+          <Link href="/seller" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Dashboard</Link>
+          <Link href="/seller/products" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Catalogue</Link>
+          <Link href="/seller/products/new" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Add Product</Link>
+          <Link href="/seller/orders" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Orders</Link>
+          <Link href="/seller/payment-protection" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Finance</Link>
+          <Link href="/chat" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Messages</Link>
+          <Link href="/account" className="shrink-0 rounded-full border border-[#FFF8F2] bg-white px-4 py-2.5 text-xs font-bold text-[#243B53] transition hover:border-[#FF6B00] hover:bg-[#FFF8F2]">Account</Link>
         </nav>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#1A3C32] via-[#F7F7F5] to-[#D4AF37]" />
+      <div className="h-1 bg-gradient-to-r from-[#243B53] via-[#FFF8F2] to-[#FF6B00]" />
 
       {/* HEADER */}
 
-      <header className="border-b border-[#F7F7F5] bg-white/95">
+      <header className="border-b border-[#FFF8F2] bg-white/95">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link
             href="/"
@@ -561,7 +561,7 @@ export default function SellerDashboard() {
             aria-label="GoldMart home"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#FF6B00]">
               Mart
             </span>
           </Link>
@@ -570,7 +570,7 @@ export default function SellerDashboard() {
             <Link
               href="/notifications"
               aria-label="Notifications"
-              className="rounded-full border border-[#F7F7F5] px-3 py-2 text-sm transition hover:border-[#D4AF37]"
+              className="rounded-full border border-[#FFF8F2] px-3 py-2 text-sm transition hover:border-[#FF6B00]"
             >
               🔔
             </Link>
@@ -578,14 +578,14 @@ export default function SellerDashboard() {
             <Link
               href="/chat"
               aria-label="Customer messages"
-              className="rounded-full border border-[#F7F7F5] px-3 py-2 text-sm transition hover:border-[#D4AF37]"
+              className="rounded-full border border-[#FFF8F2] px-3 py-2 text-sm transition hover:border-[#FF6B00]"
             >
               💬
             </Link>
 
             <Link
               href="/account"
-              className="rounded-full border border-[#F7F7F5] px-4 py-2 text-xs font-bold transition hover:border-[#D4AF37] sm:text-sm"
+              className="rounded-full border border-[#FFF8F2] px-4 py-2 text-xs font-bold transition hover:border-[#FF6B00] sm:text-sm"
             >
               Account
             </Link>
@@ -594,7 +594,7 @@ export default function SellerDashboard() {
               type="button"
               onClick={handleSwitchToBuyer}
               disabled={switching}
-              className="rounded-full bg-[#0A1F1A] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#D4AF37] disabled:opacity-50 sm:text-sm"
+              className="rounded-full bg-[#14263D] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#FF6B00] disabled:opacity-50 sm:text-sm"
             >
               {switching
                 ? "Switching..."
@@ -607,20 +607,20 @@ export default function SellerDashboard() {
       <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10">
         {/* SELLER HERO */}
 
-        <section className="relative overflow-hidden rounded-[28px] bg-[#1A3C32] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.12)] sm:px-9 sm:py-10">
+        <section className="relative overflow-hidden rounded-[28px] bg-[#243B53] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.12)] sm:px-9 sm:py-10">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-10 -top-16 h-60 w-60 rounded-full border border-[#D4AF37]/25"
+            className="pointer-events-none absolute -right-10 -top-16 h-60 w-60 rounded-full border border-[#FF6B00]/25"
           />
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-2 -top-10 h-44 w-44 rounded-full border border-[#D4AF37]/20"
+            className="pointer-events-none absolute -right-2 -top-10 h-44 w-44 rounded-full border border-[#FF6B00]/20"
           />
 
           <div className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F7F7F5]">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFF8F2]">
                 GoldMart • Seller Centre
               </p>
 
@@ -628,7 +628,7 @@ export default function SellerDashboard() {
                 Run your store with confidence.
               </h1>
 
-              <p className="mt-3 max-w-xl text-sm leading-6 text-[#F7F7F5] sm:text-base">
+              <p className="mt-3 max-w-xl text-sm leading-6 text-[#FFF8F2] sm:text-base">
                 Manage your products, customer
                 orders, inventory and store feedback
                 in one place.
@@ -637,7 +637,7 @@ export default function SellerDashboard() {
 
             <Link
               href="/seller/products/new"
-              className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#D4AF37] px-6 py-3 text-sm font-extrabold text-[#0A1F1A] transition hover:bg-[#F7F7F5]"
+              className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#FF6B00] px-6 py-3 text-sm font-extrabold text-[#14263D] transition hover:bg-[#FFF8F2]"
             >
               + Add product
               <span
@@ -680,7 +680,7 @@ export default function SellerDashboard() {
           className="mt-8 flex flex-wrap items-center justify-between gap-3"
           aria-label="Dashboard refresh"
         >
-          <p className="text-xs text-[#D4AF37]">
+          <p className="text-xs text-[#FF6B00]">
             {loading
               ? "Loading your live store data..."
               : lastUpdated
@@ -696,7 +696,7 @@ export default function SellerDashboard() {
               )
             }
             disabled={loading}
-            className="rounded-full border border-[#F5E6A3] bg-white px-4 py-2 text-xs font-bold text-[#0A1F1A] transition hover:bg-[#F7F7F5] disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-full border border-[#FFE9CC] bg-white px-4 py-2 text-xs font-bold text-[#14263D] transition hover:bg-[#FFF8F2] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading
               ? "Refreshing..."
@@ -712,7 +712,7 @@ export default function SellerDashboard() {
         >
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#FF6B00]">
                 Business snapshot
               </p>
 
@@ -726,7 +726,7 @@ export default function SellerDashboard() {
 
             <Link
               href="/seller/orders"
-              className="text-sm font-bold text-[#D4AF37] hover:underline"
+              className="text-sm font-bold text-[#FF6B00] hover:underline"
             >
               Manage orders →
             </Link>
@@ -735,7 +735,7 @@ export default function SellerDashboard() {
           {statsError && !loading && (
             <p
               role="alert"
-              className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-[#D4AF37]"
+              className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-[#FF6B00]"
             >
               Store statistics could not load:
               {" "}{statsError}
@@ -745,13 +745,13 @@ export default function SellerDashboard() {
           <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
             <Link
               href="/seller/products"
-              className="rounded-[22px] border border-[#F7F7F5] bg-white p-4 shadow-sm transition hover:border-[#D4AF37] hover:shadow-md sm:p-6"
+              className="rounded-[22px] border border-[#FFF8F2] bg-white p-4 shadow-sm transition hover:border-[#FF6B00] hover:shadow-md sm:p-6"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F7F7F5] text-xl">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#FFF8F2] text-xl">
                 📦
               </span>
 
-              <p className="mt-4 text-xs font-semibold text-[#D4AF37] sm:text-sm">
+              <p className="mt-4 text-xs font-semibold text-[#FF6B00] sm:text-sm">
                 Total products
               </p>
 
@@ -761,20 +761,20 @@ export default function SellerDashboard() {
                   : "—"}
               </p>
 
-              <p className="mt-2 text-xs font-bold text-[#D4AF37]">
+              <p className="mt-2 text-xs font-bold text-[#FF6B00]">
                 Manage products →
               </p>
             </Link>
 
             <Link
               href="/seller/orders"
-              className="rounded-[22px] border border-[#F7F7F5] bg-white p-4 shadow-sm transition hover:border-[#D4AF37] hover:shadow-md sm:p-6"
+              className="rounded-[22px] border border-[#FFF8F2] bg-white p-4 shadow-sm transition hover:border-[#FF6B00] hover:shadow-md sm:p-6"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F7F7F5] text-xl">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#FFF8F2] text-xl">
                 🚚
               </span>
 
-              <p className="mt-4 text-xs font-semibold text-[#D4AF37] sm:text-sm">
+              <p className="mt-4 text-xs font-semibold text-[#FF6B00] sm:text-sm">
                 Recorded orders
               </p>
 
@@ -784,17 +784,17 @@ export default function SellerDashboard() {
                   : "—"}
               </p>
 
-              <p className="mt-2 text-xs font-bold text-[#D4AF37]">
+              <p className="mt-2 text-xs font-bold text-[#FF6B00]">
                 Open orders →
               </p>
             </Link>
 
-            <div className="rounded-[22px] border border-[#F7F7F5] bg-white p-4 shadow-sm sm:p-6">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F7F7F5] text-xl">
+            <div className="rounded-[22px] border border-[#FFF8F2] bg-white p-4 shadow-sm sm:p-6">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#FFF8F2] text-xl">
                 💰
               </span>
 
-              <p className="mt-4 text-xs font-semibold text-[#D4AF37] sm:text-sm">
+              <p className="mt-4 text-xs font-semibold text-[#FF6B00] sm:text-sm">
                 Recorded sales
               </p>
 
@@ -804,17 +804,17 @@ export default function SellerDashboard() {
                   : "—"}
               </p>
 
-              <p className="mt-2 text-xs text-[#D4AF37]">
+              <p className="mt-2 text-xs text-[#FF6B00]">
                 Not an available payout balance
               </p>
             </div>
 
-            <div className="rounded-[22px] border border-[#F7F7F5] bg-white p-4 shadow-sm sm:p-6">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F7F7F5] text-xl">
+            <div className="rounded-[22px] border border-[#FFF8F2] bg-white p-4 shadow-sm sm:p-6">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#FFF8F2] text-xl">
                 ⭐
               </span>
 
-              <p className="mt-4 text-xs font-semibold text-[#D4AF37] sm:text-sm">
+              <p className="mt-4 text-xs font-semibold text-[#FF6B00] sm:text-sm">
                 Store rating
               </p>
 
@@ -825,7 +825,7 @@ export default function SellerDashboard() {
                   : "—"}
               </p>
 
-              <p className="mt-2 text-xs text-[#D4AF37]">
+              <p className="mt-2 text-xs text-[#FF6B00]">
                 {showReviews
                   ? `${rating.review_count} review${
                       rating.review_count === 1
@@ -837,7 +837,7 @@ export default function SellerDashboard() {
             </div>
           </div>
 
-          <p className="mt-3 text-xs leading-5 text-[#D4AF37]">
+          <p className="mt-3 text-xs leading-5 text-[#FF6B00]">
             Recorded sales are shown in the
             dashboard&apos;s existing ₦ format.
             This does not confirm a cash balance
@@ -855,7 +855,7 @@ export default function SellerDashboard() {
         >
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#FF6B00]">
                 Keep products available
               </p>
 
@@ -869,7 +869,7 @@ export default function SellerDashboard() {
 
             <Link
               href="/seller/products"
-              className="text-sm font-bold text-[#D4AF37] hover:underline"
+              className="text-sm font-bold text-[#FF6B00] hover:underline"
             >
               View inventory →
             </Link>
@@ -878,7 +878,7 @@ export default function SellerDashboard() {
           {productsError && !loading ? (
             <div
               role="alert"
-              className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-[#D4AF37]"
+              className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-[#FF6B00]"
             >
               Inventory could not load:
               {" "}{productsError}
@@ -886,8 +886,8 @@ export default function SellerDashboard() {
           ) : (
             <>
               <div className="mt-5 grid grid-cols-3 gap-3">
-                <div className="rounded-[20px] border border-[#F7F7F5] bg-white p-4 sm:p-5">
-                  <p className="text-xs font-semibold text-[#D4AF37]">
+                <div className="rounded-[20px] border border-[#FFF8F2] bg-white p-4 sm:p-5">
+                  <p className="text-xs font-semibold text-[#FF6B00]">
                     In stock
                   </p>
 
@@ -898,24 +898,24 @@ export default function SellerDashboard() {
                   </p>
                 </div>
 
-                <div className="rounded-[20px] border border-[#F7F7F5] bg-white p-4 sm:p-5">
-                  <p className="text-xs font-semibold text-[#D4AF37]">
+                <div className="rounded-[20px] border border-[#FFF8F2] bg-white p-4 sm:p-5">
+                  <p className="text-xs font-semibold text-[#FF6B00]">
                     Low stock
                   </p>
 
-                  <p className="mt-2 text-2xl font-black text-[#D4AF37]">
+                  <p className="mt-2 text-2xl font-black text-[#FF6B00]">
                     {showProducts
                       ? stockInfo.lowStock.length
                       : "—"}
                   </p>
                 </div>
 
-                <div className="rounded-[20px] border border-[#F7F7F5] bg-white p-4 sm:p-5">
-                  <p className="text-xs font-semibold text-[#D4AF37]">
+                <div className="rounded-[20px] border border-[#FFF8F2] bg-white p-4 sm:p-5">
+                  <p className="text-xs font-semibold text-[#FF6B00]">
                     Out of stock
                   </p>
 
-                  <p className="mt-2 text-2xl font-black text-[#D4AF37]">
+                  <p className="mt-2 text-2xl font-black text-[#FF6B00]">
                     {showProducts
                       ? stockInfo.outOfStock.length
                       : "—"}
@@ -925,18 +925,18 @@ export default function SellerDashboard() {
 
               {showProducts &&
                 inventoryWarnings.length > 0 && (
-                  <div className="mt-4 rounded-[22px] border border-[#F5E6A3] bg-[#FFFFFF] p-4 sm:p-5">
+                  <div className="mt-4 rounded-[22px] border border-[#FFE9CC] bg-[#FFFFFF] p-4 sm:p-5">
                     <h3 className="text-sm font-black">
                       ⚠️ Products that need attention
                     </h3>
 
-                    <p className="mt-1 text-xs text-[#D4AF37]">
+                    <p className="mt-1 text-xs text-[#FF6B00]">
                       Low stock means 1–
                       {LOW_STOCK_THRESHOLD}
                       {" "}units remaining.
                     </p>
 
-                    <div className="mt-3 divide-y divide-[#F7F7F5]">
+                    <div className="mt-3 divide-y divide-[#FFF8F2]">
                       {inventoryWarnings.map(
                         (product) => (
                           <div
@@ -948,7 +948,7 @@ export default function SellerDashboard() {
                                 {product.name}
                               </p>
 
-                              <p className="mt-1 text-xs text-[#D4AF37]">
+                              <p className="mt-1 text-xs text-[#FF6B00]">
                                 {stockCount(
                                   product.stock
                                 ) === 0
@@ -961,7 +961,7 @@ export default function SellerDashboard() {
 
                             <Link
                               href={`/seller/products/${product.id}/edit`}
-                              className="shrink-0 rounded-full border border-[#F5E6A3] px-4 py-2 text-xs font-bold hover:bg-white"
+                              className="shrink-0 rounded-full border border-[#FFE9CC] px-4 py-2 text-xs font-bold hover:bg-white"
                             >
                               Edit →
                             </Link>
@@ -975,7 +975,7 @@ export default function SellerDashboard() {
               {showProducts &&
                 products.length > 0 &&
                 inventoryWarnings.length === 0 && (
-                  <p className="mt-4 rounded-xl border border-[#F7F7F5] bg-white p-4 text-sm text-[#1A3C32]">
+                  <p className="mt-4 rounded-xl border border-[#FFF8F2] bg-white p-4 text-sm text-[#243B53]">
                     ✓ No products are currently low
                     or out of stock.
                   </p>
@@ -983,14 +983,14 @@ export default function SellerDashboard() {
 
               {showProducts &&
                 products.length === 0 && (
-                  <div className="mt-4 rounded-[22px] border border-[#F7F7F5] bg-white p-6 text-center">
-                    <p className="text-sm text-[#D4AF37]">
+                  <div className="mt-4 rounded-[22px] border border-[#FFF8F2] bg-white p-6 text-center">
+                    <p className="text-sm text-[#FF6B00]">
                       No products listed yet.
                     </p>
 
                     <Link
                       href="/seller/products/new"
-                      className="mt-3 inline-block font-bold text-[#D4AF37] hover:underline"
+                      className="mt-3 inline-block font-bold text-[#FF6B00] hover:underline"
                     >
                       Add your first product →
                     </Link>
@@ -1006,7 +1006,7 @@ export default function SellerDashboard() {
           className="mt-10"
           aria-labelledby="management-heading"
         >
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#FF6B00]">
             Seller tools
           </p>
 
@@ -1022,9 +1022,9 @@ export default function SellerDashboard() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="group flex items-start gap-4 rounded-[22px] border border-[#F7F7F5] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#D4AF37] hover:shadow-md sm:p-6"
+                className="group flex items-start gap-4 rounded-[22px] border border-[#FFF8F2] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#FF6B00] hover:shadow-md sm:p-6"
               >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#F7F7F5] text-2xl">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#FFF8F2] text-2xl">
                   {item.emoji}
                 </span>
 
@@ -1033,11 +1033,11 @@ export default function SellerDashboard() {
                     {item.title}
                   </span>
 
-                  <span className="mt-1 block text-sm leading-5 text-[#D4AF37]">
+                  <span className="mt-1 block text-sm leading-5 text-[#FF6B00]">
                     {item.subtitle}
                   </span>
 
-                  <span className="mt-2 block text-xs font-bold text-[#D4AF37]">
+                  <span className="mt-2 block text-xs font-bold text-[#FF6B00]">
                     Open →
                   </span>
                 </span>
@@ -1054,7 +1054,7 @@ export default function SellerDashboard() {
         >
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#FF6B00]">
                 Your catalogue
               </p>
 
@@ -1068,7 +1068,7 @@ export default function SellerDashboard() {
 
             <Link
               href="/seller/products"
-              className="text-sm font-bold text-[#D4AF37] hover:underline"
+              className="text-sm font-bold text-[#FF6B00] hover:underline"
             >
               View all →
             </Link>
@@ -1079,24 +1079,24 @@ export default function SellerDashboard() {
               {[1, 2, 3, 4].map((n) => (
                 <div
                   key={n}
-                  className="animate-pulse overflow-hidden rounded-2xl border border-[#F7F7F5] bg-white"
+                  className="animate-pulse overflow-hidden rounded-2xl border border-[#FFF8F2] bg-white"
                 >
-                  <div className="aspect-square bg-[#F7F7F5]" />
+                  <div className="aspect-square bg-[#FFF8F2]" />
 
                   <div className="space-y-3 p-4">
-                    <div className="h-3 w-3/4 rounded bg-[#F7F7F5]" />
-                    <div className="h-3 w-1/2 rounded bg-[#F7F7F5]" />
+                    <div className="h-3 w-3/4 rounded bg-[#FFF8F2]" />
+                    <div className="h-3 w-1/2 rounded bg-[#FFF8F2]" />
                   </div>
                 </div>
               ))}
             </div>
           ) : productsError ? (
-            <p className="mt-5 rounded-xl bg-white p-5 text-sm text-[#D4AF37]">
+            <p className="mt-5 rounded-xl bg-white p-5 text-sm text-[#FF6B00]">
               Your product list is unavailable right
               now. Tap Refresh dashboard to try again.
             </p>
           ) : products.length === 0 ? (
-            <div className="mt-5 rounded-[22px] border border-[#F7F7F5] bg-white px-5 py-10 text-center">
+            <div className="mt-5 rounded-[22px] border border-[#FFF8F2] bg-white px-5 py-10 text-center">
               <p className="text-4xl">
                 📦
               </p>
@@ -1106,14 +1106,14 @@ export default function SellerDashboard() {
                 first product
               </h3>
 
-              <p className="mt-2 text-sm text-[#D4AF37]">
+              <p className="mt-2 text-sm text-[#FF6B00]">
                 Add a product to start building
                 your catalogue.
               </p>
 
               <Link
                 href="/seller/products/new"
-                className="mt-5 inline-flex rounded-full bg-[#0A1F1A] px-6 py-3 text-sm font-bold text-white"
+                className="mt-5 inline-flex rounded-full bg-[#14263D] px-6 py-3 text-sm font-bold text-white"
               >
                 Add product →
               </Link>
@@ -1125,7 +1125,7 @@ export default function SellerDashboard() {
                 .map((product) => (
                   <article
                     key={product.id}
-                    className="overflow-hidden rounded-[22px] border border-[#F7F7F5] bg-white shadow-sm transition hover:border-[#D4AF37] hover:shadow-md"
+                    className="overflow-hidden rounded-[22px] border border-[#FFF8F2] bg-white shadow-sm transition hover:border-[#FF6B00] hover:shadow-md"
                   >
                     {product.image_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -1133,10 +1133,10 @@ export default function SellerDashboard() {
                         src={product.image_url}
                         alt={product.name}
                         loading="lazy"
-                        className="aspect-square w-full bg-[#F7F7F5] object-cover"
+                        className="aspect-square w-full bg-[#FFF8F2] object-cover"
                       />
                     ) : (
-                      <div className="flex aspect-square items-center justify-center bg-[#F7F7F5] text-5xl">
+                      <div className="flex aspect-square items-center justify-center bg-[#FFF8F2] text-5xl">
                         📦
                       </div>
                     )}
@@ -1146,7 +1146,7 @@ export default function SellerDashboard() {
                         {product.name}
                       </h3>
 
-                      <p className="mt-2 text-base font-extrabold text-[#D4AF37]">
+                      <p className="mt-2 text-base font-extrabold text-[#FF6B00]">
                         {formatPrice(
                           product.price,
                           product.currency
@@ -1158,8 +1158,8 @@ export default function SellerDashboard() {
                           stockCount(
                             product.stock
                           ) === 0
-                            ? "font-bold text-[#D4AF37]"
-                            : "text-[#D4AF37]"
+                            ? "font-bold text-[#FF6B00]"
+                            : "text-[#FF6B00]"
                         }`}
                       >
                         {stockCount(
@@ -1173,7 +1173,7 @@ export default function SellerDashboard() {
 
                       <Link
                         href={`/seller/products/${product.id}/edit`}
-                        className="mt-4 block rounded-full border border-[#F5E6A3] px-3 py-2.5 text-center text-xs font-bold transition hover:bg-[#FFFFFF]"
+                        className="mt-4 block rounded-full border border-[#FFE9CC] px-3 py-2.5 text-center text-xs font-bold transition hover:bg-[#FFFFFF]"
                       >
                         Edit product →
                       </Link>
@@ -1190,7 +1190,7 @@ export default function SellerDashboard() {
           className="mt-10"
           aria-labelledby="reviews-heading"
         >
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4AF37]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#FF6B00]">
             Customer feedback
           </p>
 
@@ -1201,13 +1201,13 @@ export default function SellerDashboard() {
             Reviews & Ratings
           </h2>
 
-          <p className="mt-2 text-sm text-[#D4AF37]">
+          <p className="mt-2 text-sm text-[#FF6B00]">
             Feedback left by customers of your store.
           </p>
 
-          <div className="mt-5 flex flex-wrap items-center gap-6 rounded-[22px] border border-[#F7F7F5] bg-white p-5 sm:p-6">
+          <div className="mt-5 flex flex-wrap items-center gap-6 rounded-[22px] border border-[#FFF8F2] bg-white p-5 sm:p-6">
             <div>
-              <p className="text-xs text-[#D4AF37]">
+              <p className="text-xs text-[#FF6B00]">
                 Average rating
               </p>
 
@@ -1219,10 +1219,10 @@ export default function SellerDashboard() {
               </p>
             </div>
 
-            <div className="h-10 w-px bg-[#F7F7F5]" />
+            <div className="h-10 w-px bg-[#FFF8F2]" />
 
             <div>
-              <p className="text-xs text-[#D4AF37]">
+              <p className="text-xs text-[#FF6B00]">
                 Total reviews
               </p>
 
@@ -1235,14 +1235,14 @@ export default function SellerDashboard() {
           </div>
 
           {!loading && reviewError && (
-            <p className="mt-4 rounded-xl border border-[#F7F7F5] bg-white p-4 text-sm text-[#D4AF37]">
+            <p className="mt-4 rounded-xl border border-[#FFF8F2] bg-white p-4 text-sm text-[#FF6B00]">
               {reviewError}
             </p>
           )}
 
           {showReviews &&
             reviews.length === 0 && (
-              <div className="mt-4 rounded-[22px] border border-[#F7F7F5] bg-white p-8 text-center">
+              <div className="mt-4 rounded-[22px] border border-[#FFF8F2] bg-white p-8 text-center">
                 <p className="text-3xl">
                   ⭐
                 </p>
@@ -1251,7 +1251,7 @@ export default function SellerDashboard() {
                   No reviews yet
                 </h3>
 
-                <p className="mt-2 text-sm text-[#D4AF37]">
+                <p className="mt-2 text-sm text-[#FF6B00]">
                   Your customer reviews will
                   appear here.
                 </p>
@@ -1266,7 +1266,7 @@ export default function SellerDashboard() {
                   .map((review) => (
                     <article
                       key={review.id}
-                      className="rounded-[22px] border border-[#F7F7F5] bg-white p-5 shadow-sm sm:p-6"
+                      className="rounded-[22px] border border-[#FFF8F2] bg-white p-5 shadow-sm sm:p-6"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
@@ -1276,7 +1276,7 @@ export default function SellerDashboard() {
                           </p>
 
                           <p
-                            className="mt-1 text-[#D4AF37]"
+                            className="mt-1 text-[#FF6B00]"
                             aria-label={`${review.rating} out of 5 stars`}
                           >
                             {Array.from(
@@ -1298,7 +1298,7 @@ export default function SellerDashboard() {
                         </div>
 
                         <time
-                          className="shrink-0 text-xs text-[#D4AF37]"
+                          className="shrink-0 text-xs text-[#FF6B00]"
                           dateTime={
                             review.created_at
                           }
@@ -1310,7 +1310,7 @@ export default function SellerDashboard() {
                       </div>
 
                       {review.review && (
-                        <p className="mt-4 rounded-2xl bg-[#FFFFFF] p-4 text-sm leading-6 text-[#1A3C32]">
+                        <p className="mt-4 rounded-2xl bg-[#FFFFFF] p-4 text-sm leading-6 text-[#243B53]">
                           “{review.review}”
                         </p>
                       )}
@@ -1322,8 +1322,8 @@ export default function SellerDashboard() {
 
         {/* FOOTER CARD */}
 
-        <section className="mt-10 overflow-hidden rounded-[26px] bg-[#1A3C32] p-6 text-white sm:p-9">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#F7F7F5]">
+        <section className="mt-10 overflow-hidden rounded-[26px] bg-[#243B53] p-6 text-white sm:p-9">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#FFF8F2]">
             Keep growing with GoldMart
           </p>
 
@@ -1331,7 +1331,7 @@ export default function SellerDashboard() {
             Your next customer is waiting.
           </h2>
 
-          <p className="mt-3 max-w-xl text-sm leading-6 text-[#F7F7F5]">
+          <p className="mt-3 max-w-xl text-sm leading-6 text-[#FFF8F2]">
             Keep your products up to date and
             reply to customers quickly.
           </p>
@@ -1339,21 +1339,21 @@ export default function SellerDashboard() {
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/seller/products/new"
-              className="rounded-full bg-[#D4AF37] px-6 py-3 text-center text-sm font-bold text-[#0A1F1A] transition hover:bg-[#F7F7F5]"
+              className="rounded-full bg-[#FF6B00] px-6 py-3 text-center text-sm font-bold text-[#14263D] transition hover:bg-[#FFF8F2]"
             >
               Add a product →
             </Link>
 
             <Link
               href="/chat"
-              className="rounded-full border border-[#D4AF37]/65 px-6 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10"
+              className="rounded-full border border-[#FF6B00]/65 px-6 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10"
             >
               Customer messages
             </Link>
           </div>
         </section>
 
-        <p className="mt-7 text-center text-xs text-[#D4AF37]">
+        <p className="mt-7 text-center text-xs text-[#FF6B00]">
           GoldMart Seller Centre · Built for your business
         </p>
       </div>

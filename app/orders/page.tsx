@@ -138,10 +138,10 @@ function formatCountdown(ms: number) {
 function statusClass(status: string) {
   switch (status.toLowerCase()) {
     case "delivered":
-      return "bg-green-100 text-green-700";
+      return "bg-orange-100 text-orange-700";
 
     case "shipped":
-      return "bg-purple-100 text-purple-700";
+      return "bg-orange-100 text-orange-700";
 
     case "processing":
       return "bg-blue-100 text-blue-700";
@@ -471,7 +471,7 @@ export default function OrdersPage() {
             className="text-2xl font-black"
           >
             Gold
-            <span className="text-[#D4AF37]">
+            <span className="text-[#FF6B00]">
               Mart
             </span>
           </Link>
@@ -486,7 +486,7 @@ export default function OrdersPage() {
       </header>
 
       <div className="mx-auto max-w-7xl px-4 py-10">
-        <p className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
+        <p className="text-sm font-bold uppercase tracking-wider text-[#FF6B00]">
           My Account
         </p>
 
@@ -628,7 +628,7 @@ export default function OrdersPage() {
                   {/* ORDER HEADER */}
                   <div className="flex flex-col gap-4 border-b pb-5 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p className="font-bold text-[#D4AF37]">
+                      <p className="font-bold text-[#FF6B00]">
                         Order #{order.id}
                       </p>
 
@@ -680,7 +680,7 @@ export default function OrdersPage() {
                           </div>
                         </div>
 
-                        <p className="font-black text-[#D4AF37]">
+                        <p className="font-black text-[#FF6B00]">
                           {formatPrice(
                             Number(item.price) *
                             Number(item.quantity)
@@ -696,7 +696,7 @@ export default function OrdersPage() {
                       Order Total
                     </p>
 
-                    <p className="text-2xl font-black text-[#D4AF37]">
+                    <p className="text-2xl font-black text-[#FF6B00]">
                       {formatPrice(order.total_amount)}
                     </p>
                   </div>
@@ -754,7 +754,7 @@ export default function OrdersPage() {
                                 Standard refund window closed
                               </p>
                             ) : (
-                              <p className="mt-1 text-xl font-black text-[#D4AF37]">
+                              <p className="mt-1 text-xl font-black text-[#FF6B00]">
                                 {formatCountdown(
                                   deadlineMs - now
                                 )}{" "}
@@ -845,7 +845,7 @@ export default function OrdersPage() {
                                     ""
                                   );
                                 }}
-                                className="rounded-full border border-[#D4AF37] bg-white px-5 py-3 text-sm font-bold text-[#D4AF37]"
+                                className="rounded-full border border-[#FF6B00] bg-white px-5 py-3 text-sm font-bold text-[#FF6B00]"
                               >
                                 {status === "processing" ||
                                 status === "pending"
@@ -872,7 +872,7 @@ export default function OrdersPage() {
                                     )
                                   }
                                   placeholder="Explain what happened (at least 10 characters)."
-                                  className="mt-2 w-full rounded-xl border p-3 outline-none focus:border-[#D4AF37]"
+                                  className="mt-2 w-full rounded-xl border p-3 outline-none focus:border-[#FF6B00]"
                                 />
 
                                 <p className="mt-1 text-xs text-gray-500">
@@ -1052,7 +1052,7 @@ export default function OrdersPage() {
                           )
                         }
                         placeholder="Write an optional review..."
-                        className="mt-4 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#D4AF37]"
+                        className="mt-4 w-full rounded-2xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
                       />
 
                       {reviewMessage && (
