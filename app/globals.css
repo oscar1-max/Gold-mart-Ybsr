@@ -2343,3 +2343,251 @@ html,body {background:#FFFFFF;color:#182233;}
   .gm-zone-buyer .gm-stuffuss-v2-footer-bottom {flex-direction:column;align-items:start;}
 }
 
+
+/* ================================================================
+   GOLDMART BUYER MONOCHROME — MATCH THE STUFFUSS SCREENSHOT
+   Only .gm-zone-buyer. Seller, Admin, AI Admin/Monitoring untouched.
+   Neutral colors + readable sans typography; NO commerce logic.
+   ================================================================ */
+
+/* 1. A consistent font and the exact grayscale shopping palette. */
+.gm-zone-buyer {
+  --gm-canvas: #ffffff;
+  --gm-card: #ffffff;
+  --gm-ink: #191919;
+  --gm-muted: #616161;
+  --gm-primary: #191919;
+  --gm-primary-hover: #414141;
+  --gm-soft: #f4f4f4;
+  --gm-line: #ebebeb;
+  --gm-shadow: 0 4px 13px rgba(0, 0, 0, .045);
+  color: #191919;
+  background: #fff;
+  font-family: Arial, Helvetica, "Segoe UI", sans-serif !important;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+.gm-zone-buyer :is(main, header, footer, section, article, aside, nav, form),
+.gm-zone-buyer :is(h1,h2,h3,h4,h5,h6,p,span,small,strong,b,em,a,button,label,input,textarea,select) {
+  font-family: Arial, Helvetica, "Segoe UI", sans-serif !important;
+}
+.gm-zone-buyer h1,.gm-zone-buyer h2,.gm-zone-buyer h3,
+.gm-zone-buyer h4 {font-style:normal !important;letter-spacing:-.035em;}
+.gm-zone-buyer main {color:#191919;}
+.gm-zone-buyer :is(input,textarea,select) {accent-color:#242424;}
+.gm-zone-buyer :is(input,textarea,select):focus-visible,
+.gm-zone-buyer :is(a,button):focus-visible {outline:2px solid #333 !important;outline-offset:2px;}
+.gm-zone-buyer :is(input,textarea,select):focus {border-color:#666;box-shadow:0 0 0 3px rgba(0,0,0,.09);}
+.gm-zone-buyer input::placeholder,.gm-zone-buyer textarea::placeholder {color:#777;}
+
+/* 2. Remove the navy announcement bar that is outside main. */
+.gm-zone-buyer > .gm-announcement {
+  background:#202020 !important;color:#fff !important;
+  border:0 !important;min-height:30px;font-size:11px;
+}
+.gm-zone-buyer > .gm-announcement :is(a,span) {color:#fff !important;}
+.gm-zone-buyer .gm-stuffuss-v2-logo-mark {color:#222 !important;}
+
+/* 3. Strong readable black or gray on white surfaces. */
+.gm-zone-buyer main :is(h1,h2,h3,h4,p,span,strong,small,a,label)[class*="text-[#FF6B00]"],
+.gm-zone-buyer main :is(h1,h2,h3,h4,p,span,strong,small,a,label)[class*="text-orange-"],
+.gm-zone-buyer main :is(h1,h2,h3,h4,p,span,strong,small,a,label)[class*="text-[#243B53]"],
+.gm-zone-buyer main :is(h1,h2,h3,h4,p,span,strong,small,a,label)[class*="text-[#14263D]"] {
+  color:#262626 !important;
+}
+.gm-zone-buyer main :is(h1,h2,h3,h4,p,span,strong,small,a,label)[class*="text-[#E45C00]"],
+.gm-zone-buyer main :is(h1,h2,h3,h4,p,span,strong,small,a,label)[class*="text-[#D4AF37]"] {
+  color:#303030 !important;
+}
+.gm-zone-buyer main :is(section,article,aside,div)[class*="bg-[#FFF8F2]"],
+.gm-zone-buyer main :is(section,article,aside,div)[class*="bg-[#FFE9CC]"],
+.gm-zone-buyer main :is(section,article,aside,div)[class*="bg-orange-50"] {
+  background-color:#f4f4f4 !important;
+}
+.gm-zone-buyer main :is(section,article,aside,div)[class~="bg-white"],
+.gm-zone-buyer main :is(section,article,aside,div)[class~="bg-[#FFFFFF]"] {
+  background:#fff !important;color:#191919;
+}
+.gm-zone-buyer main :is(section,article,aside,div)[class~="bg-[#14263D]"],
+.gm-zone-buyer main :is(section,article,aside,div)[class~="bg-[#243B53]"] {
+  background-color:#202020 !important;color:#fff !important;
+}
+.gm-zone-buyer main :is(section,article,aside,div)[class*="bg-gradient-"] {
+  --tw-gradient-from:#f7f7f7;
+  --tw-gradient-to:#ededed;
+}
+.gm-zone-buyer main :is(span,div)[class*="bg-[#FF6B00]"],
+.gm-zone-buyer main :is(span,div)[class*="bg-orange-500"],
+.gm-zone-buyer main :is(span,div)[class*="bg-orange-600"] {
+  background-color:#353535 !important;color:#fff !important;
+}
+.gm-zone-buyer main :is(a,button)[class*="bg-[#FF6B00]"],
+.gm-zone-buyer main :is(a,button)[class*="bg-[#14263D]"],
+.gm-zone-buyer main :is(a,button)[class*="bg-[#243B53]"],
+.gm-zone-buyer main :is(a,button)[class*="bg-orange-"],
+.gm-zone-buyer main :is(a,button)[class~="bg-black"] {
+  background:#202020 !important;color:#fff !important;border-color:#202020 !important;
+}
+.gm-zone-buyer main :is(a,button)[class*="bg-[#FF6B00]"]:hover,
+.gm-zone-buyer main :is(a,button)[class*="bg-[#14263D]"]:hover,
+.gm-zone-buyer main :is(a,button)[class*="bg-[#243B53]"]:hover,
+.gm-zone-buyer main :is(a,button)[class*="bg-orange-"]:hover {
+  background:#444 !important;color:#fff !important;border-color:#444 !important;
+}
+.gm-zone-buyer main :is(a,button):disabled {cursor:not-allowed;opacity:.65;}
+.gm-zone-buyer main :is(section,article,aside)[class*="rounded"][class*="border"] {
+  border-color:#e9e9e9;
+  box-shadow:0 4px 14px rgba(0,0,0,.045);
+}
+
+/* 4. Buyer shop and product pages: dark controls and neutral labels. */
+.gm-zone-buyer .gm-dept {
+  --dept-accent:#393939;
+  --dept-button:#222;
+  --dept-button-text:#fff;
+  --dept-story-button:#242424;
+  --dept-cta:#202020;
+  --dept-cta-text:#fff;
+  background:#fff;
+  color:#191919;
+}
+.gm-zone-buyer .gm-dept--phones,
+.gm-zone-buyer .gm-dept--electronics,
+.gm-zone-buyer .gm-dept--groceries,
+.gm-zone-buyer .gm-dept--fashion,
+.gm-zone-buyer .gm-dept--gaming,
+.gm-zone-buyer .gm-dept--beauty,
+.gm-zone-buyer .gm-dept--jewelry,
+.gm-zone-buyer .gm-dept--kitchen {
+  --dept-accent:#393939;
+  --dept-button:#222;
+  --dept-button-text:#fff;
+  --dept-cta:#222;
+  --dept-cta-text:#fff;
+}
+.gm-zone-buyer .gm-dept-hero-button,
+.gm-zone-buyer .gm-dept-story a {
+  background:#242424 !important;color:#fff !important;
+}
+.gm-zone-buyer .gm-dept-kicker,
+.gm-zone-buyer .gm-dept-section-kicker,
+.gm-zone-buyer .gm-dept-tile-action,
+.gm-zone-buyer .gm-dept-section-heading > a,
+.gm-zone-buyer .gm-dept-logo > span {
+  color:#4d4d4d !important;
+}
+.gm-zone-buyer .gm-dept-hero .gm-dept-kicker {
+  color:var(--dept-color,#fff) !important;
+}
+.gm-zone-buyer .gm-dept-benefit-row,
+.gm-zone-buyer .gm-dept-products,
+.gm-zone-buyer .gm-product-tile {
+  border-color:#e8e8e8;
+}
+.gm-zone-buyer .gm-dept--electronics .gm-dept-benefit-row,
+.gm-zone-buyer .gm-dept--kitchen .gm-dept-benefit-row {
+  background:#202020 !important;border-color:#333 !important;
+}
+.gm-zone-buyer .gm-dept--electronics .gm-dept-benefit-row :is(strong,small),
+.gm-zone-buyer .gm-dept--kitchen .gm-dept-benefit-row :is(strong,small) {
+  color:#fff !important;
+}
+.gm-zone-buyer .gm-dept--beauty .gm-product-category,
+.gm-zone-buyer .gm-dept--jewelry .gm-product-category,
+.gm-zone-buyer .gm-dept--kitchen .gm-product-category {
+  color:#4c4c4c !important;
+}
+.gm-zone-buyer .gm-product-category,.gm-zone-buyer .gm-product-rating {color:#565656;}
+.gm-zone-buyer .gm-product-details > button:not(:disabled) {
+  background:#202020 !important;border-color:#202020;color:#fff !important;
+}
+.gm-zone-buyer .gm-product-deal {background:#333 !important;color:#fff;}
+.gm-zone-buyer .gm-product-price,.gm-zone-buyer .gm-product-prices strong {color:#171717 !important;}
+.gm-zone-buyer .gm-shop-all-hero {background-color:#333 !important;}
+
+/* 5. Neutral footer on buyer pages, excluding monochrome homepage footer. */
+.gm-zone-buyer footer:not(.gm-stuffuss-v2-footer) {
+  background:#202020 !important;color:#fff !important;
+  border-color:#353535 !important;
+}
+.gm-zone-buyer footer:not(.gm-stuffuss-v2-footer) :is(a,p,small,h1,h2,h3,h4,strong) {
+  color:#fff !important;
+}
+.gm-zone-buyer footer:not(.gm-stuffuss-v2-footer) a:hover {text-decoration:underline;}
+
+/* 6. The dark Nexora login/signup still keeps white writing on black,
+      but not orange/peach calls to action or accent colors. */
+.gm-zone-buyer main.gm-auth.gm-nexora-auth {background:#121212 !important;color:#fff !important;}
+.gm-zone-buyer .gm-nexora-side {background:#161616 !important;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel {
+  background:#202020 !important;border-color:#3a3a3a;
+  color:#fff !important;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel :is(h1,h2,label,p) {color:#f5f5f5 !important;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form :is(input,select) {
+  background:#292929 !important;color:#fff !important;border-color:#4c4c4c !important;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form input::placeholder {color:#bbb;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form button[type="submit"] {
+  background:#ededed !important;color:#171717 !important;
+  border-color:#ededed !important;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form button[type="submit"]:hover {
+  background:#fff !important;color:#171717 !important;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel p a,
+.gm-zone-buyer .gm-nexora-scene-logo span,
+.gm-zone-buyer .gm-nexora-side .gm-auth-brand,
+.gm-zone-buyer .gm-nexora-scene-copy p {color:#f4f4f4 !important;}
+.gm-zone-buyer .gm-nexora-scene-copy {border-color:#ddd !important;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form button[type="button"] {
+  background:#303030 !important;color:#fff !important;border-color:#555 !important;
+}
+
+/* 7. Homepage: outside gray, inside white, legible black and white. */
+.gm-zone-buyer main.gm-stuffuss-v2 {
+  color:#191919 !important;
+  background:#e5e5e5 !important;
+  font-size:15px;
+}
+.gm-zone-buyer .gm-stuffuss-v2-canvas {background:#fff;}
+.gm-zone-buyer .gm-stuffuss-v2-header {background:#fff !important;}
+.gm-zone-buyer .gm-stuffuss-v2-hero h1,
+.gm-zone-buyer .gm-stuffuss-v2-hero-eyebrow {color:#fff !important;}
+.gm-zone-buyer .gm-stuffuss-v2-section-title :is(h2,p) {color:#191919 !important;}
+.gm-zone-buyer .gm-stuffuss-v2-product-section .gm-stuffuss-v2-tile-category {
+  color:#666 !important;
+}
+.gm-zone-buyer main.gm-stuffuss-v2 .gm-stuffuss-v2-tabs button.is-active,
+.gm-zone-buyer main.gm-stuffuss-v2 .gm-stuffuss-v2-cart button:not(:disabled),
+.gm-zone-buyer main.gm-stuffuss-v2 .gm-stuffuss-v2-searchbar button[type="submit"] {
+  color:#fff !important;background:#202020 !important;border-color:#202020 !important;
+}
+.gm-zone-buyer .gm-stuffuss-v2-feature {
+  background:#242424 !important;color:#fff !important;
+}
+.gm-zone-buyer .gm-stuffuss-v2-feature :is(h2,p,a) {color:#fff !important;}
+.gm-zone-buyer footer.gm-stuffuss-v2-footer {
+  background:#fff !important;color:#202020 !important;
+}
+.gm-zone-buyer .gm-stuffuss-v2-footer :is(h3,h4,a,p,small) {color:#3b3b3b !important;}
+@media(max-width:690px){
+  .gm-zone-buyer main.gm-stuffuss-v2 {background:#fff !important;}
+  .gm-zone-buyer .gm-stuffuss-v2-searchbar {box-shadow:0 8px 22px rgba(0,0,0,.1);}
+}
+
+/* 8. Buyer mobile dock is a sibling of the buyer wrapper (RootLayout).
+      :has() scopes it to buyer pages, leaving seller/admin intact. */
+body:has(.gm-zone-buyer) nav[aria-label="GoldMart mobile navigation"] {
+  background:#fff !important;border-color:#e6e6e6 !important;
+}
+body:has(.gm-zone-buyer) nav[aria-label="GoldMart mobile navigation"] button {
+  color:#323232 !important;
+}
+body:has(.gm-zone-buyer) nav[aria-label="GoldMart mobile navigation"] button[aria-current="page"] {
+  background:#eaeaea !important;color:#191919 !important;
+}
+body:has(.gm-zone-buyer) button[aria-label="Toggle administrator tools"] {
+  background:#202020 !important;color:#fff !important;border-color:#3a3a3a !important;
+}
+
