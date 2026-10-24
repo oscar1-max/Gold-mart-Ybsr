@@ -264,123 +264,43 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Premium service shortcuts — all link to the original working pages */}
-      <section aria-label="GoldMart shopping shortcuts" className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 lg:px-8">
-        <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
-          <div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#FF6B00]">Everything at your fingertips</p><h2 className="mt-1 text-lg font-black sm:text-xl">Explore GoldMart</h2></div>
-          <Link href="/categories" className="text-xs font-bold text-[#FF6B00] hover:underline">All categories ↗</Link>
-        </div>
-        <nav className="gm-shortcut-rail og-scrollbar flex gap-3 overflow-x-auto pb-3 lg:grid lg:grid-cols-5" aria-label="Shopping and support">
-          {quickLinks.map(item => (
-            <Link key={item.href} href={item.href}
-              className={`group flex min-w-[177px] flex-1 flex-col justify-between overflow-hidden rounded-[22px] border bg-gradient-to-br p-4 shadow-[0_7px_20px_rgba(20,40,50,0.035)] transition duration-200 hover:-translate-y-1 hover:shadow-lg sm:min-w-[194px] ${item.tone} ${item.border}`}>
-              <span className="flex items-center justify-between"><span className="text-[29px]" aria-hidden="true">{item.icon}</span><span className="text-lg transition group-hover:translate-x-1" aria-hidden="true">↗</span></span>
-              <span className="mt-6"><span className="block text-sm font-black">{item.label}</span><span className="mt-1 block text-[11px] font-medium opacity-75">{item.sub}</span></span>
-            </Link>
-          ))}
-        </nav>
-      </section>
 
-      {/* INTRO BANNER */}
-      <section className="border-b border-[#FFF8F2] bg-white">
-        <div className="mx-auto flex max-w-7xl items-center gap-5 overflow-x-auto px-4 py-2.5 text-[11px] font-semibold text-[#243B53] sm:justify-center sm:text-xs">
-          <span className="shrink-0">✦ Curated shopping</span>
-          <span className="text-[#FFE9CC]" aria-hidden="true">•</span>
-          <span className="shrink-0">📦 Order updates</span>
-          <span className="text-[#FFE9CC]" aria-hidden="true">•</span>
-          <span className="shrink-0">🛡️ Buyer support</span>
-        </div>
-      </section>
-
-      {/* LUXURY HERO */}
-      <section className="mx-auto max-w-7xl px-4 pb-5 pt-5 sm:px-6 sm:pt-7 lg:px-8">
-        <div className="gm-home-banner relative isolate overflow-hidden rounded-[30px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] px-6 pb-8 pt-10 text-white shadow-[0_18px_42px_rgba(23,25,29,0.14)] sm:px-10 sm:py-14 lg:px-16 lg:py-20">
-          <div className="pointer-events-none absolute -right-20 -top-32 h-[340px] w-[340px] rounded-full border border-[#FF6B00]/25 sm:right-0" />
-          <div className="pointer-events-none absolute -right-10 -top-20 h-[230px] w-[230px] rounded-full border border-[#FF6B00]/30" />
-          <div className="pointer-events-none absolute bottom-[-110px] right-[-85px] h-[290px] w-[290px] rounded-full bg-[#FF6B00]/15 blur-3xl" />
-          <div className="pointer-events-none absolute right-8 top-24 hidden text-[125px] font-black leading-none text-[#FF6B00]/15 lg:block" aria-hidden="true">GM</div>
-          <div className="relative z-10 max-w-2xl">
-            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#FFF8F2] sm:text-xs">THE GOLDMART EXPERIENCE</p>
-            <h1 className="mt-3 max-w-xl text-[34px] font-black leading-[1.08] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
-              Discover more.<br /><span className="text-[#FFE9CC]">Love every find.</span>
-            </h1>
-            <p className="mt-4 max-w-md text-sm leading-6 text-[#FFF8F2] sm:text-base">
-              Find products you'll love, browse by department, and keep your orders, messages and account together in one easy place.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/shop" className="inline-flex items-center justify-center rounded-full bg-[#FF6B00] px-6 py-3 text-sm font-extrabold text-[#14263D] transition hover:bg-[#FFF8F2]">Explore the Shop →</Link>
-              <Link href="/categories" className="inline-flex items-center justify-center rounded-full border border-[#FF6B00] px-6 py-3 text-sm font-bold text-white transition hover:border-[#FFF8F2]">Browse Categories</Link>
-              <Link href="/orders" className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/20">My Orders ↗</Link>
+      {/* Picture 10: living-room editorial shop hero; existing search and product logic preserved. */}
+      <div className="gm-stuffuss-shell">
+        <section className="gm-stuffuss-hero" aria-label="GoldMart store inspiration">
+          <p>THE GOLDMART SHOWROOM</p>
+          <h1>Shop</h1>
+          <p>GIVE ALL YOU NEED</p>
+        </section>
+        <section className="gm-stuffuss-overlay" aria-label="Quick product search">
+          <div><h2>Give All You Need</h2><p>Find something special from GoldMart sellers.</p></div>
+          <form role="search" onSubmit={(event) => {event.preventDefault();handleSearch();}}>
+            <input type="search" aria-label="Search the marketplace" placeholder="Search on GoldMart" value={search} onChange={(event)=>setSearch(event.target.value)}/>
+            <button type="submit">Search</button>
+          </form>
+        </section>
+        <section className="gm-stuffuss-market">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="gm-stuffuss-market-grid">
+              <aside className="gm-stuffuss-sidebar">
+                <h3>Category</h3>
+                <nav aria-label="Explore departments">
+                  {categories.map(item=><Link key={item.value} href={`/shop?category=${encodeURIComponent(item.value)}`}><span aria-hidden="true">{item.icon}</span>{item.name}</Link>)}
+                </nav>
+              </aside>
+              <div className="gm-stuffuss-market-content">
+                <div className="mb-5 flex items-center justify-between gap-2">
+                  <div><p className="text-[11px] font-bold uppercase tracking-widest text-[#FF6B00]">Explore the collection</p><h2 className="text-2xl font-black">Shop on GoldMart</h2></div>
+                  <Link href="/shop" className="text-xs font-bold text-[#FF6B00]">View all →</Link>
+                </div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {categories.map(item=><Link key={item.value} href={`/shop?category=${encodeURIComponent(item.value)}`} className="rounded-2xl border border-[#efefef] bg-[#f7f7f7] p-4 text-center transition hover:border-[#FF6B00]"><span className="block text-4xl" aria-hidden="true">{item.icon}</span><span className="mt-3 block text-sm font-bold text-[#182233]">{item.name}</span></Link>)}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* CATEGORY RAIL */}
-      <section className="gm-category-rail mx-auto max-w-7xl px-4 pb-5 sm:px-6 lg:px-8">
-        <div className="rounded-[24px] border border-[#FFF8F2] bg-white px-4 pb-5 pt-5 sm:px-6">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#FF6B00]">Find your style</p>
-              <h2 className="mt-1 text-xl font-black tracking-tight sm:text-2xl">Explore your interests</h2>
-            </div>
-            <Link href="/categories" className="shrink-0 text-xs font-bold text-[#FF6B00] hover:underline sm:text-sm">View All →</Link>
-          </div>
-          <div className="og-scrollbar mt-5 grid grid-cols-4 gap-3 sm:grid-cols-8 sm:gap-4">
-            {categories.map((category) => (
-              <Link key={category.name} href={`/shop?category=${encodeURIComponent(category.value)}`} className="group flex min-w-0 flex-col items-center gap-2 text-center">
-                <span className="flex h-[64px] w-full max-w-20 items-center justify-center rounded-[20px] border border-[#F2E8DE] bg-[#FFF8F2] text-[29px] transition group-hover:-translate-y-0.5 group-hover:border-[#FF6B00] group-hover:bg-[#FFF8F2] sm:h-20">{category.icon}</span>
-                <span className="text-[11px] font-bold text-[#243B53] sm:text-xs">{category.name}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* EDITORIAL DISCOVERY CARDS */}
-      <section className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 pb-6 sm:gap-5 sm:px-6 lg:px-8">
-        <Link href="/shop?sort=new" className="gm-editorial-banner group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] border border-[#FFE9CC] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] p-4 transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
-          <span className="pointer-events-none absolute -right-8 -top-9 h-32 w-32 rounded-full border-[20px] border-white/40" />
-          <span className="relative text-2xl" aria-hidden="true">✦</span>
-          <div className="relative">
-            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#FF6B00]">Just discovered</p>
-            <h3 className="mt-1 text-lg font-black tracking-tight sm:text-2xl">New Arrivals</h3>
-            <span className="mt-2 inline-block text-xs font-bold text-[#FF6B00]">Explore products →</span>
-          </div>
-        </Link>
-        <Link href="/shop" className="gm-editorial-banner group relative flex min-h-[156px] flex-col justify-between overflow-hidden rounded-[23px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] p-4 text-white transition hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[195px] sm:p-6">
-          <span className="pointer-events-none absolute -right-6 -top-11 h-36 w-36 rounded-full border-[20px] border-[#FF6B00]/15" />
-          <span className="relative text-2xl" aria-hidden="true">◈</span>
-          <div className="relative">
-            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#FFE9CC]">Discover GoldMart</p>
-            <h3 className="mt-1 text-lg font-black tracking-tight sm:text-2xl">Shop All</h3>
-            <span className="mt-2 inline-block text-xs font-bold text-[#FFE9CC]">Browse collection →</span>
-          </div>
-        </Link>
-      </section>
-
-      {/* Curated category tiles link to existing filters; no fabricated offers */}
-      <section aria-label="Featured departments" className="gm-featured-departments mx-auto max-w-7xl px-4 pb-6 sm:px-6 lg:px-8">
-        <div className="mb-4 flex items-end justify-between gap-3">
-          <div><p className="text-[10px] font-bold uppercase tracking-[0.17em] text-[#FF6B00]">Curated for you</p><h2 className="mt-1 text-xl font-black tracking-tight sm:text-2xl">Discover your next favorite</h2></div>
-          <Link href="/categories" className="text-xs font-bold text-[#FF6B00] hover:underline">All categories ↗</Link>
-        </div>
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {[
-            {name:"Fashion finds",category:"Fashion",icon:"✿",tone:"bg-white text-[#0F0F0F]"},
-            {name:"Tech essentials",category:"Electronics",icon:"◈",tone:"bg-white text-[#0F0F0F]"},
-            {name:"Home favorites",category:"Home & Kitchen",icon:"⌂",tone:"bg-white text-[#0F0F0F]"},
-            {name:"Beauty edits",category:"Beauty & Cosmetics",icon:"✦",tone:"bg-white text-[#0F0F0F]"},
-          ].map((item) => (
-            <Link key={item.category} href={`/shop?category=${encodeURIComponent(item.category)}`}
-              className={`group relative flex min-h-[145px] flex-col justify-between overflow-hidden rounded-[22px] border border-white/70 p-4 shadow-[0_7px_20px_rgba(23,25,29,0.035)] transition hover:-translate-y-1 hover:shadow-md sm:p-5 ${item.tone}`}>
-              <span className="pointer-events-none absolute -right-4 -top-12 text-[110px] opacity-15" aria-hidden="true">{item.icon}</span>
-              <span className="relative text-xs font-bold uppercase tracking-wider">GoldMart picks</span>
-              <span className="relative"><span className="block text-lg font-black sm:text-xl">{item.name}</span><span className="mt-1 block text-xs font-bold">Explore category ↗</span></span>
-            </Link>
-          ))}
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* PRODUCT DISCOVERY */}
       <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">

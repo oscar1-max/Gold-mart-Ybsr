@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddToCartButton from "../../components/AddToCartButton";
+import CategoryShowcase from "../../components/CategoryShowcase";
 
 const API_URL =
   "https://goldmart-backend-yoxc.onrender.com/api";
@@ -356,21 +357,6 @@ export default function ShopPage() {
 
   return (
     <main className="gm-shop-page min-h-screen bg-[#FFFFFF] pb-28 text-[#14263D] md:pb-14">
-      <section aria-label="Shop everything introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)" }}>
-        <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🛍️</div>
-        <div className="relative">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#FFE9CC]">GoldMart · Shop everything</p>
-          <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">Find your next favorite.</h2>
-          <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Browse inspiring products from every GoldMart department.</p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            <Link href="/shop" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Shop All ↗</Link>
-            <Link href="/track-order" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Track Order ↗</Link>
-            <Link href="/help" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Help Centre ↗</Link>
-          </div>
-        </div>
-      </section>
-
-
       {/* HEADER */}
 
       <header className="border-b bg-white">
@@ -396,6 +382,24 @@ export default function ShopPage() {
         </div>
       </header>
 
+      {selectedCategory !== "All" ? (
+        <CategoryShowcase category={selectedCategory} />
+      ) : (
+      <section aria-label="Shop everything introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)" }}>
+        <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🛍️</div>
+        <div className="relative">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#FFE9CC]">GoldMart · Shop everything</p>
+          <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">Find your next favorite.</h2>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Browse inspiring products from every GoldMart department.</p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <Link href="/shop" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Shop All ↗</Link>
+            <Link href="/track-order" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Track Order ↗</Link>
+            <Link href="/help" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Help Centre ↗</Link>
+          </div>
+        </div>
+      </section>
+      )}
+
       {/* SHOP */}
 
       <div className="mx-auto max-w-7xl px-4 py-10">
@@ -406,7 +410,7 @@ export default function ShopPage() {
           </p>
 
           <h1 className="mt-1 text-4xl font-black">
-            Shop Everything
+            {selectedCategory === "All" ? "Shop Everything" : selectedCategory}
           </h1>
 
           <p className="mt-3 text-gray-500">
@@ -564,7 +568,7 @@ export default function ShopPage() {
             <>
               <div className="mt-8 flex items-center justify-between">
 
-                <h2 className="text-xl font-black">
+                <h2 id="goldmart-department-products" className="text-xl font-black">
                   {
                     filteredProducts.length
                   }{" "}

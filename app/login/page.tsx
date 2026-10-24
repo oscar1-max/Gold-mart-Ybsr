@@ -77,7 +77,17 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="gm-auth flex min-h-screen items-center justify-center bg-gray-50 px-4">
+    <main className="gm-auth gm-nexora-auth flex min-h-screen items-center justify-center bg-gray-50 px-4">
+
+      <div className="gm-nexora-split">
+        <aside className="gm-nexora-scene" aria-label="GoldMart welcome">
+          <Link href="/" className="gm-nexora-scene-logo">◇ GOLD<span>MART</span></Link>
+          <div className="gm-nexora-scene-copy">
+            <h2>Welcome Back.</h2>
+            <p>Glad to see you again. Pick up where you left off.</p>
+          </div>
+        </aside>
+        <div className="gm-nexora-side">
       <div className="gm-auth-inner w-full max-w-md">
 
         <Link
@@ -167,6 +177,9 @@ export default function LoginPage() {
             </Link>
           </p>
 
+          <p className="gm-nexora-lock">Your GoldMart account is protected</p>
+        </div>
+      </div>
         </div>
       </div>
     </main>
