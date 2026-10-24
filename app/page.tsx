@@ -230,7 +230,6 @@ export default function Home() {
           </Link>
           <nav aria-label="Desktop navigation" className="hidden items-center gap-6 text-sm font-semibold text-[#243B53] md:flex">
             <Link href="/shop" className="hover:text-[#FF6B00]">Shop</Link>
-            <Link href="/categories" className="hover:text-[#FF6B00]">Categories</Link>
             <Link href="/track-order" className="hover:text-[#FF6B00]">Track Order</Link>
             <Link href="/help" className="hover:text-[#FF6B00]">Help</Link>
           </nav>
@@ -243,25 +242,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mx-auto max-w-4xl px-4 pb-3 sm:px-6">
-          <form
-            onSubmit={(event) => { event.preventDefault(); handleSearch(); }}
-            className="flex h-12 items-center gap-2 overflow-hidden rounded-full border border-[#FFE9CC] bg-[#FFFFFF] pl-4 pr-1.5 transition focus-within:border-[#243B53] focus-within:ring-2 focus-within:ring-[#FF6B00]/15"
-            role="search"
-          >
-            <span className="text-lg" aria-hidden="true">⌕</span>
-            <input
-              type="search"
-              aria-label="Search products"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search products and more..."
-              className="min-w-0 flex-1 bg-transparent text-sm text-[#14263D] outline-none placeholder:text-[#FF6B00]"
-            />
-            <Link href="/visual-search" aria-label="Visual search" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg hover:bg-white">📷</Link>
-            <button type="submit" aria-label="Search" className="flex h-9 w-10 shrink-0 items-center justify-center rounded-full bg-[#14263D] text-lg text-white transition hover:bg-[#FF6B00]">⌕</button>
-          </form>
-        </div>
       </header>
 
 
@@ -276,7 +256,7 @@ export default function Home() {
           <div><h2>Give All You Need</h2><p>Find something special from GoldMart sellers.</p></div>
           <form role="search" onSubmit={(event) => {event.preventDefault();handleSearch();}}>
             <input type="search" aria-label="Search the marketplace" placeholder="Search on GoldMart" value={search} onChange={(event)=>setSearch(event.target.value)}/>
-            <button type="submit">Search</button>
+            <Link href="/visual-search" aria-label="Visual search" className="gm-stuffuss-camera" title="Search using a photo">📷</Link><button type="submit">Search</button>
           </form>
         </section>
         <section className="gm-stuffuss-market">
@@ -289,88 +269,80 @@ export default function Home() {
                 </nav>
               </aside>
               <div className="gm-stuffuss-market-content">
-                <div className="mb-5 flex items-center justify-between gap-2">
-                  <div><p className="text-[11px] font-bold uppercase tracking-widest text-[#FF6B00]">Explore the collection</p><h2 className="text-2xl font-black">Shop on GoldMart</h2></div>
-                  <Link href="/shop" className="text-xs font-bold text-[#FF6B00]">View all →</Link>
-                </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                  {categories.map(item=><Link key={item.value} href={`/shop?category=${encodeURIComponent(item.value)}`} className="rounded-2xl border border-[#efefef] bg-[#f7f7f7] p-4 text-center transition hover:border-[#FF6B00]"><span className="block text-4xl" aria-hidden="true">{item.icon}</span><span className="mt-3 block text-sm font-bold text-[#182233]">{item.name}</span></Link>)}
-                </div>
+                {/* PRODUCT DISCOVERY */}
+                      <section className="gm-home-products pb-8">
+                        <div className="mb-4 flex items-end justify-between gap-3">
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-[0.19em] text-[#FF6B00]">The marketplace</p>
+                            <h2 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Discover what’s worth exploring</h2>
+                          </div>
+                          <Link href="/shop" className="shrink-0 text-xs font-bold text-[#FF6B00] hover:underline sm:text-sm">Shop All →</Link>
+                        </div>
+                        <div role="tablist" aria-label="Explore products" className="og-scrollbar mb-5 flex gap-2 overflow-x-auto pb-1">
+                          {discoveryTabs.map((tab) => (
+                            <button
+                              type="button"
+                              role="tab"
+                              aria-selected={activeTab === tab}
+                              key={tab}
+                              onClick={() => setActiveTab(tab)}
+                              className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${activeTab === tab ? "border-[#14263D] bg-[#14263D] text-white" : "border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FF6B00]"}`}
+                            >
+                              {tab}
+                            </button>
+                          ))}
+                        </div>
+                
+                        {loadingProducts ? (
+                          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4" aria-label="Loading products">
+                            {[1, 2, 3, 4].map((item) => (
+                              <div key={item} className="animate-pulse overflow-hidden rounded-[20px] border border-[#FFF8F2] bg-white">
+                                <div className="aspect-square bg-[#FFF8F2]" />
+                                <div className="space-y-3 p-4">
+                                  <div className="h-3 w-4/5 rounded-full bg-[#FFF8F2]" />
+                                  <div className="h-4 w-1/2 rounded-full bg-[#FFF8F2]" />
+                                  <div className="h-9 rounded-full bg-[#FFF8F2]" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : displayedProducts.length === 0 ? (
+                          <div className="rounded-[22px] border border-[#FFF8F2] bg-white px-5 py-12 text-center">
+                            <span className="text-4xl" aria-hidden="true">🛍️</span>
+                            <h3 className="mt-3 text-lg font-black">{productsError ? "Products unavailable right now" : "No products found"}</h3>
+                            <p className="mt-2 text-sm text-[#FF6B00]">{productsError ? "Please try again in a moment." : "Browse the shop or choose another filter."}</p>
+                            <Link href="/shop" className="mt-5 inline-flex rounded-full bg-[#14263D] px-6 py-3 text-sm font-bold text-white hover:bg-[#FF6B00]">Visit Shop →</Link>
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+                            {displayedProducts.slice(0, 12).map((product) => (
+                              <ProductCard key={product.id} product={product} />
+                            ))}
+                          </div>
+                        )}
+                
+                        {!loadingProducts && displayedProducts.length > 12 && (
+                          <section className="mt-8">
+                            <div className="mb-4 flex items-end justify-between gap-3">
+                              <div>
+                                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#FF6B00]">Keep exploring</p>
+                                <h2 className="mt-1 text-xl font-black sm:text-2xl">More to Discover</h2>
+                              </div>
+                              <Link href="/shop" className="text-xs font-bold text-[#FF6B00] hover:underline">View All →</Link>
+                            </div>
+                            <div className="og-scrollbar flex gap-3 overflow-x-auto pb-3">
+                              {displayedProducts.slice(12, 20).map((product) => (
+                                <ProductCard key={product.id} product={product} compact />
+                              ))}
+                            </div>
+                          </section>
+                        )}
+                      </section>
               </div>
             </div>
           </div>
         </section>
       </div>
-
-      {/* PRODUCT DISCOVERY */}
-      <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
-        <div className="mb-4 flex items-end justify-between gap-3">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.19em] text-[#FF6B00]">The marketplace</p>
-            <h2 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Discover what’s worth exploring</h2>
-          </div>
-          <Link href="/shop" className="shrink-0 text-xs font-bold text-[#FF6B00] hover:underline sm:text-sm">Shop All →</Link>
-        </div>
-        <div role="tablist" aria-label="Explore products" className="og-scrollbar mb-5 flex gap-2 overflow-x-auto pb-1">
-          {discoveryTabs.map((tab) => (
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === tab}
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${activeTab === tab ? "border-[#14263D] bg-[#14263D] text-white" : "border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FF6B00]"}`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-
-        {loadingProducts ? (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4" aria-label="Loading products">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="animate-pulse overflow-hidden rounded-[20px] border border-[#FFF8F2] bg-white">
-                <div className="aspect-square bg-[#FFF8F2]" />
-                <div className="space-y-3 p-4">
-                  <div className="h-3 w-4/5 rounded-full bg-[#FFF8F2]" />
-                  <div className="h-4 w-1/2 rounded-full bg-[#FFF8F2]" />
-                  <div className="h-9 rounded-full bg-[#FFF8F2]" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : displayedProducts.length === 0 ? (
-          <div className="rounded-[22px] border border-[#FFF8F2] bg-white px-5 py-12 text-center">
-            <span className="text-4xl" aria-hidden="true">🛍️</span>
-            <h3 className="mt-3 text-lg font-black">{productsError ? "Products unavailable right now" : "No products found"}</h3>
-            <p className="mt-2 text-sm text-[#FF6B00]">{productsError ? "Please try again in a moment." : "Browse the shop or choose another filter."}</p>
-            <Link href="/shop" className="mt-5 inline-flex rounded-full bg-[#14263D] px-6 py-3 text-sm font-bold text-white hover:bg-[#FF6B00]">Visit Shop →</Link>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
-            {displayedProducts.slice(0, 12).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        )}
-
-        {!loadingProducts && displayedProducts.length > 12 && (
-          <section className="mt-8">
-            <div className="mb-4 flex items-end justify-between gap-3">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#FF6B00]">Keep exploring</p>
-                <h2 className="mt-1 text-xl font-black sm:text-2xl">More to Discover</h2>
-              </div>
-              <Link href="/shop" className="text-xs font-bold text-[#FF6B00] hover:underline">View All →</Link>
-            </div>
-            <div className="og-scrollbar flex gap-3 overflow-x-auto pb-3">
-              {displayedProducts.slice(12, 20).map((product) => (
-                <ProductCard key={product.id} product={product} compact />
-              ))}
-            </div>
-          </section>
-        )}
-      </section>
 
       {/* CUSTOMER ASSISTANCE */}
       <section className="mx-auto max-w-7xl px-4 pb-7 sm:px-6 lg:px-8">

@@ -355,366 +355,162 @@ export default function ShopPage() {
       }
     );
 
-  return (
-    <main className="gm-shop-page min-h-screen bg-[#FFFFFF] pb-28 text-[#14263D] md:pb-14">
-      {/* HEADER */}
-
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
-
-          <Link
-            href="/"
-            className="text-2xl font-black"
-          >
-            Gold
-            <span className="text-[#FF6B00]">
-              Mart
-            </span>
-          </Link>
-
-          <Link
-            href="/cart"
-            className="rounded-full border px-4 py-2 font-bold"
-          >
-            🛒 Cart
-          </Link>
-
-        </div>
-      </header>
-
-      {selectedCategory !== "All" ? (
-        <CategoryShowcase category={selectedCategory} />
-      ) : (
-      <section aria-label="Shop everything introduction" className="relative mx-auto mt-5 max-w-7xl overflow-hidden rounded-[27px] px-6 py-8 text-white shadow-[0_15px_35px_rgba(25,39,46,0.13)] sm:mt-8 sm:px-10 sm:py-12" style={{ background: "linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)" }}>
-        <div className="pointer-events-none absolute -right-8 -top-14 text-[150px] leading-none opacity-10" aria-hidden="true">🛍️</div>
-        <div className="relative">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#FFE9CC]">GoldMart · Shop everything</p>
-          <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">Find your next favorite.</h2>
-          <p className="mt-3 max-w-xl text-sm leading-7 text-white/85">Browse inspiring products from every GoldMart department.</p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            <Link href="/shop" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Shop All ↗</Link>
-            <Link href="/track-order" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Track Order ↗</Link>
-            <Link href="/help" className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold text-white transition hover:bg-white/25">Help Centre ↗</Link>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* SHOP */}
-
-      <div className="mx-auto max-w-7xl px-4 py-10">
-
+  const productResults = (
+    <div className="gm-shop-results">
+      <div className="gm-shop-result-tools">
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-[#FF6B00]">
-            GoldMart Store
-          </p>
-
-          <h1 className="mt-1 text-4xl font-black">
-            {selectedCategory === "All" ? "Shop Everything" : selectedCategory}
-          </h1>
-
-          <p className="mt-3 text-gray-500">
-            Find phones, electronics,
-            fashion, beauty products,
-            groceries and more.
+          <span className="gm-shop-result-eyebrow">REAL PRODUCTS · GOLDMART SELLERS</span>
+          <p className="gm-shop-result-count" id="goldmart-department-products">
+            {loading ? "Finding products…" : `${filteredProducts.length} product${filteredProducts.length === 1 ? "" : "s"}`}
           </p>
         </div>
-
-        {/* SEARCH */}
-
-        <div className="mt-8 flex overflow-hidden rounded-2xl border bg-white">
-
-          <input
-            type="search"
-            value={search}
-            onChange={(event) =>
-              setSearch(
-                event.target.value
-              )
-            }
-            onKeyDown={(event) => {
-              if (
-                event.key === "Enter"
-              ) {
-                handleSearch();
-              }
-            }}
-            placeholder="Search products..."
-            className="w-full px-5 py-4 outline-none focus:border-[#FF6B00]"
-          />
-
+        {selectedCategory !== "All" && (
+          <label className="gm-shop-dept-search">
+            <span className="sr-only">Search within {selectedCategory}</span>
+            <span aria-hidden="true">⌕</span>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder={`Search ${selectedCategory} products`}
+            />
+          </label>
+        )}
+      </div>
+      {selectedCategory !== "All" && search.trim() && (
+        <div className="gm-shop-active-search">
+          Results matching <strong>{search}</strong>
+          <button type="button" onClick={() => { setSearch(""); router.replace(`/shop?category=${encodeURIComponent(selectedCategory)}`); }}>Clear search</button>
+        </div>
+      )}
+      {loading ? (
+        <div className="gm-products-grid" aria-label="Loading products">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="gm-shop-skeleton">
+              <div className="gm-shop-skeleton-image" />
+              <div className="gm-shop-skeleton-line" />
+              <div className="gm-shop-skeleton-line short" />
+            </div>
+          ))}
+        </div>
+      ) : error ? (
+        <div className="gm-shop-empty" role="status">
+          <span aria-hidden="true">⚠️</span>
+          <h3>Products could not be loaded</h3>
+          <p>{error}</p>
+          <Link href="/help">Visit Help Centre →</Link>
+        </div>
+      ) : filteredProducts.length === 0 ? (
+        <div className="gm-shop-empty">
+          <span aria-hidden="true">⌕</span>
+          <h3>No matching products yet</h3>
+          <p>Try another search or browse the full GoldMart collection.</p>
           <button
             type="button"
-            onClick={
-              handleSearch
-            }
-            className="bg-black px-6 font-bold text-white transition hover:bg-[#FF6B00] hover:text-black"
-          >
-            Search
-          </button>
-
+            onClick={() => {
+              setSearch("");
+              setSelectedCategory("All");
+              router.push("/shop");
+            }}
+          >View all products →</button>
         </div>
-
-        {/* CATEGORIES */}
-
-        <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
-
-          {categories.map(
-            (category) => (
-              <button
-                key={category}
-                type="button"
-                onClick={() =>
-                  handleCategory(
-                    category
-                  )
-                }
-                className={`whitespace-nowrap rounded-full px-5 py-2 text-sm font-bold ${
-                  selectedCategory ===
-                  category
-                    ? "bg-black text-white"
-                    : "border bg-white hover:border-[#FF6B00]"
-                }`}
-              >
-                {category}
-              </button>
-            )
-          )}
-
+      ) : (
+        <div className="gm-products-grid">
+          {filteredProducts.map((product) => (
+            <article className="gm-product-tile" key={product.id}>
+              <Link href={`/product/${product.id}`} className="gm-product-image-link" aria-label={`View ${product.name}`}>
+                <div className="gm-product-photo">
+                  {product.image ? (
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className="object-cover"
+                    />
+                  ) : <span aria-hidden="true">🛍️</span>}
+                  {product.is_deal && <span className="gm-product-deal">Deal</span>}
+                  {product.stock <= 0 && <span className="gm-product-unavailable">Sold out</span>}
+                </div>
+              </Link>
+              <div className="gm-product-details">
+                <p className="gm-product-category">{product.category}</p>
+                <Link href={`/product/${product.id}`}><h3>{product.name}</h3></Link>
+                <p className="gm-product-description">{product.description}</p>
+                <p className="gm-product-rating">★ <span>{Number(product.rating || 0).toFixed(1)}</span></p>
+                <div className="gm-product-prices">
+                  <strong>{formatPrice(product.price, product.currency)}</strong>
+                  {product.is_deal && Number(product.original_price || 0) > Number(product.price) &&
+                    <s>{formatPrice(product.original_price || product.price, product.currency)}</s>}
+                </div>
+                <AddToCartButton
+                  product={{
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image_url: product.image,
+                    stock: product.stock,
+                    currency: product.currency || "USD",
+                  }}
+                />
+              </div>
+            </article>
+          ))}
         </div>
+      )}
+    </div>
+  );
 
-        {/* ACTIVE FILTER */}
-
-        {(search ||
-          selectedCategory !==
-            "All") && (
-          <div className="mt-6 rounded-xl border bg-white p-4">
-
-            <p className="text-sm text-gray-500">
-              Showing results for:
-            </p>
-
-            <div className="mt-1 font-bold">
-
-              {search && (
-                <span>
-                  🔎 "{search}"
-                </span>
-              )}
-
-              {search &&
-                selectedCategory !==
-                  "All" &&
-                " • "}
-
-              {selectedCategory !==
-                "All" && (
-                <span>
-                  📱{" "}
-                  {
-                    selectedCategory
-                  }
-                </span>
-              )}
-
+  return (
+    <main className="gm-shop-page min-h-screen bg-white pb-28 text-[#14263D] md:pb-14">
+      {selectedCategory === "All" ? (
+        <>
+          <header className="gm-shop-simple-header">
+            <div className="gm-shop-simple-header-inner">
+              <Link href="/" className="gm-shop-wordmark">Gold<span>Mart</span></Link>
+              <nav aria-label="Shop navigation">
+                <Link href="/">Home</Link>
+                <Link href="/categories">Departments</Link>
+                <Link href="/cart">Cart ↗</Link>
+              </nav>
             </div>
-
+          </header>
+          <section className="gm-shop-all-hero" aria-label="Shop all GoldMart products">
+            <div>
+              <p className="gm-shop-hero-eyebrow">THE GOLDMART COLLECTION</p>
+              <h1>Find something you'll love.</h1>
+              <p>Discover the products our sellers have in store.</p>
+            </div>
+          </section>
+          <div className="gm-shop-all-content">
+            <form
+              role="search"
+              className="gm-shop-all-search"
+              onSubmit={(event) => { event.preventDefault(); handleSearch(); }}
+            >
+              <input
+                type="search"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search GoldMart products…"
+                aria-label="Search all products"
+              />
+              <button type="submit">Search</button>
+            </form>
+            <div className="gm-shop-department-rail" aria-label="Shop by department">
+              {categories.filter((category) => category !== "All").map((category) => (
+                <button type="button" key={category}
+                  onClick={() => handleCategory(category)}>{category}</button>
+              ))}
+            </div>
+            {productResults}
           </div>
-        )}
-
-        {/* LOADING */}
-
-        {loading && (
-          <div className="mt-10 rounded-2xl border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
-
-            <div className="text-4xl">
-              ⏳
-            </div>
-
-            <p className="mt-3 font-bold">
-              Loading GoldMart
-              products...
-            </p>
-
-          </div>
-        )}
-
-        {/* ERROR */}
-
-        {!loading &&
-          error && (
-            <div className="mt-10 rounded-2xl border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
-
-              <div className="text-4xl">
-                ⚠️
-              </div>
-
-              <h2 className="mt-4 text-xl font-black">
-                Products could not
-                be loaded
-              </h2>
-
-              <p className="mt-2 text-gray-500">
-                {error}
-              </p>
-
-            </div>
-          )}
-
-        {/* RESULTS */}
-
-        {!loading &&
-          !error && (
-            <>
-              <div className="mt-8 flex items-center justify-between">
-
-                <h2 id="goldmart-department-products" className="text-xl font-black">
-                  {
-                    filteredProducts.length
-                  }{" "}
-                  Products
-                </h2>
-
-              </div>
-
-              {filteredProducts.length ===
-              0 ? (
-                <div className="mt-10 rounded-2xl border border-[#FFF8F2] bg-white shadow-[0_5px_18px_rgba(24,42,50,0.045)] p-10 text-center">
-
-                  <div className="text-5xl">
-                    🔎
-                  </div>
-
-                  <h2 className="mt-4 text-xl font-black">
-                    No products found
-                  </h2>
-
-                  <p className="mt-2 text-gray-500">
-                    Try another search
-                    or category.
-                  </p>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSearch("");
-                      setSelectedCategory(
-                        "All"
-                      );
-                      router.push(
-                        "/shop"
-                      );
-                    }}
-                    className="mt-5 rounded-full bg-black px-6 py-3 font-bold text-white"
-                  >
-                    Clear Filters
-                  </button>
-
-                </div>
-              ) : (
-                <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-
-                  {filteredProducts.map(
-                    (product) => (
-                      <article
-                        key={
-                          product.id
-                        }
-                        className="overflow-hidden rounded-2xl border bg-white transition hover:-translate-y-1 hover:shadow-lg"
-                      >
-
-                        <Link
-                          href={`/product/${product.id}`}
-                        >
-                          <div className="relative h-48 bg-gray-100">
-
-                            <Image
-                              src={
-                                product.image
-                              }
-                              alt={
-                                product.name
-                              }
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 640px) 50vw, 25vw"
-                            />
-
-                          </div>
-                        </Link>
-
-                        <div className="p-4">
-
-                          <p className="text-xs font-bold uppercase text-[#FF6B00]">
-                            {
-                              product.category
-                            }
-                          </p>
-
-                          <Link
-                            href={`/product/${product.id}`}
-                          >
-                            <h3 className="mt-1 font-bold hover:text-[#FF6B00]">
-                              {
-                                product.name
-                              }
-                            </h3>
-                          </Link>
-
-                          <p className="mt-1 line-clamp-2 text-sm text-gray-500">
-                            {
-                              product.description
-                            }
-                          </p>
-
-                          {product.is_deal && <div className="mt-3"><span className="rounded-full bg-[#FFF8F2] px-3 py-1 text-xs font-black text-[#925032]">⚡ Flash Deal</span><p className="mt-2 text-xs text-gray-500 line-through">{formatPrice(product.original_price||product.price,product.currency)}</p></div>}
-                          <div className="mt-3 flex items-center justify-between">
-
-                            <span className="font-black text-[#FF6B00]">
-                              {formatPrice(
-                                product.price,
-                                product.currency
-                              )}
-                            </span>
-
-                            <span className="text-sm">
-                              ⭐{" "}
-                              {
-                                product.rating
-                              }
-                            </span>
-
-                          </div>
-
-                          {/* IMPORTANT:
-                              Send the RAW numeric price
-                              and the REAL currency.
-                          */}
-
-                          <AddToCartButton
-  product={{
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    image_url: product.image,
-    stock: product.stock,
-    currency: product.currency||"USD",
-  }}
-/>
-
-                        </div>
-
-                      </article>
-                    )
-                  )}
-
-                </div>
-              )}
-
-            </>
-          )}
-
-      </div>
+        </>
+      ) : (
+        <CategoryShowcase category={selectedCategory}>
+          {productResults}
+        </CategoryShowcase>
+      )}
     </main>
   );
 }

@@ -88,12 +88,6 @@ export default function CategoriesPage() {
     return matching.filter((p) => p.id && p.name).slice(0, 12);
   }, [products, selected]);
 
-  function representativeImage(name: string) {
-    return products.find((p) =>
-      p.image_url && (p.category_name || "").trim().toLowerCase() === name.toLowerCase()
-    )?.image_url || null;
-  }
-
   function submitSearch() {
     const query = search.trim();
     router.push(query ? `/shop?search=${encodeURIComponent(query)}` : "/shop");
@@ -166,33 +160,6 @@ export default function CategoriesPage() {
                 <Link href={shopLink(selected)} className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#14263D] px-4 py-2.5 text-xs font-extrabold text-white hover:bg-[#243B53]">
                   {active ? "Shop this category" : "Shop all products"} <span aria-hidden="true">↗</span>
                 </Link>
-              </div>
-            </section>
-
-            <section className="rounded-[23px] border border-[#FFF8F2] bg-white p-3 shadow-[0_6px_20px_rgba(20,30,40,0.035)] sm:p-6">
-              <div className="mb-4 flex items-center justify-between gap-2">
-                <div>
-                  <h3 className="text-base font-black tracking-tight sm:text-xl">Explore departments</h3>
-                  <p className="mt-1 text-[11px] text-[#FF6B00]">Choose one to browse products</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                {departments.map((item) => {
-                  const picture = representativeImage(item.name);
-                  return (
-                    <Link key={item.name} href={shopLink(item.name)}
-                      className="group flex min-w-0 flex-col items-center rounded-2xl p-2 text-center transition hover:bg-[#FFFFFF]">
-                      <span className={`relative flex aspect-square w-full max-w-[115px] items-center justify-center overflow-hidden rounded-full bg-gradient-to-br ${item.tone} ring-1 ring-[#FFF8F2] transition group-hover:-translate-y-1 group-hover:ring-[#FF6B00]`}>
-                        {picture ? (
-                          <Image src={picture} alt="" fill sizes="115px" className="object-cover" />
-                        ) : (
-                          <span className="text-[38px] sm:text-[45px]" aria-hidden="true">{item.icon}</span>
-                        )}
-                      </span>
-                      <span className="mt-2 text-[11px] font-bold leading-4 sm:text-xs">{item.name}</span>
-                    </Link>
-                  );
-                })}
               </div>
             </section>
 

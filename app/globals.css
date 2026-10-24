@@ -1594,3 +1594,398 @@ html,body {background:#FFFFFF;color:#182233;}
   .gm-zone-buyer .gm-nexora-side .gm-auth-panel {padding:27px 21px;}
 }
 
+
+
+
+/* ================================================================
+  GoldMart buyer layout consolidation — category pages are one
+  continuous editorial storefront, NOT a hero plus old shop page.
+  Scoped exclusively to buyer. No seller/admin/AI rules modified.
+  ================================================================ */
+
+/* Shared single-page shop furniture */
+.gm-zone-buyer .gm-shop-simple-header {
+  background:#fff;border-bottom:1px solid #eeeef0;
+}
+.gm-zone-buyer .gm-shop-simple-header-inner {
+  width:min(calc(100% - 32px),1260px);margin:auto;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:16px;min-height:66px;
+}
+.gm-zone-buyer .gm-shop-wordmark {
+  color:#152335;font-weight:900;font-size:25px;letter-spacing:-.055em;
+}
+.gm-zone-buyer .gm-shop-wordmark span {color:#FF6B00;}
+.gm-zone-buyer .gm-shop-simple-header nav {display:flex;align-items:center;gap:22px;}
+.gm-zone-buyer .gm-shop-simple-header nav a {
+  color:#293545;font-size:13px;font-weight:750;
+}
+.gm-zone-buyer .gm-shop-simple-header nav a:hover {color:#FF6B00;}
+.gm-zone-buyer .gm-shop-all-hero {
+  margin:20px auto 0;width:min(calc(100% - 32px),1260px);
+  border-radius:22px;min-height:255px;
+  padding:35px clamp(25px,5vw,74px);
+  display:flex;align-items:center;
+  background-color:#172b40;
+  background-image:linear-gradient(90deg,rgba(14,25,39,.94) 0%,rgba(14,25,39,.15) 100%),
+    url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1500&q=85");
+  background-size:cover;background-position:center;
+}
+.gm-zone-buyer .gm-shop-hero-eyebrow {
+  font-size:10px;letter-spacing:.22em;font-weight:850;color:#F5B86B;
+}
+.gm-zone-buyer .gm-shop-all-hero h1 {
+  font-size:clamp(30px,4vw,53px);color:#fff;font-weight:900;
+  line-height:1.1;letter-spacing:-.05em;max-width:490px;margin-top:12px;
+}
+.gm-zone-buyer .gm-shop-all-hero p:not(.gm-shop-hero-eyebrow) {
+  color:#F0F0F0;margin-top:13px;font-size:14px;line-height:1.65;
+}
+.gm-zone-buyer .gm-shop-all-content {
+  width:min(calc(100% - 32px),1260px);margin:auto;padding:25px 0 65px;
+}
+.gm-zone-buyer .gm-shop-all-search {
+  display:flex;gap:8px;align-items:center;
+  max-width:650px;margin:0 auto 20px;
+  padding:6px;border:1px solid #E5E6E9;
+  border-radius:999px;background:#fff;
+}
+.gm-zone-buyer .gm-shop-all-search input {
+  flex:1;min-width:0;border:0;box-shadow:none;outline:0;
+  padding:10px 15px;background:#fff;font-size:13px;
+}
+.gm-zone-buyer .gm-shop-all-search button {
+  border-radius:999px;background:#FF6B00;color:#fff;
+  font-size:12px;font-weight:800;padding:11px 23px;
+}
+.gm-zone-buyer .gm-shop-department-rail {
+  display:flex;gap:9px;overflow-x:auto;scrollbar-width:thin;
+  padding:1px 1px 17px;margin-bottom:21px;
+}
+.gm-zone-buyer .gm-shop-department-rail button {
+  flex:none;min-height:36px;border:1px solid #EBE9E7;
+  border-radius:99px;background:#fff;color:#243145;
+  font-weight:750;font-size:12px;padding:8px 15px;
+}
+.gm-zone-buyer .gm-shop-department-rail button:hover {
+  background:#FFF3E9;border-color:#FF6B00;color:#B94800;
+}
+
+/* Collection results live within the unique department layout */
+.gm-zone-buyer .gm-dept-products {
+  padding:34px clamp(12px,2vw,25px) 31px;
+  margin:25px -14px 25px;
+  border-radius:20px;background:var(--dept-products-bg,#fff);
+}
+.gm-zone-buyer .gm-dept-products .gm-dept-section-heading {
+  margin-bottom:14px;
+}
+.gm-zone-buyer .gm-shop-result-tools {
+  display:flex;align-items:center;justify-content:space-between;
+  gap:15px;flex-wrap:wrap;margin-bottom:17px;
+}
+.gm-zone-buyer .gm-shop-result-eyebrow {
+  display:block;color:#66717d;font-size:10px;
+  letter-spacing:.16em;font-weight:800;margin-bottom:4px;
+}
+.gm-zone-buyer .gm-shop-result-count {
+  font-size:13px;font-weight:850;color:#344054;
+  scroll-margin-top:105px;
+}
+.gm-zone-buyer .gm-shop-dept-search {
+  display:flex;gap:9px;align-items:center;max-width:360px;width:100%;
+  border:1px solid #e7e5e2;border-radius:99px;background:#fff;padding:2px 14px;
+}
+.gm-zone-buyer .gm-shop-dept-search>span[aria-hidden] {
+  color:#626971;font-size:22px;
+}
+.gm-zone-buyer .gm-shop-dept-search input {
+  border:0!important;box-shadow:none!important;outline:none!important;
+  min-width:0;flex:1;font-size:12px;padding:11px 2px;color:#1e2733;
+}
+.gm-zone-buyer .gm-shop-active-search {
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  color:#475266;font-size:12px;margin:-5px 0 16px;
+}
+.gm-zone-buyer .gm-shop-active-search strong {color:#172334;}
+.gm-zone-buyer .gm-shop-active-search button {
+  background:#f1f2f4;color:#172334;padding:5px 10px;
+  border-radius:999px;font-size:11px;font-weight:800;
+}
+.gm-zone-buyer .gm-products-grid {
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:15px;align-items:stretch;
+}
+.gm-zone-buyer .gm-product-tile {
+  display:flex;flex-direction:column;min-width:0;overflow:hidden;
+  border:1px solid #EEE9E3;border-radius:14px;
+  background:#fff;color:#1E2734;
+  box-shadow:0 4px 13px rgba(18,28,42,.045);
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.gm-zone-buyer .gm-product-tile:hover {
+  transform:translateY(-2px);border-color:var(--dept-accent,#FF6B00);
+  box-shadow:0 12px 24px rgba(18,28,42,.09);
+}
+.gm-zone-buyer .gm-product-image-link {display:block;min-width:0;}
+.gm-zone-buyer .gm-product-photo {
+  position:relative;width:100%;aspect-ratio:1.12;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;background:#F6F7F8;color:#9CA3AF;font-size:32px;
+}
+.gm-zone-buyer .gm-product-photo img {object-fit:contain;padding:7px;transition:transform .25s;}
+.gm-zone-buyer .gm-product-tile:hover img {transform:scale(1.04);}
+.gm-zone-buyer .gm-product-deal,.gm-zone-buyer .gm-product-unavailable {
+  position:absolute;left:10px;top:10px;padding:5px 8px;
+  border-radius:7px;font-weight:850;font-size:10px;
+  color:#fff;background:#EE6723;
+}
+.gm-zone-buyer .gm-product-unavailable {
+  top:auto;bottom:10px;background:#3D4651;
+}
+.gm-zone-buyer .gm-product-details {
+  display:flex;flex-direction:column;align-items:stretch;flex:1;
+  padding:13px;min-width:0;
+}
+.gm-zone-buyer .gm-product-category {
+  text-transform:uppercase;letter-spacing:.09em;
+  font-size:9px;font-weight:900;color:var(--dept-accent,#FF6B00);
+}
+.gm-zone-buyer .gm-product-details h3 {
+  color:#202938;font-size:13px;font-weight:800;line-height:1.4;
+  min-height:36px;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;margin-top:4px;
+}
+.gm-zone-buyer .gm-product-description {
+  font-size:11px;color:#69727c;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;margin-top:4px;
+}
+.gm-zone-buyer .gm-product-rating {
+  color:#D39B28;font-size:12px;font-weight:850;margin-top:9px;
+}
+.gm-zone-buyer .gm-product-rating span {
+  color:#737B85;font-size:10px;font-weight:700;
+}
+.gm-zone-buyer .gm-product-prices {
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:7px;margin:6px 0 11px;
+}
+.gm-zone-buyer .gm-product-prices strong {
+  color:#171E2A;font-size:15px;font-weight:900;letter-spacing:-.015em;
+}
+.gm-zone-buyer .gm-product-prices s {
+  color:#92959A;font-size:11px;
+}
+.gm-zone-buyer .gm-product-details>button {
+  margin-top:auto;min-height:36px;
+  background:var(--dept-cta,#FF6B00)!important;
+  color:var(--dept-cta-text,#fff)!important;
+  border-radius:9px;font-size:11px;font-weight:850;
+}
+.gm-zone-buyer .gm-product-details>button:disabled {
+  background:#e5e7eb!important;color:#606872!important;
+}
+.gm-zone-buyer .gm-product-details>button:not(:disabled):hover {
+  filter:brightness(.91);
+}
+.gm-zone-buyer .gm-shop-empty {
+  background:#fff;border:1px dashed #e5e3df;border-radius:19px;
+  min-height:190px;display:flex;justify-content:center;align-items:center;
+  flex-direction:column;padding:25px;text-align:center;color:#283346;
+}
+.gm-zone-buyer .gm-shop-empty>span {font-size:32px;color:#E76F31;}
+.gm-zone-buyer .gm-shop-empty h3 {font-size:19px;font-weight:850;margin-top:6px;}
+.gm-zone-buyer .gm-shop-empty p {font-size:13px;color:#687381;margin-top:8px;}
+.gm-zone-buyer .gm-shop-empty :is(a,button) {
+  margin-top:16px;padding:10px 17px;border-radius:99px;
+  background:#FF6B00;color:white;font-size:12px;font-weight:800;
+}
+.gm-zone-buyer .gm-shop-skeleton {
+  overflow:hidden;border:1px solid #ececec;border-radius:14px;background:#fff;
+  padding-bottom:16px;
+}
+.gm-zone-buyer .gm-shop-skeleton-image {
+  aspect-ratio:1.1;background:linear-gradient(90deg,#f5f5f5,#ececec,#f5f5f5);
+}
+.gm-zone-buyer .gm-shop-skeleton-line {
+  height:11px;background:#f2f2f2;border-radius:8px;margin:14px 16px 0;
+}
+.gm-zone-buyer .gm-shop-skeleton-line.short {width:58%;}
+
+/* Carry each original reference's design through its product row, not only hero. */
+.gm-zone-buyer .gm-dept--phones {
+  --dept-products-bg:#fff;--dept-cta:#2378D1;
+}
+.gm-zone-buyer .gm-dept--phones .gm-products-grid {grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+.gm-zone-buyer .gm-dept--phones .gm-product-tile {
+  display:grid;grid-template-columns:45% minmax(0,1fr);border-radius:11px;
+}
+.gm-zone-buyer .gm-dept--phones .gm-product-photo {height:100%;aspect-ratio:auto;min-height:180px;}
+.gm-zone-buyer .gm-dept--phones .gm-product-details {padding:10px 9px;}
+.gm-zone-buyer .gm-dept--phones .gm-product-details h3 {font-size:11px;min-height:30px;}
+.gm-zone-buyer .gm-dept--phones .gm-product-description {display:none;}
+.gm-zone-buyer .gm-dept--phones .gm-product-prices strong {font-size:12px;}
+.gm-zone-buyer .gm-dept--phones .gm-product-details>button {padding:6px 5px;font-size:10px;min-height:31px;}
+.gm-zone-buyer .gm-dept--phones .gm-product-photo img {padding:4px;}
+
+.gm-zone-buyer .gm-dept--electronics {
+  --dept-products-bg:#fff;--dept-cta:#FF812C;
+}
+.gm-zone-buyer .gm-dept--electronics .gm-products-grid {
+  grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;
+}
+.gm-zone-buyer .gm-dept--electronics .gm-product-photo {aspect-ratio:1;}
+.gm-zone-buyer .gm-dept--electronics .gm-product-details {padding:11px;}
+.gm-zone-buyer .gm-dept--electronics .gm-product-description {display:none;}
+.gm-zone-buyer .gm-dept--electronics .gm-product-prices strong {font-size:13px;}
+.gm-zone-buyer .gm-dept--electronics .gm-product-details>button {border-radius:8px;}
+
+.gm-zone-buyer .gm-dept--groceries {
+  --dept-products-bg:#FCFCF7;--dept-cta:#264639;
+  background:#FCFCF7;
+}
+.gm-zone-buyer .gm-dept--groceries .gm-products-grid {grid-template-columns:repeat(5,minmax(0,1fr));}
+.gm-zone-buyer .gm-dept--groceries .gm-product-photo {background:#f4f5ed;}
+.gm-zone-buyer .gm-dept--groceries .gm-product-tile {border-color:#e9eee0;}
+
+.gm-zone-buyer .gm-dept--fashion {
+  --dept-products-bg:#FBF9F7;--dept-cta:#161616;
+  background:#FBF9F7;
+}
+.gm-zone-buyer .gm-dept--fashion .gm-products-grid {grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;}
+.gm-zone-buyer .gm-dept--fashion .gm-product-photo {aspect-ratio:0.76;background:#efece8;}
+.gm-zone-buyer .gm-dept--fashion .gm-product-tile {border:0;box-shadow:none;border-radius:10px;background:transparent;}
+.gm-zone-buyer .gm-dept--fashion .gm-product-details {padding:10px 3px;}
+.gm-zone-buyer .gm-dept--fashion .gm-product-description {display:none;}
+.gm-zone-buyer .gm-dept--fashion .gm-product-details>button {border-radius:3px;}
+
+.gm-zone-buyer .gm-dept--gaming {
+  --dept-products-bg:#fff;--dept-cta:#111821;
+}
+.gm-zone-buyer .gm-dept--gaming .gm-products-grid {grid-template-columns:repeat(6,minmax(0,1fr));gap:11px;}
+.gm-zone-buyer .gm-dept--gaming .gm-product-photo {background:#f6f6f7;aspect-ratio:1;}
+.gm-zone-buyer .gm-dept--gaming .gm-product-deal {background:#FF6B00;}
+.gm-zone-buyer .gm-dept--gaming .gm-product-description {display:none;}
+
+.gm-zone-buyer .gm-dept--beauty {
+  --dept-products-bg:#F4FBF9;--dept-cta:#096963;
+  background:#F4FBF9;
+}
+.gm-zone-buyer .gm-dept--beauty .gm-products-grid {grid-template-columns:repeat(4,minmax(0,1fr));}
+.gm-zone-buyer .gm-dept--beauty .gm-product-photo {background:#E8F5F2;}
+.gm-zone-buyer .gm-dept--beauty .gm-product-tile {border-color:#dcefeb;}
+.gm-zone-buyer .gm-dept--beauty .gm-product-details h3 {font-family:Georgia,Times,serif;font-size:15px;}
+.gm-zone-buyer .gm-dept--beauty .gm-product-category {color:#086762;}
+
+.gm-zone-buyer .gm-dept--jewelry {
+  --dept-products-bg:#FAF7F1;--dept-cta:#223B33;
+  background:#FAF7F1;
+}
+.gm-zone-buyer .gm-dept--jewelry .gm-products-grid {grid-template-columns:repeat(5,minmax(0,1fr));gap:13px;}
+.gm-zone-buyer .gm-dept--jewelry .gm-product-photo {background:#F6F1E9;aspect-ratio:1.1;}
+.gm-zone-buyer .gm-dept--jewelry .gm-product-tile {border-color:#ece0d0;box-shadow:none;}
+.gm-zone-buyer .gm-dept--jewelry .gm-product-details h3 {font-family:Georgia,Times,serif;}
+.gm-zone-buyer .gm-dept--jewelry .gm-product-category {color:#A17B3D;}
+.gm-zone-buyer .gm-dept--jewelry .gm-product-details>button {border-radius:2px;}
+
+.gm-zone-buyer .gm-dept--kitchen {
+  --dept-products-bg:#FFFFFF;--dept-cta:#CA9A41;
+  --dept-cta-text:#191818;
+}
+.gm-zone-buyer .gm-dept--kitchen .gm-products-grid {grid-template-columns:repeat(6,minmax(0,1fr));gap:11px;}
+.gm-zone-buyer .gm-dept--kitchen .gm-product-photo {background:#f3f3f1;}
+.gm-zone-buyer .gm-dept--kitchen .gm-product-category {color:#AE7C24;}
+.gm-zone-buyer .gm-dept--kitchen .gm-product-description {display:none;}
+.gm-zone-buyer .gm-dept--kitchen .gm-product-tile {border-radius:5px;}
+
+.gm-zone-buyer .gm-dept--electronics .gm-dept-products,
+.gm-zone-buyer .gm-dept--kitchen .gm-dept-products {margin-top:35px;}
+.gm-zone-buyer .gm-dept--fashion .gm-dept-section-heading h2,
+.gm-zone-buyer .gm-dept--jewelry .gm-dept-section-heading h2 {
+  font-family:Georgia,Times,serif;
+}
+
+/* Homepage: one department sidebar, one integrated product area. */
+.gm-zone-buyer .gm-stuffuss-market-grid {
+  grid-template-columns:177px minmax(0,1fr);align-items:start;
+}
+.gm-zone-buyer .gm-stuffuss-market-content .gm-home-products {padding:2px 0 34px;}
+.gm-zone-buyer .gm-stuffuss-market-content .gm-home-products h2 {
+  font-size:clamp(20px,2.2vw,30px);
+}
+.gm-zone-buyer .gm-stuffuss-market-content .gm-home-products>div[role="tablist"] {
+  margin:16px 0;
+}
+.gm-zone-buyer .gm-stuffuss-market-content .gm-home-products>div[class*="grid"] {
+  gap:12px;
+}
+.gm-zone-buyer .gm-stuffuss-overlay form:focus-within {border-color:#444;}
+.gm-zone-buyer .gm-stuffuss-overlay .gm-stuffuss-camera {
+  display:grid;place-items:center;width:34px;height:34px;
+  color:#374151;text-decoration:none;
+}
+.gm-zone-buyer .gm-stuffuss-overlay .gm-stuffuss-camera:hover {background:#f6f6f6;border-radius:50%;}
+.gm-zone-buyer .gm-stuffuss-sidebar {position:sticky;top:90px;}
+.gm-zone-buyer .gm-stuffuss-sidebar nav {padding-bottom:12px;}
+
+@media (max-width:1160px) {
+  .gm-zone-buyer .gm-dept--electronics .gm-products-grid,
+  .gm-zone-buyer .gm-dept--gaming .gm-products-grid,
+  .gm-zone-buyer .gm-dept--fashion .gm-products-grid,
+  .gm-zone-buyer .gm-dept--kitchen .gm-products-grid {
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+  .gm-zone-buyer .gm-dept--phones .gm-products-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .gm-zone-buyer .gm-dept--groceries .gm-products-grid,
+  .gm-zone-buyer .gm-dept--jewelry .gm-products-grid {
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+}
+@media (max-width:800px) {
+  .gm-zone-buyer .gm-products-grid,
+  .gm-zone-buyer .gm-dept--beauty .gm-products-grid,
+  .gm-zone-buyer .gm-dept--fashion .gm-products-grid,
+  .gm-zone-buyer .gm-dept--electronics .gm-products-grid,
+  .gm-zone-buyer .gm-dept--gaming .gm-products-grid,
+  .gm-zone-buyer .gm-dept--groceries .gm-products-grid,
+  .gm-zone-buyer .gm-dept--jewelry .gm-products-grid,
+  .gm-zone-buyer .gm-dept--kitchen .gm-products-grid {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .gm-zone-buyer .gm-dept-products {
+    padding:24px 12px;margin-inline:0;
+  }
+}
+@media (max-width:640px) {
+  .gm-zone-buyer .gm-shop-simple-header nav {gap:11px;}
+  .gm-zone-buyer .gm-shop-simple-header nav a {font-size:11px;}
+  .gm-zone-buyer .gm-shop-wordmark {font-size:21px;}
+  .gm-zone-buyer .gm-shop-all-hero {min-height:215px;padding:28px;}
+  .gm-zone-buyer .gm-shop-all-content {padding-top:18px;}
+  .gm-zone-buyer .gm-shop-result-tools {align-items:stretch;}
+  .gm-zone-buyer .gm-shop-dept-search {max-width:none;}
+  .gm-zone-buyer .gm-products-grid,
+  .gm-zone-buyer .gm-dept--beauty .gm-products-grid,
+  .gm-zone-buyer .gm-dept--fashion .gm-products-grid,
+  .gm-zone-buyer .gm-dept--electronics .gm-products-grid,
+  .gm-zone-buyer .gm-dept--gaming .gm-products-grid,
+  .gm-zone-buyer .gm-dept--groceries .gm-products-grid,
+  .gm-zone-buyer .gm-dept--jewelry .gm-products-grid,
+  .gm-zone-buyer .gm-dept--kitchen .gm-products-grid,
+  .gm-zone-buyer .gm-dept--phones .gm-products-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+  }
+  .gm-zone-buyer .gm-dept--phones .gm-product-tile {display:flex;flex-direction:column;}
+  .gm-zone-buyer .gm-dept--phones .gm-product-photo {aspect-ratio:1.1;height:auto;min-height:0;}
+  .gm-zone-buyer .gm-product-details {padding:11px;}
+  .gm-zone-buyer .gm-product-description {display:none;}
+  .gm-zone-buyer .gm-product-details h3 {font-size:12px;}
+  .gm-zone-buyer .gm-product-prices strong {font-size:13px;}
+  .gm-zone-buyer .gm-product-details>button {font-size:11px;}
+  .gm-zone-buyer .gm-stuffuss-market-grid {grid-template-columns:1fr;}
+  .gm-zone-buyer .gm-stuffuss-sidebar {position:static;padding-right:0;}
+  .gm-zone-buyer .gm-stuffuss-sidebar nav {overflow-x:auto;flex-wrap:nowrap;}
+}
+
