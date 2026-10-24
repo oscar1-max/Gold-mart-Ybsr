@@ -1159,3 +1159,438 @@ html,body {background:#FFFFFF;color:#182233;}
   .gm-auth .gm-auth-panel {background:rgba(255,255,255,.93) !important;}
 }
 
+
+
+
+/* ===============================================================
+   BUYER SHOWROOM 2026 / References 1–10
+   Every selector is restricted to .gm-zone-buyer. Seller Studio,
+   Admin, AI Admin, Monitoring and Support retain original design.
+   These rules only change presentation, never marketplace data.
+   =============================================================== */
+.gm-zone-buyer .gm-dept {width:100%;background:#fff;color:#172235;}
+.gm-zone-buyer .gm-dept-container {width:min(100% - 32px,1270px);margin:0 auto;}
+.gm-zone-buyer .gm-dept-mini-nav {
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:16px 6px 14px;background:#fff;color:#172235;
+}
+.gm-zone-buyer .gm-dept-logo {
+  font-size:25px;font-weight:900;letter-spacing:-.06em;
+  text-decoration:none;color:#15263c;
+}
+.gm-zone-buyer .gm-dept-logo>span {color:var(--dept-accent,#FF6B00);}
+.gm-zone-buyer .gm-dept-logo small {font-size:12px;letter-spacing:0;font-weight:600;color:#697480;}
+.gm-zone-buyer .gm-dept-mini-nav nav {display:flex;flex-wrap:wrap;align-items:center;gap:clamp(12px,2vw,28px);}
+.gm-zone-buyer .gm-dept-mini-nav nav a {
+  color:#223148;font-size:13px;font-weight:700;text-decoration:none;
+}
+.gm-zone-buyer .gm-dept-mini-nav nav a:hover {color:var(--dept-accent);}
+.gm-zone-buyer .gm-dept-hero {
+  position:relative;min-height:440px;overflow:hidden;border-radius:20px;
+  display:flex;align-items:center;
+  background-color:var(--dept-fallback,#14263D);
+  background-size:cover;background-position:center right;
+  box-shadow:0 10px 30px rgba(20,38,61,.075);color:var(--dept-color,#fff);
+}
+.gm-zone-buyer .gm-dept-hero-content {
+  position:relative;z-index:2;width:min(59%,610px);
+  padding:clamp(26px,5vw,75px);
+}
+.gm-zone-buyer .gm-dept-kicker {
+  color:var(--dept-accent,#FF6B00);letter-spacing:.16em;
+  font-size:11px;font-weight:900;margin:0 0 14px;
+}
+.gm-zone-buyer .gm-dept-hero h1 {
+  color:var(--dept-color,#fff);font-size:clamp(34px,4.5vw,65px);
+  font-weight:900;letter-spacing:-.055em;line-height:1.06;
+  max-width:610px;text-wrap:balance;margin:0;
+}
+.gm-zone-buyer .gm-dept-intro {
+  color:var(--dept-sub,#e9e9ec);font-size:clamp(13px,1.4vw,17px);
+  margin-top:20px;max-width:425px;line-height:1.7;
+}
+.gm-zone-buyer .gm-dept-hero-button {
+  margin-top:26px;display:inline-flex;align-items:center;justify-content:center;
+  gap:16px;min-height:46px;padding:12px 22px;background:var(--dept-button,#FF6B00);
+  color:var(--dept-button-text,#fff);font-size:13px;font-weight:850;
+  text-decoration:none;border-radius:11px;box-shadow:0 7px 20px rgba(0,0,0,.12);
+}
+.gm-zone-buyer .gm-dept-hero-button:hover {filter:brightness(.94);}
+.gm-zone-buyer .gm-dept-hero-points {
+  display:flex;flex-wrap:wrap;gap:10px 23px;margin-top:46px;
+  color:var(--dept-sub,#f6f6f6);font-size:11px;font-weight:700;
+}
+.gm-zone-buyer .gm-dept-hero-watermark {
+  position:absolute;right:24px;bottom:13px;font-size:11px;
+  letter-spacing:.18em;font-weight:850;color:rgba(255,255,255,.78);
+  text-shadow:0 1px 10px rgba(0,0,0,.3);
+}
+.gm-zone-buyer .gm-dept-benefit-row {
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:0;overflow:hidden;border-radius:14px;
+  margin:16px 0 40px;border:1px solid #f0ede8;background:#fff;
+  box-shadow:0 5px 24px rgba(20,38,61,.035);
+}
+.gm-zone-buyer .gm-dept-benefit-row a {
+  display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;
+  column-gap:9px;row-gap:1px;padding:16px 18px;color:#203047;
+  text-decoration:none;font-size:12px;border-right:1px solid #edeef1;
+}
+.gm-zone-buyer .gm-dept-benefit-row a:last-child {border-right:0;}
+.gm-zone-buyer .gm-dept-benefit-row a>span {
+  grid-row:span 2;font-size:25px;color:var(--dept-accent,#FF6B00);
+}
+.gm-zone-buyer .gm-dept-benefit-row strong {font-size:12px;color:#19263a;}
+.gm-zone-buyer .gm-dept-benefit-row small {font-size:10px;color:#68717e;}
+.gm-zone-buyer .gm-dept-benefit-row a:hover {background:#fff8f1;}
+.gm-zone-buyer .gm-dept-categories {margin:0 0 33px;}
+.gm-zone-buyer .gm-dept-section-heading {
+  display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:19px;
+}
+.gm-zone-buyer .gm-dept-section-kicker {
+  font-size:10px;font-weight:900;letter-spacing:.17em;
+  color:var(--dept-accent,#FF6B00);margin-bottom:4px;
+}
+.gm-zone-buyer .gm-dept-section-heading h2 {
+  font-size:clamp(23px,2.3vw,34px);font-weight:900;letter-spacing:-.04em;color:#14263D;
+}
+.gm-zone-buyer .gm-dept-section-heading>a {
+  color:var(--dept-accent,#FF6B00);font-size:12px;font-weight:850;
+  text-decoration:none;white-space:nowrap;
+}
+.gm-zone-buyer .gm-dept-tiles {
+  display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;
+}
+.gm-zone-buyer .gm-dept-tile {
+  text-align:center;text-decoration:none;color:#1a273a;
+  display:flex;flex-direction:column;align-items:center;
+  border:1px solid #f0eeeb;border-radius:18px;background:#fff;
+  overflow:hidden;padding:8px 8px 14px;min-width:0;
+  box-shadow:0 3px 12px rgba(20,38,61,.035);transition:transform .2s,border-color .2s;
+}
+.gm-zone-buyer .gm-dept-tile:hover {transform:translateY(-3px);border-color:var(--dept-accent);}
+.gm-zone-buyer .gm-dept-tile-image {
+  width:100%;aspect-ratio:1.16;display:flex;align-items:end;justify-content:end;
+  overflow:hidden;background-color:#f5f6f8;background-position:center;background-size:cover;
+  border-radius:12px;margin-bottom:13px;
+}
+.gm-zone-buyer .gm-dept-tile-icon {
+  display:grid;place-items:center;width:26px;height:26px;margin:5px;
+  border-radius:50%;background:rgba(255,255,255,.87);
+  font-size:13px;font-weight:800;color:#15263d;
+}
+.gm-zone-buyer .gm-dept-tile-label {font-size:12px;font-weight:850;line-height:1.4;}
+.gm-zone-buyer .gm-dept-tile-action {
+  color:var(--dept-accent,#FF6B00);font-size:10px;
+  font-weight:750;margin-top:6px;
+}
+.gm-zone-buyer .gm-dept-story {
+  display:grid;grid-template-columns:1fr 1fr;min-height:260px;
+  border-radius:19px;overflow:hidden;margin:34px 0 17px;
+  background:var(--dept-story,#f9ede0);
+}
+.gm-zone-buyer .gm-dept-story>div:first-child {
+  padding:clamp(25px,4vw,50px);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+}
+.gm-zone-buyer .gm-dept-story h2 {
+  font-size:clamp(24px,3vw,41px);font-weight:900;letter-spacing:-.045em;
+  line-height:1.12;max-width:450px;color:var(--dept-story-ink,#14263D);
+}
+.gm-zone-buyer .gm-dept-story p:not(.gm-dept-section-kicker) {
+  color:var(--dept-story-ink,#14263D);max-width:360px;
+  font-size:13px;line-height:1.65;margin-top:12px;
+}
+.gm-zone-buyer .gm-dept-story a {
+  margin-top:18px;display:inline-flex;padding:10px 16px;
+  background:var(--dept-story-button,#14263D);
+  color:#fff;border-radius:9px;font-size:12px;font-weight:800;text-decoration:none;
+}
+.gm-zone-buyer .gm-dept-story-image {
+  min-height:240px;background-size:cover;background-position:center;
+}
+.gm-zone-buyer .gm-shop-page .gm-dept~header {margin-top:20px;}
+.gm-zone-buyer .gm-shop-page #goldmart-department-products {
+  scroll-margin-top:85px;
+}
+
+/* Picture 1: NovaPhone / precise navy + photographic device rail. */
+.gm-zone-buyer .gm-dept--phones {
+  --dept-accent:#2677cf;--dept-fallback:#122a49;
+  --dept-overlay-start:rgba(11,27,51,.94);--dept-overlay-end:rgba(20,57,105,.18);
+  --dept-button:#fff;--dept-button-text:#15263d;
+  --dept-story:#e9f4ff;--dept-story-button:#14263D;
+}
+.gm-zone-buyer .gm-dept--phones .gm-dept-hero {min-height:370px;border-radius:12px;}
+.gm-zone-buyer .gm-dept--phones .gm-dept-hero h1 {max-width:430px;}
+.gm-zone-buyer .gm-dept--phones .gm-dept-tile {border:0;box-shadow:none;background:transparent;}
+.gm-zone-buyer .gm-dept--phones .gm-dept-tile-image {border-radius:24px;background-color:#f3f5fa;}
+.gm-zone-buyer .gm-dept--phones .gm-dept-tiles {gap:9px;}
+
+/* Picture 2: MobilePro / dramatic black, orange, tech. */
+.gm-zone-buyer .gm-dept--electronics {
+  --dept-accent:#FF812C;--dept-fallback:#090e16;
+  --dept-overlay-start:rgba(4,8,13,.99);--dept-overlay-end:rgba(8,13,19,.14);
+  --dept-story:#101923;--dept-story-ink:#FFFFFF;--dept-story-button:#FF812C;
+}
+.gm-zone-buyer .gm-dept--electronics .gm-dept-hero {min-height:500px;border-radius:6px;}
+.gm-zone-buyer .gm-dept--electronics .gm-dept-benefit-row {
+  background:#0c1620;border-color:#152536;border-radius:0;
+}
+.gm-zone-buyer .gm-dept--electronics .gm-dept-benefit-row a {border-color:#24313e;color:#fff;}
+.gm-zone-buyer .gm-dept--electronics .gm-dept-benefit-row strong {color:#fff;}
+.gm-zone-buyer .gm-dept--electronics .gm-dept-benefit-row small {color:#c5cbd1;}
+.gm-zone-buyer .gm-dept--electronics .gm-dept-story a {color:#141c25;}
+
+/* Picture 3: VIVA / botanical grocery editorial on soft cream. */
+.gm-zone-buyer .gm-dept--groceries {
+  --dept-accent:#66744e;--dept-fallback:#e8eadb;
+  --dept-overlay-start:rgba(250,249,237,.98);--dept-overlay-end:rgba(245,248,226,.04);
+  --dept-color:#243528;--dept-sub:#344738;
+  --dept-button:#223d32;--dept-story:#f1f0df;--dept-story-button:#223d32;
+}
+.gm-zone-buyer .gm-dept--groceries .gm-dept-hero {border-radius:26px;}
+.gm-zone-buyer .gm-dept--groceries .gm-dept-tiles .gm-dept-tile-image {border-radius:999px;aspect-ratio:1;}
+.gm-zone-buyer .gm-dept--groceries .gm-dept-tile {border:0;box-shadow:none;}
+.gm-zone-buyer .gm-dept--groceries .gm-dept-kicker {color:#526942;}
+.gm-zone-buyer .gm-dept--groceries .gm-dept-hero-watermark {color:#274d35;}
+
+/* Picture 4: LUNORA / ivory fashion editorial, serif headlines. */
+.gm-zone-buyer .gm-dept--fashion {
+  --dept-accent:#9d7250;--dept-fallback:#ede4dc;
+  --dept-overlay-start:rgba(252,249,245,.99);--dept-overlay-end:rgba(248,240,234,.0);
+  --dept-color:#231d1b;--dept-sub:#57514e;
+  --dept-button:#151515;--dept-story:#f1e8e1;--dept-story-button:#171717;
+}
+.gm-zone-buyer .gm-dept--fashion .gm-dept-hero {border-radius:0;min-height:520px;}
+.gm-zone-buyer .gm-dept--fashion .gm-dept-hero h1,
+.gm-zone-buyer .gm-dept--fashion .gm-dept-story h2,
+.gm-zone-buyer .gm-dept--fashion .gm-dept-section-heading h2 {
+  font-family:Georgia,Times,serif;font-weight:700;letter-spacing:-.05em;
+}
+.gm-zone-buyer .gm-dept--fashion .gm-dept-tiles {grid-template-columns:repeat(3,minmax(0,1fr));}
+.gm-zone-buyer .gm-dept--fashion .gm-dept-tile-image {aspect-ratio:1.27;}
+
+/* Picture 5: NOVATREND / minimal fashion-style trends for gaming. */
+.gm-zone-buyer .gm-dept--gaming {
+  --dept-accent:#FF6B00;--dept-fallback:#e7e8ea;
+  --dept-overlay-start:rgba(250,250,252,.97);--dept-overlay-end:rgba(250,250,250,.04);
+  --dept-color:#161c29;--dept-sub:#404852;
+  --dept-button:#FF6B00;--dept-story:#fff0e9;--dept-story-button:#171717;
+}
+.gm-zone-buyer .gm-dept--gaming .gm-dept-hero {border-radius:9px;}
+.gm-zone-buyer .gm-dept--gaming .gm-dept-hero-points {color:#32394a;}
+.gm-zone-buyer .gm-dept--gaming .gm-dept-tiles {gap:10px;}
+.gm-zone-buyer .gm-dept--gaming .gm-dept-tile-image {border-radius:16px;}
+
+/* Picture 6: GLOWÉRIVE / luxurious aqua beauty photography. */
+.gm-zone-buyer .gm-dept--beauty {
+  --dept-accent:#D8FFEF;--dept-fallback:#0f7775;
+  --dept-overlay-start:rgba(13,98,100,.95);--dept-overlay-end:rgba(25,142,139,.08);
+  --dept-color:#fff;--dept-sub:#f1fffb;
+  --dept-button:#075b5a;--dept-story:#e4f7f2;--dept-story-button:#075b5a;
+}
+.gm-zone-buyer .gm-dept--beauty .gm-dept-hero {min-height:490px;border-radius:0;}
+.gm-zone-buyer .gm-dept--beauty .gm-dept-hero h1 {
+  font-family:Georgia,Times,serif;font-weight:500;line-height:1.04;
+}
+.gm-zone-buyer .gm-dept--beauty .gm-dept-tiles .gm-dept-tile-image {border-radius:999px;aspect-ratio:1;}
+.gm-zone-buyer .gm-dept--beauty .gm-dept-section-kicker,
+.gm-zone-buyer .gm-dept--beauty .gm-dept-section-heading>a,
+.gm-zone-buyer .gm-dept--beauty .gm-dept-tile-action {color:#086762;}
+.gm-zone-buyer .gm-dept--beauty .gm-dept-benefit-row a>span {color:#086762;}
+
+/* Picture 7: LUMIÈRE / champagne jewelry and grand editorial arches. */
+.gm-zone-buyer .gm-dept--jewelry {
+  --dept-accent:#B38A40;--dept-fallback:#f3e7d9;
+  --dept-overlay-start:rgba(255,252,246,.99);--dept-overlay-end:rgba(255,248,236,.02);
+  --dept-color:#273b34;--dept-sub:#4f5149;
+  --dept-button:#233c34;--dept-story:#f6ece2;--dept-story-button:#233c34;
+}
+.gm-zone-buyer .gm-dept--jewelry .gm-dept-hero {
+  border-radius:180px 12px 12px 12px;min-height:450px;
+}
+.gm-zone-buyer .gm-dept--jewelry .gm-dept-hero h1,
+.gm-zone-buyer .gm-dept--jewelry .gm-dept-story h2,
+.gm-zone-buyer .gm-dept--jewelry .gm-dept-section-heading h2 {
+  font-family:Georgia,Times,serif;font-weight:500;
+}
+.gm-zone-buyer .gm-dept--jewelry .gm-dept-tiles {grid-template-columns:repeat(4,minmax(0,1fr));}
+.gm-zone-buyer .gm-dept--jewelry .gm-dept-tile-image {
+  border-radius:130px 130px 8px 8px;aspect-ratio:1.15;
+}
+.gm-zone-buyer .gm-dept--jewelry .gm-dept-tile:nth-child(n+5) {display:none;}
+
+/* Picture 9: KITCHEN WORLD / charcoal/gold premium kitchen photo. */
+.gm-zone-buyer .gm-dept--kitchen {
+  --dept-accent:#E8B25A;--dept-fallback:#1c1b1a;
+  --dept-overlay-start:rgba(14,15,17,.95);--dept-overlay-end:rgba(17,17,19,.06);
+  --dept-button:#D4A047;--dept-button-text:#161616;
+  --dept-story:#222122;--dept-story-ink:#fff;--dept-story-button:#D4A047;
+}
+.gm-zone-buyer .gm-dept--kitchen .gm-dept-hero {min-height:420px;border-radius:4px;}
+.gm-zone-buyer .gm-dept--kitchen .gm-dept-benefit-row {background:#202020;border-color:#202020;border-radius:0;}
+.gm-zone-buyer .gm-dept--kitchen .gm-dept-benefit-row a {border-color:#3b3b3b;}
+.gm-zone-buyer .gm-dept--kitchen .gm-dept-benefit-row strong {color:#fff;}
+.gm-zone-buyer .gm-dept--kitchen .gm-dept-benefit-row small {color:#d0d0d0;}
+.gm-zone-buyer .gm-dept--kitchen .gm-dept-tiles .gm-dept-tile-image {aspect-ratio:1.2;}
+.gm-zone-buyer .gm-dept--kitchen .gm-dept-story a {color:#171717;}
+
+/* Picture 10: STUFFUSS / monochrome living-room hero, giant SHOP title. */
+.gm-zone-buyer .gm-stuffuss-shell {padding:0;background:#f5f5f5;}
+.gm-zone-buyer .gm-stuffuss-hero {
+  min-height:350px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;position:relative;
+  background-color:#a9aaa9;
+  background-image:linear-gradient(180deg,rgba(18,20,24,.2),rgba(18,20,24,.48)),
+    url("https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1800&q=85");
+  background-size:cover;background-position:center;
+  color:#fff;text-align:center;overflow:hidden;
+}
+.gm-zone-buyer .gm-stuffuss-hero h1 {
+  color:#fff;font-size:clamp(92px,20vw,290px);
+  text-transform:none;line-height:1;font-weight:900;
+  letter-spacing:-.095em;text-shadow:0 3px 28px rgba(0,0,0,.16);
+}
+.gm-zone-buyer .gm-stuffuss-hero p {
+  color:#fff;letter-spacing:.28em;font-size:12px;font-weight:850;
+}
+.gm-zone-buyer .gm-stuffuss-overlay {
+  width:min(calc(100% - 32px),1150px);
+  margin:-32px auto 16px;position:relative;z-index:5;
+  border:1px solid #eaeaea;background:#fff;border-radius:18px;
+  box-shadow:0 18px 35px rgba(0,0,0,.11);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
+  gap:20px;align-items:center;padding:19px 24px;
+}
+.gm-zone-buyer .gm-stuffuss-overlay h2 {font-size:21px;color:#141414;font-weight:900;}
+.gm-zone-buyer .gm-stuffuss-overlay p {font-size:12px;color:#65707a;}
+.gm-zone-buyer .gm-stuffuss-overlay form {
+  display:flex;align-items:center;gap:7px;padding:6px;
+  border:1px solid #e7e7e7;border-radius:999px;
+}
+.gm-zone-buyer .gm-stuffuss-overlay input {
+  flex:1;min-width:0;padding:8px 15px;background:#fff;color:#161616;
+  outline:0;border:0;box-shadow:none;
+}
+.gm-zone-buyer .gm-stuffuss-overlay button {
+  border-radius:999px;background:#161616;color:#fff;padding:10px 24px;font-size:12px;font-weight:800;
+}
+.gm-zone-buyer .gm-stuffuss-market {background:#fff;padding-block:12px 26px;}
+.gm-zone-buyer .gm-stuffuss-market-grid {display:grid;grid-template-columns:176px minmax(0,1fr);gap:22px;}
+.gm-zone-buyer .gm-stuffuss-sidebar {border-right:1px solid #ececec;padding-right:16px;}
+.gm-zone-buyer .gm-stuffuss-sidebar h3 {font-size:13px;font-weight:900;margin:0 0 12px;}
+.gm-zone-buyer .gm-stuffuss-sidebar a {
+  display:flex;gap:9px;align-items:center;margin-bottom:7px;
+  padding:9px 10px;border-radius:10px;color:#53545a;font-size:12px;font-weight:750;
+  text-decoration:none;
+}
+.gm-zone-buyer .gm-stuffuss-sidebar a:hover {background:#f6f6f6;color:#111;}
+.gm-zone-buyer .gm-stuffuss-sidebar a span {font-size:17px;}
+.gm-zone-buyer .gm-stuffuss-market-content {min-width:0;}
+
+/* Picture 8: NEXORA / dark luxury split login and signup. */
+.gm-zone-buyer main.gm-auth.gm-nexora-auth {
+  padding:0!important;min-height:calc(100svh - 35px);
+  background:#0f0e12!important;background-image:none!important;
+}
+.gm-zone-buyer main.gm-nexora-auth::after {display:none;}
+.gm-zone-buyer .gm-nexora-split {
+  min-height:calc(100svh - 35px);width:100%;
+  display:grid;grid-template-columns:minmax(270px,38%) minmax(0,62%);
+}
+.gm-zone-buyer .gm-nexora-scene {
+  min-height:690px;position:relative;display:flex;flex-direction:column;
+  justify-content:space-between;overflow:hidden;
+  padding:clamp(26px,4vw,50px);
+  background-color:#221b1b;
+  background-image:linear-gradient(180deg,rgba(10,9,11,.65),rgba(16,13,13,.24) 38%,rgba(14,10,10,.78)),
+    url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85");
+  background-position:center;background-size:cover;
+}
+.gm-zone-buyer .gm-nexora-scene-logo {font-size:26px;letter-spacing:.08em;font-weight:850;color:#fff;text-decoration:none;}
+.gm-zone-buyer .gm-nexora-scene-logo span {color:#EABF83;}
+.gm-zone-buyer .gm-nexora-scene-copy {border-left:3px solid #EABF83;padding-left:20px;margin-bottom:55px;}
+.gm-zone-buyer .gm-nexora-scene-copy h2 {font-size:clamp(38px,4vw,62px);line-height:1.1;font-weight:550;color:#fff;}
+.gm-zone-buyer .gm-nexora-scene-copy p {font-size:13px;color:#dfdad8;line-height:1.8;margin-top:13px;}
+.gm-zone-buyer .gm-nexora-side {
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 72% 20%,#232029,#141319 60%,#0d0c11);
+  padding:46px clamp(20px,4.5vw,68px);min-width:0;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-inner {width:min(100%,530px);max-width:530px;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-brand {color:#F1C28C;font-size:24px;text-align:left;text-shadow:none;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel {
+  background:#1c1a21!important;color:#fff!important;
+  border:1px solid #34313a;border-radius:30px;
+  padding:clamp(25px,4vw,52px);box-shadow:0 24px 70px rgba(0,0,0,.26);
+  backdrop-filter:none;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel :is(h1,h2,label) {color:#fff;font-weight:650;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel h1 {font-size:clamp(30px,3.4vw,45px);text-align:center;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel>p {color:#b7b0bc;text-align:center;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form :is(input,select) {
+  background:#24222b!important;border:1px solid #3e3943;color:#fff!important;
+  min-height:52px;border-radius:13px;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form :is(input,select)::placeholder {color:#ada8b2;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form button[type="submit"] {
+  background:#F0BE81!important;color:#1d1714!important;
+  border:1px solid #F0BE81;min-height:52px;margin-top:6px;
+  font-size:16px;border-radius:13px;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form button[type="submit"]:hover {background:#F7CA96!important;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form button[type="button"] {
+  background:#24222b!important;color:#fff;border-color:#49434b;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form button[type="button"] :is(p,span) {color:#fff;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel form button[type="button"][class*="bg-yellow-50"] {
+  border-color:#F0BE81!important;box-shadow:0 0 0 1px #F0BE81;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel>a,
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel p a {color:#F0BE81!important;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel p[class*="text-gray-500"] {color:#c1bac5;}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel .gm-nexora-lock {
+  display:flex;justify-content:center;align-items:center;gap:7px;
+  font-size:11px;color:#99949e;text-align:center;margin-top:28px;
+}
+.gm-zone-buyer .gm-nexora-side .gm-auth-panel .gm-nexora-lock::before {content:"◇";color:#F0BE81;}
+@media (max-width:950px) {
+  .gm-zone-buyer .gm-dept-tiles {gap:9px;}
+  .gm-zone-buyer .gm-dept-benefit-row a {padding:12px 10px;grid-template-columns:20px minmax(0,1fr);gap:7px;}
+  .gm-zone-buyer .gm-dept-benefit-row a>span {font-size:21px;}
+}
+@media (max-width:700px) {
+  .gm-zone-buyer .gm-dept-mini-nav {align-items:flex-start;flex-direction:column;}
+  .gm-zone-buyer .gm-dept-mini-nav nav {gap:12px;}
+  .gm-zone-buyer .gm-dept-hero {min-height:490px;align-items:flex-start;background-position:65% center;}
+  .gm-zone-buyer .gm-dept-hero-content {width:100%;padding:28px 24px;max-width:500px;}
+  .gm-zone-buyer .gm-dept-hero h1 {font-size:clamp(30px,9vw,44px);max-width:380px;}
+  .gm-zone-buyer .gm-dept-intro {font-size:13px;max-width:320px;}
+  .gm-zone-buyer .gm-dept-hero-points {margin-top:32px;gap:8px 12px;}
+  .gm-zone-buyer .gm-dept-tiles {grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+  .gm-zone-buyer .gm-dept-tile {padding:6px 6px 11px;border-radius:12px;}
+  .gm-zone-buyer .gm-dept-tile-label {font-size:11px;}
+  .gm-zone-buyer .gm-dept-benefit-row {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .gm-zone-buyer .gm-dept-benefit-row a:nth-child(2) {border-right:0;}
+  .gm-zone-buyer .gm-dept-benefit-row a:nth-child(-n+2) {border-bottom:1px solid #edeef1;}
+  .gm-zone-buyer .gm-dept-story {grid-template-columns:1fr;}
+  .gm-zone-buyer .gm-dept-story-image {min-height:180px;}
+  .gm-zone-buyer .gm-dept--fashion .gm-dept-tiles,
+  .gm-zone-buyer .gm-dept--jewelry .gm-dept-tiles {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .gm-zone-buyer .gm-dept--jewelry .gm-dept-hero {border-radius:65px 8px 8px 8px;}
+  .gm-zone-buyer .gm-dept--fashion .gm-dept-hero {min-height:520px;}
+  .gm-zone-buyer .gm-stuffuss-hero {min-height:245px;}
+  .gm-zone-buyer .gm-stuffuss-overlay {grid-template-columns:1fr;gap:10px;padding:15px;}
+  .gm-zone-buyer .gm-stuffuss-market-grid {grid-template-columns:1fr;}
+  .gm-zone-buyer .gm-stuffuss-sidebar {border:0;padding:0;}
+  .gm-zone-buyer .gm-stuffuss-sidebar nav {display:flex;overflow-x:auto;gap:7px;scrollbar-width:thin;}
+  .gm-zone-buyer .gm-stuffuss-sidebar a {white-space:nowrap;background:#f6f6f6;}
+  .gm-zone-buyer .gm-nexora-split {display:block;}
+  .gm-zone-buyer .gm-nexora-scene {min-height:195px;padding:24px;}
+  .gm-zone-buyer .gm-nexora-scene-copy {margin:0;}
+  .gm-zone-buyer .gm-nexora-scene-copy h2 {font-size:32px;}
+  .gm-zone-buyer .gm-nexora-scene-copy p {margin-top:3px;}
+  .gm-zone-buyer .gm-nexora-side {padding:28px 16px 45px;}
+  .gm-zone-buyer .gm-nexora-side .gm-auth-panel {padding:27px 21px;}
+}
+

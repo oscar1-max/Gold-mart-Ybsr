@@ -80,7 +80,17 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="gm-auth flex min-h-screen items-center justify-center bg-gray-50 px-4 py-10">
+    <main className="gm-auth gm-nexora-auth flex min-h-screen items-center justify-center bg-gray-50 px-4 py-10">
+
+      <div className="gm-nexora-split">
+        <aside className="gm-nexora-scene" aria-label="GoldMart welcome">
+          <Link href="/" className="gm-nexora-scene-logo">◇ GOLD<span>MART</span></Link>
+          <div className="gm-nexora-scene-copy">
+            <h2>Join the experience.</h2>
+            <p>Discover, shop and sell with confidence.</p>
+          </div>
+        </aside>
+        <div className="gm-nexora-side">
       <div className="gm-auth-inner w-full max-w-md">
 
         <Link
@@ -261,6 +271,9 @@ export default function RegisterPage() {
             </Link>
           </p>
 
+          <p className="gm-nexora-lock">Your GoldMart account is protected</p>
+        </div>
+      </div>
         </div>
       </div>
     </main>
