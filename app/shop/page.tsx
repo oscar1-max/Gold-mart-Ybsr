@@ -20,6 +20,22 @@ const categories = [
   "Groceries",
   "Home & Kitchen",
   "Jewelry & Accessories",
+  "Recommended",
+  "Home Garden",
+  "Sports Fitness",
+  "Occasions Gifts",
+  "Apparel",
+  "Hobbies Leisure",
+  "Travel Tourism",
+  "Musical Instruments",
+  "Health",
+  "Sports & Outdoors",
+  "Men's Clothing",
+  "Women's Clothing",
+  "Men's Shoes",
+  "Women's Shoes",
+  "Men's Underwear & Sleepwear",
+  "Women's Underwear & Sleepwear",
 ];
 
 type Product = {
@@ -35,6 +51,7 @@ type Product = {
   image: string;
   description: string;
   category: string;
+  categoryParent: string;
 };
 
 export default function ShopPage() {
@@ -177,6 +194,7 @@ export default function ShopPage() {
                   category:
                     product.category_name ||
                     "Other",
+                  categoryParent: product.category_parent_name || "",
                 })
               )
             : [];
@@ -320,10 +338,10 @@ export default function ShopPage() {
             .trim();
 
         const matchesCategory =
-          selectedCategory ===
-            "All" ||
-          productCategory ===
-            selected;
+          selectedCategory === "All" ||
+          selectedCategory === "Recommended" ||
+          productCategory === selected ||
+          (selected === "fashion" && product.categoryParent.toLowerCase().trim() === "fashion");
 
         const searchText =
           search

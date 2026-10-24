@@ -372,6 +372,9 @@ export default function NotificationsPage() {
       return "/chat";
     }
 
+    if (String(notification.title || "").toLowerCase().includes("withdrawal")) {
+      return notification.type === "admin" ? "/admin/withdrawals" : "/seller/withdrawals";
+    }
     if (notification.type === "admin_alert") return "/admin/monitoring";
     if (
       notification.type === "order" ||

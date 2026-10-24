@@ -145,9 +145,15 @@ const actionLinks = [
     href: "/seller/orders",
   },
   {
+    title: "Withdrawal Requests",
+    subtitle: "Request and review test withdrawals — no real payouts",
+    emoji: "💰",
+    href: "/seller/withdrawals",
+  },
+  {
     title: "Payment Protection",
     subtitle:
-      "Review recorded order allocations — no withdrawals",
+      "Review order allocations and protected earnings",
     emoji: "🛡️",
     href: "/seller/payment-protection",
   },
