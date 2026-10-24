@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 type Department = {
   key: string;
@@ -166,7 +167,7 @@ export const showroomDepartments = [
   { category: "Home & Kitchen", label: "Home & Kitchen", icon: "🍳", theme: "kitchen" }
 ];
 
-export default function CategoryShowcase({ category }: { category: string }) {
+export default function CategoryShowcase({ category, children }: { category: string; children: ReactNode }) {
   const item = departments[category];
   if (!item) return null;
   const href = (query = "") => "/shop?category=" + encodeURIComponent(item.key) +
@@ -179,8 +180,7 @@ export default function CategoryShowcase({ category }: { category: string }) {
           <Link href="/" className="gm-dept-logo">Gold<span>Mart</span><small> / {item.label}</small></Link>
           <nav aria-label="Department navigation">
             <Link href="/">Home</Link>
-            <Link href="/shop">Shop</Link>
-            <Link href="/categories">Categories</Link>
+            <Link href="/shop">All products</Link>
             <Link href="/cart">Cart ↗</Link>
           </nav>
         </div>
@@ -202,7 +202,7 @@ export default function CategoryShowcase({ category }: { category: string }) {
         </section>
 
         <div className="gm-dept-benefit-row" aria-label="GoldMart shopping support">
-          <Link href="/shop"><span aria-hidden="true">✦</span><strong>Explore products</strong><small>Across every category</small></Link>
+          <a href="#goldmart-department-products"><span aria-hidden="true">✦</span><strong>Featured finds</strong><small>See available products</small></a>
           <Link href="/track-order"><span aria-hidden="true">▤</span><strong>Track your order</strong><small>Follow your purchase</small></Link>
           <Link href="/order-protection"><span aria-hidden="true">◇</span><strong>Buyer protection</strong><small>Get purchase support</small></Link>
           <Link href="/help"><span aria-hidden="true">♧</span><strong>Help Centre</strong><small>We're here to help</small></Link>
@@ -214,7 +214,7 @@ export default function CategoryShowcase({ category }: { category: string }) {
               <p className="gm-dept-section-kicker">{item.theme === "jewelry" ? "CURATED FOR YOU" : "THE COLLECTION"}</p>
               <h2>{item.theme === "fashion" ? "Find your perfect style" : item.theme === "kitchen" ? "Shop by kitchen category" : "Shop by category"}</h2>
             </div>
-            <Link href={href()}>View all {item.label} →</Link>
+            <a href="#goldmart-department-products">See products ↓</a>
           </div>
           <div className="gm-dept-tiles">
             {item.tiles.map(tile => (
@@ -227,6 +227,17 @@ export default function CategoryShowcase({ category }: { category: string }) {
               </a>
             ))}
           </div>
+        </section>
+
+        <section className="gm-dept-products" aria-label={item.label + " products"}>
+          <div className="gm-dept-section-heading">
+            <div>
+              <p className="gm-dept-section-kicker">FROM GOLDMART SELLERS</p>
+              <h2>{item.theme === "fashion" ? "Our most loved finds" : item.theme === "jewelry" ? "Discover the collection" : item.theme === "electronics" ? "Top picks for you" : item.theme === "phones" ? "Featured phones" : item.theme === "gaming" ? "New arrivals & favorites" : "Featured products"}</h2>
+            </div>
+            <Link href="/shop">All departments ↗</Link>
+          </div>
+          {children}
         </section>
 
         <div className="gm-dept-story">
