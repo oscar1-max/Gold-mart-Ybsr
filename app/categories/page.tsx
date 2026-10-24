@@ -14,10 +14,23 @@ type Product = {
   currency?: string | null;
   image_url?: string | null;
   category_name?: string | null;
+  category_parent_name?: string | null;
   stock?: number | null;
 };
 
+const fashionSubcategories = ["Men's Clothing","Women's Clothing","Men's Shoes","Women's Shoes","Men's Underwear & Sleepwear","Women's Underwear & Sleepwear"];
+
 const departments = [
+  { name: "Recommended", short: "Recommended", icon: "⭐", note: "Discover recent marketplace finds", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
+  { name: "Home Garden", short: "Home Garden", icon: "🏡", note: "Plants, décor and garden finds", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
+  { name: "Sports Fitness", short: "Sports Fitness", icon: "🏋️", note: "Fitness gear and active essentials", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
+  { name: "Occasions Gifts", short: "Occasions Gifts", icon: "🎁", note: "Gifts for special moments", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
+  { name: "Apparel", short: "Apparel", icon: "🧥", note: "Everyday clothing and outfits", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
+  { name: "Hobbies Leisure", short: "Hobbies Leisure", icon: "🎨", note: "Creative hobbies and free-time finds", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
+  { name: "Travel Tourism", short: "Travel Tourism", icon: "🧳", note: "Travel gear and trip essentials", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
+  { name: "Musical Instruments", short: "Musical Instruments", icon: "🎸", note: "Instruments and music accessories", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
+  { name: "Health", short: "Health", icon: "💚", note: "Personal care and wellness items", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
+  { name: "Sports & Outdoors", short: "Sports & Outdoors", icon: "🏕️", note: "Outdoor equipment and sports gear", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
   { name: "Phones", short: "Phones", icon: "📱", note: "Mobile essentials", tone: "from-[#FFF8F2] via-[#FFFFFF] to-[#FFFFFF]", accent: "bg-[#FFF8F2]" },
   { name: "Electronics", short: "Electronics", icon: "💻", note: "Smart everyday tech", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
   { name: "Gaming", short: "Gaming", icon: "🎮", note: "Play, your way", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
@@ -80,11 +93,12 @@ export default function CategoriesPage() {
     return () => controller.abort();
   }, []);
 
-  const active = departments.find((item) => item.name === selected);
+  const active = departments.find((item) => item.name === selected) || (fashionSubcategories.includes(selected) ? departments.find((item) => item.name === "Fashion") : undefined);
   const visible = useMemo(() => {
-    const matching = selected === "All"
+    const matching = selected === "All" || selected === "Recommended"
       ? products
-      : products.filter((p) => (p.category_name || "").trim().toLowerCase() === selected.toLowerCase());
+      : products.filter((p) => (p.category_name || "").trim().toLowerCase() === selected.toLowerCase() ||
+          (selected === "Fashion" && (p.category_parent_name || "").trim().toLowerCase() === "fashion"));
     return matching.filter((p) => p.id && p.name).slice(0, 12);
   }, [products, selected]);
 
@@ -163,6 +177,19 @@ export default function CategoriesPage() {
               </div>
             </section>
 
+            {(selected === "Fashion" || fashionSubcategories.includes(selected)) && (
+              <section aria-label="Fashion subcategories" className="rounded-[23px] border border-[#FFF8F2] bg-white p-4 sm:p-5">
+                <h3 className="mb-3 text-sm font-bold">Shop Fashion</h3>
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={() => setSelected("Fashion")} aria-pressed={selected === "Fashion"}
+                    className={`rounded-full border px-3 py-2 text-xs font-semibold ${selected === "Fashion" ? "border-[#C8AB6D] bg-[#FFF8F2]" : "border-[#E5E5E5]"}`}>All Fashion</button>
+                  {fashionSubcategories.map((name) => (
+                    <button type="button" key={name} onClick={() => setSelected(name)} aria-pressed={selected === name}
+                      className={`rounded-full border px-3 py-2 text-xs font-semibold ${selected === name ? "border-[#C8AB6D] bg-[#FFF8F2]" : "border-[#E5E5E5]"}`}>{name}</button>
+                  ))}
+                </div>
+              </section>
+            )}
             <section className="rounded-[23px] border border-[#FFF8F2] bg-white p-3 shadow-[0_6px_20px_rgba(20,30,40,0.035)] sm:p-6">
               <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
                 <div>
