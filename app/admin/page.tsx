@@ -338,10 +338,10 @@ export default function AdminOverviewPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#14263D] md:pb-12">
+    <main className="gm-admin-salesdash min-h-screen bg-[#FFFFFF] pb-32 text-[#14263D] md:pb-12">
       {/* Admin visual identity: existing permissions and actions remain authoritative */}
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <div className="relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
+        <div className="gm-salesdash-banner relative overflow-hidden rounded-[28px] px-6 py-8 text-white shadow-[0_18px_38px_rgba(22,39,46,0.13)] sm:px-10 sm:py-11" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
           <span aria-hidden="true" className="pointer-events-none absolute -right-6 -top-12 text-[150px] leading-none opacity-10">✦</span>
           <div className="relative">
             <p className="text-[10px] font-extrabold uppercase tracking-[0.23em]" style={{color:"#FFE9CC"}}>GOLDMART PRIVATE ADMIN · EXECUTIVE HQ</p>
@@ -350,7 +350,7 @@ export default function AdminOverviewPage() {
             <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-bold text-white/90"><span className="h-2 w-2 rounded-full bg-[#FFF8F2]"/>Authorized access required</div>
           </div>
         </div>
-        <nav aria-label="Admin workspaces" className="og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
+        <nav aria-label="Admin workspaces" className="gm-salesdash-subnav og-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
           <Link href="/admin" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#243B53] bg-[#243B53] text-white">Overview</Link>
           <Link href="/admin/ai" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">AI Admin</Link>
           <Link href="/admin/monitoring" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Monitoring</Link>
@@ -534,7 +534,7 @@ export default function AdminOverviewPage() {
                 Dashboard Summary
               </h2>
 
-              <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+              <div className="gm-salesdash-stats mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
                 {stats.map((item) => (
                   <div
                     key={item.label}
@@ -577,7 +577,7 @@ export default function AdminOverviewPage() {
                 </h2>
               </div>
 
-              <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              <div className="gm-salesdash-modules mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                 {ADMIN_MODULES.map((item) => {
                   const module = modules[item.key];
 

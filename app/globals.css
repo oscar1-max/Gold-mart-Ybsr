@@ -2591,3 +2591,287 @@ body:has(.gm-zone-buyer) button[aria-label="Toggle administrator tools"] {
   background:#202020 !important;color:#fff !important;border-color:#3a3a3a !important;
 }
 
+/* GoldMart reference treatments: Vezaro AI, Salesdash admin, Syncra profile.
+   Strictly scoped: preserves all backend operations and seller UI. */
+.gm-zone-admin:has(.gm-ai-vezaro){background:#101012;--gm-canvas:#111113;--gm-card:#202023;--gm-ink:#f5f1e9;--gm-line:#363437}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-frame{background:#101012}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-sidebar{background:#0b0b0d;color:#ebe8df;border-right:1px solid #35312a}
+.gm-zone-admin:has(.gm-ai-vezaro) :is(.gm-sidebar-brand,.gm-sidebar-brand small,.gm-sidebar-nav-title,.gm-sidebar-footnote,.gm-workspace-link,.gm-workspace-topbar .gm-topbar-title,.gm-workspace-topbar .gm-topbar-eyebrow,.gm-workspace-mobile>p){color:#eae6dd}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-brand-symbol{background:#b79a60;color:#171310}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-brand-accent{color:#d9bd88}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-sidebar-workspace-id{background:#1c1b1d;border:1px solid #4d432f;color:#f8f1df}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-sidebar-workspace-id :is(p,small){color:#e8d6b0}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-topbar,.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-mobile{background:#151518;border-color:#35312a;color:#eee}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-nav .gm-workspace-link{color:#d3d0c9}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-nav .gm-workspace-link.is-active,.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-nav .gm-workspace-link:hover{color:#fff2d4;background:linear-gradient(90deg,#6a5230,#302922);border:1px solid #82673e}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-mobile-nav .gm-workspace-link{background:#252428;color:#eee;border-color:#444}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-topbar-marketplace-link{background:#c9a86e;color:#171310}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-topbar-action-secondary{background:#222226;color:#f3ece0;border-color:#555}
+.gm-zone-admin main.gm-ai-vezaro{background:#131316!important;color:#eee9e0!important;font-family:Arial,Helvetica,sans-serif}
+.gm-zone-admin .gm-ai-vezaro .gm-ai-banner{background:linear-gradient(120deg,#242024,#171719 65%,#5b4b31)!important;border:1px solid #706048}
+.gm-zone-admin .gm-ai-vezaro :is(section,article)[class*="bg-white"],.gm-zone-admin .gm-ai-vezaro div[class*="bg-white"][class*="rounded"]{background:#202023!important;color:#f1eee6!important;border-color:#3b393b!important;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+.gm-zone-admin .gm-ai-vezaro :is(section,article,div)[class*="bg-[#FFF8F2]"]{background:#28272a!important;color:#f1eee6!important;border-color:#474449}
+.gm-zone-admin .gm-ai-vezaro :is(h1,h2,h3,h4,p,small,strong,label){color:inherit}
+.gm-zone-admin .gm-ai-vezaro [class*="text-gray-900"],.gm-zone-admin .gm-ai-vezaro [class*="text-[#14263D]"]{color:#f5f0e6!important}
+.gm-zone-admin .gm-ai-vezaro [class*="text-gray-500"],.gm-zone-admin .gm-ai-vezaro [class*="text-gray-600"],.gm-zone-admin .gm-ai-vezaro [class*="text-[#FF6B00]"]{color:#c8bca7!important}
+.gm-zone-admin .gm-ai-vezaro :is(button,a)[class*="bg-[#243B53]"],.gm-zone-admin .gm-ai-vezaro :is(button,a)[class*="bg-[#FF6B00]"]{background:#c7a46a!important;color:#151312!important;border-color:#c7a46a}
+.gm-zone-admin .gm-ai-vezaro :is(input,textarea,select){background:#29282b!important;color:#fff!important;border-color:#55505a}
+.gm-zone-admin .gm-ai-vezaro input::placeholder,.gm-zone-admin .gm-ai-vezaro textarea::placeholder{color:#c4bdb8}
+.gm-zone-admin .gm-ai-vezaro .gm-ai-subnav a{background:#242326!important;color:#e7dfd4!important;border-color:#544c40}
+.gm-zone-admin .gm-ai-vezaro .gm-ai-subnav a[href="/admin/ai"]{background:#9e7b45!important;color:#141210!important}
+.gm-zone-admin .gm-ai-vezaro [class*="bg-red-50"]{background:#421e26!important;color:#ffd9dc!important}
+.gm-zone-admin .gm-ai-vezaro [class*="text-red-700"]{color:#ffd0d4!important}
+
+/* Salesdash-style white command centre, including reports / refunds / support. */
+.gm-zone-admin:not(:has(.gm-ai-vezaro)){--gm-canvas:#fafafa;--gm-card:#fff;--gm-ink:#1a1e23;--gm-line:#e7e7e9;background:#fafafa}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-sidebar{background:#f7f7f8;color:#2a2e34;border-color:#e4e5e8}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-topbar,.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-mobile{background:#fff;border-color:#e8e8ea}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) :is(.gm-brand-symbol,.gm-topbar-marketplace-link){background:#222831;color:#fff}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-brand-accent{color:#1c2229}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-nav .gm-workspace-link.is-active{background:#e9e9ec;color:#181b1e;border-color:#e0e0e3}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-mobile-nav .gm-workspace-link.is-active{background:#eaeaec;color:#171b20;border-color:#dedee1}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main{background:#fafafa!important;color:#1c2229!important;font-family:Arial,Helvetica,sans-serif}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main [class*="text-[#FF6B00]"]{color:#646b75!important}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main [class*="text-[#243B53]"]{color:#202630!important}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main :is(section,article)[class*="bg-white"]{background:#fff!important;border-color:#ececef;box-shadow:0 4px 15px rgba(0,0,0,.035)}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main :is(button,a)[class*="bg-[#FF6B00]"],.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main :is(button,a)[class*="bg-[#243B53]"]{background:#222831!important;color:#fff!important}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main [class*="bg-[#FFF8F2]"]{background:#f3f4f6!important}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-banner{background:#fff!important;color:#232831!important;border:1px solid #ebecef;box-shadow:0 7px 24px rgba(0,0,0,.04)}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-banner :is(h2,p,span){color:#252a32!important}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-stats>div{background:#f8f8fa!important;border:1px solid #ebebed!important;border-radius:16px;box-shadow:none}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-modules>article{background:#fff!important;border:1px solid #e9e9eb!important;border-radius:17px}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-subnav a{color:#262b33!important;background:#fff!important;border-color:#e6e6e9}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-subnav a[href="/admin"]{background:#e8e8eb!important;border-color:#d7d7dc}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main [style*="linear-gradient(135deg, #14263D"]{background:linear-gradient(115deg,#fff,#f3f3f5)!important;color:#242831!important;border:1px solid #e5e6e9}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main [style*="linear-gradient(135deg, #14263D"] :is(h2,p,span){color:#242831!important}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main [class*="bg-[#243B53]"]:not(a):not(button){background-color:#f2f2f4!important;color:#222!important}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main :is(input,select,textarea){background:#fff!important;color:#222!important;border-color:#e0e1e4}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main :is(button,a):focus-visible{outline-color:#333}
+
+/* Syncra account: pale gray workspace, airy profile header and subtle gold. */
+.gm-zone-buyer main.gm-account-syncra{background:#f3f4f6!important;color:#1d2731!important;padding-bottom:110px}
+.gm-zone-buyer .gm-account-syncra>header{background:#fff!important;border-color:#e7e7e9}
+.gm-zone-buyer .gm-account-syncra>div[class*="max-w-5xl"]{max-width:1180px}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile{
+  background:#fff!important;color:#24303a!important;
+  border:1px solid #e9e9eb;border-radius:18px;
+  padding-top:165px!important;box-shadow:0 12px 24px rgba(15,27,34,.035);
+}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile:before{
+  content:"";position:absolute;top:0;left:0;right:0;height:150px;
+  background:linear-gradient(110deg,#d7e5ed 0%,#e9e2df 42%,#f0d6b9 75%,#e8eee2 100%);
+  border-bottom:1px solid #e6e3df;
+}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile>div:first-child,
+.gm-zone-buyer .gm-account-syncra .gm-account-profile>div:nth-child(2){display:none}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile .gm-account-avatar{
+  margin-top:-92px;border-radius:50%;width:100px;height:100px;
+  background:#f9f5e9!important;border:5px solid #fff;color:#8f712d!important;
+  box-shadow:0 5px 12px rgba(0,0,0,.10);
+}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile :is(h2,p,span){color:#29323b!important}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile .gm-account-avatar{color:#8f712d!important}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile span[class*="rounded-full"]{background:#f8f2e4!important;color:#806222!important;border-color:#e4cd8e!important}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile>div:last-child{border-color:#ececec;color:#606b75!important}
+.gm-zone-buyer .gm-account-syncra .gm-account-cards>a{
+  background:#fff!important;color:#242930!important;border:1px solid #e6e7e9;border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,.03);
+}
+.gm-zone-buyer .gm-account-syncra .gm-account-cards>a :is(p,h3,span){color:#313942!important}
+.gm-zone-buyer .gm-account-syncra .gm-account-cards>a:hover{border-color:#cdb477;box-shadow:0 6px 16px rgba(156,119,42,.08)}
+.gm-zone-buyer .gm-account-syncra a[class*="text-[#FF6B00]"],
+.gm-zone-buyer .gm-account-syncra p[class*="text-[#FF6B00]"]{color:#9a782f!important}
+.gm-zone-buyer .gm-account-syncra section[class*="bg-gradient-to-br"]{background:#fff!important;border:1px solid #e4e4e7!important;color:#252b32}
+.gm-zone-buyer .gm-account-syncra section[class*="bg-[linear-gradient"]{background:#fff!important;border:1px solid #e4e4e7!important;color:#252b32}
+.gm-zone-buyer .gm-account-syncra :is(button,a)[class*="bg-[#FF6B00]"]{background:#aa873c!important;color:#fff!important;border-color:#aa873c}
+.gm-zone-buyer .gm-account-syncra :is(button,a)[class*="bg-[#243B53]"]{background:#272727!important;color:#fff!important;border-color:#272727}
+.gm-zone-buyer .gm-account-syncra :is(section,article)[class*="rounded"]{border-radius:17px}
+.gm-zone-buyer .gm-account-syncra :is(h1,h2,h3){font-weight:750;letter-spacing:-.025em}
+
+/* A restrained jewelry-gold signature on the monochrome buyer homepage. */
+.gm-zone-buyer .gm-stuffuss-v2-logo-mark{color:#a58a4d!important}
+.gm-zone-buyer .gm-stuffuss-v2-logo{color:#202020!important}
+.gm-zone-buyer .gm-stuffuss-v2-tile-rating span:first-child{color:#b39a56}
+.gm-zone-buyer .gm-stuffuss-v2-feature{border:1px solid #a58c59}
+.gm-zone-buyer .gm-stuffuss-v2-feature a{border-color:#bca475;color:#fff!important}
+.gm-zone-buyer .gm-stuffuss-v2-feature a:hover{background:#d9c393;color:#1e1e1e!important}
+.gm-zone-buyer .gm-stuffuss-v2-category-cards a:hover{border-color:#c4ad74}
+
+
+
+
+/* ===========================================================
+   GOLDMART OCT 2026: three distinct premium dashboard themes
+   Scoped to AI Admin / operational Admin / My Account / home.
+   Styling only; leave all API, security, data, and handlers intact.
+   =========================================================== */
+
+/* VEZARO REFERENCE: AI Admin black and restrained champagne gold */
+.gm-zone-admin:has(.gm-ai-vezaro){
+ --gm-canvas:#0d0d0f;--gm-card:#1b1b1d;--gm-line:#323234;
+ --gm-ink:#f4f3f0;--gm-muted:#a9a7a2;--gm-primary:#d4b578;
+ background:#0b0b0d;color:#f2f0eb;
+}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-frame,
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-content,
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-page {background:#0c0c0e;color:#f5f3ef;}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-sidebar {
+ background:#09090b;color:#dfdcd4;border-color:#282629;
+}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-topbar,
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-mobile {
+ background:#151517;color:#fff;border-color:#333135;
+}
+.gm-zone-admin:has(.gm-ai-vezaro) :is(.gm-sidebar-brand,.gm-sidebar-brand small,.gm-topbar-eyebrow,.gm-topbar-title,.gm-workspace-mobile>p,.gm-sidebar-nav-title,.gm-sidebar-footnote) {color:#e7e2d7;}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-brand-symbol {background:#c6a36b;color:#171511;}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-brand-accent {color:#d3af74;}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-sidebar-workspace-id {background:#242124;color:#f4eee4;border:1px solid #494035;}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-sidebar-workspace-id :is(p,small) {color:#f0e9da;}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-nav .gm-workspace-link,
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-mobile-nav .gm-workspace-link {color:#c8c7c9;background:transparent;border-color:transparent;}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-nav .gm-workspace-link.is-active,
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-mobile-nav .gm-workspace-link.is-active,
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-link:hover {background:linear-gradient(105deg,#937043,#342b22) !important;color:#fff !important;border-color:#64533c !important;}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-topbar-marketplace-link {background:#c8a56f;color:#181613;}
+.gm-zone-admin:has(.gm-ai-vezaro) .gm-topbar-action-secondary {background:#242327;color:#f4f3f0;border-color:#4a4541;}
+.gm-zone-admin main.gm-ai-vezaro {background:#101012 !important;color:#f4f3f0 !important;font-family:Arial,"Segoe UI",sans-serif;}
+.gm-zone-admin .gm-ai-vezaro .gm-ai-banner {
+ background:linear-gradient(110deg,#292521,#18181a 62%,#2a251d) !important;
+ border:1px solid #655338 !important;box-shadow:inset 0 0 80px rgba(209,167,93,.10),0 12px 30px rgba(0,0,0,.2);
+}
+.gm-zone-admin .gm-ai-vezaro .gm-ai-banner :is(h2,p) {color:#f8f3eb !important;}
+.gm-zone-admin .gm-ai-vezaro .gm-ai-subnav a {background:#1b1b1d;color:#e0dcd5;border:1px solid #444044;}
+.gm-zone-admin .gm-ai-vezaro .gm-ai-subnav a[href="/admin/ai"] {background:#82633a !important;color:#fff !important;border-color:#c5a370 !important;}
+.gm-zone-admin .gm-ai-vezaro :is(article,section,div)[class*="bg-white"],
+.gm-zone-admin .gm-ai-vezaro :is(article,section,div)[class*="bg-[#FFFFFF]"] {
+ background:#1c1c1e !important;color:#f0eee9 !important;border-color:#353539 !important;
+}
+.gm-zone-admin .gm-ai-vezaro :is(article,section,div)[class*="bg-[#FFF8F2]"] {background:#242426 !important;color:#f0eee9 !important;border-color:#3d3c3e !important;}
+.gm-zone-admin .gm-ai-vezaro :is(h1,h2,h3,h4,strong,label) {color:#f4f1eb;}
+.gm-zone-admin .gm-ai-vezaro :is(p,span,small)[class*="text-gray"],
+.gm-zone-admin .gm-ai-vezaro :is(p,span)[class*="text-[#FF6B00]"] {color:#bbb9b6 !important;}
+.gm-zone-admin .gm-ai-vezaro [class*="text-[#FF6B00]"] {color:#d6b37b !important;}
+.gm-zone-admin .gm-ai-vezaro :is(button,a)[class*="bg-[#243B53]"],
+.gm-zone-admin .gm-ai-vezaro :is(button,a)[class*="bg-[#14263D]"],
+.gm-zone-admin .gm-ai-vezaro :is(button,a)[class*="bg-[#FF6B00]"] {background:#b99a66 !important;color:#151412 !important;border-color:#b99a66 !important;}
+.gm-zone-admin .gm-ai-vezaro :is(input,select,textarea) {background:#242426 !important;color:#fff !important;border-color:#555154 !important;}
+.gm-zone-admin .gm-ai-vezaro :is(input,textarea)::placeholder {color:#a4a1a0;}
+.gm-zone-admin .gm-ai-vezaro :is(input,select,textarea):focus {border-color:#caa771 !important;outline-color:#caa771 !important;}
+.gm-zone-admin .gm-ai-vezaro :is(section,article)[class*="rounded"] {border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.18);}
+.gm-zone-admin .gm-ai-vezaro :is(button,a)[class*="bg-white"] {background:#29292c;color:#f0ece5;border-color:#4d4a4d;}
+.gm-zone-admin .gm-ai-vezaro .text-red-700,
+.gm-zone-admin .gm-ai-vezaro [role="alert"] .text-red-700 {color:#9b2323 !important;}
+/* Keep critical errors distinguishable in their pale-red containers. */
+.gm-zone-admin .gm-ai-vezaro [role="alert"][class*="bg-red-50"] {background:#fff0f0 !important;color:#8a2020 !important;}
+
+/* SALESDASH REFERENCE: clean admin command center */
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) {
+ --gm-canvas:#f8f9fa;--gm-card:#fff;--gm-ink:#1b2029;
+ --gm-line:#e9eaec;--gm-primary:#171c27;--gm-soft:#f3f4f6;
+ background:#f8f9fa;
+}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-sidebar {
+ background:#fafafb;color:#25303c;border-right:1px solid #e7e9ed;
+}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-topbar,
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-mobile {background:#fff;border-color:#eaedf0;color:#1b2029;}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-brand-symbol,
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-topbar-marketplace-link {background:#1c2330;color:#fff;}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-brand-accent {color:#222c3c;}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-nav .gm-workspace-link.is-active,
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-mobile-nav .gm-workspace-link.is-active {
+ background:#ededf0;color:#151a22;border-color:#e1e2e5;
+}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-nav .gm-workspace-link:hover {background:#f0f1f3;color:#161a21;}
+.gm-zone-admin main.gm-admin-salesdash,
+.gm-zone-admin main.gm-admin-salesdash~main {background:#fff;color:#1c2029;}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-banner {
+ background:linear-gradient(120deg,#f7f8fa,#eceef2) !important;color:#1c2029;
+ border:1px solid #e6e8ec;box-shadow:none;
+}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-banner :is(h2,p,div) {color:#171b23 !important;}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-banner [class*="border-white"] {border-color:#d9dce2;}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-subnav a {
+ border-color:#e6e7e9;background:#fff;color:#2a303a;
+}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-subnav a[href="/admin"] {background:#20242d !important;color:#fff !important;border-color:#20242d !important;}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-stats>div {
+ background:#f8f9fa !important;border:1px solid #eceef2 !important;
+ border-radius:15px;box-shadow:0 2px 9px rgba(0,0,0,.025);
+}
+.gm-zone-admin .gm-admin-salesdash .gm-salesdash-modules article {
+ background:#fff;border:1px solid #e8eaed;border-radius:16px;box-shadow:0 4px 18px rgba(15,20,32,.035);
+}
+.gm-zone-admin .gm-admin-salesdash [class*="text-[#FF6B00]"] {color:#5c6470 !important;}
+.gm-zone-admin .gm-admin-salesdash :is(button,a)[class*="bg-[#FF6B00]"],
+.gm-zone-admin .gm-admin-salesdash :is(button,a)[class*="bg-[#243B53]"] {background:#1d2633 !important;color:#fff !important;}
+.gm-zone-admin .gm-admin-salesdash :is(div,section)[class*="bg-[#FFF8F2]"] {background:#f4f5f7 !important;}
+.gm-zone-admin .gm-admin-salesdash :is(span,p,div)[class*="text-orange"] {color:#42516b !important;}
+.gm-zone-admin .gm-admin-salesdash [class*="bg-orange-50"] {background:#eef3f7 !important;color:#254e58 !important;}
+
+/* General Admin management subpages follow Salesdash light theme. */
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main {background:#f9fafb;color:#1c2533;}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main > div:first-child > div:first-child[style*="background"] {
+ background:linear-gradient(120deg,#f5f6f8,#e8ebef) !important;color:#1b2029;
+}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main > div:first-child > div:first-child[style*="background"] :is(h2,p) {color:#1b2029 !important;}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main :is(section,article)[class*="bg-white"] {
+ background:#fff;border-color:#e6e8ed;box-shadow:0 4px 17px rgba(15,25,39,.04);
+}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main :is(section,div)[class*="bg-[#FFF8F2]"] {background:#f1f3f5 !important;color:#1c2533;}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main :is(a,button)[class*="bg-[#FF6B00]"],
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main :is(a,button)[class*="bg-[#243B53]"] {background:#202833 !important;color:#fff !important;}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main :is(p,span)[class*="text-[#FF6B00]"] {color:#535e6b !important;}
+.gm-zone-admin:not(:has(.gm-ai-vezaro)) .gm-workspace-page main [class*="bg-gradient-to-r"] {
+ background-image:linear-gradient(90deg,#f3f4f6,#e9eaed) !important;
+}
+
+/* SYNCra REFERENCE: My Account soft gray profile and small champagne highlights */
+.gm-zone-buyer main.gm-account-syncra {background:#f2f3f5 !important;color:#20242d;padding-top:18px;}
+.gm-zone-buyer .gm-account-syncra>div.mx-auto {background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:clamp(16px,3vw,32px);margin-top:15px;margin-bottom:30px;box-shadow:0 7px 28px rgba(30,30,40,.045);}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile {
+ background:#fff !important;color:#26272b !important;border:1px solid #e8e5e3 !important;
+ padding-top:100px !important;box-shadow:0 8px 27px rgba(20,22,26,.05);
+ overflow:hidden;
+}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile::before {
+ content:"";position:absolute;inset:0 0 auto 0;height:143px;
+ background:linear-gradient(110deg,#d6dee6 0%,#e2d1c5 35%,#f0c4a5 70%,#efe9d8 100%);
+ z-index:0;
+}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile > div:first-child,
+.gm-zone-buyer .gm-account-syncra .gm-account-profile > div:nth-child(2) {position:relative;z-index:2;}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile .gm-account-avatar {
+ background:#fff !important;border:4px solid #fff;color:#5a452e !important;
+ border-radius:50% !important;box-shadow:0 7px 21px rgba(0,0,0,.15);
+}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile :is(h2,p,span,div) {color:#232830;}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile [class*="border-white"] {border-color:#e5e2df;}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile [class*="bg-[#FF6B00]"] {background:rgba(206,172,108,.16) !important;}
+.gm-zone-buyer .gm-account-syncra .gm-account-profile [class*="text-[#FFF8F2]"] {color:#50545e !important;}
+.gm-zone-buyer .gm-account-syncra .gm-account-cards>a {
+ background:#fff !important;border:1px solid #e9e8e6 !important;
+ color:#222830 !important;border-radius:14px;
+ box-shadow:0 3px 12px rgba(25,28,33,.035);
+}
+.gm-zone-buyer .gm-account-syncra .gm-account-cards>a :is(h3,p,span) {color:#33363a !important;}
+.gm-zone-buyer .gm-account-syncra .gm-account-cards>a:hover {border-color:#c9ac78 !important;box-shadow:0 8px 20px rgba(123,91,41,.07);}
+.gm-zone-buyer .gm-account-syncra :is(a,button)[class*="bg-[#FF6B00]"],
+.gm-zone-buyer .gm-account-syncra :is(a,button)[class*="bg-[#243B53]"] {
+ background:#23252c !important;color:#fff !important;border-color:#23252c !important;
+}
+.gm-zone-buyer .gm-account-syncra :is(h1,h2,h3,h4) {color:#20242d;}
+.gm-zone-buyer .gm-account-syncra [class*="text-[#FF6B00]"] {color:#806735 !important;}
+.gm-zone-buyer .gm-account-syncra [class*="bg-[linear-gradient"] {background:#f8f8f8 !important;color:#20242d !important;}
+
+/* Homepage tiny gold jewelry-like accent, not orange/navy; retains reference grayscale */
+.gm-zone-buyer .gm-stuffuss-v2-logo-mark {color:#bd9b61 !important;}
+.gm-zone-buyer .gm-stuffuss-v2-logo {color:#202020 !important;}
+.gm-zone-buyer .gm-stuffuss-v2-section-title p {color:#89734f !important;}
+.gm-zone-buyer .gm-stuffuss-v2-tile-rating span:first-child {color:#ad904f !important;}
+.gm-zone-buyer .gm-stuffuss-v2-searchbar {border-bottom:2px solid #d0b47d;}
+.gm-zone-buyer .gm-stuffuss-v2-feature {border:1px solid #53432a;}
+@media(max-width:690px){
+ .gm-zone-buyer .gm-account-syncra .gm-account-profile {padding-top:110px !important;}
+ .gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-topbar {background:#131315;}
+}

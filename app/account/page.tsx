@@ -343,7 +343,7 @@ export default function AccountPage() {
     "GoldMart Member";
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF] pb-28 text-[#14263D] md:pb-12">
+    <main className="gm-account-syncra min-h-screen bg-[#FFFFFF] pb-28 text-[#14263D] md:pb-12">
       <div className="h-1 bg-gradient-to-r from-[#243B53] via-[#FFF8F2] to-[#FF6B00]" />
 
       {/* HEADER */}
@@ -402,13 +402,13 @@ export default function AccountPage() {
 
         {/* PREMIUM PROFILE HEADER */}
 
-        <section className="relative overflow-hidden rounded-[29px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.14)] sm:px-8 sm:py-11">
+        <section className="gm-account-profile relative overflow-hidden rounded-[29px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] px-5 py-8 text-white shadow-[0_16px_45px_rgba(23,25,29,0.14)] sm:px-8 sm:py-11">
           <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-[#FF6B00]/25" />
 
           <div className="pointer-events-none absolute -right-8 -top-12 h-40 w-40 rounded-full bg-[#FF6B00]/10 blur-xl" />
 
           <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[24px] border border-white/40 bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-2xl font-black text-[#243B53] shadow-lg">
+            <div className="gm-account-avatar flex h-20 w-20 shrink-0 items-center justify-center rounded-[24px] border border-white/40 bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] text-2xl font-black text-[#243B53] shadow-lg">
               {initials(displayName)}
             </div>
 
@@ -472,7 +472,7 @@ export default function AccountPage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+          <div className="gm-account-cards grid grid-cols-2 gap-3 md:grid-cols-3">
             {shoppingLinks.map((item) => (
               <Link
                 key={item.href}
