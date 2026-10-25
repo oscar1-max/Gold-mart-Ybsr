@@ -21,7 +21,6 @@ type Product = {
 const fashionSubcategories = ["Men's Clothing","Women's Clothing","Men's Shoes","Women's Shoes","Men's Underwear & Sleepwear","Women's Underwear & Sleepwear"];
 
 const departments = [
-  { name: "Recommended", short: "Recommended", icon: "⭐", note: "Discover recent marketplace finds", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
   { name: "Home Garden", short: "Home Garden", icon: "🏡", note: "Plants, décor and garden finds", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
   { name: "Sports Fitness", short: "Sports Fitness", icon: "🏋️", note: "Fitness gear and active essentials", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
   { name: "Occasions Gifts", short: "Occasions Gifts", icon: "🎁", note: "Gifts for special moments", tone: "from-[#FFF8F2] via-[#FFFFFF] to-white", accent: "bg-[#FFF8F2]" },
@@ -95,7 +94,7 @@ export default function CategoriesPage() {
 
   const active = departments.find((item) => item.name === selected) || (fashionSubcategories.includes(selected) ? departments.find((item) => item.name === "Fashion") : undefined);
   const visible = useMemo(() => {
-    const matching = selected === "All" || selected === "Recommended"
+    const matching = selected === "All"
       ? products
       : products.filter((p) => (p.category_name || "").trim().toLowerCase() === selected.toLowerCase() ||
           (selected === "Fashion" && (p.category_parent_name || "").trim().toLowerCase() === "fashion"));
