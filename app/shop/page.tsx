@@ -10,6 +10,8 @@ import CategoryShowcase from "../../components/CategoryShowcase";
 const API_URL =
   "https://goldmart-backend-yoxc.onrender.com/api";
 
+const fashionSubcategories = ["Men's Underwear & Sleepwear", "Women's Underwear & Sleepwear"];
+
 const categories = [
   "All",
   "Electronics",
@@ -20,7 +22,6 @@ const categories = [
   "Groceries",
   "Home & Kitchen",
   "Jewelry & Accessories",
-  "Recommended",
   "Home Garden",
   "Sports Fitness",
   "Occasions Gifts",
@@ -34,8 +35,6 @@ const categories = [
   "Women's Clothing",
   "Men's Shoes",
   "Women's Shoes",
-  "Men's Underwear & Sleepwear",
-  "Women's Underwear & Sleepwear",
 ];
 
 type Product = {
@@ -92,7 +91,7 @@ export default function ShopPage() {
       setSearch(urlSearch);
 
       if (
-        categories.includes(
+        [...categories, ...fashionSubcategories].includes(
           urlCategory
         )
       ) {
@@ -339,7 +338,6 @@ export default function ShopPage() {
 
         const matchesCategory =
           selectedCategory === "All" ||
-          selectedCategory === "Recommended" ||
           productCategory === selected ||
           (selected === "fashion" && product.categoryParent.toLowerCase().trim() === "fashion");
 
