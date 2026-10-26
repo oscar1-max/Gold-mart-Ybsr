@@ -14,6 +14,7 @@ type OrderItem = {
   image_url?: string | null;
 };
 
+type Shipment = { carrier: string; tracking_number: string; status: string };
 type SellerOrder = {
   id: number;
   user_id: number;
@@ -23,6 +24,7 @@ type SellerOrder = {
   customer_name: string;
   customer_email: string;
   items: OrderItem[];
+  shipment?: Shipment | null;
 };
 
 type StatusFilter = "all" | "pending" | "processing" | "shipped" | "delivered" | "closed";
@@ -94,6 +96,7 @@ export default function SellerOrdersPage() {
   const [actionError, setActionError] = useState("");
   const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [query, setQuery] = useState("");
+  const [trackingDrafts, setTrackingDrafts] = useState<Record<number, { carrier: string; trackingNumber: string; status: "dispatched" | "in_transit" }>>({});
   const [filter, setFilter] = useState<StatusFilter>("all");
 
   const loadOrders = useCallback(async (quiet = false) => {
@@ -160,6 +163,34 @@ export default function SellerOrdersPage() {
       return (Number.isFinite(second) ? second : 0) - (Number.isFinite(first) ? first : 0);
     });
   }, [orders, query, filter]);
+
+  async function saveShipment(order: SellerOrder) {
+    const draft = trackingDrafts[order.id] || {
+      carrier: order.shipment?.carrier || "",
+      trackingNumber: order.shipment?.tracking_number || "",
+      status: (order.shipment?.status === "in_transit" ? "in_transit" : "dispatched") as "dispatched" | "in_transit",
+    };
+    if (!draft.carrier.trim() || !draft.trackingNumber.trim()) {
+      setActionError("Enter both the courier name and tracking number.");
+      return;
+    }
+    const token = localStorage.getItem("goldmart_token");
+    if (!token) { window.location.href = "/login"; return; }
+    setUpdatingId(order.id);
+    setActionError("");
+    try {
+      const response = await fetch(`${API_URL}/api/orders/seller/${order.id}/shipment`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(draft),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.message || "Could not save tracking.");
+      await loadOrders(true);
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "Could not save tracking.");
+    } finally { setUpdatingId(null); }
+  }
 
   async function advanceStatus(order: SellerOrder) {
     const next = nextStatus(order.status);
@@ -335,6 +366,55 @@ export default function SellerOrdersPage() {
                       <p className="text-xl font-black text-[#243B53]">{money(order.total_amount)}</p>
                     </div>
                     <p className="mt-1 text-right text-xs text-[#FF6B00]">As reported by the orders API; not a seller payout balance.</p>
+                    {["shipped", "delivered"].includes(normalizeStatus(order.status)) && (
+                      <div className="mt-5 rounded-2xl border border-[#5D584C] bg-[#1C211E] p-4 text-[#F5F3EC]">
+                        <p className="font-bold text-[#E4D3A9]">Shipment tracking</p>
+                        <p className="mt-1 text-xs text-[#B9BBB4]">Enter the actual courier and tracking number. This is seller-reported, not verified live carrier tracking.</p>
+                        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                          <input
+                            aria-label={`Carrier for order ${order.id}`}
+                            placeholder="Courier / carrier"
+                            maxLength={100}
+                            value={trackingDrafts[order.id]?.carrier ?? order.shipment?.carrier ?? ""}
+                            onChange={(e) => setTrackingDrafts(prev => ({ ...prev, [order.id]: {
+                              carrier: e.target.value,
+                              trackingNumber: prev[order.id]?.trackingNumber ?? order.shipment?.tracking_number ?? "",
+                              status: prev[order.id]?.status ?? (order.shipment?.status === "in_transit" ? "in_transit" : "dispatched"),
+                            } }))}
+                            className="rounded-xl border border-[#5D584C] bg-[#111514] px-3 py-2 text-white"
+                          />
+                          <input
+                            aria-label={`Tracking number for order ${order.id}`}
+                            placeholder="Tracking number"
+                            maxLength={120}
+                            value={trackingDrafts[order.id]?.trackingNumber ?? order.shipment?.tracking_number ?? ""}
+                            onChange={(e) => setTrackingDrafts(prev => ({ ...prev, [order.id]: {
+                              carrier: prev[order.id]?.carrier ?? order.shipment?.carrier ?? "",
+                              trackingNumber: e.target.value,
+                              status: prev[order.id]?.status ?? (order.shipment?.status === "in_transit" ? "in_transit" : "dispatched"),
+                            } }))}
+                            className="rounded-xl border border-[#5D584C] bg-[#111514] px-3 py-2 text-white"
+                          />
+                          <select
+                            aria-label={`Tracking status for order ${order.id}`}
+                            value={trackingDrafts[order.id]?.status ?? (order.shipment?.status === "in_transit" ? "in_transit" : "dispatched")}
+                            onChange={(e) => setTrackingDrafts(prev => ({ ...prev, [order.id]: {
+                              carrier: prev[order.id]?.carrier ?? order.shipment?.carrier ?? "",
+                              trackingNumber: prev[order.id]?.trackingNumber ?? order.shipment?.tracking_number ?? "",
+                              status: e.target.value as "dispatched" | "in_transit",
+                            } }))}
+                            className="rounded-xl border border-[#5D584C] bg-[#111514] px-3 py-2 text-white"
+                          >
+                            <option value="dispatched">Dispatched</option>
+                            <option value="in_transit">In transit</option>
+                          </select>
+                          <button type="button" disabled={updatingId !== null} onClick={() => void saveShipment(order)}
+                            className="rounded-xl bg-[#C8AB6D] px-4 py-2 font-bold text-black disabled:opacity-50">
+                            {busy ? "Saving..." : "Save tracking"}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                     <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#FFF8F2] bg-[#FFFFFF] p-4">
                       <div>
                         <p className="text-sm font-bold">Order fulfilment</p>
