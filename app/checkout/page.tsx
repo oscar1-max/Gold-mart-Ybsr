@@ -20,6 +20,9 @@ type Delivery = {
   address: string;
   city: string;
   state: string;
+  country: string;
+  postalCode: string;
+  addressLine2: string;
 };
 
 function normalizeCurrency(currency?: string) {
@@ -93,7 +96,10 @@ export default function CheckoutPage() {
       phone: "",
       address: "",
       city: "",
-      state: "Rivers",
+      state: "",
+      country: "Nigeria",
+      postalCode: "",
+      addressLine2: "",
     });
 
   // =====================================================
@@ -138,6 +144,7 @@ export default function CheckoutPage() {
   // DELIVERY FEE
   // =====================================================
 
+  // No carrier rate has been quoted. This is a test-only product total.
   const deliveryFee = 0;
 
   const total =
@@ -209,7 +216,7 @@ export default function CheckoutPage() {
       !delivery.phone ||
       !delivery.address ||
       !delivery.city ||
-      !delivery.state
+      !delivery.country
     ) {
       setError(
         "Please complete all delivery information."
@@ -664,6 +671,22 @@ export default function CheckoutPage() {
                 />
 
                 <input
+                  value={delivery.addressLine2}
+                  onChange={(e) => updateDelivery("addressLine2", e.target.value)}
+                  placeholder="Apartment, suite, building (optional)"
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#C8AB6D] sm:col-span-2"
+                />
+
+                <input
+                  value={delivery.country}
+                  onChange={(e) => updateDelivery("country", e.target.value)}
+                  placeholder="Country (e.g. Nigeria, United States, Japan)"
+                  required
+                  maxLength={100}
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#C8AB6D] sm:col-span-2"
+                />
+
+                <input
                   value={
                     delivery.city
                   }
@@ -677,28 +700,21 @@ export default function CheckoutPage() {
                   className="rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
                 />
 
-                <select
-                  value={
-                    delivery.state
-                  }
-                  onChange={(e) =>
-                    updateDelivery(
-                      "state",
-                      e.target.value
-                    )
-                  }
-                  className="rounded-xl border bg-white px-4 py-3 outline-none focus:border-[#FF6B00]"
-                >
-                  <option>Rivers</option>
-                  <option>Lagos</option>
-                  <option>Abuja</option>
-                  <option>Oyo</option>
-                  <option>Delta</option>
-                  <option>Enugu</option>
-                  <option>Kano</option>
-                  <option>Edo</option>
-                  <option>Other</option>
-                </select>
+                <input
+                  value={delivery.state}
+                  onChange={(e) => updateDelivery("state", e.target.value)}
+                  placeholder="State / Province / Region (if applicable)"
+                  maxLength={150}
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#C8AB6D]"
+                />
+
+                <input
+                  value={delivery.postalCode}
+                  onChange={(e) => updateDelivery("postalCode", e.target.value)}
+                  placeholder="Postal / ZIP code (if applicable)"
+                  maxLength={32}
+                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#C8AB6D]"
+                />
 
               </div>
 
@@ -725,11 +741,11 @@ export default function CheckoutPage() {
                   <div>
 
                     <p className="font-bold">
-                      Standard Delivery
+                      Worldwide Delivery (Test Mode)
                     </p>
 
                     <p className="text-sm text-gray-500">
-                      3–7 business days
+                      Delivery times depend on destination and carrier
                     </p>
 
                   </div>
@@ -737,7 +753,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <span className="font-bold">
-                  Free
+                  Quote pending
                 </span>
 
               </label>
@@ -852,7 +868,7 @@ export default function CheckoutPage() {
 
           <section className="mt-4 rounded-[22px] border border-[#61543C] bg-[#1C211E] p-5 text-[#F5F3EC] lg:col-span-2">
             <h2 className="font-black text-[#E4D3A9]">Delivery and payment testing</h2>
-            <p className="mt-2 text-sm leading-6 text-[#D0D0C8]">GoldMart currently charges no delivery fee in this test checkout. This is not a promise of free delivery for future live orders. Delivery providers, fees, coverage and any insurance must be confirmed before real-money checkout is enabled. The existing buyer-protection system accepts requests for review; provider refunds remain in test mode.</p>
+            <p className="mt-2 text-sm leading-6 text-[#D0D0C8]">GoldMart supports worldwide delivery addresses, including Nigeria. No courier rate or delivery time has been confirmed. The test checkout excludes shipping charges; this does not mean shipping will be free. Delivery providers, fees, coverage and any insurance must be confirmed before real-money checkout is enabled. The existing buyer-protection system accepts requests for review; provider refunds remain in test mode.</p>
           </section>
           {/* ORDER SUMMARY */}
 
