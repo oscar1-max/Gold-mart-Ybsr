@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   description:
     "Discover and shop products on GoldMart, a premium online marketplace connecting buyers and sellers.",
 
+  verification: {
+    google: "74J3tFbkdqDgpr9iSrndR3Gnl7n8HJ0hF7jxDPYzqD8",
+  },
+
   applicationName: "GoldMart",
 
   manifest: "/manifest.webmanifest",
