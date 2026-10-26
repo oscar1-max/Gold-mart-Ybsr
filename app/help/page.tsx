@@ -33,6 +33,14 @@ const questions = [
       "Only confirm delivery after you have actually received and checked your order.",
   },
   {
+    question: "How do I request account deletion?",
+    answer: "Open Account Deletion from My Account, then create a support ticket under Account help. Deletion requests are reviewed manually.",
+  },
+  {
+    question: "Are delivery fees and live payments enabled?",
+    answer: "Not yet. GoldMart checkout currently uses payment test mode, and delivery fees and providers have not been finalized.",
+  },
+  {
     question: "How can I contact GoldMart Support?",
     answer:
       "Select Contact Support to create a private support ticket. You can view your ticket status and send follow-up messages.",

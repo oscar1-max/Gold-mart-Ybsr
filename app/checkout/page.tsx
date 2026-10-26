@@ -850,7 +850,10 @@ export default function CheckoutPage() {
 
           </section>
 
-          {currency==="NGN" && <section className="mt-4 rounded-[22px] border border-[#FFE9CC] bg-[#FFF8F2] p-5 lg:col-span-2"><h2 className="font-black text-[#243B53]">Secure Delivery &amp; Insurance · planned</h2><p className="mt-2 text-sm text-[#243B53]">Proposed ₦8,000 delivery charge for orders below ₦300,000, free on orders of ₦300,000 or above. This fee is not collected yet, and insurance/48-hour returns are not active until service arrangements are confirmed.</p></section>}
+          <section className="mt-4 rounded-[22px] border border-[#61543C] bg-[#1C211E] p-5 text-[#F5F3EC] lg:col-span-2">
+            <h2 className="font-black text-[#E4D3A9]">Delivery and payment testing</h2>
+            <p className="mt-2 text-sm leading-6 text-[#D0D0C8]">GoldMart currently charges no delivery fee in this test checkout. This is not a promise of free delivery for future live orders. Delivery providers, fees, coverage and any insurance must be confirmed before real-money checkout is enabled. The existing buyer-protection system accepts requests for review; provider refunds remain in test mode.</p>
+          </section>
           {/* ORDER SUMMARY */}
 
           <aside className="h-fit rounded-3xl bg-white p-6 shadow-sm lg:sticky lg:top-24">
