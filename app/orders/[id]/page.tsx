@@ -21,11 +21,13 @@ type Order = {
   status: string;
   created_at: string;
 };
+type Shipment = { seller_id: number; carrier: string; tracking_number: string; status: string; updated_at: string };
 type OrderResponse = {
   success?: boolean;
   message?: string;
   order?: Order;
   items?: Item[];
+  shipments?: Shipment[];
 };
 
 const steps = ["pending", "processing", "shipped", "delivered"] as const;
@@ -50,6 +52,7 @@ export default function OrderDetailsPage() {
   const orderId = String(params.id || "");
   const [order, setOrder] = useState<Order | null>(null);
   const [items, setItems] = useState<Item[]>([]);
+  const [shipments, setShipments] = useState<Shipment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [needsLogin, setNeedsLogin] = useState(false);
@@ -84,6 +87,7 @@ export default function OrderDetailsPage() {
       }
       setOrder(data.order);
       setItems(data.items);
+      setShipments(Array.isArray(data.shipments) ? data.shipments : []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "We could not load this order.");
     } finally {
@@ -171,7 +175,18 @@ export default function OrderDetailsPage() {
 
             <section className="rounded-2xl border border-[#393B36] bg-[#1C211E] p-6">
               <h2 className="text-lg font-bold">Delivery and buyer protection</h2>
-              <p className="mt-2 text-sm leading-6 text-[#BABCB4]">Live courier tracking, delivery estimates and the saved shipping address are not supplied by this order-details API. We will not display invented information.</p>
+              <p className="mt-2 text-sm leading-6 text-[#BABCB4]">Seller-reported tracking appears below when provided. This is not a live courier feed, and no delivery date is guaranteed.</p>
+              {shipments.length > 0 ? (
+                <div className="mt-4 space-y-3">
+                  {shipments.map((shipment) => (
+                    <div key={shipment.seller_id} className="rounded-xl border border-[#5D584C] bg-[#151A18] p-4">
+                      <p className="font-semibold">Carrier: {shipment.carrier}</p>
+                      <p className="mt-1 break-all text-sm">Tracking number: {shipment.tracking_number}</p>
+                      <p className="mt-1 text-sm capitalize text-[#BABCB4]">Seller-reported status: {shipment.status.replace(/_/g, " ")}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : <p className="mt-3 text-sm text-[#BABCB4]">No shipment tracking information has been provided yet.</p>}
               <p className="mt-3 text-sm leading-6 text-[#BABCB4]">Confirm receipt only after your package arrives and you have checked it. Refund or cancellation requests are reviewed through Buyer Protection.</p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link href="/orders" className="rounded-xl bg-[#C8AB6D] px-5 py-3 text-sm font-bold text-black">Confirm delivery / view protection</Link>
