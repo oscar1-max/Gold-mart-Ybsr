@@ -999,8 +999,8 @@ export default function CheckoutPage() {
                       Delivery
                     </span>
 
-                    <span className="font-bold">
-                      Free
+                    <span className="font-bold text-[#67562E]">
+                      Not quoted (test only)
                     </span>
 
                   </div>
@@ -1010,7 +1010,7 @@ export default function CheckoutPage() {
                     <div className="flex justify-between">
 
                       <span className="text-lg font-black">
-                        Total
+                        Test total (excludes shipping)
                       </span>
 
                       <span className="text-2xl font-black text-[#FF6B00]">
