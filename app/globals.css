@@ -2875,3 +2875,57 @@ body:has(.gm-zone-buyer) button[aria-label="Toggle administrator tools"] {
  .gm-zone-buyer .gm-account-syncra .gm-account-profile {padding-top:110px !important;}
  .gm-zone-admin:has(.gm-ai-vezaro) .gm-workspace-topbar {background:#131315;}
 }
+
+
+/* Nine reference-inspired department designs: scoped to storefront showrooms only. */
+.gm-zone-buyer .gm-dept--garden {--dept-accent:#335a34;--dept-fallback:#e8f0df;--dept-overlay-start:rgba(251,251,244,.97);--dept-overlay-end:rgba(250,251,245,.08);--dept-color:#1e3625;--dept-sub:#3e5542;--dept-story:#e9f1e4;--dept-story-ink:#233a2b}
+.gm-zone-buyer .gm-dept--sports {--dept-accent:#eee;--dept-fallback:#171717;--dept-overlay-start:rgba(0,0,0,.91);--dept-overlay-end:rgba(0,0,0,.08);--dept-color:#fff;--dept-sub:#eee;--dept-story:#171717;--dept-story-ink:#fff}
+.gm-zone-buyer .gm-dept--gifts {--dept-accent:#b44776;--dept-fallback:#f9e4e9;--dept-overlay-start:rgba(255,244,246,.99);--dept-overlay-end:rgba(255,242,247,.07);--dept-color:#301e29;--dept-sub:#63485a;--dept-story:#fbe5ed;--dept-story-ink:#3b2331}
+.gm-zone-buyer .gm-dept--hobbies {--dept-accent:#087f69;--dept-fallback:#d6f5eb;--dept-overlay-start:rgba(13,42,42,.78);--dept-overlay-end:rgba(7,40,44,.04);--dept-color:#fff;--dept-sub:#f1ffff;--dept-story:#dff7ef;--dept-story-ink:#163d36}
+.gm-zone-buyer .gm-dept--travel {--dept-accent:#c49a7a;--dept-fallback:#1d3444;--dept-overlay-start:rgba(20,41,57,.85);--dept-overlay-end:rgba(18,36,51,.04);--dept-color:#fff;--dept-sub:#e9eff2;--dept-story:#dfe8ed;--dept-story-ink:#1d3444}
+.gm-zone-buyer .gm-dept--music {--dept-accent:#bd8cff;--dept-fallback:#0b0912;--dept-overlay-start:rgba(10,7,20,.96);--dept-overlay-end:rgba(23,7,40,.19);--dept-color:#fff;--dept-sub:#f0e8ff;--dept-story:#1b1129;--dept-story-ink:#fff}
+.gm-zone-buyer .gm-dept--health {--dept-accent:#1e8145;--dept-fallback:#eef6e8;--dept-overlay-start:rgba(247,252,241,.97);--dept-overlay-end:rgba(239,251,232,.08);--dept-color:#203c29;--dept-sub:#425c49;--dept-story:#e4f2df;--dept-story-ink:#21452f}
+.gm-zone-buyer .gm-dept--menswear {--dept-accent:#333;--dept-fallback:#333;--dept-overlay-start:rgba(0,0,0,.67);--dept-overlay-end:rgba(0,0,0,.04);--dept-color:#fff;--dept-sub:#f1f1f1;--dept-story:#e9e9e7;--dept-story-ink:#171717}
+.gm-zone-buyer .gm-dept--womenswear {--dept-accent:#8b6b55;--dept-fallback:#eee6dd;--dept-overlay-start:rgba(253,248,242,.98);--dept-overlay-end:rgba(253,248,242,.04);--dept-color:#251e1a;--dept-sub:#554d48;--dept-story:#f0e7dd;--dept-story-ink:#27211e}
+.gm-zone-buyer .gm-dept:is(.gm-dept--garden,.gm-dept--sports,.gm-dept--gifts,.gm-dept--hobbies,.gm-dept--travel,.gm-dept--music,.gm-dept--health,.gm-dept--menswear,.gm-dept--womenswear) .gm-dept-hero {min-height:clamp(370px,43vw,520px);border-radius:8px}
+.gm-zone-buyer .gm-dept--garden .gm-dept-hero h1,
+.gm-zone-buyer .gm-dept--gifts .gm-dept-hero h1,
+.gm-zone-buyer .gm-dept--travel .gm-dept-hero h1,
+.gm-zone-buyer .gm-dept--womenswear .gm-dept-hero h1 {font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-.045em}
+.gm-zone-buyer .gm-dept--sports .gm-dept-hero h1,
+.gm-zone-buyer .gm-dept--menswear .gm-dept-hero h1 {text-transform:uppercase;font-weight:900;letter-spacing:-.04em}
+.gm-zone-buyer .gm-dept--music .gm-dept-hero h1 {font-weight:900}
+.gm-zone-buyer .gm-dept--garden .gm-dept-tile-image,
+.gm-zone-buyer .gm-dept--travel .gm-dept-tile-image,
+.gm-zone-buyer .gm-dept--menswear .gm-dept-tile-image {border-radius:6px;aspect-ratio:1.25}
+.gm-zone-buyer .gm-dept--hobbies .gm-dept-tile-image {border-radius:100%;aspect-ratio:1}
+.gm-zone-buyer .gm-dept--gifts .gm-dept-tile-image {border-radius:14px;aspect-ratio:1}
+.gm-zone-buyer .gm-dept--womenswear .gm-dept-tile-image {border-radius:13px;aspect-ratio:.86}
+.gm-zone-buyer .gm-dept--health .gm-dept-tile-image {border-radius:18px;aspect-ratio:1}
+.gm-zone-buyer .gm-dept--music .gm-dept-hero {border-radius:0}
+.gm-zone-buyer .gm-dept--music .gm-dept-benefit-row {background:#15111d;border-color:#2c2339}
+.gm-zone-buyer .gm-dept--music .gm-dept-benefit-row :is(strong,small) {color:#fff}
+.gm-zone-buyer .gm-dept--music .gm-dept-benefit-row a {border-color:#2c2339}
+.gm-zone-buyer .gm-dept--sports .gm-dept-benefit-row {background:#171717;border-color:#2a2a2a}
+.gm-zone-buyer .gm-dept--sports .gm-dept-benefit-row :is(strong,small) {color:#fff}
+.gm-zone-buyer .gm-dept--sports .gm-dept-benefit-row a {border-color:#333}
+.gm-zone-buyer .gm-dept-editorial {margin:38px 0}
+.gm-zone-buyer .gm-dept-editorial-cards {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.gm-zone-buyer .gm-dept-editorial-card {min-height:205px;border-radius:12px;overflow:hidden;background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;text-decoration:none;transition:transform .2s}
+.gm-zone-buyer .gm-dept-editorial-card:hover {transform:translateY(-3px)}
+.gm-zone-buyer .gm-dept-editorial-card span {color:#fff;font-size:clamp(16px,2vw,25px);font-weight:850}
+.gm-zone-buyer .gm-dept-editorial-card small {color:#fff;font-size:12px;margin-top:6px}
+.gm-zone-buyer .gm-dept--gifts .gm-dept-editorial-card {border-radius:22px}
+.gm-zone-buyer .gm-dept--travel .gm-dept-editorial-card {border-radius:4px}
+.gm-zone-buyer .gm-dept--womenswear .gm-dept-editorial-card {border-radius:3px}
+.gm-zone-buyer .gm-dept--garden .gm-dept-editorial-card {border-radius:7px}
+.gm-zone-buyer .gm-dept--music .gm-dept-editorial {background:#15111d;padding:22px;border-radius:10px}
+.gm-zone-buyer .gm-dept--music .gm-dept-editorial .gm-dept-section-heading h2 {color:#fff}
+.gm-zone-buyer .gm-dept--music .gm-dept-editorial .gm-dept-section-kicker {color:#bfa3ec!important}
+.gm-zone-buyer .gm-dept--music .gm-dept-editorial .gm-dept-section-heading a {color:#fff!important}
+@media(max-width:700px) {
+ .gm-zone-buyer .gm-dept-editorial-cards {grid-template-columns:1fr 1fr;gap:10px}
+ .gm-zone-buyer .gm-dept-editorial-card {min-height:160px;padding:14px}
+ .gm-zone-buyer .gm-dept-editorial-card:nth-child(3) {display:none}
+ .gm-zone-buyer .gm-dept:is(.gm-dept--garden,.gm-dept--sports,.gm-dept--gifts,.gm-dept--hobbies,.gm-dept--travel,.gm-dept--music,.gm-dept--health,.gm-dept--menswear,.gm-dept--womenswear) .gm-dept-hero {min-height:390px;background-position:64% center}
+}
