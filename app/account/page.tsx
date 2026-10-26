@@ -655,6 +655,15 @@ export default function AccountPage() {
               <span className="text-[#243B53]">→</span>
             </Link>
 
+            <Link href="/privacy" className="flex items-center justify-between gap-4 border-b border-[#FFF8F2] px-5 py-4 text-sm font-bold transition hover:bg-[#FFFFFF]">
+              <span>🔒 &nbsp; Privacy notice</span><span>→</span>
+            </Link>
+            <Link href="/account-deletion" className="flex items-center justify-between gap-4 border-b border-[#FFF8F2] px-5 py-4 text-sm font-bold transition hover:bg-[#FFFFFF]">
+              <span>🗑️ &nbsp; Request account deletion</span><span>→</span>
+            </Link>
+            <Link href="/terms" className="flex items-center justify-between gap-4 border-b border-[#FFF8F2] px-5 py-4 text-sm font-bold transition hover:bg-[#FFFFFF]">
+              <span>📄 &nbsp; Marketplace terms</span><span>→</span>
+            </Link>
             <Link
               href="/help"
               className="flex items-center justify-between gap-4 px-5 py-4 text-sm font-bold transition hover:bg-[#FFFFFF]"
