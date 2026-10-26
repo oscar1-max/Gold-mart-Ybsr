@@ -25,16 +25,12 @@ const categories = [
   "Home Garden",
   "Sports Fitness",
   "Occasions Gifts",
-  "Apparel",
   "Hobbies Leisure",
   "Travel Tourism",
   "Musical Instruments",
   "Health",
-  "Sports & Outdoors",
   "Men's Clothing",
   "Women's Clothing",
-  "Men's Shoes",
-  "Women's Shoes",
 ];
 
 type Product = {

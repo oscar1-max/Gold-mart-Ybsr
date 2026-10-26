@@ -153,6 +153,122 @@ const departments: Record<string, Department> = {
       { label: "Storage", icon: "◫", query: "storage", image: photo("photo-1556911220-e15b29be8c8f",400) },
       { label: "Appliances", icon: "▣", query: "appliance", image: photo("photo-1556911220-e15b29be8c8f",400) }
     ]
+  },
+  "Home Garden": {
+    key: "Home Garden", label: "Home & Garden", theme: "garden",
+    eyebrow: "PLANTS · PEOPLE · BRIGHTER DAYS", headline: "Grow Something Good.",
+    description: "Bring the outdoors in with planters, tools, seeds and everyday garden essentials.", promise: "A greener home begins with small choices",
+    promo: "Small changes. A greener tomorrow.", heroImage: photo("photo-1416879595882-3373a0480b5b"),
+    tiles: [
+      { label: "Planters", icon: "🌱", query: "planter", image: photo("photo-1485955900006-10f4d324d411", 480) },
+      { label: "Hand Tools", icon: "🪴", query: "garden tool", image: photo("photo-1416879595882-3373a0480b5b", 480) },
+      { label: "Seed Kits", icon: "🌻", query: "seed", image: photo("photo-1466692476868-aef1dfb1e735", 480) },
+      { label: "Watering Cans", icon: "💧", query: "watering", image: photo("photo-1416879595882-3373a0480b5b", 480) }
+    ]
+  },
+  "Sports Fitness": {
+    key: "Sports Fitness", label: "Sports & Fitness", theme: "sports",
+    eyebrow: "ENGINEERED FOR MOVEMENT", headline: "Strength in Motion.",
+    description: "Performance-minded gear for running, training, yoga and an active lifestyle.", promise: "Gear up for the way you move",
+    promo: "Purposeful design. Peak performance.", heroImage: photo("photo-1534438327276-14e5300c3a48"),
+    tiles: [
+      { label: "Running", icon: "🏃", query: "running", image: photo("photo-1552674605-db6ffd4facb5", 480) },
+      { label: "Training", icon: "🏋️", query: "training", image: photo("photo-1534438327276-14e5300c3a48", 480) },
+      { label: "Yoga", icon: "🧘", query: "yoga", image: photo("photo-1599447421416-3414500d18a5", 480) },
+      { label: "Cycling", icon: "🚴", query: "cycling", image: photo("photo-1571068316344-75bc76f77890", 480) },
+      { label: "Outdoor", icon: "⛰", query: "outdoor", image: photo("photo-1464822759023-fed622ff2c3b", 480) },
+      { label: "Swim", icon: "🏊", query: "swim", image: photo("photo-1530549387789-4c1017266635", 480) }
+    ]
+  },
+  "Occasions Gifts": {
+    key: "Occasions Gifts", label: "Occasions & Gifts", theme: "gifts",
+    eyebrow: "PERFECT FOR EVERY OCCASION", headline: "Gifts They'll Actually Love.",
+    description: "Find thoughtful surprises, personal keepsakes and little reasons to celebrate.", promise: "Make every moment feel special",
+    promo: "Good gifts. Great memories.", heroImage: photo("photo-1513201099705-a9746e1e201f"),
+    tiles: [
+      { label: "For Her", icon: "💗", query: "gift for her", image: photo("photo-1549465220-1a8b9238cd48", 480) },
+      { label: "For Him", icon: "🎁", query: "gift for him", image: photo("photo-1513201099705-a9746e1e201f", 480) },
+      { label: "Birthday", icon: "🎂", query: "birthday", image: photo("photo-1464366400600-7168b8af9bc3", 480) },
+      { label: "Anniversary", icon: "💞", query: "anniversary", image: photo("photo-1511988617509-a57c8a288659", 480) },
+      { label: "Personalized", icon: "✨", query: "personalized", image: photo("photo-1549465220-1a8b9238cd48", 480) },
+      { label: "New Arrivals", icon: "🌸", query: "gift", image: photo("photo-1513201099705-a9746e1e201f", 480) }
+    ]
+  },
+  "Hobbies Leisure": {
+    key: "Hobbies Leisure", label: "Hobbies & Leisure", theme: "hobbies",
+    eyebrow: "MORE JOY IN EVERY DAY", headline: "Find Your Next Adventure.",
+    description: "Make room for what you love, from creative pastimes to outdoor fun.", promise: "Free time is time well spent",
+    promo: "Discover more of what moves you.", heroImage: photo("photo-1571068316344-75bc76f77890"),
+    tiles: [
+      { label: "Cycling", icon: "🚲", query: "bike", image: photo("photo-1571068316344-75bc76f77890", 480) },
+      { label: "Outdoor Fun", icon: "🛴", query: "scooter", image: photo("photo-1558981806-ec527fa84c39", 480) },
+      { label: "Arts & Crafts", icon: "🎨", query: "craft", image: photo("photo-1513364776144-60967b0f800f", 480) },
+      { label: "Games", icon: "🎲", query: "board game", image: photo("photo-1606092195730-5d7b9af1efc5", 480) },
+      { label: "Photography", icon: "📷", query: "camera", image: photo("photo-1516035069371-29a1b244cc32", 480) },
+      { label: "Accessories", icon: "🎒", query: "leisure", image: photo("photo-1472396961693-142e6e269027", 480) }
+    ]
+  },
+  "Travel Tourism": {
+    key: "Travel Tourism", label: "Travel & Tourism", theme: "travel",
+    eyebrow: "TRAVEL LIGHTER · LIVE BIGGER", headline: "Designed to Go Further.",
+    description: "Premium travel essentials for journeys big and small.", promise: "Every journey deserves a great beginning",
+    promo: "Journeys change us.", heroImage: photo("photo-1476514525535-07fb3b4ae5f1"),
+    tiles: [
+      { label: "Suitcases", icon: "🧳", query: "suitcase", image: photo("photo-1553062407-98eeb64c6a62", 480) },
+      { label: "Weekender Bags", icon: "👜", query: "weekender", image: photo("photo-1547949003-9792a18a2601", 480) },
+      { label: "Organizers", icon: "🗂", query: "organizer", image: photo("photo-1553062407-98eeb64c6a62", 480) },
+      { label: "Travel Accessories", icon: "✈", query: "travel", image: photo("photo-1476514525535-07fb3b4ae5f1", 480) }
+    ]
+  },
+  "Musical Instruments": {
+    key: "Musical Instruments", label: "Musical Instruments", theme: "music",
+    eyebrow: "FEEL THE MUSIC", headline: "Make More Music. Live Your Passion.",
+    description: "Instruments, recording gear and accessories for every sound.", promise: "Create the sound that feels like yours",
+    promo: "Your next sound starts here.", heroImage: photo("photo-1510915361894-db8b60106cb1"),
+    tiles: [
+      { label: "Guitars", icon: "🎸", query: "guitar", image: photo("photo-1510915361894-db8b60106cb1", 480) },
+      { label: "Keyboards", icon: "🎹", query: "keyboard", image: photo("photo-1520523839897-bd0b52f945a0", 480) },
+      { label: "Drums", icon: "🥁", query: "drum", image: photo("photo-1519892300165-cb5542fb47c7", 480) },
+      { label: "Studio & Recording", icon: "🎙", query: "microphone", image: photo("photo-1598488035139-bdbb2231ce04", 480) },
+      { label: "Live Sound", icon: "🔊", query: "speaker", image: photo("photo-1608043152269-423dbba4e7e1", 480) },
+      { label: "Accessories", icon: "🎧", query: "headphones", image: photo("photo-1505740420928-5e560c06d30e", 480) }
+    ]
+  },
+  "Health": {
+    key: "Health", label: "Health", theme: "health",
+    eyebrow: "WELLNESS FOR EVERY DAY", headline: "Real Support. Real Solutions.",
+    description: "Discover everyday wellness, self-care and personal health essentials.", promise: "Feel good in your everyday routine",
+    promo: "Wellness begins with small habits.", heroImage: photo("photo-1544367567-0f2fcb009e0b"),
+    tiles: [
+      { label: "Daily Wellness", icon: "🌿", query: "wellness", image: photo("photo-1544367567-0f2fcb009e0b", 480) },
+      { label: "Skin & Body", icon: "🧴", query: "skin", image: photo("photo-1556228720-195a672e8a03", 480) },
+      { label: "Fitness Care", icon: "💚", query: "fitness", image: photo("photo-1599447421416-3414500d18a5", 480) },
+      { label: "Personal Care", icon: "🫧", query: "personal care", image: photo("photo-1608248543803-ba4f8c70ae0b", 480) }
+    ]
+  },
+  "Men's Clothing": {
+    key: "Men's Clothing", label: "Men's Clothing", theme: "menswear",
+    eyebrow: "THE MODERN MENSWEAR EDIT", headline: "Elevate Your Style.",
+    description: "Refined essentials and effortless pieces for every day.", promise: "Wear what feels like you",
+    promo: "A sharper take on everyday dressing.", heroImage: photo("photo-1617127365659-c47fa864d8bc"),
+    tiles: [
+      { label: "New Arrivals", icon: "✦", query: "jacket", image: photo("photo-1617127365659-c47fa864d8bc", 480) },
+      { label: "Outerwear", icon: "🧥", query: "coat", image: photo("photo-1544923246-77307dd654cb", 480) },
+      { label: "Shirts & Knits", icon: "👕", query: "shirt", image: photo("photo-1598032895397-b9472444bf93", 480) },
+      { label: "Denim", icon: "👖", query: "jeans", image: photo("photo-1542272604-787c3835535d", 480) }
+    ]
+  },
+  "Women's Clothing": {
+    key: "Women's Clothing", label: "Women's Clothing", theme: "womenswear",
+    eyebrow: "THE NEW COLLECTION", headline: "Elevate Your Everyday Style.",
+    description: "Discover timeless pieces designed for comfort, confidence and you.", promise: "Find your perfect style",
+    promo: "Fresh styles. Just landed.", heroImage: photo("photo-1483985988355-763728e1935b"),
+    tiles: [
+      { label: "Women's Collection", icon: "✧", query: "women", image: photo("photo-1483985988355-763728e1935b", 480) },
+      { label: "Dresses", icon: "👗", query: "dress", image: photo("photo-1595777457583-95e059d581b8", 480) },
+      { label: "Tops & Layers", icon: "🧶", query: "top", image: photo("photo-1539109136881-3be0616acf4b", 480) },
+      { label: "Accessories", icon: "👜", query: "bag", image: photo("photo-1548036328-c9fa89d128fa", 480) }
+    ]
   }
 };
 
@@ -238,6 +354,17 @@ export default function CategoryShowcase({ category, children }: { category: str
             <Link href="/shop">All departments ↗</Link>
           </div>
           {children}
+        </section>
+
+        <section className="gm-dept-editorial" aria-label={"Explore more " + item.label}>
+          <div className="gm-dept-section-heading"><div><p className="gm-dept-section-kicker">INSPIRED BY YOUR INTERESTS</p><h2>More to explore</h2></div><Link href={href()}>Shop the collection ↗</Link></div>
+          <div className="gm-dept-editorial-cards">
+            {item.tiles.slice(0, 3).map((tile) => (
+              <Link key={tile.label} href={href(tile.query)} className="gm-dept-editorial-card" style={{ backgroundImage: "linear-gradient(180deg, transparent 28%, rgba(0,0,0,.72)), url('" + tile.image + "')" }}>
+                <span>{tile.label}</span><small>Explore now ↗</small>
+              </Link>
+            ))}
+          </div>
         </section>
 
         <div className="gm-dept-story">

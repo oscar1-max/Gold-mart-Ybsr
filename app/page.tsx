@@ -31,14 +31,15 @@ type Product = {
 };
 
 const categories = [
-  { icon: "📱", name: "Phones", value: "Phones" },
-  { icon: "💻", name: "Electronics", value: "Electronics" },
-  { icon: "🎮", name: "Gaming", value: "Gaming" },
-  { icon: "👕", name: "Fashion", value: "Fashion" },
-  { icon: "💄", name: "Beauty", value: "Beauty & Cosmetics" },
-  { icon: "🛒", name: "Groceries", value: "Groceries" },
-  { icon: "🏡", name: "Home", value: "Home & Kitchen" },
-  { icon: "💎", name: "Jewelry", value: "Jewelry & Accessories" },
+  { icon: "🌿", name: "Home & Garden", value: "Home Garden" },
+  { icon: "🏃", name: "Sports & Fitness", value: "Sports Fitness" },
+  { icon: "🎁", name: "Occasions & Gifts", value: "Occasions Gifts" },
+  { icon: "🚲", name: "Hobbies & Leisure", value: "Hobbies Leisure" },
+  { icon: "🧳", name: "Travel & Tourism", value: "Travel Tourism" },
+  { icon: "🎸", name: "Musical Instruments", value: "Musical Instruments" },
+  { icon: "💚", name: "Health", value: "Health" },
+  { icon: "👔", name: "Men's Clothing", value: "Men's Clothing" },
+  { icon: "👗", name: "Women's Clothing", value: "Women's Clothing" },
 ];
 
 const discoveryTabs = ["All", "⚡ Deals", "5-Star Rated", "Best Selling", "New Arrivals"];
