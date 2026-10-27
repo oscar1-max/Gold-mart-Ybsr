@@ -1,0 +1,307 @@
+"use client";
+
+import Link from "next/link";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
+
+const API_URL = "https://goldmart-backend-yoxc.onrender.com";
+
+type Address = {
+  address_code: number;
+  name: string;
+  formatted_address: string;
+  city: string;
+  state: string;
+  country: string;
+};
+type Category = { category_id: number; category: string };
+type Rate = {
+  courier_id: string | number;
+  courier_name: string;
+  service_type: string;
+  price: number;
+  currency: string;
+  pickup_eta?: string | null;
+  delivery_eta?: string | null;
+  insurance_available?: boolean;
+};
+type ApiResponse = {
+  success: boolean;
+  message?: string;
+  addresses?: Address[];
+  categories?: Category[];
+  rates?: Rate[];
+};
+
+const fieldClass =
+  "w-full rounded-xl border border-[#D6DCD5] bg-white px-3 py-3 text-[#0A1F1A] outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#F5E6A3]";
+const labelClass = "mb-1 block text-sm font-semibold text-[#0A1F1A]";
+
+function dateToday() {
+  const now = new Date();
+  return new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 10);
+}
+
+export default function AdminShippingPage() {
+  const [loading, setLoading] = useState(true);
+  const [quoting, setQuoting] = useState(false);
+  const [error, setError] = useState("");
+  const [quoteError, setQuoteError] = useState("");
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [rates, setRates] = useState<Rate[]>([]);
+  const [sender, setSender] = useState("");
+  const [receiver, setReceiver] = useState("");
+  const [category, setCategory] = useState("");
+  const [pickupDate, setPickupDate] = useState(dateToday);
+  const [itemName, setItemName] = useState("Test parcel");
+  const [description, setDescription] = useState("GoldMart shipping rate preview");
+  const [weight, setWeight] = useState("1");
+  const [value, setValue] = useState("5000");
+  const [quantity, setQuantity] = useState("1");
+  const [length, setLength] = useState("20");
+  const [width, setWidth] = useState("15");
+  const [height, setHeight] = useState("10");
+
+  const load = useCallback(async (signal?: AbortSignal) => {
+    setLoading(true);
+    setError("");
+    setRates([]);
+    const token = localStorage.getItem("goldmart_token");
+    if (!token) {
+      setError("Please sign in to your GoldMart admin account first.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const headers = { Authorization: `Bearer ${token}`, Accept: "application/json" };
+      const [addressResponse, categoryResponse] = await Promise.all([
+        fetch(`${API_URL}/api/shipping/addresses`, { headers, signal, cache: "no-store" }),
+        fetch(`${API_URL}/api/shipping/categories`, { headers, signal, cache: "no-store" }),
+      ]);
+      const addressData: ApiResponse = await addressResponse.json();
+      const categoryData: ApiResponse = await categoryResponse.json();
+      if (!addressResponse.ok || !addressData.success) {
+        throw new Error(addressResponse.status === 403
+          ? "This account is not authorized to view shipping addresses."
+          : addressData.message || "Unable to load Shipbubble addresses.");
+      }
+      if (!categoryResponse.ok || !categoryData.success) {
+        throw new Error(categoryData.message || "Unable to load Shipbubble categories.");
+      }
+      if (signal?.aborted) return;
+      const nextAddresses = addressData.addresses || [];
+      const nextCategories = categoryData.categories || [];
+      setAddresses(nextAddresses);
+      setCategories(nextCategories);
+      setSender((old) => nextAddresses.some((a) => String(a.address_code) === old)
+        ? old : String(nextAddresses[0]?.address_code || ""));
+      setReceiver((old) => nextAddresses.some((a) => String(a.address_code) === old)
+        ? old : String(nextAddresses[1]?.address_code || ""));
+      setCategory((old) => nextCategories.some((c) => String(c.category_id) === old)
+        ? old : String(nextCategories[0]?.category_id || ""));
+    } catch (err) {
+      if (signal?.aborted) return;
+      setError(err instanceof Error ? err.message : "Unable to load shipping information.");
+    } finally {
+      if (!signal?.aborted) setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    void load(controller.signal);
+    return () => controller.abort();
+  }, [load]);
+
+  async function preview(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setQuoteError("");
+    setRates([]);
+    if (!sender || !receiver || sender === receiver) {
+      setQuoteError("Select two different validated pickup and delivery addresses.");
+      return;
+    }
+    const token = localStorage.getItem("goldmart_token");
+    if (!token) {
+      setQuoteError("Please sign in again.");
+      return;
+    }
+    setQuoting(true);
+    try {
+      const response = await fetch(`${API_URL}/api/shipping/preview-rates`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sender_address_code: Number(sender),
+          reciever_address_code: Number(receiver),
+          category_id: Number(category),
+          pickup_date: pickupDate,
+          package_items: [{
+            name: itemName,
+            description,
+            unit_weight: Number(weight),
+            unit_amount: Number(value),
+            quantity: Number(quantity),
+          }],
+          length: Number(length),
+          width: Number(width),
+          height: Number(height),
+        }),
+      });
+      const data: ApiResponse = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Unable to fetch live courier rates.");
+      }
+      setRates(data.rates || []);
+      if (!data.rates?.length) {
+        setQuoteError("Shipbubble returned no courier rates for these addresses and parcel details.");
+      }
+    } catch (err) {
+      setQuoteError(err instanceof Error ? err.message : "Shipping rate request failed.");
+    } finally {
+      setQuoting(false);
+    }
+  }
+
+  return (
+    <main className="min-h-screen bg-[#F7F7F5] px-4 py-8 text-[#0F0F0F] sm:px-6">
+      <div className="mx-auto max-w-5xl">
+        <Link href="/admin" className="text-sm font-semibold text-[#0A1F1A] hover:underline">
+          ← Admin overview
+        </Link>
+        <header className="mt-5 rounded-3xl bg-[#0A1F1A] p-6 text-white sm:p-9">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F5E6A3]">GoldMart admin · Shipbubble</p>
+          <h1 className="mt-3 text-3xl font-bold">Delivery rate testing</h1>
+          <p className="mt-2 max-w-2xl text-sm text-white/85">
+            Check validated addresses and live courier quotations. This page cannot book shipments,
+            charge customers, or debit the Shipbubble wallet.
+          </p>
+        </header>
+
+        <div className="mt-6 rounded-2xl border border-[#E3E6DF] bg-white p-5 sm:p-7">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-xl font-bold text-[#0A1F1A]">Shipbubble connection</h2>
+            <button type="button" onClick={() => void load()} disabled={loading}
+              className="rounded-xl border border-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0A1F1A] disabled:opacity-50">
+              {loading ? "Checking…" : "Refresh"}
+            </button>
+          </div>
+          {error && <p role="alert" className="mt-4 rounded-xl bg-[#FFF3EF] p-3 text-sm text-[#822B22]">{error}</p>}
+          {loading ? <p className="mt-4 text-sm">Loading validated addresses and categories…</p> : !error && (
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-xl bg-[#F7F7F5] p-4">
+                <p className="text-sm text-[#4A5850]">Validated addresses</p>
+                <p className="mt-1 text-3xl font-bold text-[#0A1F1A]">{addresses.length}</p>
+              </div>
+              <div className="rounded-xl bg-[#F7F7F5] p-4">
+                <p className="text-sm text-[#4A5850]">Package categories</p>
+                <p className="mt-1 text-3xl font-bold text-[#0A1F1A]">{categories.length}</p>
+              </div>
+            </div>
+          )}
+          {!loading && !error && addresses.length < 2 && (
+            <p className="mt-4 rounded-xl border border-[#E6D89B] bg-[#FFFBE9] p-4 text-sm text-[#4B401C]">
+              At least two validated addresses are needed to test a route. Add a pickup address
+              and a delivery address in Shipbubble, then refresh. Address validation may use credits.
+            </p>
+          )}
+        </div>
+
+        {!loading && !error && addresses.length >= 2 && categories.length > 0 && (
+          <form onSubmit={preview} className="mt-6 rounded-2xl border border-[#E3E6DF] bg-white p-5 sm:p-7">
+            <h2 className="text-xl font-bold text-[#0A1F1A]">Preview live delivery prices</h2>
+            <p className="mt-1 text-sm text-[#4A5850]">Use real parcel weight, dimensions and declared value for accurate quotes.</p>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="gm-sender" className={labelClass}>Pickup address</label>
+                <select id="gm-sender" className={fieldClass} value={sender} onChange={(e) => setSender(e.target.value)} required>
+                  {addresses.map((a) => <option key={a.address_code} value={a.address_code}>
+                    {a.name || "Pickup"} — {a.formatted_address || a.city || a.address_code}
+                  </option>)}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="gm-receiver" className={labelClass}>Delivery address</label>
+                <select id="gm-receiver" className={fieldClass} value={receiver} onChange={(e) => setReceiver(e.target.value)} required>
+                  <option value="">Choose an address</option>
+                  {addresses.map((a) => <option key={a.address_code} value={a.address_code}>
+                    {a.name || "Recipient"} — {a.formatted_address || a.city || a.address_code}
+                  </option>)}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="gm-category" className={labelClass}>Package category</label>
+                <select id="gm-category" className={fieldClass} value={category} onChange={(e) => setCategory(e.target.value)} required>
+                  {categories.map((c) => <option key={c.category_id} value={c.category_id}>{c.category}</option>)}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="gm-date" className={labelClass}>Pickup date (next 7 days)</label>
+                <input id="gm-date" className={fieldClass} type="date" min={dateToday()} value={pickupDate}
+                  onChange={(e) => setPickupDate(e.target.value)} required />
+              </div>
+              <div>
+                <label htmlFor="gm-item" className={labelClass}>Item name</label>
+                <input id="gm-item" className={fieldClass} value={itemName} onChange={(e) => setItemName(e.target.value)} maxLength={120} required />
+              </div>
+              <div>
+                <label htmlFor="gm-desc" className={labelClass}>Description</label>
+                <input id="gm-desc" className={fieldClass} value={description} onChange={(e) => setDescription(e.target.value)} maxLength={150} required />
+              </div>
+              {([
+                ["weight", "Weight (kg)", weight, setWeight, "0.01"],
+                ["value", "Declared value (NGN)", value, setValue, "1"],
+                ["quantity", "Quantity", quantity, setQuantity, "1"],
+                ["length", "Length (cm)", length, setLength, "0.1"],
+                ["width", "Width (cm)", width, setWidth, "0.1"],
+                ["height", "Height (cm)", height, setHeight, "0.1"],
+              ] as const).map(([key, label, val, setter, step]) => (
+                <div key={key}>
+                  <label htmlFor={`gm-${key}`} className={labelClass}>{label}</label>
+                  <input id={`gm-${key}`} type="number" className={fieldClass} value={val}
+                    onChange={(e) => setter(e.target.value)} step={step} min={step} required />
+                </div>
+              ))}
+            </div>
+            {quoteError && <p role="alert" className="mt-4 rounded-xl bg-[#FFF3EF] p-3 text-sm text-[#822B22]">{quoteError}</p>}
+            <button type="submit" disabled={quoting}
+              className="mt-6 w-full rounded-xl bg-[#D4AF37] px-6 py-3 font-bold text-[#0A1F1A] disabled:opacity-50 sm:w-auto">
+              {quoting ? "Requesting quotes…" : "Get live delivery rates"}
+            </button>
+          </form>
+        )}
+
+        {rates.length > 0 && (
+          <section className="mt-6 rounded-2xl border border-[#E3E6DF] bg-white p-5 sm:p-7" aria-live="polite">
+            <h2 className="text-xl font-bold text-[#0A1F1A]">Courier quotations</h2>
+            <p className="mt-1 text-sm text-[#4A5850]">For testing only. No shipment has been booked.</p>
+            <div className="mt-4 grid gap-3">
+              {rates.map((rate, i) => (
+                <div key={`${rate.courier_id}-${rate.service_type}-${i}`}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E3E6DF] p-4">
+                  <div>
+                    <p className="font-bold text-[#0A1F1A]">{rate.courier_name || "Courier"}</p>
+                    <p className="mt-1 text-sm text-[#4A5850]">
+                      {rate.service_type === "dropoff" ? "Drop-off service" : rate.service_type === "pickup" ? "Pickup service" : "Delivery service"}
+                      {rate.delivery_eta ? ` · ${rate.delivery_eta}` : ""}
+                    </p>
+                  </div>
+                  <strong className="text-xl text-[#0A1F1A]">
+                    {rate.currency} {rate.price.toLocaleString("en-NG", { maximumFractionDigits: 2 })}
+                  </strong>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    </main>
+  );
+}
