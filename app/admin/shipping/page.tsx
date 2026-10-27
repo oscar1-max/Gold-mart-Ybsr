@@ -30,6 +30,7 @@ type ApiResponse = {
   addresses?: Address[];
   categories?: Category[];
   rates?: Rate[];
+  address?: Address;
 };
 
 const fieldClass =
@@ -45,6 +46,14 @@ function dateToday() {
 
 export default function AdminShippingPage() {
   const [loading, setLoading] = useState(true);
+  const [validating, setValidating] = useState(false);
+  const [addressError, setAddressError] = useState("");
+  const [addressSuccess, setAddressSuccess] = useState("");
+  const [addressName, setAddressName] = useState("");
+  const [addressEmail, setAddressEmail] = useState("");
+  const [addressPhone, setAddressPhone] = useState("");
+  const [addressText, setAddressText] = useState("");
+  const [confirmCredit, setConfirmCredit] = useState(false);
   const [quoting, setQuoting] = useState(false);
   const [error, setError] = useState("");
   const [quoteError, setQuoteError] = useState("");
@@ -115,6 +124,63 @@ export default function AdminShippingPage() {
     void load(controller.signal);
     return () => controller.abort();
   }, [load]);
+
+  // New validated addresses must be selectable immediately, without a refresh.
+  useEffect(() => {
+    if (!addresses.length) return;
+    setSender((current) => addresses.some((a) => String(a.address_code) === current)
+      ? current : String(addresses[0].address_code));
+    setReceiver((current) => addresses.some((a) => String(a.address_code) === current)
+      ? current : String(addresses[1]?.address_code || ""));
+  }, [addresses]);
+
+  async function validateAddress(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (validating || !confirmCredit) return;
+    setValidating(true);
+    setAddressError("");
+    setAddressSuccess("");
+    const token = localStorage.getItem("goldmart_token");
+    if (!token) {
+      setAddressError("Sign in to your GoldMart admin account first.");
+      setValidating(false);
+      return;
+    }
+    try {
+      const response = await fetch(`${API_URL}/api/shipping/addresses/validate`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: addressName.trim(),
+          email: addressEmail.trim(),
+          phone: addressPhone.trim(),
+          address: addressText.trim(),
+          confirm_validation_charge: true,
+        }),
+      });
+      const data: ApiResponse = await response.json();
+      if (!response.ok || !data.success || !data.address) {
+        throw new Error(data.message || "Unable to validate address.");
+      }
+      const added = data.address;
+      setAddresses((old) => old.some((a) => a.address_code === added.address_code)
+        ? old : [...old, added]);
+      setAddressSuccess(`Address validated successfully. Address code: ${added.address_code}`);
+      setAddressName("");
+      setAddressEmail("");
+      setAddressPhone("");
+      setAddressText("");
+      setConfirmCredit(false);
+    } catch (err) {
+      setAddressError(err instanceof Error ? err.message : "Address validation failed.");
+    } finally {
+      setValidating(false);
+    }
+  }
 
   async function preview(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -213,6 +279,52 @@ export default function AdminShippingPage() {
             </p>
           )}
         </div>
+
+        <form onSubmit={validateAddress} className="mt-6 rounded-2xl border border-[#E3E6DF] bg-white p-5 sm:p-7">
+          <h2 className="text-xl font-bold text-[#0A1F1A]">Add shipping address</h2>
+          <p className="mt-2 text-sm text-[#4A5850]">
+            Validate a real pickup or delivery address through Shipbubble. Include street,
+            city, state and country. Successful validations may use Shipbubble credits.
+          </p>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="gm-address-name" className={labelClass}>Full name</label>
+              <input id="gm-address-name" className={fieldClass} value={addressName}
+                onChange={(e) => setAddressName(e.target.value)} maxLength={120} minLength={2}
+                autoComplete="name" required />
+            </div>
+            <div>
+              <label htmlFor="gm-address-email" className={labelClass}>Email</label>
+              <input id="gm-address-email" className={fieldClass} type="email" value={addressEmail}
+                onChange={(e) => setAddressEmail(e.target.value)} maxLength={254}
+                autoComplete="email" required />
+            </div>
+            <div>
+              <label htmlFor="gm-address-phone" className={labelClass}>Phone number</label>
+              <input id="gm-address-phone" className={fieldClass} type="tel" value={addressPhone}
+                onChange={(e) => setAddressPhone(e.target.value)} maxLength={23}
+                autoComplete="tel" placeholder="+2348012345678" required />
+            </div>
+            <div>
+              <label htmlFor="gm-address-full" className={labelClass}>Full street address</label>
+              <input id="gm-address-full" className={fieldClass} value={addressText}
+                onChange={(e) => setAddressText(e.target.value)} maxLength={350} minLength={12}
+                autoComplete="street-address" placeholder="Street, city, state, Nigeria" required />
+            </div>
+          </div>
+          <label className="mt-5 flex items-start gap-3 text-sm text-[#0A1F1A]">
+            <input type="checkbox" checked={confirmCredit} onChange={(e) => setConfirmCredit(e.target.checked)}
+              className="mt-1 h-4 w-4 accent-[#D4AF37]" required />
+            I understand Shipbubble may deduct an address-validation credit or charge
+            for a successful validation. This does not book a shipment.
+          </label>
+          {addressError && <p role="alert" className="mt-4 rounded-xl bg-[#FFF3EF] p-3 text-sm text-[#822B22]">{addressError}</p>}
+          {addressSuccess && <p role="status" className="mt-4 rounded-xl bg-[#F5E6A3] p-3 text-sm font-semibold text-[#0A1F1A]">{addressSuccess}</p>}
+          <button type="submit" disabled={validating || !confirmCredit}
+            className="mt-5 rounded-xl bg-[#D4AF37] px-6 py-3 font-bold text-[#0A1F1A] disabled:opacity-50">
+            {validating ? "Validating address…" : "Validate shipping address"}
+          </button>
+        </form>
 
         {!loading && !error && addresses.length >= 2 && categories.length > 0 && (
           <form onSubmit={preview} className="mt-6 rounded-2xl border border-[#E3E6DF] bg-white p-5 sm:p-7">
