@@ -125,6 +125,15 @@ export default function AdminShippingPage() {
     return () => controller.abort();
   }, [load]);
 
+  // New validated addresses must be selectable immediately, without a refresh.
+  useEffect(() => {
+    if (!addresses.length) return;
+    setSender((current) => addresses.some((a) => String(a.address_code) === current)
+      ? current : String(addresses[0].address_code));
+    setReceiver((current) => addresses.some((a) => String(a.address_code) === current)
+      ? current : String(addresses[1]?.address_code || ""));
+  }, [addresses]);
+
   async function validateAddress(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (validating || !confirmCredit) return;
