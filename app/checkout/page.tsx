@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import "./checkout.css";
 import { useMemo, useState } from "react";
 import { useCart } from "../../components/CartProvider";
 
@@ -506,560 +507,281 @@ export default function CheckoutPage() {
     }
   }
 
+
   // =====================================================
-  // PAGE
+  // RESPONSIVE CHECKOUT VIEW (payment verification logic above unchanged)
   // =====================================================
+
+  const itemCount = cart.reduce((sum, item) => sum + Number(item.quantity), 0);
+  const amountLabel = currency ? formatPrice(total) : "Check currencies";
+  const paymentOptions: { key: PaymentMethod; title: string; detail: string; icon: string }[] = [
+    { key: "card", title: "Card", detail: "Debit or credit", icon: "💳" },
+    { key: "transfer", title: "Bank Transfer", detail: "Where available", icon: "🏦" },
+    { key: "wallet", title: "Wallet", detail: "Where available", icon: "📱" },
+  ];
 
   return (
-    <main className="min-h-screen bg-gray-50 text-black">
-
-      {/* HEADER */}
-
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
-
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-2xl font-black"
-          >
-            Gold
-            <span className="text-[#FF6B00]">
-              Mart
-            </span>
+    <main className="gm-checkout">
+      <header className="gm-checkout-header">
+        <div className="gm-checkout-header-inner">
+          <Link href="/" className="gm-checkout-brand" aria-label="GoldMart home">
+            Gold<span>Mart</span>
           </Link>
-
-          <div className="flex items-center gap-2">
-
-            <Link
-              href="/"
-              className="rounded-full bg-black px-5 py-2 text-sm font-bold text-white transition hover:bg-[#FF6B00] hover:text-black"
-            >
-              🏠 Home
-            </Link>
-
-            <Link
-              href="/cart"
-              className="rounded-full border px-5 py-2 text-sm font-bold transition hover:bg-gray-100"
-            >
-              ← Cart
-            </Link>
-
-          </div>
-
+          <nav className="gm-checkout-links" aria-label="Checkout navigation">
+            <Link href="/cart">← Cart</Link>
+            <Link href="/">Home</Link>
+          </nav>
         </div>
       </header>
 
-      {/* CONTENT */}
-
-      <div className="mx-auto max-w-7xl px-4 py-10">
-
-        <p className="text-sm font-bold uppercase tracking-wider text-[#FF6B00]">
-          GoldMart Checkout
-        </p>
-
-        <h1 className="mt-1 text-3xl font-black sm:text-4xl">
-          Complete Your Order
-        </h1>
-
-        {/* ERROR */}
+      <div className="gm-checkout-container">
+        <p className="gm-checkout-kicker">Secure checkout</p>
+        <h1 className="gm-checkout-title">Complete your order</h1>
+        <p className="gm-checkout-intro">Enter your delivery details, review your order and continue to secure payment.</p>
 
         {error && (
-          <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
-            ⚠️ {error}
+          <div className="gm-checkout-alert gm-checkout-alert-error" role="alert" aria-live="assertive">
+            <strong>Unable to continue: </strong>{error}
+          </div>
+        )}
+        {cart.length > 0 && currencies.length > 1 && (
+          <div className="gm-checkout-alert gm-checkout-alert-warning" role="alert">
+            Your cart contains different currencies. Please return to your cart and keep products in one currency before paying.
           </div>
         )}
 
-        {/* MIXED CURRENCY WARNING */}
-
-        {cart.length > 0 &&
-          currencies.length > 1 && (
-            <div className="mt-6 rounded-2xl border border-yellow-200 bg-orange-50 p-4 text-sm font-semibold text-yellow-800">
-              Your cart contains products
-              with different currencies.
-              Please remove products with
-              different currencies.
-            </div>
-          )}
-
-        <div className="mt-8 grid gap-6 lg:grid-cols-3">
-
-          {/* LEFT */}
-
-          <section className="space-y-6 lg:col-span-2">
-
-            {/* DELIVERY INFORMATION */}
-
-            <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
-
-              <h2 className="text-xl font-black">
-                Delivery Information
-              </h2>
-
-              <div className="mt-6 grid gap-5 sm:grid-cols-2">
-
-                <input
-                  value={
-                    delivery.firstName
-                  }
-                  onChange={(e) =>
-                    updateDelivery(
-                      "firstName",
-                      e.target.value
-                    )
-                  }
-                  placeholder="First Name"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
-                />
-
-                <input
-                  value={
-                    delivery.lastName
-                  }
-                  onChange={(e) =>
-                    updateDelivery(
-                      "lastName",
-                      e.target.value
-                    )
-                  }
-                  placeholder="Last Name"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
-                />
-
-                <input
-                  type="email"
-                  value={
-                    delivery.email
-                  }
-                  onChange={(e) =>
-                    updateDelivery(
-                      "email",
-                      e.target.value
-                    )
-                  }
-                  placeholder="Email Address"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
-                />
-
-                <input
-                  type="tel"
-                  value={
-                    delivery.phone
-                  }
-                  onChange={(e) =>
-                    updateDelivery(
-                      "phone",
-                      e.target.value
-                    )
-                  }
-                  placeholder="Phone Number"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
-                />
-
-                <textarea
-                  rows={3}
-                  value={
-                    delivery.address
-                  }
-                  onChange={(e) =>
-                    updateDelivery(
-                      "address",
-                      e.target.value
-                    )
-                  }
-                  placeholder="Full Delivery Address"
-                  className="resize-none rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00] sm:col-span-2"
-                />
-
-                <input
-                  value={delivery.addressLine2}
-                  onChange={(e) => updateDelivery("addressLine2", e.target.value)}
-                  placeholder="Apartment, suite, building (optional)"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#C8AB6D] sm:col-span-2"
-                />
-
-                <input
-                  value={delivery.country}
-                  onChange={(e) => updateDelivery("country", e.target.value)}
-                  placeholder="Country (e.g. Nigeria, United States, Japan)"
-                  required
-                  maxLength={100}
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#C8AB6D] sm:col-span-2"
-                />
-
-                <input
-                  value={
-                    delivery.city
-                  }
-                  onChange={(e) =>
-                    updateDelivery(
-                      "city",
-                      e.target.value
-                    )
-                  }
-                  placeholder="City"
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#FF6B00]"
-                />
-
-                <input
-                  value={delivery.state}
-                  onChange={(e) => updateDelivery("state", e.target.value)}
-                  placeholder="State / Province / Region (if applicable)"
-                  maxLength={150}
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#C8AB6D]"
-                />
-
-                <input
-                  value={delivery.postalCode}
-                  onChange={(e) => updateDelivery("postalCode", e.target.value)}
-                  placeholder="Postal / ZIP code (if applicable)"
-                  maxLength={32}
-                  className="rounded-xl border px-4 py-3 outline-none focus:border-[#C8AB6D]"
-                />
-
+        <div className="gm-checkout-layout">
+          <div className="gm-checkout-left">
+            <section className="gm-checkout-panel" aria-labelledby="checkout-delivery-heading">
+              <div className="gm-checkout-panel-heading">
+                <span className="gm-checkout-step" aria-hidden="true">1</span>
+                <h2 id="checkout-delivery-heading">Delivery information</h2>
               </div>
 
-            </div>
+              <div className="gm-checkout-form">
+                {([
+                  { key: "firstName", label: "First name", placeholder: "Your first name", autoComplete: "given-name", required: true },
+                  { key: "lastName", label: "Last name", placeholder: "Your last name", autoComplete: "family-name", required: true },
+                  { key: "email", label: "Email address", placeholder: "you@example.com", autoComplete: "email", required: true, type: "email" },
+                  { key: "phone", label: "Phone number", placeholder: "Your contact number", autoComplete: "tel", required: true, type: "tel" },
+                ] as const).map((field) => (
+                  <div className="gm-checkout-field" key={field.key}>
+                    <label htmlFor={"checkout-" + field.key}>
+                      {field.label}{field.required ? " *" : ""}
+                    </label>
+                    <input
+                      id={"checkout-" + field.key}
+                      type={"type" in field ? field.type : "text"}
+                      autoComplete={field.autoComplete}
+                      placeholder={field.placeholder}
+                      required={field.required}
+                      value={delivery[field.key]}
+                      onChange={(e) => updateDelivery(field.key, e.target.value)}
+                    />
+                  </div>
+                ))}
 
-            {/* DELIVERY METHOD */}
-
-            <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
-
-              <h2 className="text-xl font-black">
-                Delivery Method
-              </h2>
-
-              <label className="mt-5 flex cursor-pointer items-center justify-between rounded-2xl border border-[#FF6B00] bg-orange-50 p-4">
-
-                <div className="flex items-center gap-3">
-
-                  <input
-                    type="radio"
-                    name="delivery"
-                    defaultChecked
+                <div className="gm-checkout-field gm-checkout-field-full">
+                  <label htmlFor="checkout-address">Full delivery address *</label>
+                  <textarea
+                    id="checkout-address"
+                    rows={3}
+                    autoComplete="street-address"
+                    placeholder="Street name, house number and nearby landmark"
+                    required
+                    value={delivery.address}
+                    onChange={(e) => updateDelivery("address", e.target.value)}
                   />
-
-                  <div>
-
-                    <p className="font-bold">
-                      Worldwide Delivery (Test Mode)
-                    </p>
-
-                    <p className="text-sm text-gray-500">
-                      Delivery times depend on destination and carrier
-                    </p>
-
-                  </div>
-
                 </div>
 
-                <span className="font-bold">
-                  Quote pending
-                </span>
+                <div className="gm-checkout-field gm-checkout-field-full">
+                  <label htmlFor="checkout-address2">Apartment, suite or building (optional)</label>
+                  <input
+                    id="checkout-address2"
+                    autoComplete="address-line2"
+                    placeholder="Apartment or floor number"
+                    value={delivery.addressLine2}
+                    onChange={(e) => updateDelivery("addressLine2", e.target.value)}
+                  />
+                </div>
 
-              </label>
+                <div className="gm-checkout-field gm-checkout-field-full">
+                  <label htmlFor="checkout-country">Country *</label>
+                  <input
+                    id="checkout-country"
+                    autoComplete="country-name"
+                    required
+                    maxLength={100}
+                    value={delivery.country}
+                    onChange={(e) => updateDelivery("country", e.target.value)}
+                  />
+                </div>
 
-            </div>
-
-            {/* PAYMENT METHOD */}
-
-            <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
-
-              <h2 className="text-xl font-black">
-                Payment Method
-              </h2>
-
-              <p className="mt-2 text-sm text-gray-500">
-                You will be securely
-                redirected to Paystack
-                to complete your payment.
-              </p>
-
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setPaymentMethod(
-                      "card"
-                    )
-                  }
-                  className={`rounded-2xl border p-5 text-left transition ${
-                    paymentMethod ===
-                    "card"
-                      ? "border-[#FF6B00] bg-orange-50"
-                      : "hover:border-gray-400"
-                  }`}
-                >
-                  <div className="text-2xl">
-                    💳
-                  </div>
-
-                  <p className="mt-2 font-bold">
-                    Card
-                  </p>
-
-                  <p className="mt-1 text-xs text-gray-500">
-                    Visa, Mastercard
-                    and more
-                  </p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setPaymentMethod(
-                      "transfer"
-                    )
-                  }
-                  className={`rounded-2xl border p-5 text-left transition ${
-                    paymentMethod ===
-                    "transfer"
-                      ? "border-[#FF6B00] bg-orange-50"
-                      : "hover:border-gray-400"
-                  }`}
-                >
-                  <div className="text-2xl">
-                    🏦
-                  </div>
-
-                  <p className="mt-2 font-bold">
-                    Bank Transfer
-                  </p>
-
-                  <p className="mt-1 text-xs text-gray-500">
-                    Pay using bank
-                    transfer
-                  </p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setPaymentMethod(
-                      "wallet"
-                    )
-                  }
-                  className={`rounded-2xl border p-5 text-left transition ${
-                    paymentMethod ===
-                    "wallet"
-                      ? "border-[#FF6B00] bg-orange-50"
-                      : "hover:border-gray-400"
-                  }`}
-                >
-                  <div className="text-2xl">
-                    📱
-                  </div>
-
-                  <p className="mt-2 font-bold">
-                    Wallet
-                  </p>
-
-                  <p className="mt-1 text-xs text-gray-500">
-                    Available payment
-                    wallets
-                  </p>
-                </button>
-
+                <div className="gm-checkout-field">
+                  <label htmlFor="checkout-city">City *</label>
+                  <input
+                    id="checkout-city"
+                    autoComplete="address-level2"
+                    required
+                    placeholder="City"
+                    value={delivery.city}
+                    onChange={(e) => updateDelivery("city", e.target.value)}
+                  />
+                </div>
+                <div className="gm-checkout-field">
+                  <label htmlFor="checkout-state">State / province (optional)</label>
+                  <input
+                    id="checkout-state"
+                    autoComplete="address-level1"
+                    maxLength={150}
+                    placeholder="State or region"
+                    value={delivery.state}
+                    onChange={(e) => updateDelivery("state", e.target.value)}
+                  />
+                </div>
+                <div className="gm-checkout-field gm-checkout-field-full">
+                  <label htmlFor="checkout-postal">Postal / ZIP code (optional)</label>
+                  <input
+                    id="checkout-postal"
+                    autoComplete="postal-code"
+                    maxLength={32}
+                    placeholder="Postal code"
+                    value={delivery.postalCode}
+                    onChange={(e) => updateDelivery("postalCode", e.target.value)}
+                  />
+                </div>
               </div>
+              <p className="gm-checkout-help" style={{ marginTop: 14 }}>* Required information</p>
+            </section>
 
-            </div>
-
-          </section>
-
-          <section className="mt-4 rounded-[22px] border border-[#61543C] bg-[#1C211E] p-5 text-[#F5F3EC] lg:col-span-2">
-            <h2 className="font-black text-[#E4D3A9]">Delivery and payment testing</h2>
-            <p className="mt-2 text-sm leading-6 text-[#D0D0C8]">GoldMart supports worldwide delivery addresses, including Nigeria. No courier rate or delivery time has been confirmed. The test checkout excludes shipping charges; this does not mean shipping will be free. Delivery providers, fees, coverage and any insurance must be confirmed before real-money checkout is enabled. The existing buyer-protection system accepts requests for review; provider refunds remain in test mode.</p>
-          </section>
-          {/* ORDER SUMMARY */}
-
-          <aside className="h-fit rounded-3xl bg-white p-6 shadow-sm lg:sticky lg:top-24">
-
-            <h2 className="text-xl font-black">
-              Order Summary
-            </h2>
-
-            {cart.length === 0 ? (
-              <div className="py-10 text-center">
-
-                <div className="text-5xl">
-                  🛒
+            <section className="gm-checkout-panel" aria-labelledby="checkout-shipping-heading">
+              <div className="gm-checkout-panel-heading">
+                <span className="gm-checkout-step" aria-hidden="true">2</span>
+                <h2 id="checkout-shipping-heading">Delivery method</h2>
+              </div>
+              <div className="gm-checkout-option">
+                <input type="radio" name="delivery" checked readOnly aria-label="Worldwide delivery in test mode" />
+                <div className="gm-checkout-option-content">
+                  <strong>Worldwide delivery (test mode)</strong>
+                  <span>Delivery availability, times and shipping charges have not been confirmed yet.</span>
                 </div>
+                <span className="gm-checkout-quote">Quote pending</span>
+              </div>
+            </section>
 
-                <p className="mt-4 font-bold">
-                  Your cart is empty
-                </p>
+            <section className="gm-checkout-panel" aria-labelledby="checkout-payment-heading">
+              <div className="gm-checkout-panel-heading">
+                <span className="gm-checkout-step" aria-hidden="true">3</span>
+                <h2 id="checkout-payment-heading">Payment method</h2>
+              </div>
+              <p className="gm-checkout-help">
+                Select your preferred method. Paystack will show the payment options actually available for your currency and account.
+              </p>
+              <div className="gm-checkout-payment-grid" role="group" aria-label="Preferred payment method">
+                {paymentOptions.map((method) => (
+                  <button
+                    key={method.key}
+                    type="button"
+                    className="gm-checkout-payment-option"
+                    aria-pressed={paymentMethod === method.key}
+                    onClick={() => setPaymentMethod(method.key)}
+                  >
+                    <span className="gm-checkout-payment-icon" aria-hidden="true">{method.icon}</span>
+                    <strong>{method.title}</strong>
+                    <small>{method.detail}</small>
+                  </button>
+                ))}
+              </div>
+            </section>
 
-                <Link
-                  href="/shop"
-                  className="mt-5 inline-block rounded-full bg-black px-6 py-3 text-sm font-bold text-white"
-                >
-                  Continue Shopping
-                </Link>
+            <section className="gm-checkout-disclaimer" aria-label="Delivery and payment testing notice">
+              <strong>Important: delivery and payment testing</strong>
+              <p>
+                This checkout currently excludes shipping fees because no courier quote is available.
+                That does not mean shipping is free. Delivery coverage, shipping costs and real-money
+                refunds must be confirmed before live checkout is enabled.
+              </p>
+            </section>
+          </div>
 
+          <aside className="gm-checkout-panel gm-checkout-summary" aria-labelledby="checkout-summary-heading">
+            <h2 id="checkout-summary-heading">Order summary</h2>
+            {cart.length === 0 ? (
+              <div style={{ padding: "24px 0", textAlign: "center" }}>
+                <p style={{ fontSize: 30 }} aria-hidden="true">🛒</p>
+                <p style={{ fontWeight: 750, margin: "12px 0" }}>Your cart is empty</p>
+                <Link href="/shop" style={{ color: "#71582f", fontWeight: 800 }}>Continue shopping</Link>
               </div>
             ) : (
               <>
-                <div className="mt-6 space-y-4">
-
-                  {cart.map(
-                    (item) => {
-                      const price =
-                        getNumericPrice(
-                          item.price
-                        );
-
-                      const itemCurrency =
-                        normalizeCurrency(
-                          item.currency
-                        );
-                                            return (
-                        <div
-                          key={item.id}
-                          className="flex justify-between gap-4 border-b pb-4"
-                        >
-
-                          <div className="min-w-0">
-
-                            <p className="font-bold">
-                              {item.name}
-                            </p>
-
-                            <p className="mt-1 text-sm text-gray-500">
-                              Qty: {item.quantity}
-                            </p>
-
-                            <p className="mt-1 text-xs font-semibold text-gray-400">
-                              {itemCurrency}
-                            </p>
-
-                          </div>
-
-                          <p className="whitespace-nowrap font-bold">
-                            {getCurrencySymbol(
-                              itemCurrency
-                            )}
-
-                            {(
-                              price *
-                              Number(item.quantity)
-                            ).toLocaleString(
-                              "en-US",
-                              {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              }
-                            )}
-                          </p>
-
+                <ul className="gm-checkout-summary-list">
+                  {cart.map((item) => {
+                    const itemCurrency = normalizeCurrency(item.currency);
+                    const price = getNumericPrice(item.price);
+                    return (
+                      <li className="gm-checkout-product" key={item.id}>
+                        <div style={{ minWidth: 0 }}>
+                          <div className="gm-checkout-product-name">{item.name}</div>
+                          <div className="gm-checkout-product-meta">Qty: {item.quantity} · {itemCurrency}</div>
                         </div>
-                      );
-                    }
-                  )}
-
+                        <span className="gm-checkout-product-price">
+                          {getCurrencySymbol(itemCurrency)}
+                          {(price * Number(item.quantity)).toLocaleString("en-US", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div className="gm-checkout-totals">
+                  <div className="gm-checkout-total-row">
+                    <span>Items</span><strong>{itemCount}</strong>
+                  </div>
+                  <div className="gm-checkout-total-row">
+                    <span>Subtotal</span><strong>{currency ? formatPrice(subtotal) : "Mixed currencies"}</strong>
+                  </div>
+                  <div className="gm-checkout-total-row">
+                    <span>Delivery</span><strong>Not quoted (test)</strong>
+                  </div>
+                  <div className="gm-checkout-total-row gm-checkout-grand-total">
+                    <span>Test total (excluding shipping)</span><strong>{amountLabel}</strong>
+                  </div>
                 </div>
-
-                <div className="mt-6 space-y-3">
-
-                  <div className="flex justify-between text-sm">
-
-                    <span className="text-gray-500">
-                      Items
-                    </span>
-
-                    <span className="font-bold">
-                      {cart.reduce(
-                        (sum, item) =>
-                          sum +
-                          Number(
-                            item.quantity
-                          ),
-                        0
-                      )}
-                    </span>
-
-                  </div>
-
-                  <div className="flex justify-between text-sm">
-
-                    <span className="text-gray-500">
-                      Subtotal
-                    </span>
-
-                    <span className="font-bold">
-                      {formatPrice(
-                        subtotal
-                      )}
-                    </span>
-
-                  </div>
-
-                  <div className="flex justify-between text-sm">
-
-                    <span className="text-gray-500">
-                      Delivery
-                    </span>
-
-                    <span className="font-bold text-[#67562E]">
-                      Not quoted (test only)
-                    </span>
-
-                  </div>
-
-                  <div className="border-t pt-4">
-
-                    <div className="flex justify-between">
-
-                      <span className="text-lg font-black">
-                        Test total (excludes shipping)
-                      </span>
-
-                      <span className="text-2xl font-black text-[#FF6B00]">
-                        {formatPrice(
-                          total
-                        )}
-                      </span>
-
-                    </div>
-
-                  </div>
-
+                <div className="gm-checkout-desktop-pay" style={{ marginTop: 22 }}>
+                  <button
+                    type="button"
+                    className="gm-checkout-pay"
+                    onClick={handlePlaceOrder}
+                    disabled={loading || cart.length === 0 || !currency}
+                  >
+                    {loading ? "Starting secure payment…" : "Continue to pay " + amountLabel}
+                  </button>
                 </div>
-
-                <button
-                  type="button"
-                  onClick={
-                    handlePlaceOrder
-                  }
-                  disabled={
-                    loading ||
-                    cart.length === 0 ||
-                    !currency
-                  }
-                  className="mt-6 w-full rounded-2xl bg-black py-4 font-black text-white transition hover:bg-[#FF6B00] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {loading
-                    ? "Processing Payment..."
-                    : `Pay ${formatPrice(
-                        total
-                      )}`}
-                </button>
-
-                <p className="mt-4 text-center text-xs text-gray-400">
-                  🔒 Secure payment powered
-                  by Paystack
-                </p>
-
+                <p className="gm-checkout-secure">🔒 Secure payment through Paystack</p>
               </>
             )}
-
           </aside>
-
         </div>
-
       </div>
 
+      {cart.length > 0 && (
+        <div className="gm-checkout-mobile-bar">
+          <div className="gm-checkout-mobile-amount">
+            <small>Test total · shipping excluded</small>
+            <strong>{amountLabel}</strong>
+          </div>
+          <button
+            type="button"
+            className="gm-checkout-pay"
+            onClick={handlePlaceOrder}
+            disabled={loading || !currency}
+          >
+            {loading ? "Please wait…" : "Continue"}
+          </button>
+        </div>
+      )}
     </main>
   );
 }
-
-     
