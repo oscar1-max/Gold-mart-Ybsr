@@ -19,6 +19,7 @@ const adminLinks: WorkspaceLink[] = [
   { href: "/admin", label: "Overview", icon: "◫", exact: true },
   { href: "/admin/ai", label: "AI Admin", icon: "✧" },
   { href: "/admin/monitoring", label: "Monitoring", icon: "◎" },
+  { href: "/admin/shipping", label: "Shipping & Delivery", icon: "▣" },
   { href: "/admin/reports", label: "Reports", icon: "▥" },
   { href: "/admin/withdrawals", label: "Withdrawal reviews", icon: "◇" },
   { href: "/admin/refunds", label: "Refunds", icon: "↶" },
