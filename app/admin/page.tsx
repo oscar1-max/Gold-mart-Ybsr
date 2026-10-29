@@ -357,6 +357,7 @@ export default function AdminOverviewPage() {
           <Link href="/admin/support-assistant" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Assistant</Link>
           <Link href="/admin/reports" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Reports</Link>
           <Link href="/admin/withdrawals" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold border-[#C8AB6D] bg-white text-black">Withdrawals</Link>
+          <Link href="/admin/shipping" className="shrink-0 rounded-full border border-[#D4AF37] bg-white px-4 py-2.5 text-xs font-bold text-[#0A1F1A] transition hover:bg-[#F5E6A3]">Shipping</Link>
           <Link href="/admin/refunds" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Refunds</Link>
           <Link href="/admin/support" className="shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition border-[#FFF8F2] bg-white text-[#243B53] hover:border-[#FFE9CC] hover:bg-[#FFF8F2]">Support</Link>
         </nav>
@@ -662,6 +663,24 @@ export default function AdminOverviewPage() {
                     </article>
                   );
                 })}
+              </div>
+            </section>
+
+            {/* SHIPPING & DELIVERY */}
+            <section className="mt-7 rounded-[24px] border border-[#D4AF37] bg-[#F7F7F5] p-6 sm:p-7">
+              <div className="flex flex-wrap items-center justify-between gap-5">
+                <div className="max-w-2xl">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8B742E]">Courier integration</p>
+                  <h2 className="mt-2 text-xl font-black text-[#0A1F1A]">Shipping &amp; Delivery</h2>
+                  <p className="mt-2 text-sm leading-6 text-[#4A5850]">
+                    Check Shipbubble shipment tracking, validated addresses, and delivery rate previews.
+                    Testing only — real courier bookings are disabled.
+                  </p>
+                </div>
+                <Link href="/admin/shipping"
+                  className="inline-flex shrink-0 items-center justify-center rounded-xl bg-[#0A1F1A] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#183C31]">
+                  Open Shipping &amp; Delivery →
+                </Link>
               </div>
             </section>
 
