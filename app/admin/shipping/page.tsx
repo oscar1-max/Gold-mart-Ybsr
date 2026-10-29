@@ -14,6 +14,21 @@ type Address = {
   country: string;
 };
 type Category = { category_id: number; category: string };
+type Shipment = {
+  provider_order_id: string;
+  status: string;
+  courier_name: string | null;
+  tracking_code: string | null;
+  tracking_url: string | null;
+  created_at: string | null;
+};
+type ShipmentsResponse = {
+  success: boolean;
+  message?: string;
+  shipments?: Shipment[];
+  page_limited?: boolean;
+};
+
 type Rate = {
   courier_id: string | number;
   courier_name: string;
@@ -60,6 +75,11 @@ export default function AdminShippingPage() {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [rates, setRates] = useState<Rate[]>([]);
+  const [shipments, setShipments] = useState<Shipment[]>([]);
+  const [shipmentsLoaded, setShipmentsLoaded] = useState(false);
+  const [shipmentsBusy, setShipmentsBusy] = useState(false);
+  const [shipmentsError, setShipmentsError] = useState("");
+
   const [sender, setSender] = useState("");
   const [receiver, setReceiver] = useState("");
   const [category, setCategory] = useState("");
@@ -133,6 +153,32 @@ export default function AdminShippingPage() {
     setReceiver((current) => addresses.some((a) => String(a.address_code) === current)
       ? current : String(addresses[1]?.address_code || ""));
   }, [addresses]);
+
+  async function loadShipments() {
+    if (shipmentsBusy) return;
+    setShipmentsBusy(true);
+    setShipmentsError("");
+    try {
+      const token = localStorage.getItem("goldmart_token");
+      if (!token) throw new Error("Please sign in to your GoldMart admin account.");
+      const response = await fetch(`${API_URL}/api/shipping/shipments`, {
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+        cache: "no-store",
+      });
+      const data = (await response.json()) as ShipmentsResponse;
+      if (!response.ok || !data.success || !Array.isArray(data.shipments)) {
+        throw new Error(response.status === 403
+          ? "Only GoldMart administrators can view Shipbubble shipments."
+          : data.message || "Unable to load Shipbubble shipments.");
+      }
+      setShipments(data.shipments);
+      setShipmentsLoaded(true);
+    } catch (err) {
+      setShipmentsError(err instanceof Error ? err.message : "Unable to load shipments.");
+    } finally {
+      setShipmentsBusy(false);
+    }
+  }
 
   async function validateAddress(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -279,6 +325,60 @@ export default function AdminShippingPage() {
             </p>
           )}
         </div>
+
+        <section className="mt-6 rounded-2xl border border-[#E3E6DF] bg-white p-5 sm:p-7">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="text-xl font-bold text-[#0A1F1A]">Shipbubble shipment tracking</h2>
+              <p className="mt-1 text-sm text-[#4A5850]">
+                View existing Shipbubble shipments only. This cannot create shipments,
+                change delivery status, or debit your wallet.
+              </p>
+            </div>
+            <button type="button" onClick={() => void loadShipments()} disabled={shipmentsBusy}
+              className="rounded-xl bg-[#D4AF37] px-5 py-3 text-sm font-bold text-[#0A1F1A] disabled:opacity-50">
+              {shipmentsBusy ? "Checking shipments…" : shipmentsLoaded ? "Refresh shipments" : "Check shipments"}
+            </button>
+          </div>
+          {shipmentsError && <p role="alert" className="mt-4 rounded-xl bg-[#FFF3EF] p-3 text-sm text-[#822B22]">{shipmentsError}</p>}
+          {!shipmentsLoaded && !shipmentsBusy && !shipmentsError && (
+            <p className="mt-4 text-sm text-[#4A5850]">Choose Check shipments to read existing tracking records.</p>
+          )}
+          {shipmentsLoaded && !shipmentsBusy && shipments.length === 0 && (
+            <p role="status" className="mt-4 rounded-xl bg-[#F7F7F5] p-4 text-sm text-[#4A5850]">
+              No Shipbubble shipments were returned. GoldMart has not booked any courier deliveries.
+            </p>
+          )}
+          {shipmentsLoaded && shipments.length > 0 && (
+            <div className="mt-4 space-y-3" aria-live="polite">
+              {shipments.map((shipment) => (
+                <article key={shipment.provider_order_id}
+                  className="rounded-xl border border-[#E3E6DF] bg-[#F7F7F5] p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="font-semibold text-[#0A1F1A]">Shipbubble order {shipment.provider_order_id}</p>
+                    <span className="rounded-full border border-[#D4AF37] px-3 py-1 text-xs font-semibold capitalize text-[#0A1F1A]">
+                      {shipment.status.replace(/_/g, " ")}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm text-[#4A5850]">
+                    Courier: {shipment.courier_name || "Not assigned"}
+                    {shipment.tracking_code ? ` · Tracking: ${shipment.tracking_code}` : ""}
+                  </p>
+                  {shipment.created_at && <p className="mt-1 text-xs text-[#4A5850]">Provider date: {shipment.created_at}</p>}
+                  {shipment.tracking_url && (
+                    <a href={shipment.tracking_url} target="_blank" rel="noopener noreferrer"
+                      className="mt-2 inline-block text-sm font-semibold text-[#0A1F1A] underline underline-offset-4">
+                      Open courier tracking
+                    </a>
+                  )}
+                </article>
+              ))}
+              <p className="text-xs text-[#4A5850]">
+                Showing up to 50 records from the first Shipbubble results page; this is not a complete shipment history.
+              </p>
+            </div>
+          )}
+        </section>
 
         <form onSubmit={validateAddress} className="mt-6 rounded-2xl border border-[#E3E6DF] bg-white p-5 sm:p-7">
           <h2 className="text-xl font-bold text-[#0A1F1A]">Add shipping address</h2>
