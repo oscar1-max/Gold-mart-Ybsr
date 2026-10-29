@@ -25,6 +25,14 @@ type OrderItem = {
   currency?: string | null;
 };
 
+type SellerReportedShipment = {
+  seller_id: number;
+  carrier: string;
+  tracking_number: string;
+  status: string;
+  updated_at?: string | null;
+};
+
 type Order = {
   id: number;
   total_amount: string | number;
@@ -163,6 +171,15 @@ export default function TrackOrderPage() {
   const [loggedIn, setLoggedIn] =
     useState(true);
 
+  const [shipments, setShipments] =
+    useState<SellerReportedShipment[]>([]);
+  const [shipmentsLoading, setShipmentsLoading] =
+    useState(false);
+  const [shipmentsError, setShipmentsError] =
+    useState("");
+  const [shipmentRefreshKey, setShipmentRefreshKey] =
+    useState(0);
+
   // ===================================================
   // LOAD BUYER ORDERS
   // ===================================================
@@ -225,6 +242,8 @@ export default function TrackOrderPage() {
             : [];
 
         setOrders(receivedOrders);
+        // Refresh details even when the selected order ID stays the same.
+        setShipmentRefreshKey((value) => value + 1);
 
         setSelectedId((current) => {
           if (
@@ -265,6 +284,54 @@ export default function TrackOrderPage() {
   useEffect(() => {
     void loadOrders();
   }, [loadOrders]);
+
+  // ==========================================
+  // READ SELLER-REPORTED COURIER INFORMATION
+  // ==========================================
+  // The backend only serves orders owned by this signed-in buyer.
+  // No carrier API calls, address lookups or courier bookings are made.
+  useEffect(() => {
+    const controller = new AbortController();
+
+    if (selectedId === null) {
+      setShipments([]);
+      setShipmentsError("");
+      setShipmentsLoading(false);
+      return () => controller.abort();
+    }
+
+    setShipments([]);
+    setShipmentsError("");
+    setShipmentsLoading(true);
+
+    async function loadShipmentDetails() {
+      try {
+        const token = localStorage.getItem("goldmart_token");
+        if (!token) throw new Error("Sign in again to view tracking details.");
+        const response = await fetch(`${API_URL}/orders/${selectedId}`, {
+          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        const data = await response.json();
+        if (!response.ok || data?.success !== true || !Array.isArray(data.shipments)) {
+          throw new Error(data?.message || "Unable to read shipment details.");
+        }
+        if (!controller.signal.aborted) {
+          setShipments(data.shipments as SellerReportedShipment[]);
+        }
+      } catch (err) {
+        if (!controller.signal.aborted) {
+          setShipmentsError(err instanceof Error ? err.message : "Unable to load courier details.");
+        }
+      } finally {
+        if (!controller.signal.aborted) setShipmentsLoading(false);
+      }
+    }
+
+    void loadShipmentDetails();
+    return () => controller.abort();
+  }, [selectedId, shipmentRefreshKey]);
 
   // ===================================================
   // SELECTED ORDER
@@ -659,6 +726,59 @@ export default function TrackOrderPage() {
                   are not available yet.
                 </p>
               </div>
+
+              {/* SELLER-REPORTED SHIPMENT DETAILS */}
+              <section className="rounded-3xl border border-[#E0D7AE] bg-white p-6 shadow-sm sm:p-8"
+                aria-label="Courier tracking details">
+                <h2 className="text-xl font-black text-[#0A1F1A]">Courier tracking details</h2>
+                <p className="mt-2 text-sm text-[#52635D]">
+                  Details entered by the seller, not independently verified by a courier.
+                  Live courier location, pickup and delivery estimates are not available yet.
+                </p>
+
+                {shipmentsLoading && (
+                  <p role="status" className="mt-5 text-sm text-[#52635D]">Loading courier information…</p>
+                )}
+                {!shipmentsLoading && shipmentsError && (
+                  <div role="alert" className="mt-5 rounded-xl border border-[#E0B1B1] bg-[#FFF7F7] p-4 text-sm text-[#842A2A]">
+                    {shipmentsError} Use Refresh Status to try again.
+                  </div>
+                )}
+                {!shipmentsLoading && !shipmentsError && shipments.length === 0 && (
+                  <p className="mt-5 rounded-xl bg-[#F7F7F5] p-4 text-sm text-[#52635D]">
+                    No courier name or tracking number has been provided for this order yet.
+                  </p>
+                )}
+                {!shipmentsLoading && !shipmentsError && shipments.length > 0 && (
+                  <div className="mt-5 space-y-3" aria-live="polite">
+                    {shipments.map((shipment) => (
+                      <article key={shipment.seller_id}
+                        className="rounded-xl border border-[#E4E6DF] bg-[#F7F7F5] p-4">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <p className="font-bold text-[#0A1F1A]">
+                            {shipment.carrier || "Courier not specified"}
+                          </p>
+                          <span className="rounded-full bg-[#F5E6A3] px-3 py-1 text-xs font-semibold capitalize text-[#0A1F1A]">
+                            {String(shipment.status || "reported").replace(/_/g, " ")}
+                          </span>
+                        </div>
+                        <p className="mt-2 break-all text-sm text-[#0A1F1A]">
+                          Tracking number: <strong>{shipment.tracking_number}</strong>
+                        </p>
+                        {shipment.updated_at && (
+                          <p className="mt-2 text-xs text-[#52635D]">
+                            Seller update: {formatDate(shipment.updated_at)}
+                          </p>
+                        )}
+                      </article>
+                    ))}
+                  </div>
+                )}
+                <Link href={`/order-protection?orderId=${selectedOrder.id}`}
+                  className="mt-5 inline-block text-sm font-bold text-[#0A1F1A] underline underline-offset-4">
+                  Buyer protection and delivery confirmation
+                </Link>
+              </section>
 
               {/* PURCHASED PRODUCTS */}
 
