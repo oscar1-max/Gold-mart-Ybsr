@@ -381,6 +381,25 @@ export default function CheckoutPage() {
       }
 
       // =================================================
+      // Verify seller/destination eligibility against the synced server cart.
+      // No courier calls, bookings, quotes, or payments are made here.
+      const eligibilityResponse = await fetch(`${API_URL}/api/shipping/eligibility`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ country: delivery.country }),
+      });
+      const eligibilityData = await eligibilityResponse.json();
+      if (!eligibilityResponse.ok || !eligibilityData.success ||
+          !eligibilityData.eligibility?.test_checkout_allowed) {
+        throw new Error(eligibilityData.message ||
+          "Delivery is not available for this seller and destination. No payment was started.");
+      }
+
+      // =================================================
       // STEP 2: SAVE DELIVERY
       // =================================================
 
@@ -662,8 +681,8 @@ export default function CheckoutPage() {
               <div className="gm-checkout-option">
                 <input type="radio" name="delivery" checked readOnly aria-label="Worldwide delivery in test mode" />
                 <div className="gm-checkout-option-content">
-                  <strong>Worldwide delivery (test mode)</strong>
-                  <span>Delivery availability, times and shipping charges have not been confirmed yet.</span>
+                  <strong>Delivery eligibility check (test mode)</strong>
+                  <span>Only Nigerian seller-to-Nigerian buyer test checkout is available after country checks. Courier delivery is not enabled.</span>
                 </div>
                 <span className="gm-checkout-quote">Quote pending</span>
               </div>
