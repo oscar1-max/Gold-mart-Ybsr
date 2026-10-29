@@ -285,9 +285,15 @@ export default function AdminShippingPage() {
   return (
     <main className="min-h-screen bg-[#F7F7F5] px-4 py-8 text-[#0F0F0F] sm:px-6">
       <div className="mx-auto max-w-5xl">
-        <Link href="/admin" className="text-sm font-semibold text-[#0A1F1A] hover:underline">
-          ← Admin overview
-        </Link>
+        <nav aria-label="Admin workspaces" className="flex flex-wrap gap-2 text-sm font-semibold">
+          <Link href="/admin" className="rounded-xl border border-[#D6DCD5] bg-white px-4 py-2 text-[#0A1F1A] hover:bg-[#F5E6A3]">
+            ← Admin overview
+          </Link>
+          <span aria-current="page" className="rounded-xl bg-[#0A1F1A] px-4 py-2 text-white">Shipping &amp; Delivery</span>
+          <Link href="/admin/monitoring" className="rounded-xl border border-[#D6DCD5] bg-white px-4 py-2 text-[#0A1F1A] hover:bg-[#F5E6A3]">
+            Monitoring
+          </Link>
+        </nav>
         <header className="mt-5 rounded-3xl bg-[#0A1F1A] p-6 text-white sm:p-9">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F5E6A3]">GoldMart admin · Shipbubble</p>
           <h1 className="mt-3 text-3xl font-bold">Delivery rate testing</h1>
