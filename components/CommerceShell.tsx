@@ -12,6 +12,7 @@ const sellerLinks: WorkspaceLink[] = [
   { href: "/seller/orders", label: "Customer orders", icon: "▤" },
   { href: "/seller/pickup-address", label: "Pickup address", icon: "⌖" },
   { href: "/seller/business-profile", label: "Business profile", icon: "◎" },
+  { href: "/seller/shipping-readiness", label: "Shipping preparation", icon: "⌁" },
   { href: "/seller/withdrawals", label: "Withdrawal requests", icon: "◇" },
   { href: "/seller/payment-protection", label: "Payment protection", icon: "◇" },
   { href: "/chat", label: "Messages", icon: "✉" },
