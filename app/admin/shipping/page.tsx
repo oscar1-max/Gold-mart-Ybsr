@@ -39,8 +39,17 @@ type Rate = {
   delivery_eta?: string | null;
   insurance_available?: boolean;
 };
+type SupportDiagnostic = {
+  provider_http_status: number | null;
+  provider_endpoint: string;
+  format: string;
+  redaction_note: string;
+  provider_response_redacted: string;
+};
+
 type ApiResponse = {
   success: boolean;
+  support_diagnostic?: SupportDiagnostic | null;
   message?: string;
   addresses?: Address[];
   categories?: Category[];
@@ -64,6 +73,9 @@ export default function AdminShippingPage() {
   const [validating, setValidating] = useState(false);
   const [addressError, setAddressError] = useState("");
   const [addressSuccess, setAddressSuccess] = useState("");
+  // Kept only in this page's memory, not localStorage, URL parameters or logs.
+  const [supportDiagnostic, setSupportDiagnostic] = useState<SupportDiagnostic | null>(null);
+  const [copyMessage, setCopyMessage] = useState("");
   const [addressName, setAddressName] = useState("");
   const [addressEmail, setAddressEmail] = useState("");
   const [addressPhone, setAddressPhone] = useState("");
@@ -186,6 +198,8 @@ export default function AdminShippingPage() {
     setValidating(true);
     setAddressError("");
     setAddressSuccess("");
+    setSupportDiagnostic(null);
+    setCopyMessage("");
     const token = localStorage.getItem("goldmart_token");
     if (!token) {
       setAddressError("Sign in to your GoldMart admin account first.");
@@ -210,6 +224,9 @@ export default function AdminShippingPage() {
       });
       const data: ApiResponse = await response.json();
       if (!response.ok || !data.success || !data.address) {
+        if (data.support_diagnostic?.format === "redacted_json_reconstruction") {
+          setSupportDiagnostic(data.support_diagnostic);
+        }
         throw new Error(data.message || "Unable to validate address.");
       }
       const added = data.address;
@@ -225,6 +242,27 @@ export default function AdminShippingPage() {
       setAddressError(err instanceof Error ? err.message : "Address validation failed.");
     } finally {
       setValidating(false);
+    }
+  }
+
+  // Copy is an explicit admin action: never email or upload diagnostics automatically.
+  async function copySupportDiagnostic() {
+    if (!supportDiagnostic) return;
+    setCopyMessage("");
+    try {
+      const payload = {
+        ticket: "44813",
+        source: "GoldMart admin (redacted Shipbubble diagnostic)",
+        provider_http_status: supportDiagnostic.provider_http_status,
+        provider_endpoint: supportDiagnostic.provider_endpoint,
+        format: supportDiagnostic.format,
+        redaction_note: supportDiagnostic.redaction_note,
+        provider_response_redacted: supportDiagnostic.provider_response_redacted,
+      };
+      await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+      setCopyMessage("Redacted diagnostic copied. Review it before sharing with Shipbubble support.");
+    } catch {
+      setCopyMessage("Unable to copy automatically. Select and copy the redacted diagnostic text below.");
     }
   }
 
@@ -419,6 +457,44 @@ export default function AdminShippingPage() {
             for a successful validation. This does not book a shipment.
           </label>
           {addressError && <p role="alert" className="mt-4 rounded-xl bg-[#FFF3EF] p-3 text-sm text-[#822B22]">{addressError}</p>}
+          {supportDiagnostic && (
+            <section className="mt-5 rounded-2xl border border-[#D4AF37] bg-[#F7F7F5] p-4 sm:p-5"
+              aria-label="Redacted Shipbubble support diagnostic">
+              <h3 className="text-lg font-bold text-[#0A1F1A]">Shipbubble support diagnostic · Ticket #44813</h3>
+              <p className="mt-2 text-sm text-[#3F5048]">
+                This is a privacy-filtered summary returned by GoldMart, not Shipbubble's original raw response.
+                It may omit important details. Review it carefully before sharing; never include API keys,
+                access tokens, customer contact information or private addresses.
+              </p>
+              <p className="mt-3 text-sm font-semibold text-[#0A1F1A]">
+                Upstream HTTP status: {supportDiagnostic.provider_http_status ?? "Unavailable"}
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <button type="button" onClick={() => void copySupportDiagnostic()}
+                  className="rounded-xl bg-[#0A1F1A] px-4 py-2.5 text-sm font-bold text-white">
+                  Copy redacted summary
+                </button>
+                <button type="button" onClick={() => { setSupportDiagnostic(null); setCopyMessage(""); }}
+                  className="rounded-xl border border-[#ABB7AD] bg-white px-4 py-2.5 text-sm font-bold text-[#0A1F1A]">
+                  Clear diagnostic
+                </button>
+              </div>
+              {copyMessage && <p role="status" className="mt-3 text-sm text-[#3F5048]">{copyMessage}</p>}
+              <label htmlFor="gm-support-diagnostic" className="mt-4 block text-sm font-semibold text-[#0A1F1A]">
+                Redacted response (review before sending)
+              </label>
+              <textarea id="gm-support-diagnostic" readOnly rows={8}
+                value={JSON.stringify({
+                  provider_http_status: supportDiagnostic.provider_http_status,
+                  provider_endpoint: supportDiagnostic.provider_endpoint,
+                  format: supportDiagnostic.format,
+                  redaction_note: supportDiagnostic.redaction_note,
+                  provider_response_redacted: supportDiagnostic.provider_response_redacted,
+                }, null, 2)}
+                className="mt-2 w-full rounded-xl border border-[#C5CCC3] bg-white p-3 font-mono text-xs text-[#0A1F1A]"
+                aria-label="Redacted Shipbubble response"/>
+            </section>
+          )}
           {addressSuccess && <p role="status" className="mt-4 rounded-xl bg-[#F5E6A3] p-3 text-sm font-semibold text-[#0A1F1A]">{addressSuccess}</p>}
           <button type="submit" disabled={validating || !confirmCredit}
             className="mt-5 rounded-xl bg-[#D4AF37] px-6 py-3 font-bold text-[#0A1F1A] disabled:opacity-50">
