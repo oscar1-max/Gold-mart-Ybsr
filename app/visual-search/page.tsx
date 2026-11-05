@@ -62,7 +62,7 @@ export default function VisualSearchPage(){
       setMatches(scored);setSearched(true);
     }catch(err){setError(err instanceof Error?err.message:"Image matching failed.");}finally{setBusy(false);}
   }
-  return <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#0A1F1A]">
+  return <main className="min-h-screen bg-[#FFFFFF] pb-32 text-[#0F0F0F]">
     <header className="border-b border-[#F7F7F5] bg-white"><div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5"><Link href="/" className="text-2xl font-black">Gold<span className="text-[#D4AF37]">Mart</span></Link><Link href="/shop" className="rounded-full border px-4 py-2 text-sm font-bold">Shop All</Link></div></header>
     <section className="mx-auto max-w-6xl px-4 pt-8"><div className="rounded-[30px] bg-[linear-gradient(135deg,#0A1F1A_0%,#1A3C32_50%,#D4AF37_100%)] p-7 text-white sm:p-10"><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFE9CC]">GoldMart · Photo discovery</p><h1 className="mt-3 text-3xl font-black sm:text-5xl">Find it with a photo.</h1><p className="mt-3 max-w-2xl text-sm leading-7 text-white/80">Take a picture or upload one. GoldMart compares its colors and appearance with available product photos to show approximate visual matches.</p></div>
     <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]"><div className="rounded-[26px] border border-[#F7F7F5] bg-white p-5 shadow-sm">
