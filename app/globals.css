@@ -2979,3 +2979,28 @@ body:has(.gm-zone-buyer) button[aria-label="Toggle administrator tools"] {
   }
   .gm-zone :is(input, select, textarea) { font-size: 18px !important; }
 }
+
+
+/* Responsive foundation for Buyer, Seller and Admin (November 2026).
+   Keep the existing visual identity and do not alter commerce behavior. */
+html, body { max-width: 100%; }
+.gm-zone, .gm-workspace-content, .gm-zone main { min-width: 0; }
+.gm-zone :is(img, video, svg) { max-width: 100%; }
+@media (max-width: 767px) {
+  .gm-zone { width: 100%; max-width: 100%; }
+  .gm-zone :is(main, section, article, aside, header, footer, nav, form) { min-width: 0; }
+  .gm-zone :is(input, select, textarea) { max-width: 100%; }
+  .gm-zone :is(button, a, input, select, textarea) { overflow-wrap: anywhere; }
+  .gm-zone :is(h1, h2, h3, h4, p, li) { overflow-wrap: break-word; }
+  .gm-zone :is(table) { max-width: 100%; }
+  .gm-zone :is(.overflow-x-auto, [class*="overflow-x-auto"]) { -webkit-overflow-scrolling: touch; }
+  .gm-workspace-topbar { flex-wrap: wrap; gap: 12px; }
+  .gm-workspace-topbar-actions { max-width: 100%; }
+  .gm-workspace-mobile-nav { max-width: 100%; }
+  .gm-zone :is(button, input, select, textarea) { min-height: 44px; }
+}
+@media (max-width: 420px) {
+  .gm-workspace-topbar { padding-inline: 14px; }
+  .gm-workspace-topbar-actions { width: 100%; }
+  .gm-workspace-topbar-actions > * { min-width: 0; }
+}
