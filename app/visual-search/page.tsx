@@ -57,8 +57,8 @@ export default function VisualSearchPage(){
       // Only show close pixel-color matches; a tiny catalogue should not force unrelated items into results.
       // This remains approximate appearance matching, not object recognition.
       const best=ranked[0]?.difference??Infinity;
-      const scored=best<=55?ranked.filter(item=>item.difference<=55&&item.difference<=best+12).slice(0,12):[];
-      if(!scored.length)throw new Error("Product images blocked browser comparison. Try another picture or browse the shop.");
+      const scored=best<=55?ranked.slice(0,1):[];
+      if(!ranked.length)throw new Error("Product images could not be compared in this browser. Try another picture or browse the shop.");
       setMatches(scored);setSearched(true);
     }catch(err){setError(err instanceof Error?err.message:"Image matching failed.");}finally{setBusy(false);}
   }
@@ -73,9 +73,9 @@ export default function VisualSearchPage(){
       {image&&!camera&&<button type="button" disabled={busy} onClick={()=>void search()} className="mt-3 w-full rounded-xl bg-[#0A1F1A] px-5 py-4 font-black text-white disabled:opacity-50">{busy?"Comparing images...":"🔍 Search Similar Products"}</button>}
       {error&&<p role="alert" className="mt-4 rounded-xl bg-red-50 p-4 text-sm text-red-700">{error}</p>}
       <p className="mt-4 text-xs leading-5 text-[#53655D]">Camera permission and HTTPS are required for live capture. Image comparison happens in your browser; photos are not uploaded to GoldMart by this tool.</p>
-      </div><div className="rounded-[26px] border border-[#F7F7F5] bg-white p-5 shadow-sm"><h2 className="text-lg font-black">Similar looking products</h2><p className="mt-2 text-xs text-[#D4AF37]">Approximate image and colour matching, not object recognition. Unrelated products are filtered out when their images look different.</p>
+      </div><div className="rounded-[26px] border border-[#F7F7F5] bg-white p-5 shadow-sm"><h2 className="text-lg font-black">Closest visual match</h2><p className="mt-2 text-xs text-[#D4AF37]">Showing only the closest approximate colour/appearance match. This does not identify objects and may still be incorrect.</p>
       {busy&&<p className="mt-6 text-sm">Comparing catalog photos…</p>}
-      {searched&&matches.length===0&&<p className="mt-6 text-sm">No sufficiently close visual matches found. Try a clearer photo or browse the shop.</p>}
+      {searched&&matches.length===0&&<p className="mt-6 text-sm">No close visual match found. Try a clearer photo or browse the shop.</p>}
       {!searched&&!busy&&<p className="mt-6 text-sm text-[#D4AF37]">Take a photo, then tap Search Similar Products.</p>}
       <div className="mt-4 grid grid-cols-2 gap-3">{matches.map(({product})=><Link key={product.id} href={`/product/${product.id}`} className="overflow-hidden rounded-xl border border-[#F7F7F5] transition hover:border-[#D4AF37]"><img src={product.image_url||""} alt={product.name} loading="lazy" className="aspect-square w-full object-cover"/><div className="p-3"><p className="line-clamp-2 text-xs font-black">{product.name}</p><p className="mt-1 text-xs font-bold text-[#0A1F1A]">{product.currency||"USD"} {product.price}</p></div></Link>)}</div></div></div></section></main>;
 }
