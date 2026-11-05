@@ -105,6 +105,22 @@ export default function CommerceShell({children}:{children:ReactNode}){
         <div className="gm-workspace-mobile">
           <p>{subtitle}</p>
           <WorkspaceNav links={links} pathname={pathname} mobile/>
+          <details className="gm-workspace-all-features">
+            <summary>All {zone === "admin" ? "admin" : "seller"} features <span aria-hidden="true">▾</span></summary>
+            <div className="gm-workspace-all-features-links">
+              {links.map(item => (
+                <Link key={item.href} href={item.href}
+                  aria-current={isActive(item.href, item.exact, pathname) ? "page" : undefined}>
+                  <span aria-hidden="true">{item.icon}</span> {item.label}
+                </Link>
+              ))}
+              {otherLinks.map(item => (
+                <Link key={item.href} href={item.href}>
+                  <span aria-hidden="true">{item.icon}</span> {item.label}
+                </Link>
+              ))}
+            </div>
+          </details>
         </div>
         <div className="gm-workspace-page">{children}</div>
       </div>
