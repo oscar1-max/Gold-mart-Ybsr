@@ -2929,3 +2929,16 @@ body:has(.gm-zone-buyer) button[aria-label="Toggle administrator tools"] {
  .gm-zone-buyer .gm-dept-editorial-card:nth-child(3) {display:none}
  .gm-zone-buyer .gm-dept:is(.gm-dept--garden,.gm-dept--sports,.gm-dept--gifts,.gm-dept--hobbies,.gm-dept--travel,.gm-dept--music,.gm-dept--health,.gm-dept--menswear,.gm-dept--womenswear) .gm-dept-hero {min-height:390px;background-position:64% center}
 }
+
+/* Mobile readability: keep small storefront and workspace copy legible without desktop layout changes. */
+@media (max-width: 640px) {
+  .gm-zone-buyer :is(.text-xs, [class~="text-xs"]),
+  .gm-zone-seller :is(.text-xs, [class~="text-xs"]),
+  .gm-zone-admin :is(.text-xs, [class~="text-xs"]) { font-size: 0.875rem; line-height: 1.45; }
+  .gm-zone-buyer :is(.text-sm, [class~="text-sm"]),
+  .gm-zone-seller :is(.text-sm, [class~="text-sm"]),
+  .gm-zone-admin :is(.text-sm, [class~="text-sm"]) { font-size: 1rem; line-height: 1.5; }
+  .gm-zone-buyer :is(input, select, textarea),
+  .gm-zone-seller :is(input, select, textarea),
+  .gm-zone-admin :is(input, select, textarea) { font-size: max(16px, 1em); }
+}
