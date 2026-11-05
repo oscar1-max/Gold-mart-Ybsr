@@ -2959,3 +2959,23 @@ body:has(.gm-zone-buyer) button[aria-label="Toggle administrator tools"] {
   .gm-zone :is(.text-sm) { font-size: 17px !important; line-height: 1.5 !important; }
   .gm-zone :is(input, select, textarea) { font-size: 17px !important; }
 }
+
+/* Readable mobile baseline for all GoldMart routes, including custom pixel-sized copy.
+   Explicit minimums override earlier desktop-derived component rules. */
+@media (max-width: 640px) {
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  .gm-zone { font-size: 18px !important; }
+  .gm-zone :is(p, li, label, button, input, select, textarea, td, th, summary, figcaption, small) {
+    font-size: 17px !important;
+    line-height: 1.55 !important;
+  }
+  .gm-zone :is(a, span):not(:is(h1,h2,h3,h4,h5,h6) *):not([aria-hidden="true"]):not([class*="icon"]):not([class*="Icon"]) {
+    font-size: 16px !important;
+    line-height: 1.45 !important;
+  }
+  .gm-zone :is(.text-xs, .text-sm, .gm-workspace-link, .gm-topbar-eyebrow, .gm-sidebar-nav-title, .gm-announcement, .gm-dept-section-kicker) {
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+  }
+  .gm-zone :is(input, select, textarea) { font-size: 18px !important; }
+}
