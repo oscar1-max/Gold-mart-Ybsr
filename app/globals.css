@@ -2950,3 +2950,12 @@ body:has(.gm-zone-buyer) button[aria-label="Toggle administrator tools"] {
   .gm-zone :is(.text-sm, .text-\[14px\], .text-\[15px\], .gm-workspace-mobile p) { font-size: 16px !important; line-height: 1.5 !important; }
   .gm-zone :is(input, select, textarea) { font-size: 16px !important; }
 }
+
+/* Mobile typography correction: custom component rules previously overrode utility-only fixes. */
+@media (max-width: 640px) {
+  .gm-zone { font-size: 17px; }
+  .gm-zone :is(p, li, label, a, button, input, select, textarea, td, th) { font-size: max(16px, 1em); }
+  .gm-zone :is(small, .text-xs, .gm-announcement, .gm-workspace-link, .gm-sidebar-nav-title, .gm-topbar-eyebrow) { font-size: 15px !important; line-height: 1.5 !important; }
+  .gm-zone :is(.text-sm) { font-size: 17px !important; line-height: 1.5 !important; }
+  .gm-zone :is(input, select, textarea) { font-size: 17px !important; }
+}
