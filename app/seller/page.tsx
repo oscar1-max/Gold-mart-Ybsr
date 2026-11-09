@@ -536,7 +536,7 @@ export default function SellerDashboard() {
   const salesDisplay = salesByCurrency.length === 0 ? "No verified sales yet" : salesByCurrency.map(item => formatPrice(item.amount,item.currency)).join(" · ");
 
   return (
-    <main className="min-h-screen bg-[#FFF8F2] pb-28 text-[#243B53] md:pb-14">
+    <main className="gm-seller-dashboard-page min-h-screen bg-[#FFF8F2] pb-28 text-[#243B53] md:pb-14">
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
         <section className="relative overflow-hidden rounded-[30px] px-6 py-9 text-white shadow-[0_18px_38px_rgba(24,51,62,0.16)] sm:px-10 sm:py-12" style={{background:"linear-gradient(135deg, #14263D 0%, #243B53 50%, #FF6B00 100%)"}}>
           <div className="pointer-events-none absolute -right-10 -top-20 h-60 w-60 rounded-full border-[32px] border-white/10" aria-hidden="true"/>
