@@ -3036,3 +3036,65 @@ html, body { max-width: 100%; }
 @media (max-width: 360px) {
   .gm-workspace-all-features-links { grid-template-columns: minmax(0, 1fr); }
 }
+
+
+/* GoldMart luxury black / metallic gold / white — seller workspace and buyer homepage ONLY.
+   Deliberately exclude /categories, /shop and category-specific component styling. */
+.gm-zone-seller {
+  --gold:#D4AF37; --gold-light:#F5E6A3; --gold-dark:#A47D18;
+  --orange:#D4AF37; --orange-light:#F5E6A3;
+  --black:#0F0F0F; --black-soft:#202020;
+  --background:#FFFFFF; --foreground:#0F0F0F;
+  --surface:#FFFFFF; --surface-soft:#F7F7F5;
+  --border:#E7D9AC; --border-gold:#D4AF37;
+  --gm-canvas:#FFFFFF; --gm-card:#FFFFFF; --gm-ink:#0F0F0F;
+  --gm-muted:#555555; --gm-line:#E7D9AC; --gm-primary:#D4AF37;
+  --gm-primary-hover:#B89225; --gm-soft:#F7F7F5;
+  background:#FFFFFF; color:#0F0F0F;
+}
+.gm-zone-seller .gm-workspace-frame,
+.gm-zone-seller .gm-workspace-content,
+.gm-zone-seller .gm-workspace-page,
+.gm-zone-seller .gm-workspace-page main {background:#FFFFFF;color:#0F0F0F;}
+.gm-zone-seller .gm-workspace-sidebar {background:#0F0F0F;color:#FFFFFF;border-color:#D4AF37;}
+.gm-zone-seller .gm-workspace-sidebar :is(.gm-sidebar-brand,.gm-sidebar-brand small,.gm-sidebar-nav-title,.gm-sidebar-footnote,.gm-sidebar-workspace-id,.gm-sidebar-workspace-id small,.gm-workspace-link) {color:#FFFFFF;}
+.gm-zone-seller .gm-workspace-sidebar .gm-workspace-link:is(:hover,.is-active) {background:#282314;color:#F5E6A3;border-color:#D4AF37;}
+.gm-zone-seller .gm-workspace-sidebar .gm-brand-symbol,
+.gm-zone-seller .gm-topbar-marketplace-link {background:#D4AF37;color:#0F0F0F;border-color:#D4AF37;}
+.gm-zone-seller .gm-workspace-topbar,
+.gm-zone-seller .gm-workspace-mobile {background:#FFFFFF;color:#0F0F0F;border-color:#E7D9AC;}
+.gm-zone-seller .gm-workspace-topbar :is(.gm-topbar-title,.gm-topbar-eyebrow) {color:#0F0F0F;}
+.gm-zone-seller .gm-workspace-page :is(h1,h2,h3,h4) {color:#0F0F0F;}
+.gm-zone-seller .gm-workspace-page :is(button,a):focus-visible {outline:2px solid #D4AF37;outline-offset:2px;}
+.gm-zone-seller .gm-workspace-page :is(input,textarea,select) {accent-color:#D4AF37;}
+.gm-zone-seller .gm-workspace-all-features summary {border-color:#D4AF37;color:#0F0F0F;}
+.gm-zone-seller .gm-workspace-all-features-links a[aria-current="page"] {background:#F5E6A3;color:#0F0F0F;}
+/* Home-specific accents: do not style category tiles, category rail or /categories. */
+.gm-zone-buyer .gm-marketplace-home {
+  --gold:#D4AF37; --gold-light:#F5E6A3; --gold-dark:#A47D18;
+  --orange:#D4AF37; --orange-light:#F5E6A3;
+  --black:#0F0F0F; --black-soft:#202020;
+  --gm-primary:#D4AF37; --gm-primary-hover:#B89225;
+  --gm-ink:#0F0F0F; --gm-muted:#555555; --gm-line:#E7D9AC;
+  background:#FFFFFF;color:#0F0F0F;
+}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-canvas {background:#FFFFFF;color:#0F0F0F;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-header {background:#0F0F0F;color:#FFFFFF;border-bottom:1px solid #D4AF37;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-header :is(a,button) {color:#FFFFFF;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-logo-mark {background:#D4AF37;color:#0F0F0F;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-hero {background:linear-gradient(125deg,#0F0F0F 0%,#292417 55%,#0F0F0F 100%);color:#FFFFFF;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-hero :is(h1,h2,p) {color:#FFFFFF;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-hero-eyebrow {color:#F5E6A3;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-searchbar {background:#FFFFFF;border:1px solid #D4AF37;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-search-input {color:#0F0F0F;background:#FFFFFF;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-product-section,
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-recommendations {background:#FFFFFF;color:#0F0F0F;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-section-title {color:#0F0F0F;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-price-row strong {color:#9C7515;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-cart {background:#0F0F0F;color:#FFFFFF;border-color:#D4AF37;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-footer {background:#0F0F0F;color:#FFFFFF;border-top:2px solid #D4AF37;}
+.gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-footer :is(a,h2,h3) {color:#FFFFFF;}
+@media(max-width:767px){
+  .gm-zone-seller .gm-workspace-sidebar {background:#0F0F0F;}
+  .gm-zone-buyer .gm-marketplace-home .gm-stuffuss-v2-hero {color:#FFFFFF;}
+}
